@@ -1,0 +1,8 @@
+.loginArea #wpmem_login legend {
+  display: none !important;
+}
+input#log,
+input#log {
+    max-width: 120px;
+}
+

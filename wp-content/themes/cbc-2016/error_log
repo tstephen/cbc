@@ -1,0 +1,2 @@
+[17-Mar-2017 21:33:08 Europe/London] PHP Fatal error:  Call to undefined function get_template_part() in /home/corshamb/public_html/wp-content/themes/cbc-2016/404.php on line 1
+[23-Mar-2017 18:49:22 Europe/London] PHP Fatal error:  Call to undefined function get_template_part() in /home/corshamb/public_html/wp-content/themes/cbc-2016/404.php on line 1

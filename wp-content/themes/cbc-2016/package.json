@@ -1,0 +1,19 @@
+{
+  "name": "cbc-2016",
+  "version": "2.7.1.cbc-2016",
+  "description": "A WordPress theme based on simonpadbury/bst",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tstephen/bst.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-zip": "^3.2.0"
+  }
+}
