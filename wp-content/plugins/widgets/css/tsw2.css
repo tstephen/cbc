@@ -1,0 +1,37 @@
+.icon-strip {
+  background-color: #0078c1;
+  padding-top: 1.2em;
+  padding-bottom: 1em;
+}
+.icon-strip .circle {
+  background: #fff;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 4em;
+  line-height: 0.1em;
+  color: #0078c1;    
+}
+.icon-strip .circle img {
+  width: 2em;
+}
+.icon-strip .circle .dashicons {
+  font-size: 2.5em;
+  height: 1em;
+  color: #C8B89E;
+  width: 100%;
+  padding-top: .1em;
+}
+.icon-strip .circle .label,
+.icon-strip .circle .label:visited {
+  color: #C8B89E;
+  line-height: 1em;
+  font-size: .5em;
+  margin-top: 1.2em;
+}
+.icon-strip .circle .label:active,
+.icon-strip .circle .label:hover {
+  color: #fff;
+  text-decoration: underline;
+}
