@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer
 Requires at least: 4.0
 Tested up to: 4.8
 Stable tag: 4.8
@@ -302,7 +302,10 @@ was removed. To finish, a Premium version is now been presented.
 * Support to Google Drive images.
 
 = 1.6.7 =
-* Support to Instagram images
+* Support to Instagram images.
+
+= 1.6.8 =
+* Image validation and fake internal featured image.
 
 == Upgrade Notice ==
 
@@ -462,3 +465,6 @@ was removed. To finish, a Premium version is now been presented.
 
 = 1.6.7 =
 * Support to Instagram images
+
+= 1.6.8 =
+* Image validation and fake internal featured image.

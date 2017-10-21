@@ -89,8 +89,15 @@ function wpmem_insert_activate_link( $actions, $user_object ) {
  * @since 2.8.2
  *
  * @uses WP_Users_List_Table
+ *
+ * @global object $wpmem
  */
 function wpmem_users_page_load() {
+	
+	global $wpmem;
+	if ( current_user_can( 'list_users' ) ) {
+		$wpmem->admin->user_search = new WP_Members_Admin_User_Search();
+	}
 
 	// If exporting all users, do it, then exit.
 	if ( isset( $_REQUEST['export_all'] ) && $_REQUEST['export_all'] == __( 'Export All Users', 'wp-members' ) ) {
@@ -405,6 +412,9 @@ function wpmem_add_user_column_content( $value, $column_name, $user_id ) {
 			$user_info = get_userdata( $user_id );
 			return $user_info->$column_name;
 			break;
+
+		case 'user_id':
+			return $user_id;
 
 		default:
 			return get_user_meta( $user_id, $column_name, true );

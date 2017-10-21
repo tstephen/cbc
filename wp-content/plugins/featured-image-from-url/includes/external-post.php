@@ -31,8 +31,10 @@ function fifu_save_properties_ext($post_id) {
 
     $url = fifu_first_url_in_content($post_id);
 
-    if ($url && get_option('fifu_get_first') == 'toggleon')
+    if ($url && get_option('fifu_get_first') == 'toggleon') {
         update_post_meta($post_id, 'fifu_image_url', fifu_convert($url));
+        fifu_update_fake_attach_id($post_id);
+    }
 }
 
 function fifu_first_img_in_content($content) {
@@ -71,4 +73,9 @@ function fifu_first_url_in_content($post_id) {
     $aux1 = explode('src="', $matches[0][0]);
     $aux2 = explode('"', $aux1[1]);
     return $matches && $matches[0] ? $aux2[0] : null;
+}
+
+function fifu_update_fake_attach_id($post_id) {
+    if (get_option('fifu_fake_attach_id') && !get_post_thumbnail_id($post_id))
+        set_post_thumbnail($post_id, get_option('fifu_fake_attach_id'));
 }

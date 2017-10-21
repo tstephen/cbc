@@ -125,6 +125,33 @@
     </div>
 
     <div class="box">
+        <h2>Fake Internal Featured Image</h2>
+        <div class="greybox" style="background:#e3ffe2">
+            Even though FIFU works fine with the most of themes/plugins, some of them are not able to show the external featured image if there is no internal featured image associated to your post/page/product. Enabling the toggle below, a symbolic empty file will be added to your Media Library as an attempt to overcome that limitation.
+        </div>
+        <p/>
+        <form 
+            id="fifu_form_fake" 
+            action="javascript:void(0)" 
+            method="post">
+            <input 
+                type="image" 
+                href="javascript:void(0)" 
+                id="fifu_toggle_fake" 
+                onclick="invert('fake')" 
+                name="fifu_toggle_fake" 
+                class="<?php echo $enable_fake; ?>" 
+                value=" " 
+                style="display:block" >
+            <input 
+                type="hidden" 
+                id="fifu_input_fake" 
+                name="fifu_input_fake" 
+                value="" >
+        </form>
+    </div>
+
+    <div class="box">
         <h2>Featured Image Column</h2>
         <div class="greybox" style="background:#e3ffe2">
             The plugin adds a new column "FIFU" (Featured Image from URL) to your table of posts/pages/products in admin area. Below you can choose the height (px) of the image in the column. To disable that, just uncheck "FIFU" in the Screen Options.
@@ -902,6 +929,20 @@
             </table>
             <br>
         </div>
+    </div>
+
+    <div class="box">
+        <h2>Validate Images</h2>
+        <div class="greybox" style="background:#ffe2e2">
+            <b>Premium feature</b><br><br>
+            Allows to check image URLs and, when an image is not found, its URL is not saved. However, the validation can make the saving time too long. It is not integrated with Auto Set Featured Image or WP Rest API features yet.
+        </div>
+        <br>
+        <input 
+            type="image" 
+            href="javascript:void(0)" 
+            class="toggleoff" 
+            value=" " style="display:block">
     </div>
 
     <div class="box">

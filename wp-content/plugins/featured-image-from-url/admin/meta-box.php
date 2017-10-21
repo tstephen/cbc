@@ -122,8 +122,9 @@ function fifu_save_properties($post_id) {
 }
 
 function fifu_update_or_delete($post_id, $field, $url) {
-    if ($url)
+    if ($url) {
         update_post_meta($post_id, $field, fifu_convert($url));
-    else
+        fifu_update_fake_attach_id($post_id);
+    } else
         delete_post_meta($post_id, $field, $url);
 }

@@ -3,7 +3,7 @@
 /*
  * Plugin Name: Featured Image From URL
  * Description: Use an external image as Featured Image of your post/page/custom post type (WooCommerce). Includes Auto Set (External Post), Product Gallery, Social Tags and more.
- * Version: 1.6.7
+ * Version: 1.6.8
  * Author: Marcel Jacques Machado 
  * Author URI: http://featuredimagefromurl.com/
  */
