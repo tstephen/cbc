@@ -208,7 +208,16 @@ figcaption {
   font-style: italic;
   margin-bottom: 10px;
 }
-
+.wp-caption.alignright {
+  float: right;
+}
+.wp-caption .wp-caption-text {
+  font-style: italic;
+}
+.hanging-indent {
+  color: #0066bf;
+  font-size: x-large;
+}
 
 @media (min-width: 768px) and (max-width: 991px) {
   .navbar {
@@ -275,4 +284,21 @@ footer text-3 {
 }
 @media screen and (min-width: 1024px) {
 }
-
+/**************************/
+  LIST CATEGORY OVERRIDES
+/**************************/
+.widget_listcategorypostswidget ul,
+ul.lcp_catlist {
+  list-style: none !important;
+}
+.widget_listcategorypostswidget ul li,
+ul.lcp_catlist li {
+  clear: both;
+  list-style: none !important;
+}
+.widget_listcategorypostswidget ul li img,
+ul.lcp_catlist li img {
+  float: left;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
