@@ -19,12 +19,11 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-6 col-xs-12" id="left-col" role="navigation">
-      <?php get_template_part('includes/sidebar1'); ?>
-    </div>
-    <div class="col-sm-6 col-xs-12" id="right-col" role="navigation">
-      <?php get_template_part('includes/sidebar2'); ?>
-    </div>
+    <h2>Latest posts</h2>
+    <?php 
+      $cat = array_values(get_post_custom_values("category", $post->ID))[0];
+      echo do_shortcode('[catlist name="'.$cat.'" date="yes" excerpt="yes" excerpt_size="30" numberposts="5" thumbnail="yes" thumbnail_force="yes" thumbnail_size="150,150" thumbnail_class="img-responsive"]') ?>
   </div><!-- /.row -->
 </div>
+
 <?php get_template_part('includes/footer'); ?>
