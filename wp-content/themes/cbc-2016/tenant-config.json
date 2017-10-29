@@ -4,16 +4,16 @@
   "theme": {
     "logoUrl": "https://corshambaptists.org/wp-content/themes/cbc-2016/images/cbc-logo.png",
     "iconUrl": "",
-    "headingColor":"#067c9c",
-    "subHeadingColor":"#71495C",
-    "bodyColor":"#535353",
-    "accentColor":"#bf1a55",
-    "iconColor":"#71495C"
+    "headingColor":"#0066bf",
+    "subHeadingColor":"#C8B89E",
+    "bodyColor":"#333",
+    "accentColor":"#C8B89E",
+    "iconColor":"#666"
   },
   "show": { 
     "account":false, "activityAnalysis":false, "activityTracker":false,
     "budget":false, "companyBackground":false, "contact":true, "declaredSource":false,
-    "documents":false, "financials":false,
+    "documents":false, "enquiryType": false, "financials":false,
     "marketing":false, "marketingDigital":false, "merge":false,
     "orders":false, "orderItems":false, "supportBar": true
   },
@@ -26,6 +26,8 @@
     { "name": "Send email", "ref": "SendMemo", "url": true  }
   ],
   "contactFields": [ 
+    { "name": "spouse", "type": "contact", "hint": "Link to spouse" },
+    { "name": "childrenNames", "hint": "Names of any children" }
   ],
   "toolbar": [
     { "url": "contacts.html", "icon": "omny-icon-address-book", "description": "Find a particular contact", "name": "Contact Management" },
@@ -43,44 +45,50 @@
   "processes": [
     { "name": "Add activity to contact", "ref": "AddActivityToContact", "url": "processes/link/omny/custmgmt/AddActivityToContact.bpmn" },
     { "name": "Add note to contact", "ref": "AddNoteToContact", "url": "processes/link/omny/custmgmt/AddNoteToContact.bpmn" },
-    { "name": "Create contact and account", "ref": "CreateContactAndAccount", "url": "processes/link/omny/custmgmt/CreateContactAndAccount.bpmn" },
+    { "name": "Create contact and account", "ref": "CreateContactAndAccount", "url": "processes/link/omny/custmgmt/CreateContactAccountAndOrder.bpmn" },
+    { "name": "Import contact", "ref": "ImportContact", "url": "processes/link/omny/custmgmt/ImportContact.bpmn" },
     { "name": "Record an enquiry", "ref": "RecordEnquiry", "url": "processes/link/omny/website/RecordEnquiry.bpmn" },
-    { "name": "Register a user", "ref": "RegisterOmnyContact", "url": "processes/link/omny/website/RegisterOmnyContact.bpmn" },
     { "name": "Reset user's password", "ref": "ResetPassword", "url": "processes/link/omny/support/ResetPassword.bpmn" },
     { "name": "Select enquiry response", "ref": "SelectEnquiryResponse", "url": "processes/link/omny/mail/SelectDefaultEnquiryResponse.bpmn" },
-    { "name": "Send memo", "ref": "SendMemo", "url": "processes/link/omny/mail/SendMemo.bpmn" },
-    { "name": "Send alert", "ref": "SendAlert", "url": "processes/link/omny/alerts/SendAlertMemo.bpmn" },
+    { "name": "Send memo", "ref": "SendMemo", "url": "processes/link/omny/memos/SendMemo.bpmn" },
+    { "name": "Send alert", "ref": "SendAlert", "url": "processes/link/omny/alerts/SendAlertEmail.bpmn" },
     { "name": "Send alert to contact's owner", "ref": "SendAlertToOwner", "url": "processes/link/omny/alerts/SendAlertToOwner.bpmn" },
-    { "name": "Catch all", "ref": "CatchAllProcess", "url": "processes/link/omny/support/CatchAllProcessPostToSlack.bpmn" },
+    { "name": "Catch all", "ref": "CatchAllProcess", "url": "processes/link/omny/support/CatchAllProcess.bpmn" },
     { "name": "Add task", "ref": "SimpleToDo", "url": "processes/link/omny/casemgmt/SimpleToDo.bpmn" }
   ],
   "serviceLevel": {
     "inactiveStages":["discovery","review"],
     "initialResponseThreshold":7
   },
+  "strings": {
+    "contactStage":"Service"
+  },
   "templates": [
     { "name": "ContactAlert", "ref": "ContactAlert" },
-    { "name": "NotifyEnquiry", "ref": "NotifyEnquiry" },
-    { "name": "NotifyToDo", "ref": "NotifyToDo" },
     { "name": "ResetPassword", "ref": "ResetPassword" },
     { "name": "ThankYouForEnquiry", "ref": "ThankYouForEnquiry" },
     { "name": "WelcomeNewUser", "ref": "WelcomeNewUser" }
   ],
   "typeaheadControls": [
-    { "name": "accountTypes", "ref": "#curAccountType", "url": "/data/account-types.json"},
-    { "name": "commsPreference", "ref": "#curCommsPreference", "url": "/data/comms-preference.json"},
-    { "name": "countries", "ref": "#curCountry", "url": "/data/countries.json"},
-    { "name": "enquiryTypes", "ref": "#curEnquiryType", "values": [
-        {  "id": "Explosives", "name": "Explosives"  },
-        {  "id": "Insurance", "name": "Insurance"  }
+    { "name": "accountTypes", "ref": "#curAccountType", "values": [
+        {  "id": "Staff", "name": "Staff"  },
+        {  "id": "Elder", "name": "Elder"  },
+        {  "id": "Deacon", "name": "Deacon"  },
+        {  "id": "Trustee", "name": "Trustee"  },
+        {  "id": "Congregation", "name": "Congregation"  }
       ]
     },
-    { "name": "owners", "ref": "#curOwner", "url": "/data/omny/owners.json"},
-    { "ref": "#who", "url": "/data/omny/owners.json"},
-    { "ref": "#notify", "url": "/data/omny/owners.json"},
-    { "name": "media", "ref": "#curMedium", "url": "/data/media.json"},
-    { "name": "sectors", "ref": "#curSector", "url": "/data/omny/sectors.json"},
-    { "name": "sources", "ref": "#curSource", "url": "/data/sources.json"},
+    { "name": "commsPreference", "ref": "#curCommsPreference", "url": "/data/comms-preference.json"},
+    { "name": "contactStages", "ref": "#curStage", "values": [
+        {  "id": "COTG", "name": "COTG"  },
+        {  "id": "9:15", "name": "9:15"  },
+        {  "id": "11:15", "name": "11:15"  }
+      ]
+    },
+    { "name": "owners", "ref": "#curOwner", "values": [
+        {  "id": "tim@thestephensons.me.uk", "name": "tim@thestephensons.me.uk"  }
+      ]
+    },
     { "name": "stages", "ref": "#curStage", "url": "/data/stages.json"},
     { "name": "status", "ref": "#curStatus", "url": "/data/status.json"},
     { "ref": "#orderStatus", "url": "/data/status.json"}
