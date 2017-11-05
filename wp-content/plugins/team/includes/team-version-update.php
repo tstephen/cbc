@@ -69,12 +69,6 @@ class class_team_version_update  {
 			
 		}	
 		
-		
-		
-		
-		
-		
-			
 	
 	
 }

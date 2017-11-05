@@ -16,16 +16,15 @@ if(empty($_POST['team_hidden'])){
 
 	}
 else{	
-		if($_POST['team_hidden'] == 'Y') {
+
+		$nonce = $_POST['_wpnonce'];
+
+		if(wp_verify_nonce( $nonce, 'nonce_team' ) &&  $_POST['team_hidden'] == 'Y') {
 			//Form data sent
 
 			$team_member_slug = sanitize_text_field($_POST['team_member_slug']);
 			update_option('team_member_slug', $team_member_slug);
-			
-			if(empty($_POST['team_member_meta_fields'])){
-				
-				$_POST['team_member_meta_fields'] = array();
-				}
+
 			$team_member_meta_fields = stripslashes_deep($_POST['team_member_meta_fields']);
 			update_option('team_member_meta_fields', $team_member_meta_fields);
 
@@ -61,7 +60,7 @@ else{
     <div class="para-settings team-settings">
     
         <ul class="tab-nav"> 
-            <li nav="1" class="nav1 active"><i class="fa fa-cogs"></i> Options</li>       
+            <li nav="1" class="nav1 active">Options</li>       
    
         </ul> <!-- tab-nav end --> 
 		<ul class="box">
@@ -75,7 +74,7 @@ else{
             	</div>
                 <div class="option-box">
                     <p class="option-title"><?php _e('Custom meta fields on team member profile.','team'); ?></p>
-                    <p class="option-info"><?php _e('','team'); ?></p>
+                    <p class="option-info"><?php //_e('','team'); ?></p>            
                 
                 
                 
@@ -85,7 +84,7 @@ else{
                     <tr> 
                     <th>Sorting</th>                   
                     <th>Meta Name</th>
-                    <th >Meta Key<br/><i style="font-size:10px;">Must be unique, no blank space, can use (_)underscore</i></th>
+                    <th>Meta Key</th>
                     <th>Remove</th>            
                     </tr>
                     </thead>
@@ -96,7 +95,7 @@ else{
                     if(empty($team_member_meta_fields)){
                         
                         $team_member_meta_fields = array(
-                                                    //'address' => array('name'=>'Address','meta_key'=>'team_address'),
+                                                    'address' => array('name'=>'Address','meta_key'=>'team_address'),
                                                     //'mobile' => array('name'=>'Mobile','meta_key'=>'team_mobile'),											
                                                 );
                         
@@ -120,7 +119,7 @@ else{
                     </td>
                     
                     <td>
-                    <span class="remove-meta">X</span>
+                    <span class="remove-meta"><i class="fa fa-times"></i></span>
                     </td>            
                     </tr>
                         <?php
@@ -209,7 +208,7 @@ else{
                     if($field_info['can_remove']=='yes'){
 					?>
                     
-                    <span class="remove_icon">X</span>
+                    <span class="remove_icon"><i class="fa fa-times"></i></span>
 
                     <?php
 					}
@@ -243,17 +242,17 @@ else{
         
  
         
-					 <script>
-                     jQuery(document).ready(function($){
-						 
-                            $(function() {
-                                $( "#team_member_social_field tbody" ).sortable();
-                                //$( ".items" ).disableSelection();
-                                });
-                            
-                            })
-                    
-                    </script>
+ <script>
+ jQuery(document).ready(function($)
+	{
+		$(function() {
+			$( "#team_member_social_field tbody" ).sortable();
+			//$( ".items" ).disableSelection();
+			});
+		
+		})
+
+</script>
         
         
         
@@ -278,7 +277,10 @@ else{
 
 
 
-<p class="submit">
+				<p class="submit">
+                
+                	<?php wp_nonce_field( 'nonce_team' ); ?>
+                
                     <input class="button button-primary" type="submit" name="Submit" value="<?php _e('Save Changes','team' ); ?>" />
                 </p>
 		</form>

@@ -10,11 +10,13 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 
 
 
-add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_title', 10 );
+add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_title', 0 );
 add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_thumbnail', 10 );
-add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_position', 10 );
-add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_social', 10 );
-add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_content', 10 );
+add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_position', 20 );
+add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_social', 30 );
+add_action( 'team_action_single_team_member_main', 'team_action_single_team_member_main_content', 50 );
+
+
 
 
 

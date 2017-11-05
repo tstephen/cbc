@@ -2,10 +2,9 @@
 /* CSS Document */
 
 .team-meamber-single {
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
+    padding: 0;
+    margin: 0
+    }
 
 .team-meamber-single .team-position {
   font-style: italic;

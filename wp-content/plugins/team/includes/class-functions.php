@@ -11,8 +11,7 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 class class_team_functions  {
 	
 	
-    public function __construct()
-    {
+    public function __construct(){
 		
 		
 		//$this->settings_page = new Team_Settings();
@@ -38,27 +37,9 @@ class class_team_functions  {
 		
 		
 		
-	public function team_member_social_field()
-		{
+	public function team_member_social_field(){
 			
-/*
-			$social_field = array(
-									"mobile"=>"Mobile",					
-									"website"=>"Website",						
-									"email"=>"Email",						
-									"skype"=>"Skype",					
-									"facebook"=>"Facebook",
-									"twitter"=>"Twitter",
-									"googleplus"=>"Google plus",
-									"pinterest"=>"Pinterest",
-									"linkedin"=>"Linkedin",
-									"vimeo"=>"Vimeo",															
-					);
-
-*/
-					
-					
-					
+	
 			$social_field = array(
 									"mobile"=>array('meta_key'=>"mobile",'name'=>"Mobile",'icon'=>'','visibility'=>'1','can_remove'=>'no',),					
 									"website"=>array('meta_key'=>"website",'name'=>"Website",'icon'=>'','visibility'=>'1','can_remove'=>'no',),
@@ -69,7 +50,8 @@ class class_team_functions  {
 									"googleplus"=>array('meta_key'=>"googleplus",'name'=>"Google plus",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),
 									"pinterest"=>array('meta_key'=>"pinterest",'name'=>"Pinterest",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),
 									"linkedin"=>array('meta_key'=>"linkedin",'name'=>"Linkedin",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),
-									"vimeo"=>array('meta_key'=>"vimeo",'name'=>"Vimeo",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),														
+									"vimeo"=>array('meta_key'=>"vimeo",'name'=>"Vimeo",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),
+									"instagram"=>array('meta_key'=>"instagram",'name'=>"Instagram",'icon'=>'','visibility'=>'1','can_remove'=>'yes',),																						
 					);					
 					
 			return apply_filters( 'team_member_social_field', $social_field );
@@ -86,9 +68,12 @@ class class_team_functions  {
 			$team_grid_items = array(
 					'thumbnail'=>__('Thumbnail','team'),
 					'title'=>__('Title','team'),
-					'position'=>__('Position / Role','team'),
-					'content'=>__('Content / Biography','team'),
+					'position'=>__('Position','team'),
+					'content'=>__('Content','team'),
 					'social'=>__('Social','team'),
+					'popup'=>__('Pop up <span class="team-pro" title="Only available in premium">Pro</span>','team'),
+					'meta'=>__('Meta fields <span class="team-pro" title="Only available in premium">Pro</span>','team'),
+					'skill'=>__('Skill bars <span class="team-pro" title="Only available in premium">Pro</span>','team'),
 					);
 
 			$team_grid_items = apply_filters('team_grid_items',$team_grid_items);
@@ -99,142 +84,392 @@ class class_team_functions  {
 			}
 
 
-
-
-		
-	public function team_themes($themes = array())
-		{
-
-			 $themes = array(
-							'flat'=>'Flat',
-							'rounded'=>'Rounded',
-							'zoom-out'=>'Zoom Out',					
-																
-							);
-			
-			foreach(apply_filters( 'team_themes', $themes ) as $theme_key=> $theme_name)
-				{
-					$theme_list[$theme_key] = $theme_name;
-				}
-
-			
-			return $theme_list;
-
-		}
 	
+	
+	public function skins(){
 		
-	public function team_themes_dir($themes_dir = array())
-		{
-			$main_dir = team_plugin_dir.'themes/';
-			
-			$themes_dir = array(
-							'flat'=>$main_dir.'flat',
-							'rounded'=>$main_dir.'rounded',
-							'zoom-out'=>$main_dir.'zoom-out',
+		$skins = array(
+		
+						'flat'=> array(
+										'slug'=>'flat',									
+										'name'=>'Flat',
+										'thumb_url'=>'',
+										'disabled'=>'',
+										),
+
+						'zoomout'=>array(
+							'slug'=>'zoomout',
+							'name'=>'ZoomOut',
+							'thumb_url'=>'',
+							'disabled'=>'',
+						),
+
+						'thumbrounded'=>array(
+							'slug'=>'thumbrounded',
+							'name'=>'ThumbRounded',
+							'thumb_url'=>'',
+							'disabled'=>'',
+						),
+
+
+						'flip-x'=> array(
+										'slug'=>'flip-x',									
+										'name'=>'Flip-x (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'flip-y'=>array(
+										'slug'=>'flip-y',
+										'name'=>'Flip-y (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'zoomin'=>array(
+										'slug'=>'zoomin',
+										'name'=>'ZoomIn (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),							
+
+						'spinright'=>array(
+										'slug'=>'spinright',
+										'name'=>'SpinRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'spinleft'=>array(
+										'slug'=>'spinleft',
+										'name'=>'SpinLeft (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'spinrightzoom'=>array(
+										'slug'=>'spinrightzoom',
+										'name'=>'SpinRightZoom (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'spinleftzoom'=>array(
+										'slug'=>'spinleftzoom',
+										'name'=>'SpinLeftZoom (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
 																			
-							);
-
-
-			foreach(apply_filters( 'team_themes_dir', $themes_dir ) as $theme_key=> $theme_dir)
-				{
-					$theme_list_dir[$theme_key] = $theme_dir;
-				}
-
-			return $theme_list_dir;
-
-		}
-
-
-	public function team_themes_url($themes_url = array())
-		{
-			$main_url = team_plugin_url.'themes/';
-			
-			$themes_url = array(
-							'flat'=>$main_url.'flat',
-							'rounded'=>$main_url.'rounded',
-							'zoom-out'=>$main_url.'zoom-out',
-							);
-
-			foreach(apply_filters( 'team_themes_url', $themes_url ) as $theme_key=> $theme_url)
-				{
-					$theme_list_url[$theme_key] = $theme_url;
-				}
-
-
-
-			return $theme_list_url;
-
-		}
-
-
-// Single Team Member 
-
-
-
-		
-	public function team_single_themes($themes = array())
-		{
-
-			$themes = array(
-							'flat'=>'Flat',
+										
+										
+						'spinrightfast'=>array(
+										'slug'=>'spinrightfast',
+										'name'=>'SpinRightFast (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'spinleftfast'=>array(
+										'slug'=>'spinleftfast',
+										'name'=>'SpinLeftFast (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+										
+						'thumbgoleft'=>array(
+										'slug'=>'thumbgoleft',
+										'name'=>'ThumbGoLeft (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),																
 							
-							);
-			
-			foreach(apply_filters( 'team_single_themes', $themes ) as $theme_key=> $theme_name)
-				{
-					$theme_list[$theme_key] = $theme_name;
-				}
+						'thumbgoright'=>array(
+										'slug'=>'thumbgoright',
+										'name'=>'ThumbGoRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'thumbgotop'=>array(
+										'slug'=>'thumbgotop',
+										'name'=>'ThumbGoTop (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),																
+							
+						'thumbgobottom'=>array(
+										'slug'=>'thumbgobottom',
+										'name'=>'ThumbGoBottom (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'thumbgoleftconetntinright'=>array(
+										'slug'=>'thumbgoleftconetntinright',
+										'name'=>'ThumbGoLeftConetntInRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'thumbgobottomconetntinright'=>array(
+										'slug'=>'thumbgobottomconetntinright',
+										'name'=>'ThumbGoBottomConetntInRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+						'thumbgotopconetntinright'=>array(
+										'slug'=>'thumbgotopconetntinright',
+										'name'=>'ThumbGoTopConetntInRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),																			
+						'thumbgorightconetntinright'=>array(
+										'slug'=>'thumbgorightconetntinright',
+										'name'=>'ThumbGoRightConetntInRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+																			
+						'thumbmiddle'=>array(
+										'slug'=>'thumbmiddle',
+										'name'=>'ThumbMiddle (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'thumbskew'=>array(
+										'slug'=>'thumbskew',
+										'name'=>'ThumbSkew (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+										
+										
+						'contentbottom'=>array(
+										'slug'=>'contentbottom',
+										'name'=>'ContentBottom (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+						'contentmiddle'=>array(
+										'slug'=>'contentmiddle',
+										'name'=>'ContentMiddle (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'contentinbottom'=>array(
+										'slug'=>'contentinbottom',
+										'name'=>'ContentInBottom (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+										
+						'contentinleft'=>array(
+										'slug'=>'contentinleft',
+										'name'=>'ContentInLeft (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'contentinright'=>array(
+										'slug'=>'contentinright',
+										'name'=>'ContentInRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),																												
+																													
+										
+						'contentborder'=>array(
+										'slug'=>'contentborder',
+										'name'=>'ContentBorder (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),										
+										
+						'contentborderrounded'=>array(
+										'slug'=>'contentborderrounded',
+										'name'=>'ContentBorderRounded (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),	
+										
+						'halfthumbleft'=>array(
+										'slug'=>'halfthumbleft',
+										'name'=>'HalfThumbLeft (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
+						'halfthumbright'=>array(
+										'slug'=>'halfthumbright',
+										'name'=>'HalfThumbRight (Pro feature)',
+										'thumb_url'=>'',
+										'disabled'=>'disabled',
+										),
+										
 
-			
-			return $theme_list;
 
+						
+						);
+		
+		$skins = apply_filters('team_filter_skins', $skins);	
+		
+		return $skins;
+		
 		}
 	
+
+
+
+
+
+
+
+	
+	public function faq(){
+
+
+
+		$faq['core'] = array(
+							'title'=>__('Core', 'team'),
+							'items'=>array(
+
+											array(
+												'question'=>__('How to upgrade to premium ?', 'team'),
+												'answer_url'=>'https://goo.gl/51pEHd',
+												),	
+
+											array(
+												'question'=>__('How to activate license ?', 'team'),
+												'answer_url'=>'https://goo.gl/jd1P5H',
+												),	
+
+											array(
+												'question'=>__('How to create team ?', 'team'),
+												'answer_url'=>'https://goo.gl/t5AYSC',
+												),	
+
+											array(
+												'question'=>__('How to add custom profile fields ?', 'team'),
+												'answer_url'=>'https://goo.gl/BmvA2u',
+												),	
+
+											array(
+												'question'=>__('Team member page 404 not found.', 'team'),
+												'answer_url'=>'https://goo.gl/OCjEKl',
+												),
+
+											array(
+												'question'=>__('Team member page full width/broken', 'team'),
+												'answer_url'=>'https://goo.gl/WHWu8p',
+												),
+
+
+											array(
+												'question'=>__('How to change team member slug ?', 'team'),
+												'answer_url'=>'https://goo.gl/xgXzVC',
+												),
+
+											array(
+												'question'=>__('How to display team member by group ?', 'team'),
+												'answer_url'=>'https://goo.gl/dUA40n',
+												),
+
+
+											array(
+												'question'=>__('How to display team member by id’s ?', 'team'),
+												'answer_url'=>'https://goo.gl/kKwh3Y',
+												),
+
+
+
+
+											),
+
+								
+							);
+
+					
 		
-	public function team_single_themes_dir($themes_dir = array())
+		
+		$faq = apply_filters('team_filters_faq', $faq);		
+
+		return $faq;
+
+		}		
+	
+
+
+	
+	
+	public function team_get_taxonomy_category($postid)
 		{
-			$main_dir = team_plugin_dir.'themes-single/';
-			$themes_dir = $this->team_themes();
-
-			foreach($themes_dir as $theme_key=> $theme_dir)
+	
+		$team_taxonomy = array('team_group');
+		
+		if(empty($team_taxonomy))
+			{
+				$team_taxonomy= "";
+			}
+		$team_taxonomy_terms = get_post_meta( $postid, 'team_taxonomy_terms', true );
+		
+			
+			if(empty($team_taxonomy_terms))
 				{
-					$theme_list_dir[$theme_key] = $main_dir.$theme_key;
+					$team_taxonomy_terms =array('none'); // an empty array when no category element selected
+	
 				}
-
-			return $theme_list_dir;
-
-		}
-
-
-	public function team_single_themes_url($themes_url = array())
-		{
-			$main_url = team_plugin_url.'themes-single/';
-			$themes_url = $this->team_themes();			
-
-			foreach($themes_url as $theme_key=> $theme_url)
+	
+			if(!isset($_POST['taxonomy']))
 				{
-					$theme_list_url[$theme_key] = $main_url.$theme_key;
+				$taxonomy =$team_taxonomy;
 				}
-
-			return $theme_list_url;
-
+			else
+				{
+				$taxonomy = sanitize_text_field($_POST['taxonomy']);
+				}
+			
+			
+			$args=array(
+			  'orderby' => 'name',
+			  'order' => 'ASC',
+			  'taxonomy' => $taxonomy,
+			  );
+		
+		$categories = get_categories($args);
+		
+		
+		if(empty($categories))
+			{
+			echo __("No Items Found!",'team');
+			}
+		
+		
+			$return_string = '';
+			$return_string .= '<ul style="margin: 0;">';
+		
+		foreach($categories as $category){
+			
+			if(array_search($category->cat_ID, $team_taxonomy_terms))
+			{
+		   $return_string .= '<li class='.$category->cat_ID.'><label ><input class="team_taxonomy_terms" checked type="checkbox" name="team_taxonomy_terms['.$category->cat_ID.']" value ="'.$category->cat_ID.'" />'.$category->cat_name.'</label ></li>';
+			}
+			
+			else
+				{
+					   $return_string .= '<li class='.$category->cat_ID.'><label ><input class="team_taxonomy_terms" type="checkbox" name="team_taxonomy_terms['.$category->cat_ID.']" value ="'.$category->cat_ID.'" />'.$category->cat_name.'</label ></li>';			
+				}
+			
+			}
+		
+			$return_string .= '</ul>';
+			
+			return $return_string;
+		
+		if(isset($_POST['taxonomy']))
+			{
+				die();
+			}
+		
+			
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		
 	public function team_share_plugin()
 		{

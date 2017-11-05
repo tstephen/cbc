@@ -11,7 +11,7 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 		
 			
 			$html_social = '';
-			$html_social.= '<div class="team-social " >';
+			//$html_social.= '<div class="team-social" >';
 			
 			
 			$team_member_social_field = get_option( 'team_member_social_field' );
@@ -31,7 +31,7 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
             foreach ($team_member_social_field as $field_key=>$field_info) {
 				
 				
-                if(!empty($field_key) && !empty($team_member_social_links[$field_key]))
+                if(!empty($field_key) && !empty($team_member_social_links[$field_key]) && !empty($field_info['visibility']))
                     {
 						
 						if(!empty($team_member_social_field[$field_key]['icon']))
@@ -96,5 +96,13 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 
 			
 
-			$html_social.= '</div>';
+			//$html_social.= '</div>';
+			
+			$html_social = apply_filters( 'team_filter_team_member_social', $html_social );
+			
+			
+			//echo $html_social;
+			
+			echo '<div class="team-social" >';
 			echo $html_social;
+			echo '</div>';

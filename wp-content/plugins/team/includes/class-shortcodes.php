@@ -1,11 +1,8 @@
 <?php
 
 /*
-* @Author 		ParaTheme
-* @Folder	 	Team/Includes
-* @version     3.0.5
-
-* Copyright: 	2015 ParaTheme
+* @Author 		pickplugins
+* Copyright: 	2016 pickplugins.com
 */
 
 if ( ! defined('ABSPATH')) exit;  // if direct access 	
@@ -14,11 +11,12 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 class class_team_shortcodes  {
 	
 	
-    public function __construct()
-    {
+    public function __construct(){
 		
 		add_shortcode( 'team', array( $this, 'team_display' ) );
-		//add_shortcode( 'team_single', array( $this, 'team_single_display' ) );
+		add_shortcode( 'team_pickplugins', array( $this, 'team_display' ) ); // To avoid Conflict
+		
+		add_shortcode( 'team_single', array( $this, 'team_single_display' ) );
 
 
     }
@@ -33,19 +31,89 @@ class class_team_shortcodes  {
 				$html = '';
 				$post_id = $atts['id'];
 	
-				$team_themes = get_post_meta( $post_id, 'team_themes', true );
+			//	var_dump('Hello');
+	
+				include team_plugin_dir.'/templates/variables.php';
+				include team_plugin_dir.'/templates/query.php';
 				
-				$class_team_functions = new class_team_functions();
-				$team_themes_dir = $class_team_functions->team_themes_dir();
-				$team_themes_url = $class_team_functions->team_themes_url();
+				include team_plugin_dir.'/templates/custom-css.php';
+				
+				//var_dump($team_grid_items);
+	
+				$html .= '<div id="team-'.$post_id.'" class="team-container">';
+				
+				
 
+				$html .= '<div class="team-items">';
+				
+				
+				if ( $wp_query->have_posts() ) :
+				
+				while ( $wp_query->have_posts() ) : $wp_query->the_post();
+				
+					$team_member_position = get_post_meta(get_the_ID(), 'team_member_position', true );
+					$team_member_social_links = get_post_meta( get_the_ID(), 'team_member_social_links', true );	
+					$team_member_link_to_post = get_post_meta( get_the_ID(), 'team_member_link_to_post', true );
+				
+					$team_thumb = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), $team_items_thumb_size );
+					$team_thumb_url = $team_thumb['0'];
+					
+					$team_popup_thumb = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), $team_items_popup_thumb_size );
+					$team_popup_thumb_url = $team_popup_thumb['0'];					
+					
+					$html.= '<div class="item skin '.team_term_slug_list(get_the_ID()).' '.$team_themes.'" >';
+				
+				
+					$html.=  '<div class="layer-media">';				
+				
+					foreach($team_grid_items as $key=>$name){
 							
+							if(empty($team_grid_items_hide[$key]) && $key=='thumbnail')
+								{
+									include team_plugin_dir.'templates/'.$key.'.php';
+								}
+							
+						}
+				
+				
+					$html.=  '</div>';
+				
+					$html.=  '<div class="layer-content">';
+					foreach($team_grid_items as $key=>$name){
+							
+							if(empty($team_grid_items_hide[$key]) && $key!='thumbnail'  && $key!='popup' && $key!='meta'  && $key!='skill')
+								{
+								include team_plugin_dir.'templates/'.$key.'.php';
+								}
+							
+						}
+					$html.=  '</div>';
+				
+					$html.=  '</div>';
+				
+				
+				endwhile;
+				
+				$html.=  '</div>';
+				
+				include team_plugin_dir.'/templates/paginate.php';
+				
+				
+				wp_reset_query();
+				
+				else :
+					$html.= __('No Team Member Found','wcps');
+			
+				endif;
 
-				include $team_themes_dir[$team_themes].'/index.php';				
-	
-				include team_plugin_dir.'/templates/team-grid-custom-css.php';
-	
-				$html.= '<link  type="text/css" media="all" rel="stylesheet"  href="'.$team_themes_url[$team_themes].'/style.min.css" >';	
+						
+				
+				include team_plugin_dir.'/templates/scripts.php';				
+				
+				
+				$html.=  '</div>';	
+
+			
 	
 				return $html;
 	
@@ -63,15 +131,32 @@ class class_team_shortcodes  {
 	
 				$html = '';
 				$themes = $atts['themes'];
-
 				
-				$class_team_functions = new class_team_functions();
-				$team_single_themes_dir = $class_team_functions->team_single_themes_dir();
-				$team_single_themes_url = $class_team_functions->team_single_themes_url();
 
-				echo '<link  type="text/css" media="all" rel="stylesheet"  href="'.$team_single_themes_url[$themes].'/style.min.css" >';				
-
-				include $team_single_themes_dir[$themes].'/index.php';				
+				$post_id = get_the_ID();
+				include team_plugin_dir.'/templates/variables.php';
+				
+				$team_member_position = get_post_meta(get_the_ID(), 'team_member_position', true );
+				$team_member_social_links = get_post_meta( get_the_ID(), 'team_member_social_links', true );
+			
+				$team_thumb = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), 'full' );
+				$team_thumb_url = $team_thumb['0'];
+				
+				$team_items_content='full';
+			
+			
+				$html = '';
+				$html.= '<div class="team-meamber-single team-container">';
+				
+				//include team_plugin_dir.'/templates/team-grid-thumbnail.php';
+				//include team_plugin_dir.'/templates/team-grid-title.php';	
+				include team_plugin_dir.'/templates/position.php';	
+				include team_plugin_dir.'/templates/social.php';
+				$html.= '<div class="team-content">'.wpautop(get_the_content()).'</div>';	
+				
+				include team_plugin_dir.'/templates/skill.php';	
+				
+				$html.= '</div>';			
 	
 				return $html;
 	

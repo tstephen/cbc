@@ -62,10 +62,10 @@ class team_class_post_types{
 				'hierarchical' 			=> false,
 				'rewrite' 				=> array( 'slug' => $team_member_slug ),
 				'query_var' 			=> true,
-				'supports' 				=> array( 'title','editor','thumbnail','custom-fields' ),
+				'supports' 				=> array( 'title','editor','thumbnail','custom-fields', 'page-attributes' ),
 				'show_in_nav_menus' 	=> false,
 				//'show_in_menu' 	=> 'edit.php?post_type=team',	
-				'menu_icon' => 'dashicons-admin-users',
+				'menu_icon' => 'dashicons-businessman',
 
 			) )
 		); 
@@ -120,9 +120,9 @@ class team_class_post_types{
 				'labels' => array(
 					'name' 					=> $plural,
 					'singular_name' 		=> $singular,
-					'menu_name'             => __( 'Team', 'team' ),
+					'menu_name'             => __( $singular, 'team' ),
 					'all_items'             => sprintf( __( 'All %s', 'team' ), $plural ),
-					'add_new' 				=> __( 'Create Team', 'team' ),
+					'add_new' 				=> __( 'Add New', 'team' ),
 					'add_new_item' 			=> sprintf( __( 'Add %s', 'team' ), $singular ),
 					'edit' 					=> __( 'Edit', 'team' ),
 					'edit_item' 			=> sprintf( __( 'Edit %s', 'team' ), $singular ),
@@ -146,7 +146,7 @@ class team_class_post_types{
 				'query_var' 			=> true,
 				'supports' 				=> array( 'title'),
 				'show_in_nav_menus' 	=> false,
-				'menu_icon' => 'dashicons-admin-users',
+				'menu_icon' => 'dashicons-groups',
 			) )
 		); 
 	 

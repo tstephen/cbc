@@ -35,12 +35,17 @@ class team_class_settings  {
 		
 		}
 	
+	public function license(){
+		
+		include( 'menu/license.php' );	
+		
+		}	
 
 	public function help(){
-	
+		
 		include( 'menu/help.php' );	
 		
-		}
+		}	
 	
 	
 	

@@ -24,6 +24,7 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 		endwhile;
 		
         do_action('team_action_after_single_team_member');
-
+		
+		//get_sidebar( 'content-bottom' );
 		get_footer();
 		
