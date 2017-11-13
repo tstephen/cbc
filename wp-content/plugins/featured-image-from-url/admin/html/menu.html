@@ -341,7 +341,9 @@
     <div class="box">
         <h2>WP All Import</h2>
         <div class="greybox" style="background:#e3ffe2">
-            You can use Featured Image from URL with WP All Import plugin. For that, use the custom field <b>fifu_image_url</b>. The other custom fields supported by FIFU are listed below, in the section WP REST API > Plugin Fields.
+            You can use Featured Image from URL with WP All Import plugin. For that, use the custom field <b>fifu_image_url</b>.<br/><br/> The other custom fields supported by FIFU are listed below, in the section WP REST API > Plugin Fields.
+            <br/><br/>
+            But if you have a list of URLs delimited by "|", it's possible to use that with the custom field <b>fifu_list_url</b>. In this case, the first image will be considered the featured image and the others will be in the product image gallery. For sliders, use <b>fifu_slider_list_url</b>.
         </div>
     </div>
 
@@ -946,6 +948,43 @@
     </div>
 
     <div class="box">
+        <h2>Video Auto Play</h2>
+        <div class="greybox" style="background:#ffe2e2">
+            <b>Premium feature</b><br><br>
+            This option allows to play a video on "mouseover" and pause it on "mouseout".
+        </div>
+        <br>
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <input 
+                        type="image" 
+                        href="javascript:void(0)" 
+                        class="toggleoff" 
+                        value=" "
+                        style="display:block">
+                </th>
+                <th>   
+                    for YouTube videos
+                </th>
+            </tr> 
+            <tr>
+                <th>
+                    <input 
+                        type="image" 
+                        href="javascript:void(0)" 
+                        class="toggleoff" 
+                        value=" "
+                        style="display:block">
+                </th>
+                <th>   
+                    for Vimeo videos
+                </th>
+            </tr>              
+        </table>
+    </div>
+
+    <div class="box">
         <h2>WooCommerce Lightbox</h2>
         <div class="greybox" style="background:#ffe2e2">
             <b>Premium feature</b><br><br>
@@ -1146,7 +1185,7 @@
             <h3>2) "Which plugins are compatible with Premium version?"</h3>
             WooCommerce, WP All Import, Monarch, Frontend Publishing and others. If you intend to use the Premium version with a specific plugin, try to test with the free version first. Or you can ask me if they are compatible.<br><br>
             <h3>3) "Are there the known incompatibility issues?"</h3>
-            - Flatsome: this theme apply your own style on the product gallery, overwriting the WooCommerce code. Then it’s not able to handle external images there;<br>
+            - Flatsome and Newspaper: these themes apply your own style on the product gallery, overwriting the WooCommerce code. Then style issues will be present there;<br>
             - Variable Product: this WooCommerce feature can be found at Product Data dropdown and allows to create variations of a same product, including images. FIFU doesn’t support that for now.<br><br>
             <h3>4) "Can I get my money back later?"</h3>
             With the exception of rare situations, no. But don't worry about that. You will still have the best support and if, after your complete cooperation, I'm not able to solve your issue, I may refund you.<br><br>

@@ -1,1 +1,0 @@
-[27-Sep-2017 04:24:18 Europe/London] PHP Fatal error:  Call to undefined function plugin_basename() in /home/corshamb/public_html/wp-content/plugins/contact-form-7/wp-contact-form-7.php on line 19

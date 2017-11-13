@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause
 Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 4.8
+Tested up to: 4.8.3
+Stable tag: 4.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,11 +40,13 @@ Features:
 
 * it's also possible to use external images in the WooCommerce Product Gallery and WooCommerce Product Category (**premium feature**);
 
-* you can use external thumbnails from Flickr to make your site until 94% faster (**premium feature**);
+* you can use external thumbnails from Flickr to make your site uppon to 94% faster (**premium feature**);
 
 * you can apply your own CSS style or 18 hover effects to the images (**premium feature**);
 
 * you can enable/disable the WooCommerce lightbox (**premium feature**);
+
+* auto play/pause videos on mouse over/out (**premium feature**);
 
 **<a href="http://featuredimagefromurl.com/">Official Site</a>**	
 **<a href="http://blog.featuredimagefromurl.com/">Live Preview (Blog)</a>**
@@ -307,6 +309,9 @@ was removed. To finish, a Premium version is now been presented.
 = 1.6.8 =
 * Image validation and fake internal featured image.
 
+= 1.6.9 =
+* Auto play/pause video and support to list of URLs (WP All Import).
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -468,3 +473,6 @@ was removed. To finish, a Premium version is now been presented.
 
 = 1.6.8 =
 * Image validation and fake internal featured image.
+
+= 1.6.9 =
+* Auto play/pause video and support to list of URLs (WP All Import).
