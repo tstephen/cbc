@@ -21,8 +21,14 @@
   <div class="row">
     <h2>Latest posts</h2>
     <?php 
-      $cat = array_values(get_post_custom_values("category", $post->ID))[0];
-      echo do_shortcode('[catlist name="'.$cat.'" date="yes" excerpt="yes" excerpt_size="30" numberposts="5" thumbnail="yes" thumbnail_force="yes" thumbnail_size="150,150" thumbnail_class="img-responsive"]') ?>
+      $cat = get_post_custom_values("category", $post->ID);
+      if (is_array($cat)) {
+        $cat = array_values($cat)[0];
+      } else {
+        $cat = ''; // show latest posts from any category
+      }
+      echo do_shortcode('[catlist name="'.$cat.'" date="yes" excerpt="yes" excerpt_size="30" numberposts="5" thumbnail="yes" thumbnail_force="yes" thumbnail_size="150,150" thumbnail_class="img-responsive"]');
+    ?>
   </div><!-- /.row -->
 </div>
 
