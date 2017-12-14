@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable
 Requires at least: 4.0
-Tested up to: 4.8.3
-Stable tag: 4.8.3
+Tested up to: 4.9.1
+Stable tag: 4.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,19 +32,23 @@ Features:
 
 * some nonstandard image URLs, such as Instagram and Google Drive's, will work as well;
 
+* you can disable the product lightbox and zoom;
+
 * supports WP REST API (**premium feature**);
 
 * all features created for external images are available for external videos from YouTube and Vimeo. For YouTube videos, it's possible to set player parameters. And you can define the video size for each screen type (**premium feature**);
 
 * you can use a slider of images as featured image (**premium feature**);
 
+* you can use a video thumbnail or a video as featured image (**premium feature**);
+
 * it's also possible to use external images in the WooCommerce Product Gallery and WooCommerce Product Category (**premium feature**);
 
 * you can use external thumbnails from Flickr to make your site uppon to 94% faster (**premium feature**);
 
-* you can apply your own CSS style or 18 hover effects to the images (**premium feature**);
+* it's able to crop all the external featured images on home/shop to the same size (**premium feature**);
 
-* you can enable/disable the WooCommerce lightbox (**premium feature**);
+* you can apply your own CSS style or 18 hover effects to the images (**premium feature**);
 
 * auto play/pause videos on mouse over/out (**premium feature**);
 
@@ -312,6 +316,15 @@ was removed. To finish, a Premium version is now been presented.
 = 1.6.9 =
 * Auto play/pause video and support to list of URLs (WP All Import).
 
+= 1.7.0 =
+* Video thumbnail as featured image and Update All button.
+
+= 1.7.1 =
+* Crop all external featured images to the same size.
+
+= 1.7.2 =
+* Disable product lightbox and zoom.
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -476,3 +489,12 @@ was removed. To finish, a Premium version is now been presented.
 
 = 1.6.9 =
 * Auto play/pause video and support to list of URLs (WP All Import).
+
+= 1.7.0 =
+* Video thumbnail as featured image and Update All button.
+
+= 1.7.1 =
+* Crop all external featured images to the same size.
+
+= 1.7.2 =
+* Disable product lightbox and zoom.

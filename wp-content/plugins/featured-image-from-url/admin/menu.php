@@ -18,6 +18,8 @@ function fifu_get_menu_html() {
     $enable_lazy = get_option('fifu_lazy');
     $enable_content = get_option('fifu_content');
     $enable_fake = get_option('fifu_fake');
+    $enable_wc_lbox = get_option('fifu_wc_lbox');
+    $enable_wc_zoom = get_option('fifu_wc_zoom');
     $enable_hide_page = get_option('fifu_hide_page');
     $enable_hide_post = get_option('fifu_hide_post');
     $enable_get_first = get_option('fifu_get_first');
@@ -47,6 +49,8 @@ function fifu_get_menu_settings() {
     fifu_get_setting('fifu_lazy');
     fifu_get_setting('fifu_content');
     fifu_get_setting('fifu_fake');
+    fifu_get_setting('fifu_wc_lbox');
+    fifu_get_setting('fifu_wc_zoom');
     fifu_get_setting('fifu_hide_page');
     fifu_get_setting('fifu_hide_post');
     fifu_get_setting('fifu_get_first');
@@ -66,6 +70,8 @@ function fifu_get_setting($type) {
             update_option($type, '');
         else if (strpos($type, "fifu_column_height") !== false)
             update_option($type, "64");
+        else if (strpos($type, "wc") !== false)
+            update_option($type, 'toggleon');
         else
             update_option($type, 'toggleoff');
     }
@@ -77,6 +83,8 @@ function fifu_update_menu_options() {
     fifu_update_option('fifu_input_lazy', 'fifu_lazy');
     fifu_update_option('fifu_input_content', 'fifu_content');
     fifu_update_option('fifu_input_fake', 'fifu_fake');
+    fifu_update_option('fifu_input_wc_lbox', 'fifu_wc_lbox');
+    fifu_update_option('fifu_input_wc_zoom', 'fifu_wc_zoom');
     fifu_update_option('fifu_input_hide_page', 'fifu_hide_page');
     fifu_update_option('fifu_input_hide_post', 'fifu_hide_post');
     fifu_update_option('fifu_input_get_first', 'fifu_get_first');

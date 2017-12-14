@@ -3,6 +3,7 @@
 add_filter('wp_head', 'fifu_add_js');
 add_filter('wp_head', 'fifu_add_social_tags');
 add_filter('wp_head', 'fifu_add_sirv_js');
+add_filter('wp_head', 'fifu_apply_css');
 
 function fifu_add_js() {
     include 'html/script.html';
@@ -23,6 +24,11 @@ function fifu_add_sirv_js() {
     if (is_plugin_active('sirv/sirv.php')) {
         include 'html/sirv.html';
     }
+}
+
+function fifu_apply_css() {
+    if (get_option('fifu_wc_lbox') == 'toggleoff')
+        echo '<style>[class$="woocommerce-product-gallery__trigger"] {display:none !important;}</style>';
 }
 
 add_action('the_post', 'fifu_choose');

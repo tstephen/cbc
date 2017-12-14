@@ -1,5 +1,5 @@
 .wrap { 
-    max-width: 800px; 
+    max-width: 900px; 
     margin: 20px 20px 20px 15px; 
 }
 
@@ -55,4 +55,20 @@ th, td {
 
 th {
     height: 25px;
+}
+
+#grad1 {
+    background: #E3FFE2;
+    background: -webkit-linear-gradient(left,rgba(255,0,0,0),rgba(227,255,226,1)); /*Safari 5.1-6*/
+    background: -o-linear-gradient(right,rgba(255,0,0,0),rgba(227,255,226,1)); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(right,rgba(255,0,0,0),rgba(227,255,226,1)); /*Fx 3.6-15*/
+    background: linear-gradient(to right, rgba(255,0,0,0), rgba(227,255,226,1)); /*Standard*/
+}
+
+#grad2 {
+    background: #FFE2E2;
+    background: -webkit-linear-gradient(left,rgba(255,0,0,0),rgba(255,226,226,1)); /*Safari 5.1-6*/
+    background: -o-linear-gradient(right,rgba(255,0,0,0),rgba(255,226,226,1)); /*Opera 11.1-12*/
+    background: -moz-linear-gradient(right,rgba(255,0,0,0),rgba(255,226,226,1)); /*Fx 3.6-15*/
+    background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,226,226,1)); /*Standard*/
 }

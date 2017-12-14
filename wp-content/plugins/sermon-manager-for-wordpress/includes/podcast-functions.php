@@ -93,6 +93,18 @@ function wpfc_podcast_add_namespace() {
  */
 function wpfc_podcast_add_head() {
 	remove_filter( 'the_content', 'add_wpfc_sermon_content' );
+
+	$categories = array(
+		'0' => '',
+		'1' => 'Buddhism',
+		'2' => 'Christianity',
+		'3' => 'Hinduism',
+		'4' => 'Islam',
+		'5' => 'Judaism',
+		'6' => 'Other',
+		'7' => 'Spirituality',
+	);
+
 	?>
     <copyright><?php echo html_entity_decode( esc_html( \SermonManager::getOption( 'copyright' ) ), ENT_COMPAT, 'UTF-8' ) ?></copyright>
     <itunes:subtitle><?php echo esc_html( \SermonManager::getOption( 'itunes_subtitle' ) ) ?></itunes:subtitle>
@@ -116,8 +128,9 @@ function wpfc_podcast_add_head() {
 	<?php if ( \SermonManager::getOption( 'itunes_cover_image' ) ) : ?>
         <itunes:image href="<?php echo esc_url( \SermonManager::getOption( 'itunes_cover_image' ) ) ?>"/>
 	<?php endif; ?>
-    <itunes:category text="<?php echo esc_attr( \SermonManager::getOption( 'itunes_top_category' ) ) ?>">
-        <itunes:category text="<?php echo esc_attr( \SermonManager::getOption( 'itunes_sub_category' ) ) ?>"/>
+    <itunes:category text="Religion &amp; Spirituality">
+        <itunes:category
+                text="<?php echo esc_attr( $categories[ \SermonManager::getOption( 'itunes_sub_category' ) ] ) ?>"/>
     </itunes:category>
 	<?php
 }
@@ -140,6 +153,11 @@ function wpfc_podcast_add_item() {
 	$post_image      = str_ireplace( 'https://', 'http://', ! empty( $post_image['0'] ) ? $post_image['0'] : '' );
 	$audio_duration  = get_post_meta( $post->ID, '_wpfc_sermon_duration', true ) ?: '0:00';
 	$audio_file_size = get_post_meta( $post->ID, '_wpfc_sermon_size', 'true' ) ?: 0;
+
+	// Fix for relative audio file URLs
+	if ( substr( $audio, 0, 1 ) === '/' ) {
+		$audio = home_url( $audio );
+	}
 	?>
     <itunes:author><?php echo esc_html( $speaker ); ?></itunes:author>
     <itunes:subtitle><?php echo esc_html( $series ); ?></itunes:subtitle>
