@@ -15,7 +15,11 @@
     "budget":false, "companyBackground":false, "contact":true, "declaredSource":false,
     "documents":false, "enquiryType": false, "financials":false,
     "marketing":false, "marketingDigital":false, "merge":false,
-    "orders":false, "orderItems":false, "supportBar": true
+    "offers": false,
+    "orders":false, "orderItems":false,
+    "socialAccount": false,
+    "stockPricing": false,
+    "supportBar": true
   },
   "accountFields": [ 
   ],
@@ -37,10 +41,10 @@
     { "url": "status.html", "icon": "glyphicon-thumbs-up", "name": "Status", "description": "Check various aspects of the tenant's configuration", "role": "admin" }
   ],
   "partials": [
-    { "name": "cbcContactExtension", "url": "/partials/contact-extension.html"},
+    { "name": "cbcContactExtension", "url": "https://api.knowprocess.com/partials/contact-extension.html"},
 
-    { "name": "cbcSimpleToDo", "url": "/partials/simple-todo.html"},
-    { "name": "cbcSendMemo", "url": "/partials/pick-memo.html"}
+    { "name": "cbcSimpleToDo", "url": "https://api.knowprocess.com/partials/simple-todo.html"},
+    { "name": "cbcSendMemo", "url": "https://api.knowprocess.com/partials/pick-memo.html"}
   ],
   "processes": [
     { "name": "Add activity to contact", "ref": "AddActivityToContact", "url": "processes/link/omny/custmgmt/AddActivityToContact.bpmn" },
@@ -64,9 +68,8 @@
     "contactStage":"Service"
   },
   "templates": [
-    { "name": "ContactAlert", "ref": "ContactAlert" },
     { "name": "ResetPassword", "ref": "ResetPassword" },
-    { "name": "ThankYouForEnquiry", "ref": "ThankYouForEnquiry" },
+    { "name": "Thank You For Enquiry", "ref": "ThankYouForEnquiry" },
     { "name": "WelcomeNewUser", "ref": "WelcomeNewUser" }
   ],
   "typeaheadControls": [
@@ -78,20 +81,13 @@
         {  "id": "Congregation", "name": "Congregation"  }
       ]
     },
-    { "name": "commsPreference", "ref": "#curCommsPreference", "url": "/data/comms-preference.json"},
     { "name": "contactStages", "ref": "#curStage", "values": [
         {  "id": "COTG", "name": "COTG"  },
         {  "id": "9:15", "name": "9:15"  },
         {  "id": "11:15", "name": "11:15"  }
       ]
     },
-    { "name": "owners", "ref": "#curOwner", "values": [
-        {  "id": "tim@thestephensons.me.uk", "name": "tim@thestephensons.me.uk"  }
-      ]
-    },
-    { "name": "stages", "ref": "#curStage", "url": "/data/stages.json"},
-    { "name": "status", "ref": "#curStatus", "url": "/data/status.json"},
-    { "ref": "#orderStatus", "url": "/data/status.json"}
+    { "name": "status", "ref": "#curStatus", "url": "/data/status.json"}
   ],
   "workActions": [
     { "name": "Add task", "ref": "SimpleToDo", "url": true }
