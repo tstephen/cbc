@@ -27,8 +27,7 @@ class LcpPaginator {
     return !empty($pagination) &&
            $pagination == 'yes' ||
            (get_option('lcp_pagination') === 'true' &&
-             ($lcp_pag_present &&
-             $pagination !== 'false')
+            ($pagination !== 'false')
            );
   }
 
@@ -95,9 +94,9 @@ class LcpPaginator {
                    "#lcp_instance_" . $lcp_instance;
       $link .=  "<li><a href='$page_link' title='$page'";
       if ($page === $this->prev_page_num) {
-          $link .= "class='lcp_prevlink'";
+          $link .= " class='lcp_prevlink'";
       } elseif ($page === $this->next_page_num) {
-          $link .= "class='lcp_nextlink'";
+          $link .= " class='lcp_nextlink'";
       }
       $link .= ">";
       ($char != null) ? ($link .= $char) : ($link .= $page);
