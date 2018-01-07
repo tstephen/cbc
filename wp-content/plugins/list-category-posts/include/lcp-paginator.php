@@ -24,10 +24,14 @@ class LcpPaginator {
   # override general options).
   # Receives params['pagination'] from CatList
   private function show_pagination($pagination){
-    return !empty($pagination) &&
-           $pagination == 'yes' ||
+    return (!empty($pagination) && (
+            $pagination == 'yes' ||
+            $pagination == 'true')
+           )
+           ||
            (get_option('lcp_pagination') === 'true' &&
-            ($pagination !== 'false')
+            ($pagination !== 'false') &&
+            ($pagination !== 'no')
            );
   }
 
@@ -40,6 +44,8 @@ class LcpPaginator {
           max( array( 1, $params['numberposts'] ) )
       );
       $pag_output = '';
+      $this->prev_page_num = null;
+      $this->next_page_num = null;
       if ($pages_count > 1){
           for($i = 1; $i <= $pages_count; $i++){
               $lcp_paginator .=  $this->lcp_page_link($i, $params['page'], $params['instance']);
