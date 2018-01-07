@@ -302,3 +302,40 @@ ul.lcp_catlist li img {
   margin-right: 2em;
   margin-bottom: 1em;
 }
+
+/****************************/
+  SERMON MANAGER EXTENSIONS
+/****************************/
+a.subscribe-podcast img {
+  border-radius:5px;
+}
+section#filterSect ol {
+  list-style: none;
+}
+section#filterSect ol li {
+  display: inline;
+}
+/**************************/
+  SERMON MANAGER OVERRIDES
+/**************************/
+article.type-wpfc_sermon,
+article.type-wpfc_sermon section {
+  margin-bottom: 0 !important;
+}
+.type-wpfc_sermon footer {
+  display:none;
+  padding-bottom: 0;
+}
+.wpfc_sermon_image img {
+    border-radius: 5px;
+}
+.wpfc_searchform {
+  clear: both;
+}
+.wpfc_searchform input {
+  display: inline;
+  max-width: 1096px;
+}
+.wpfc_searchform button[type='submit'] {
+  margin-top: -2px;
+}
