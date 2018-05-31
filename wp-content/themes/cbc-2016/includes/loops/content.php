@@ -12,9 +12,10 @@ Alternatively, notice that index.php, category.php and single.php have a post_cl
 ?>
 
 <?php if(have_posts()): while(have_posts()): the_post();?>
-    <article role="article" id="post_<?php the_ID()?>">
+    <article role="article" id="post_<?php the_ID()?>" class="type-<?php echo get_post_type( get_the_ID() ) ?>">
         <header>
             <h1><a href="<?php the_permalink(); ?>"><?php the_title()?></a></h1>
+            <?php if ( get_post_type( get_the_ID() ) != 'wpfc_sermon' ) { ?>
             <h5>
               <em>
                 <span class="text-muted author">
@@ -23,6 +24,7 @@ Alternatively, notice that index.php, category.php and single.php have a post_cl
                 <time  class="text-muted" datetime="<?php the_time('d-m-Y')?>"><?php the_time('jS F Y') ?></time>
               </em>
             </h5>
+            <?php } ?>
         </header>
         <section>
             <?php
@@ -32,7 +34,9 @@ Alternatively, notice that index.php, category.php and single.php have a post_cl
         </section>
         <footer>
             <p class="text-muted" style="margin-bottom: 20px;">
+              <?php if (has_category(get_post())) { ?>
                 <i class="glyphicon glyphicon-folder-open"></i>&nbsp; <?php _e('Category', 'bst'); ?>: <?php the_category(', ') ?><br/>
+              <?php } ?>
               <?php if (have_comments() && get_comments_number( $post->ID )>0) { ?>
                 <i class="glyphicon glyphicon-comment"></i>&nbsp; <?php _e('Comments', 'bst'); ?>: <?php comments_popup_link(__('None', 'bst'), '1', '%'); ?>
               <?php } ?>

@@ -197,6 +197,9 @@ nav.navbar.navbar-default.navbar-static-bottom {
   margin-top: 0px;
 }
 /* Customisations for CBC below here */
+article {
+  clear: both;
+}
 blockquote {
   text-align: center;
   border-right: 5px solid #eee;
@@ -208,11 +211,26 @@ figcaption {
   font-style: italic;
   margin-bottom: 10px;
 }
+.pull-right figcaption {
+  padding-left: 20px;
+}
 .wp-caption.alignright {
   float: right;
 }
 .wp-caption .wp-caption-text {
   font-style: italic;
+}
+.pull-left img,
+img.pull-left {
+  padding-right: 20px;
+}
+.pull-right img,
+img.pull-right {
+  padding-left: 20px;
+}
+.subscribe-podcast.pull-left img {
+  margin-right: 10px;
+  padding-right: 0px;
 }
 .hanging-indent {
   color: #0066bf;
@@ -301,4 +319,46 @@ ul.lcp_catlist li img {
   float: left;
   margin-right: 2em;
   margin-bottom: 1em;
+}
+/****************************
+  JETPACK OVERRIDES
+****************************/
+.widget_eu_cookie_law_widget {
+  width: 100%;
+}
+/****************************
+  SERMON MANAGER EXTENSIONS
+****************************/
+a.subscribe-podcast img {
+  border-radius:5px;
+}
+section#filterSect ol {
+  list-style: none;
+}
+section#filterSect ol li {
+  display: inline;
+}
+/**************************/
+  SERMON MANAGER OVERRIDES
+/**************************/
+article.type-wpfc_sermon,
+article.type-wpfc_sermon section {
+  margin-bottom: 0 !important;
+}
+.type-wpfc_sermon footer {
+  display:none;
+  padding-bottom: 0;
+}
+.wpfc_sermon_image img {
+    border-radius: 5px;
+}
+.wpfc_searchform {
+  clear: both;
+}
+.wpfc_searchform input {
+  display: inline;
+  max-width: 1096px;
+}
+.wpfc_searchform button[type='submit'] {
+  margin-top: -2px;
 }

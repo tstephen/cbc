@@ -30,13 +30,13 @@ if (have_comments()) : ?>
 
 <?php
   else :
-	  if (comments_open()) :
-  echo "<p class='alert alert-info'>" . __('Be the first to write a comment.', 'bst') . "</p>";
-		/* TS 10 Dec 16 Comments are never enabled so let's hide this
+    if (comments_open()) :
+      echo "<p class='alert alert-info'>" . __('Be the first to write a comment.', 'bst') . "</p>";
     else :
-			echo "<p class='alert alert-warning'>" . __('Comments are closed for this post.', 'bst') . "</p>";
-		endif;*/
-	endif;
+      /* TS 10 Dec 16 Comments are never enabled so let's hide this
+      echo "<p class='alert alert-warning'>" . __('Comments are closed for this post.', 'bst') . "</p>";*/
+    endif;
+  endif;
 ?>
 
 <?php if (comments_open()) : ?>
