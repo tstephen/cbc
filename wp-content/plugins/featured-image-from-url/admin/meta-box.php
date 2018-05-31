@@ -17,8 +17,6 @@ function fifu_insert_meta_box() {
     foreach ($post_types as $post_type) {
         if ($post_type == 'product') {
             add_meta_box('urlMetaBox', 'Product Image from URL', 'fifu_show_elements', $post_type, 'side', 'low');
-            if (get_option('fifu_woocommerce') == 'toggleon')
-                add_meta_box('wooCommerceGalleryMetaBox', 'Product Gallery from URL', 'fifu_wc_show_elements', $post_type, 'side', 'low');
         } else if ($post_type)
             add_meta_box('imageUrlMetaBox', 'Featured Image from URL', 'fifu_show_elements', $post_type, 'side', 'low');
     }
@@ -45,29 +43,6 @@ function fifu_show_elements($post) {
     }
 
     include 'html/meta-box.html';
-}
-
-function fifu_wc_show_elements($post) {
-    $margin = 'margin-top:1px;';
-    $width = 'width:70%;';
-    $height = 'height:200px;';
-    $align = 'text-align:left;';
-    $altWidth = 'width:86%;';
-
-    for ($i = 0; $i < 10; $i++) {
-        $url[$i] = get_post_meta($post->ID, 'fifu_image_url_' . $i, true);
-        $alt[$i] = get_post_meta($post->ID, 'fifu_image_alt_' . $i, true);
-
-        if ($url[$i]) {
-            $show_url[$i] = $show_button[$i] = 'display:none;';
-            $show_alt[$i] = $show_image[$i] = $show_link[$i] = '';
-        } else {
-            $show_alt[$i] = $show_image[$i] = $show_link[$i] = 'display:none;';
-            $show_url[$i] = $show_button[$i] = '';
-        }
-
-        include 'html/wc-meta-box.html';
-    }
 }
 
 add_filter('wp_insert_post_data', 'fifu_remove_first_image', 10, 2);
@@ -106,18 +81,6 @@ function fifu_save_properties($post_id) {
     if (isset($_POST['fifu_input_alt'])) {
         $alt = wp_strip_all_tags($_POST['fifu_input_alt']);
         fifu_update_or_delete($post_id, 'fifu_image_alt', $alt);
-    }
-
-    /* gallery */
-    if (get_post_type(get_the_ID()) == 'product') {
-        for ($i = 0; $i < 10; $i++) {
-            if (isset($_POST['fifu_input_url_' . $i]) && isset($_POST['fifu_input_alt_' . $i])) {
-                $url = esc_url($_POST['fifu_input_url_' . $i]);
-                $alt = wp_strip_all_tags($_POST['fifu_input_alt_' . $i]);
-                fifu_update_or_delete($post_id, 'fifu_image_url_' . $i, $url);
-                fifu_update_or_delete($post_id, 'fifu_image_alt_' . $i, $alt);
-            }
-        }
     }
 }
 

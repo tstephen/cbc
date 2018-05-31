@@ -23,6 +23,9 @@ class WPFC_Shortcodes {
 		add_shortcode( 'latest_series', array( self::getInstance(), 'displayLatestSeriesImage' ) );
 		// main shortcode
 		add_shortcode( 'sermons', array( self::getInstance(), 'displaySermons' ) );
+		// add alternative shortcode for case when Sermon Browser is used at the same time
+		add_shortcode( 'sermons_sm', array( self::getInstance(), 'displaySermons' ) );
+		// filtering shortcode
 		add_shortcode( 'sermon_sort_fields', array( self::getInstance(), 'displaySermonSorting' ) );
 
 		// deprecated
@@ -310,6 +313,7 @@ class WPFC_Shortcodes {
 	 * @type string $atts ['ordrerby'] Possible options: id, count, name, slug, term_group, none
 	 * @type string $atts ['size'] Possible options: sermon_small, sermon_medium, sermon_wide, thumbnail, medium,
 	 *       large, full, or any size added with add_image_size()
+     * @type bool   $atts ['hide_title'] Should we hide title, default false
 	 * @type bool   $atts ['show_description'] Should we show the description, default false
 	 *
 	 * @return string Grid or error message.
@@ -333,6 +337,7 @@ class WPFC_Shortcodes {
 			'order'            => 'DESC',
 			'orderby'          => 'name',
 			'size'             => 'sermon_medium',
+			'hide_title'       => false,
 			'show_description' => false,
 		);
 
@@ -379,8 +384,10 @@ class WPFC_Shortcodes {
 
 				$list .= '<li class="wpfc_grid_image">';
 				$list .= '<a href="' . $term_url . '">' . wp_get_attachment_image( $term->image_id, $args['size'] ) . '</a>';
-				$list .= '<h3 class="wpfc_grid_title"><a href="' . $term_url . '">' . $term->name . '</a></h3>';
-				if ( $args['show_description'] === true ) {
+				if ( $args['hide_title'] == false || $args['hide_title'] == 'no' ) {
+					$list .= '<h3 class="wpfc_grid_title"><a href="' . $term_url . '">' . $term->name . '</a></h3>';
+				}
+				if ( $args['show_description'] == true ) {
 					if ( ! empty( $term->description ) ) {
 						$list .= '<div class="taxonomy-description">' . $term->description . '</div>';
 					}
@@ -409,7 +416,7 @@ class WPFC_Shortcodes {
 	 * @type string $atts ['title_wrapper'] Possible options: p, h1, h2, h3, h4, h5, h6, div
 	 * @type string $atts ['title_class'] CSS class for title
 	 * @type string $atts ['service_type'] Service type ID/slug/name. Used to get latest series from that service type.
-	 * @type bool   $atts ['show_description'] true to show series description (false is the default)
+	 * @type bool   $atts ['show_description'] false to hide the series description (true is the default)
 	 * @type string $atts ['wrapper_class'] CSS class for wrapper
 	 *
 	 * @return string
@@ -431,11 +438,11 @@ class WPFC_Shortcodes {
 		$args = array(
 			'image_class'      => 'latest-series-image',
 			'size'             => 'large',
-			'show_title'       => true,
+			'show_title'       => 'yes',
 			'title_wrapper'    => 'h3',
 			'title_class'      => 'latest-series-title',
 			'service_type'     => '',
-			'show_description' => false,
+			'show_description' => 'yes',
 			'wrapper_class'    => 'latest-series',
 		);
 
@@ -482,11 +489,11 @@ class WPFC_Shortcodes {
 		$image = wp_get_attachment_image( $series_image_id, $args['size'], false, array( 'class' => $image_class ) );
 
 		$title = $description = '';
-		if ( (bool) $args['show_title'] === true ) {
+		if ( $args['show_title'] === 'yes' ) {
 			$title = $latest_series->name;
 			$title = '<' . $args['title_wrapper'] . ' class="' . $title_class . '">' . $title . '</' . $args['title_wrapper'] . '>';
 		}
-		if ( (bool) $args['show_desc'] === true ) {
+		if ( $args['show_description'] === 'yes' ) {
 			$description = '<div class="latest-series-description">' . wpautop( $latest_series->description ) . '</div>';
 		}
 
@@ -612,13 +619,14 @@ class WPFC_Shortcodes {
 	/**
 	 * Renders sorting HTML.
 	 *
-	 * @param array $atts       Shortcode parameters.
+	 * @param array $atts          Shortcode parameters.
 	 *
-	 * @type string $series     Force specific series to show. Slug only
-	 * @type string $preachers  Force specific preacher to show. Slug only
-	 * @type string $topics     Force specific topic to show. Slug only
-	 * @type string $books      Force specific book to show. Slug only
-	 * @type string $visibility 'none' to hide the forced fields, 'disable' to show them as disabled and 'suggest' to
+	 * @type string $series_filter Do filtering in this specific series (slug)
+	 * @type string $series        Force specific series to show. Slug only
+	 * @type string $preachers     Force specific preacher to show. Slug only
+	 * @type string $topics        Force specific topic to show. Slug only
+	 * @type string $books         Force specific book to show. Slug only
+	 * @type string $visibility    'none' to hide the forced fields, 'disable' to show them as disabled and 'suggest' to
 	 *       just set the default value while allowing user to change it. Default 'suggest'
 	 *
 	 * @return string Sorting HTML
@@ -640,11 +648,18 @@ class WPFC_Shortcodes {
 
 		// default shortcode options
 		$args = array(
-			'series'     => '',
-			'preachers'  => '',
-			'topics'     => '',
-			'books'      => '',
-			'visibility' => 'suggest',
+			'series_filter'       => '',
+			'service_type_filter' => '',
+			'series'              => '',
+			'preachers'           => '',
+			'topics'              => '',
+			'books'               => '',
+			'visibility'          => 'suggest',
+			'hide_topics'         => '',
+			'hide_series'         => '',
+			'hide_preachers'      => '',
+			'hide_books'          => '',
+			'hide_service_types'  => 'yes',
 		);
 
 		// merge default and user options
@@ -678,6 +693,8 @@ class WPFC_Shortcodes {
 	 * @return string
 	 */
 	function displaySermons( $atts = array() ) {
+		global $post_ID;
+
 		// enqueue scripts and styles
 		if ( ! defined( 'SM_ENQUEUE_SCRIPTS_STYLES' ) ) {
 			define( 'SM_ENQUEUE_SCRIPTS_STYLES', true );
@@ -728,23 +745,12 @@ class WPFC_Shortcodes {
 		// merge default and user options
 		$args = shortcode_atts( $args, $atts, 'sermons' );
 
-		// set page
-		if ( get_query_var( 'paged' ) ) {
-			$my_page = get_query_var( 'paged' );
-		} elseif ( get_query_var( 'page' ) ) {
-			$my_page = get_query_var( 'page' );
-		} else {
-			global $paged;
-			$paged = $my_page = 1;
-			set_query_var( 'paged', 1 );
-		}
-
 		// set query args
 		$query_args = array(
 			'post_type'      => 'wpfc_sermon',
 			'posts_per_page' => $args['per_page'],
 			'order'          => $args['order'],
-			'paged'          => $my_page,
+			'paged'          => get_query_var( 'paged' ),
 			'year'           => $args['year'],
 			'month'          => $args['month'],
 			'week'           => $args['week'],
@@ -862,52 +868,49 @@ class WPFC_Shortcodes {
 			unset( $query_args['tax_query']['custom'] );
 		}
 
-		$listing = new WP_Query( $query_args );
+		$query = new WP_Query( $query_args );
 
 		// set image size
 		add_filter( 'wpfc_sermon_excerpt_sermon_image_size', function () use ( $args ) {
 			return $args['image_size'];
 		} );
 
-		if ( $listing->have_posts() ) {
+		define( 'wpfc_sm_shortcode', true );
+
+		if ( $query->have_posts() ) {
 			ob_start(); ?>
-            <div id="wpfc_sermon">
-                <div id="wpfc_loading">
-					<?php while ( $listing->have_posts() ): ?>
-						<?php $listing->the_post(); ?>
-                        <div class="wpfc_sermon_wrap">
-                            <h3 class="sermon-title">
-                                <a href="<?php the_permalink(); ?>"
-                                   title="<?php printf( esc_attr__( 'Permalink to %s', 'sermon-manager-for-wordpress' ), the_title_attribute( 'echo=0' ) ); ?>"
-                                   rel="bookmark"><?php the_title(); ?></a></h3>
-							<?php do_action( 'sermon_excerpt' ); ?>
-                        </div>
-					<?php endwhile; ?>
+            <div id="wpfc-sermons-shortcode">
+				<?php while ( $query->have_posts() ) : $query->the_post();
+					global $post; ?>
+					<?= apply_filters( 'sm_shortcode_sermons_single_output', '<div class="wpfc-sermon wpfc-sermon-shortcode">' . wpfc_sermon_excerpt_v2( true ) . '</div>', $post ); ?>
+				<?php endwhile; ?>
 
-                    <div style="clear:both;"></div>
+				<?php wp_reset_postdata(); ?>
 
-					<?php wp_reset_postdata(); ?>
-
-					<?php if ( ! $args['disable_pagination'] ): ?>
-                        <div id="sermon-navigation">
+				<?php if ( ! $args['disable_pagination'] ): ?>
+					<?php if ( function_exists( 'wp_pagenavi' ) ) : ?>
+						<?php wp_pagenavi( array( 'query' => $query ) ); ?>
+					<?php else: ?>
+                        <div id="wpfc-sermons-shortcode-navigation">
 							<?php
-							$big = 999999;
 							echo paginate_links( array(
-								'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-								'format'  => '?paged=%#%',
-								'current' => max( 1, $query_args['paged'] ),
-								'total'   => $listing->max_num_pages
+								'base'     => rtrim( get_permalink( $post_ID ), '/' ) . '/%_%',
+								'current'  => $query->get( 'paged' ),
+								'total'    => $query->max_num_pages,
+								'end_size' => 3,
 							) );
 							?>
                         </div>
 					<?php endif; ?>
-                    <div style="clear:both;"></div>
-                </div>
+				<?php endif; ?>
             </div>
 			<?php
-			$buffer = ob_get_clean();
+			$return = ob_get_clean();
 
-			return $buffer;
+			/**
+			 * Allows to filter the complete output of the shortcode
+			 */
+			return apply_filters( 'sm_shortcode_sermons_output', $return, $query );
 		} else {
 			return 'No sermons found.';
 		}

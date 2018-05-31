@@ -46,6 +46,13 @@ class LcpParameters{
     // Check type, status, parent params
     $args = $this->lcp_types_and_statuses($args);
 
+    if($this->utils->lcp_not_empty('search')):
+      $args['s'] = $params['search'];
+    endif;
+
+    if($this->utils->lcp_not_empty('author_posts')):
+      $args['author_name'] = $params['author_posts'];
+    endif;
     // Parameters which need to be checked simply, if they exist, add them to
     // final return array ($args)
     $args = $this->lcp_check_basic_params($args);
@@ -178,7 +185,7 @@ class LcpParameters{
       );
       $args['orderby'] = 'orderby_clause';
     }
-    
+
     // If either select_clause or orderby_clause were added to $meta_query,
     // it needs to be added to args.
     if ( !empty($meta_query) ) {
@@ -195,7 +202,7 @@ class LcpParameters{
   }
 
     private function lcp_check_basic_params($args){
-      $simple_args = array('year', 'monthnum', 'search', 'author_posts', 'after');
+      $simple_args = array('year', 'monthnum', 'after');
       foreach($simple_args as $key){
         if($this->utils->lcp_not_empty($key)){
             $args[$key] = $this->params[$key];
@@ -290,11 +297,16 @@ class LcpParameters{
 
   public function starting_with($where){
     $letters = explode(',', $this->starting_with);
+
+    // Support for both utf8 and utf8mb4
+    global $wpdb;
+    $charset = $wpdb->get_col_charset('wp_posts', 'post_title');
+    
     $where .= 'AND (wp_posts.post_title ' .
-      'COLLATE UTF8_GENERAL_CI LIKE \'' . $letters[0] . "%'";
+      'COLLATE ' . strtoupper($charset) . '_GENERAL_CI LIKE \'' . $letters[0] . "%'";
     for ($i=1; $i <sizeof($letters); $i++) {
       $where .= 'OR wp_posts.post_title ' .
-        'COLLATE UTF8_GENERAL_CI LIKE \'' . $letters[$i] . "%'";
+        'COLLATE ' . strtoupper($charset) . '_GENERAL_CI LIKE \'' . $letters[$i] . "%'";
     }
     $where.=')';
     return $where;
@@ -334,9 +346,10 @@ class LcpParameters{
      *  should be created.
      */
     foreach ($params_set as $key=>$value){
-      if ( isset($this->{$key}) ){
+      if ( property_exists($this, $key) ){
         $params_set[$key] = true;
-        $trutify = substr($key, 0, strpos( $key, '_') );
+        $trutify = explode('_', $key);
+        $trutify = $trutify[0];
         ${$trutify} = true;
       }
     }

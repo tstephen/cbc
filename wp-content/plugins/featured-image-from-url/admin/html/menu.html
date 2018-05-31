@@ -9,7 +9,19 @@
     </div>
 
     <div class="box">
-        <h2>Cherish my work. Give FIFU a <a href="https://wordpress.org/support/view/plugin-reviews/featured-image-from-url?filter=5" target="_blank">5-star</a> rating!</h2>
+        <h2>Help</h2>
+        <div class="greybox">
+            For more information, refer to <a href="https://wordpress.org/plugins/featured-image-from-url/faq/" target="_blank">FAQ</a> and <a href="https://wordpress.org/plugins/featured-image-from-url/screenshots/" target="_blank">screenshots</a>. 
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>Report a Bug or Suggest an Improvement</h2>
+        <div class="greybox">
+            Suggestions for improvement are always welcome. Just send an email to <a href="mailto:support@featuredimagefromurl.com">support@featuredimagefromurl.com</a> and your request can be available in the next release.
+            But if you want to report a bug, please provide as many details as possible such as plugin version, screenshots, JS errors on browser console, PHP errors in debug file, domain etc. 
+            The most common related problem is that the images aren't shown on public area. And in 90% of times it's caused because of errors in another plugin.
+        </div>
     </div>
 
     <div class="box">
@@ -35,7 +47,7 @@
                             onclick="invert('get_first')" 
                             name="fifu_toggle_get_first" 
                             class="<?php echo $enable_get_first; ?>" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
 
                         <input 
                             type="hidden" 
@@ -61,7 +73,7 @@
                             onclick="invert('pop_first')" 
                             name="fifu_toggle_pop_first" 
                             class="<?php echo $enable_pop_first; ?>" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
 
                         <input 
                             type="hidden"
@@ -87,7 +99,7 @@
                             onclick="invert('ovw_first')" 
                             name="fifu_toggle_ovw_first" 
                             class="<?php echo $enable_ovw_first; ?>" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
 
                         <input 
                             type="hidden"
@@ -102,81 +114,6 @@
             </tr>      
         </table>
 
-    </div>
-
-    <div class="box">
-        <h2>Auto Set Featured Image: apply to all</h2>
-        <div class="greybox" id="grad2">
-            <b>Premium feature</b><br><br>
-            Enable that to update all your posts/pages/products applying the configuration above. Very useful if you have hundreds of them and want to set the first image as featured image for all. To repeat/continue the process enable the toggle again.
-            <br><br>
-            It can take several minutes and you can monitor the progress here. It can't be undone, so make a backup.
-        </div>
-        <br>
-        <table style="text-align:left">
-            <tr>
-                <th>
-                    <input type="text" value=" " style="width:35px">
-                    <input type="submit" value="OK" >
-                </th>
-                <th>   
-                    posts per second (high values can bring down your database)
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <input 
-                        type="image" 
-                        href="javascript:void(0)" 
-                        class="toggleoff" 
-                        value=" "
-                        style="display:block">
-                </th>
-                <th>   
-                    ignore posts that already have an external featured image
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    <input 
-                        type="image" 
-                        href="javascript:void(0)" 
-                        class="toggleoff" 
-                        value=" "
-                        style="display:block">
-                </th>
-                <th>   
-                    update all your posts/pages/products now
-                </th>
-                <th>   
-                    <div id='fifu_ajax_update_all'><b>Status: </b></div>
-                </th>
-            </tr>             
-        </table>
-    </div>
-
-    <div class="box">
-        <h2>Crop images to the same size</h2>
-        <div class="greybox" id="grad2">
-            <b>Premium feature</b><br><br>
-            If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to crop them to the same size.
-        </div>
-        <p/>
-        <table style="text-align:left">
-            <tr>
-                <th>
-                    <input 
-                        type="image" 
-                        href="javascript:void(0)" 
-                        class="toggleoff" 
-                        value=" "
-                        style="display:block">
-                </th>
-                <th>   
-                    crop images to the same size
-                </th>
-            </tr>             
-        </table>
     </div>
 
     <div class="box">
@@ -200,6 +137,28 @@
     </div>
 
     <div class="box">
+        <h2>Default External Featured Image</h2>
+        <div class="greybox">
+            Here you can define the URL of a default external featured image that will be shown when you create/update a post/page/product without an internal/external featured image. 
+        </div>
+        <br>
+        <form 
+            id="fifu_form_default_url" 
+            action="javascript:void(0)" 
+            method="post">
+
+            <input id="fifu_input_default_url" 
+                   type="text" 
+                   name="fifu_input_default_url" 
+                   style="width:675px" 
+                   value="<?php echo $default_url; ?>">
+
+            <input type="submit" 
+                   value="Submit" >
+        </form>
+    </div>
+
+    <div class="box">
         <h2>Fake Internal Featured Image</h2>
         <div class="greybox" id="grad1">
             Even though FIFU works fine with the most of themes/plugins, some of them are not able to show the external featured image if there is no internal featured image associated to your post/page/product. Enabling the toggle below, a symbolic empty file will be added to your Media Library as an attempt to overcome that limitation.
@@ -216,7 +175,7 @@
                 onclick="invert('fake')" 
                 name="fifu_toggle_fake" 
                 class="<?php echo $enable_fake; ?>" 
-                value=" " 
+                value="" 
                 style="display:block" >
             <input 
                 type="hidden" 
@@ -258,7 +217,7 @@
                 onclick="invert('content')" 
                 name="fifu_toggle_content" 
                 class="<?php echo $enable_content; ?>" 
-                value=" "
+                value=""
                 style="display:block">
             <input 
                 type="hidden" 
@@ -288,7 +247,7 @@
                             onclick="invert('hide_page')" 
                             name="fifu_toggle_hide_page" 
                             class="<?php echo $enable_hide_page; ?>" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
 
                         <input 
                             type="hidden" 
@@ -314,7 +273,7 @@
                             onclick="invert('hide_post')" 
                             name="fifu_toggle_hide_post" 
                             class="<?php echo $enable_hide_post; ?>" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
 
                         <input 
                             type="hidden"
@@ -347,7 +306,7 @@
                 onclick="invert('lazy')" 
                 name="fifu_toggle_lazy" 
                 class="<?php echo $enable_lazy; ?>" 
-                value=" "
+                value=""
                 style="display:block">
             <input 
                 type="hidden" 
@@ -355,6 +314,47 @@
                 name="fifu_input_lazy" 
                 value="" >
         </form>
+    </div>
+
+    <a name="priority"></a>
+
+    <div class="box">
+        <h2>Priority</h2>
+        <div class="greybox" id="grad1">
+            Enable the toggle below to prioritize the internal image rather than the external one, if both exist.
+            <br><br>
+            <i>If this new FREE feature is useful to you, please cherish my work. Give FIFU a <a href="https://wordpress.org/support/view/plugin-reviews/featured-image-from-url?filter=5" target="_blank">5-star</a> rating!</i>            
+        </div>
+        <br>
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <form 
+                        id="fifu_form_priority" 
+                        action="javascript:void(0)" 
+                        method="post">
+                        <input 
+                            type="image" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_priority" 
+                            onclick="invert('priority')" 
+                            name="fifu_toggle_priority" 
+                            class="<?php echo $enable_priority; ?>" 
+                            value=""
+                            style="display:block">
+
+                        <input 
+                            type="hidden"
+                            id="fifu_input_priority" 
+                            name="fifu_input_priority" 
+                            value="" >
+                    </form>
+                </th>
+                <th>   
+                    prioritize the internal image
+                </th>
+            </tr>             
+        </table>
     </div>
 
     <div class="box">
@@ -374,7 +374,7 @@
                 onclick="invert('social')" 
                 name="fifu_toggle_social" 
                 class="<?php echo $enable_social; ?>" 
-                value=" "
+                value=""
                 style="display:block">
             <input 
                 type="hidden" 
@@ -382,35 +382,6 @@
                 name="fifu_input_social" 
                 value="" >
         </form>
-    </div>
-
-    <div style="<?php echo show_woocommerce_box() ?>">
-        <div class="box">
-            <h2>WooCommerce Full Integration</h2>
-            <div class="greybox" id="grad1">
-                The External Featured Image box is already available on Product Editor. However the full integration is required if you want to include the External Product Gallery and use other WooCommerce resources, such as Lightbox. This free version supports WooCommerce 2.4/2.5 and the Premium version supports WooCommerce 3.
-            </div>
-            <br>
-            <form 
-                id="fifu_form_woocommerce" 
-                action="javascript:void(0)" 
-                method="post">
-                <input 
-                    type="image" 
-                    href="javascript:void(0)" 
-                    id="fifu_toggle_woocommerce" 
-                    onclick="invert('woocommerce')" 
-                    name="fifu_toggle_woocommerce" 
-                    class="<?php echo $enable_woocommerce; ?>" 
-                    value=" "
-                    style="display:block">
-                <input 
-                    type="hidden" 
-                    id="fifu_input_woocommerce" 
-                    name="fifu_input_woocommerce" 
-                    value="" >
-            </form>
-        </div>
     </div>
 
     <div class="box">
@@ -433,7 +404,7 @@
                             onclick="invert('wc_lbox')" 
                             name="fifu_toggle_wc_lbox" 
                             class="<?php echo $enable_wc_lbox; ?>" 
-                            value=" "
+                            value=""
                             style="display:block">
 
                         <input 
@@ -460,7 +431,7 @@
                             onclick="invert('wc_zoom')" 
                             name="fifu_toggle_wc_zoom" 
                             class="<?php echo $enable_wc_zoom; ?>" 
-                            value=" "
+                            value=""
                             style="display:block">
 
                         <input 
@@ -482,7 +453,146 @@
         <div class="greybox" id="grad1">
             You can use Featured Image from URL with WP All Import plugin. For that, use the custom field <b>fifu_image_url</b>.<br/><br/> The other custom fields supported by FIFU are listed below, in the section WP REST API > Plugin Fields.
             <br/><br/>
-            But if you have a list of URLs delimited by "|", it's possible to use that with the custom field <b>fifu_list_url</b>. In this case, the first image will be considered the featured image and the others will be in the product image gallery. For sliders, use <b>fifu_slider_list_url</b>.
+            <div class="greybox" id="grad2">
+                <b>Premium feature</b><br><br>But if you have a list of URLs delimited by "|", it's possible to use that with the custom field <b>fifu_list_url</b>. In this case, the first image will be considered the featured image and the others will be in the product image gallery. For sliders, use <b>fifu_slider_list_url</b>.
+            </div>
+        </div>
+    </div>
+
+    <a name="all"></a>
+
+    <div class="box">
+        <h2>Auto Set Featured Image: apply to all</h2>
+        <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
+            Enable that to update all your posts/pages/products applying the configuration above. Very useful if you have hundreds of them and want to set the first image as featured image for all. To repeat/continue the process enable the toggle again. It can take several minutes and you can monitor the progress here. It can't be undone, so make a backup.
+            <br><br>
+            To schedule this process (hourly, daily etc), you can use the Hook <b>fifu_event</b> with your favorite cron event plugin. I like <a href="https://wordpress.org/plugins/wp-crontrol/">WP Control</a>. 
+        </div>
+        <br>
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <input type="text" value="" style="width:35px">
+                    <input type="submit" value="OK" >
+                </th>
+                <th>   
+                    posts per second (high values can bring down your database)
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input 
+                        type="image" 
+                        href="javascript:void(0)" 
+                        class="toggleoff" 
+                        value=""
+                        style="display:block">
+                </th>
+                <th>   
+                    ignore posts that already have an external featured image
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <input 
+                        type="image" 
+                        href="javascript:void(0)" 
+                        class="toggleoff" 
+                        value=""
+                        style="display:block">
+                </th>
+                <th>   
+                    update all your posts/pages/products now
+                </th>
+                <th>   
+                    <div id='fifu_ajax_update_all'><b>Status: </b></div>
+                </th>
+            </tr>             
+        </table>
+    </div>
+
+    <a name="category"></a>
+    <div class="box">
+        <h2>Auto Set Product Category Images</h2>
+        <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
+            Enable the toggle below to set one external image to each product category. The image will be chosen among the external product images from that category.
+
+        </div>
+        <br>
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <input 
+                        type="image" 
+                        href="javascript:void(0)" 
+                        class="toggleoff" 
+                        value=""
+                        style="display:block">
+                </th>
+                <th>   
+                    set category images
+                </th>
+            </tr>             
+        </table>
+    </div>
+
+    <div class="box">
+        <h2>Crop images to the same size</h2>
+        <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
+            If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to crop them to the same size.
+        </div>
+        <br>
+
+        <div id="accordionCrop">
+
+            <h3>crop images</h3> 
+            <div>       
+                <input 
+                    type="image" 
+                    href="javascript:void(0)" 
+                    class="toggleoff" 
+                    value=""
+                    style="display:block">
+                <br>
+                P.S.: if the crop doesn't work, use a Selector to inform where is the group of external images that you want to crop. 
+            </div>
+
+            <h3>inform a Selector</h3>    
+            <div>
+                Examples of valid selectors: <b>#</b><i>products</i> (if the element <b>id</b>="<i>products</i>"), <b>.</b><i>my-post-area</i> (if the element <b>class</b>="<i>my-post-area</i>")
+                <br>
+                <br>
+                <input id="fifu_input_crop0" 
+                       type="text" 
+                       placeholder="selector 1"
+                       style="width:130px" 
+                       value="">
+                <input id="fifu_input_crop1" 
+                       type="text" 
+                       placeholder="selector 2"
+                       style="width:130px" 
+                       value="">
+                <input id="fifu_input_crop2" 
+                       type="text" 
+                       placeholder="selector 3"
+                       style="width:130px" 
+                       value="">
+                <input id="fifu_input_crop3" 
+                       type="text" 
+                       placeholder="selector 4"
+                       style="width:130px" 
+                       value="">
+                <input id="fifu_input_crop4" 
+                       type="text" 
+                       placeholder="selector 5"
+                       style="width:130px" 
+                       value="">                           
+                <input type="submit" 
+                       value="Submit" disabled>
+            </div>
         </div>
     </div>
 
@@ -709,6 +819,7 @@
             <div>
                 You just need to get one URL (Square 75). Use that to fill the External Featured Image field of your post, page or product. The plugin will handle this URL to provide the image in different sizes.<br><br>
                 <img src="https://c1.staticflickr.com/1/745/31593837206_8e081be749_z_d.jpg" style="width:100%"/>
+                <br><br>
                 <img src="https://c1.staticflickr.com/1/223/30820834393_f869fcff49_z_d.jpg" style="width:100%"/>
             </div>            
             <h3>Choose the maximum image size for each screen</h3>
@@ -960,26 +1071,11 @@
             Allows you to use use external images/videos on Product Categories Grid.
         </div>
         <br>
-        <form 
-            id="fifu_form_woocommerce" 
-            action="javascript:void(0)" 
-            method="post">
-            <input 
-                type="image" 
-                href="javascript:void(0)" 
-                id="fifu_toggle_woocommerce" 
-                onclick="invert('woocommerce')" 
-                name="fifu_toggle_woocommerce" 
-                class="<?php echo $enable_woocommerce; ?>" 
-                value=" "
-                style="display:block">
-
-            <input 
-                type="hidden" 
-                id="fifu_input_woocommerce" 
-                name="fifu_input_woocommerce" 
-                value="" >
-        </form>
+        <input 
+            type="image" 
+            href="javascript:void(0)" 
+            class="toggleoff" 
+            value="" style="display:block">
     </div>
 
     <div class="box">
@@ -996,7 +1092,7 @@
                             id="fifu_toggle_slider_fade" 
                             name="fifu_toggle_slider_fade" 
                             class="toggleoff" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
                     </th>
                     <th>   
                         fade effect
@@ -1010,7 +1106,7 @@
                             id="fifu_toggle_slider_stop" 
                             name="fifu_toggle_slider_stop" 
                             class="toggleoff" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
                     </th>
                     <th>   
                         pause autoplay on hover
@@ -1024,7 +1120,7 @@
                             id="fifu_toggle_slider_ctrl" 
                             name="fifu_toggle_slider_ctrl" 
                             class="toggleoff" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
                     </th>
                     <th>   
                         show prev/next buttons
@@ -1038,7 +1134,7 @@
                             id="fifu_toggle_slider_auto" 
                             name="fifu_toggle_slider_auto" 
                             class="toggleoff" 
-                            value=" " style="display:block">
+                            value="" style="display:block">
                     </th>
                     <th>   
                         start to play automatically
@@ -1083,7 +1179,7 @@
             type="image" 
             href="javascript:void(0)" 
             class="toggleoff" 
-            value=" " style="display:block">
+            value="" style="display:block">
     </div>
 
     <div class="box">
@@ -1100,7 +1196,7 @@
                         type="image" 
                         href="javascript:void(0)" 
                         class="toggleoff" 
-                        value=" "
+                        value=""
                         style="display:block">
                 </th>
                 <th>   
@@ -1113,7 +1209,7 @@
                         type="image" 
                         href="javascript:void(0)" 
                         class="toggleoff" 
-                        value=" "
+                        value=""
                         style="display:block">
                 </th>
                 <th>   
@@ -1126,6 +1222,7 @@
     <div class="box">
         <h2>Video Thumbnail</h2>
         <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
             Enable the toggle below to show the video thumbnail instead of the video on home/shop.
         </div>
         <br>
@@ -1133,7 +1230,7 @@
             type="image" 
             href="javascript:void(0)" 
             class="toggleoff" 
-            value=" "
+            value=""
             style="display:block">
         </form>
     </div>
@@ -1301,19 +1398,58 @@
 
     </div>
 
-    <div class="box">
-        <h2>Help</h2>
-        <div class="greybox">
-            For more information, refer to <a href="https://wordpress.org/plugins/featured-image-from-url/faq/" target="_blank">FAQ</a> and <a href="https://wordpress.org/plugins/featured-image-from-url/screenshots/" target="_blank">screenshots</a>. 
-        </div>
-    </div>
+    <a name="top"></a>
 
-    <div class="box">
-        <h2>Report a Bug or Suggest an Improvement</h2>
+    <div class="box" style="">
+        <h2><a name="top">Checking compatibility between your theme (<?php echo wp_get_theme()?>) and FIFU Premium...</a></h2>
         <div class="greybox">
-            Suggestions for improvement are always welcome. Just send an email to <a href="mailto:support@featuredimagefromurl.com">support@featuredimagefromurl.com</a> and your request can be available in the next release.
-            But if you want to report a bug, please provide as many details as possible such as plugin version, screenshots, JS errors on browser console, PHP errors in debug file, domain etc. 
-            The most common related problem is that the images aren't shown on public area. And in 90% of times it's caused because of errors in another plugin.
+            <div id="tabsPremium">
+                <ul>
+                    <li><a href="#tabs-1">Features Compatibility</a></li>
+                    <li style="<?php echo fifu_woo_theme() ? '' : 'display:none' ?>"><a href="#tabs-2">WooCommerce Additional Steps</a></li>
+                    <li style="<?php echo fifu_woo_theme() ? '' : 'display:none' ?>"><a href="#tabs-3">Official FIFU WooCommerce Theme</a></li>
+                </ul>
+                <div id="tabs-1">
+                    <table>
+                        <tr>
+                            <th>as <b>Blog</b></th>
+                            <th>as <b>Shop</b></th>
+                        </tr>
+                        <tr>
+                            <td>featured image: yes</td>
+                            <td>product image: yes</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>product gallery: yes</td>
+                        </tr>
+                        <tr>
+                            <td>featured video: yes</td>
+                            <td>product video: <?php echo fifu_woo_theme()?'no':'yes'?></td>
+                        </tr>
+                        <tr>
+                            <td>featured slider: yes</td>
+                            <td>product slider: <?php echo fifu_woo_theme()?'no':'yes'?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tabs-2">
+                    To use <b>FIFU Premium + WooCommerce + <?php echo wp_get_theme()?> theme</b>, you will need to follow the steps* below:
+                    <div class="box" style="">
+                        1) Open this file:<br>
+                        woocommerce/includes/abstracts/abstract-wc-product.php<br><br>
+                        2) Find this line:<br>
+                        public function get_gallery_image_ids( $context = 'view' ) {<br><br>
+                        3) Add this line immediately below that one:<br>
+                        $tmp = array(); $i = 0; while ($url = get_post_meta(get_the_ID(), "fifu_image_url_" . $i, true)) $tmp[] = $i++; if ($i > 0) return $tmp;
+                    </div><br>
+                    *you will need to redo that always you decide to update your WooCommerce version.<br><br>
+                </div>
+                <div id="tabs-3">
+                    FIFU is developed using <b><a href="https://wordpress.org/themes/storefront/">Storefront</a></b>, the official WooCommerce theme. So all the plugin features are compatible with that without any additional steps.<br><br>
+                    If your theme isn't flexible enough to work with external images, please consider to move to Storefront. Check the <a href="http://shop.featuredimagefromurl.com"><b>Live Preview</b></a>.
+                </div>
+            </div>			
         </div>
     </div>
 
@@ -1325,7 +1461,6 @@
             <h3>2) "Which plugins are compatible with Premium version?"</h3>
             WooCommerce, WP All Import, Monarch, Frontend Publishing and others. If you intend to use the Premium version with a specific plugin, try to test with the free version first. Or you can ask me if they are compatible.<br><br>
             <h3>3) "Are there the known incompatibility issues?"</h3>
-            - Flatsome and Newspaper: these themes apply your own style on the product gallery, overwriting the WooCommerce code. Then style issues will be present there;<br>
             - Variable Product: this WooCommerce feature can be found at Product Data dropdown and allows to create variations of a same product, including images. FIFU doesn’t support that for now.<br><br>
             <h3>4) "Can I get my money back later?"</h3>
             With the exception of rare situations, no. But don't worry about that. You will still have the best support and if, after your complete cooperation, I'm not able to solve your issue, I may refund you.<br><br>
@@ -1347,7 +1482,7 @@
     <div class="box">
         <h2>About The Author</h2>
         <div class="greybox">
-            Hi! I'm Marcel Jacques Machado. Graduated in Computer Science, I work as a Software Engineer for 10 years. I already worked with C, Python, Shell Script and other programming languages and technologies. Nowadays, I develop web applications in Brazil using Java. About PHP, this plugin, Featured Image From URL, has been a great pratical experience.
+            Hi! I'm Marcel Jacques Machado. Graduated in Computer Science and postgraduated in Machine Learning, I work as Software Engineer for 10 years. I already worked with C, Python, Shell Script and other programming languages and technologies. Nowadays, I develop web applications in Brazil using Java. About PHP, this plugin, Featured Image From URL, has been a great pratical experience.
         </div>
     </div>
 </div>
