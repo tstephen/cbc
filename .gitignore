@@ -21,12 +21,16 @@ node_modules
 wp-config.php
 sitemap.xml
 sitemap.xml.gz
-wp-content/uploads/
 wp-content/blogs.dir/
-wp-content/upgrade/
 wp-content/backup-db/
 wp-content/cache/
 wp-content/backups/
+wp-content/languages/
+wp-content/themes/index.php
+wp-content/themes/twenty*
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/wflogs/
 
 wp-content/advanced-cache.php
 wp-content/object-cache.php
