@@ -197,6 +197,9 @@ nav.navbar.navbar-default.navbar-static-bottom {
   margin-top: 0px;
 }
 /* Customisations for CBC below here */
+article {
+  clear: both;
+}
 blockquote {
   text-align: center;
   border-right: 5px solid #eee;
@@ -208,11 +211,26 @@ figcaption {
   font-style: italic;
   margin-bottom: 10px;
 }
+.pull-right figcaption {
+  padding-left: 20px;
+}
 .wp-caption.alignright {
   float: right;
 }
 .wp-caption .wp-caption-text {
   font-style: italic;
+}
+.pull-left img,
+img.pull-left {
+  padding-right: 20px;
+}
+.pull-right img,
+img.pull-right {
+  padding-left: 20px;
+}
+.subscribe-podcast.pull-left img {
+  margin-right: 10px;
+  padding-right: 0px;
 }
 .hanging-indent {
   color: #0066bf;
@@ -302,10 +320,9 @@ ul.lcp_catlist li img {
   margin-right: 2em;
   margin-bottom: 1em;
 }
-
-/****************************/
+/****************************
   SERMON MANAGER EXTENSIONS
-/****************************/
+****************************/
 a.subscribe-podcast img {
   border-radius:5px;
 }
