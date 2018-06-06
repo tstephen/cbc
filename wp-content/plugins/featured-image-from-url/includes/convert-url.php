@@ -28,7 +28,7 @@ function fifu_google_drive_url($url) {
 //Instagram
 
 function fifu_from_instagram($url) {
-    return strpos($url, 'instagram.com') !== false;
+    return preg_match("/[^a-z]instagram.com/", $url);
 }
 
 function fifu_instagram_id($url) {

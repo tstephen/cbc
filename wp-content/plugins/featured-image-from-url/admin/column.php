@@ -27,7 +27,7 @@ function fifu_cat_column_content($internal_image, $column, $term_id) {
 
 function fifu_column_content($column, $post_id) {
     if ($column == 'featured_image') {
-        $url = get_post_meta($post_id, 'fifu_image_url', true);
+        $url = fifu_main_image_url($post_id);
         if ($url == '')
             $url = wp_get_attachment_url(get_post_thumbnail_id());
         echo sprintf('<img src="%s" height="%s"/>', $url, get_option('fifu_column_height'));

@@ -134,12 +134,32 @@ class SM_Settings_Podcast extends SM_Settings_Page {
 				'desc'     => __( 'Enables PodTrac tracking.', 'sermon-manager-for-wordpress' ),
 				// translators: %s <a href="http://podtrac.com">podtrac.com</a>
 				'desc_tip' => wp_sprintf( __( 'For more info on PodTrac or to sign up for an account, visit %s', 'sermon-manager-for-wordpress' ), '<a href="http://podtrac.com">podtrac.com</a>' ),
+                'default'  => 'no',
 			),
 			array(
-				'title' => __( 'HTML in description', 'sermon-manager-for-wordpress' ),
-				'type'  => 'checkbox',
-				'id'    => 'enable_podcast_html_description',
-				'desc'  => __( 'Enables showing of HTML in iTunes description field. Uncheck if description looks messy.', 'sermon-manager-for-wordpress' ),
+				'title'    => __( 'HTML in description', 'sermon-manager-for-wordpress' ),
+				'type'     => 'checkbox',
+				'id'       => 'enable_podcast_html_description',
+				'desc'     => __( 'Enables showing of HTML in iTunes description field. Uncheck if description looks messy.', 'sermon-manager-for-wordpress' ),
+				'desc_tip' => __( 'It is recommended to leave it unchecked.', 'sermon-manager-for-wordpress' ),
+                'default'  => 'no',
+			),
+			array(
+				'title'    => __( 'Redirect', 'sermon-manager-for-wordpress' ),
+				'type'     => 'checkbox',
+				'id'       => 'enable_podcast_redirection',
+				'desc'     => __( 'Enables redirection of podcast from old to new URL.', 'sermon-manager-for-wordpress' ),
+				'desc_tip' => __( 'You can use relative or absolute URLs.', 'sermon-manager-for-wordpress' ),
+			),
+			array(
+				'title' => __( 'Old URL', 'sermon-manager-for-wordpress' ),
+				'type'  => 'text',
+				'id'    => 'podcast_redirection_old_url',
+			),
+			array(
+				'title' => __( 'New URL', 'sermon-manager-for-wordpress' ),
+				'type'  => 'text',
+				'id'    => 'podcast_redirection_new_url',
 			),
 			array(
 				'title'       => __( 'Number of podcasts to show', 'sermon-manager-for-wordpress' ),
@@ -159,11 +179,12 @@ class SM_Settings_Podcast extends SM_Settings_Page {
         <div>
             <p>
                 <label for="feed_url"><?= __( 'Feed URL to Submit to iTunes', 'sermon-manager-for-wordpress' ) ?></label>
-                <input type="text" disabled="disabled" value="<?= home_url( '/' ) . '?feed=rss2&post_type=wpfc_sermon' ?>" id="feed_url">
+                <input type="text" disabled="disabled"
+                       value="<?= site_url( '/' ) . '?feed=rss2&post_type=wpfc_sermon' ?>" id="feed_url">
             </p>
             <p>
 				<?= // translators: %s Feed Validator link, see msgid "Feed Validator"
-				wp_sprintf( esc_html__( 'Use the %s to diagnose and fix any problems before submitting your Podcast to iTunes.', 'sermon-manager-for-wordpress' ), '<a href="http://www.feedvalidator.org/check.cgi?url=' . home_url( '/' ) . SermonManager::getOption( 'archive_slug', 'sermons' ) . '/feed/" target="_blank">' . esc_html__( 'Feed Validator', 'sermon-manager-for-wordpress' ) . '</a>' ) ?>
+				wp_sprintf( esc_html__( 'Use the %s to diagnose and fix any problems before submitting your Podcast to iTunes.', 'sermon-manager-for-wordpress' ), '<a href="http://www.feedvalidator.org/check.cgi?url=' . site_url( '/' ) . SermonManager::getOption( 'archive_slug', 'sermons' ) . '/feed/" target="_blank">' . esc_html__( 'Feed Validator', 'sermon-manager-for-wordpress' ) . '</a>' ) ?>
             </p>
             <p>
 				<?= // translators: %s see msgid "Submit Your Podcast"

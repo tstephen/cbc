@@ -50,9 +50,12 @@ class SM_Admin_Settings {
 		), SM_VERSION, true );
 
 		wp_register_script( 'sm_settings_podcast', SM_URL . 'assets/js/admin/settings/podcast.js', 'sm_settings', SM_VERSION, true );
+		wp_register_script( 'sm_settings_verse', SM_URL . 'assets/js/admin/settings/verse.js', 'sm_settings', SM_VERSION, true );
 
 		wp_localize_script( 'sm_settings', 'sm_settings_params', array(
-			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'sermon-manager-for-wordpress' ),
+			'i18n_nav_warning'        => __( 'The changes you made will be lost if you navigate away from this page.', 'sermon-manager-for-wordpress' ),
+			'i18n_bible_spanish_note' => __( 'Note: WordPress is not set to any Spanish variant. Reverted to ESV.', 'sermon-manager-for-wordpress' ),
+			'is_wp_spanish'           => strpos( get_locale(), 'es_' ) !== false
 		) );
 
 		// Include settings pages
@@ -76,9 +79,14 @@ class SM_Admin_Settings {
 			self::add_message( stripslashes( $_GET['sm_message'] ) );
 		}
 
-		if ( $current_tab === 'podcast' ) {
-			wp_enqueue_script( 'sm_settings_podcast' ); // todo: i18n the script & make it more dynamic
-			wp_enqueue_media();
+		switch ( $current_tab ) {
+			case 'podcast':
+				wp_enqueue_script( 'sm_settings_podcast' ); // todo: i18n the script & make it more dynamic
+				wp_enqueue_media();
+				break;
+			case 'verse':
+				wp_enqueue_script( 'sm_settings_verse' );
+				break;
 		}
 
 		// Get tabs for the settings page
@@ -100,6 +108,7 @@ class SM_Admin_Settings {
 			$settings[] = include 'settings/class-sm-settings-general.php';
 			$settings[] = include 'settings/class-sm-settings-verse.php';
 			$settings[] = include 'settings/class-sm-settings-podcast.php';
+			$settings[] = include 'settings/class-sm-settings-debug.php';
 
 			self::$settings = apply_filters( 'sm_get_settings_pages', $settings );
 		}
@@ -111,7 +120,7 @@ class SM_Admin_Settings {
 	 * Save the settings.
 	 */
 	public static function save() {
-		global $current_tab;
+		global $current_tab, $wpdb;
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'sm-settings' ) ) {
 			die( __( 'Action failed. Please refresh the page and retry.', 'sermon-manager-for-wordpress' ) );
@@ -126,6 +135,13 @@ class SM_Admin_Settings {
 
 		// Clear any unwanted data and flush rules
 		wp_schedule_single_event( time(), 'sm_flush_rewrite_rules' );
+
+		/**
+		 * Pass any false value to `sm_clear_feed_transients` filter to skip clearing transients
+		 */
+		if ( $current_tab === 'podcast' && apply_filters( 'sm_clear_feed_transients', true ) ) {
+			$wpdb->query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE ('_transient_feed_%') OR `option_name` LIKE ('_transient_timeout_feed_%')" );
+		}
 
 		do_action( 'sm_settings_saved' );
 	}
@@ -398,8 +414,8 @@ class SM_Admin_Settings {
 
 				// Checkbox input
 				case 'checkbox' :
-					$option_value = self::get_option( $value['id'], $value['default'] ) ? 'yes' : 'no';
-					$visbility_class  = array();
+					$option_value = is_bool( self::get_option( $value['id'], $value['default'] ) ) ? ( self::get_option( $value['id'], $value['default'] ) ? 'yes' : 'no' ) : self::get_option( $value['id'], $value['default'] );
+					$visbility_class = array();
 					if ( ! isset( $value['hide_if_checked'] ) ) {
 						$value['hide_if_checked'] = false;
 					}

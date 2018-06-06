@@ -13,6 +13,21 @@ add_action( 'pre_get_posts', 'wpfc_podcast_add_hooks', 9999 );
 add_action( 'do_feed_podcast', 'wpfc_podcast_render', 10, 1 );
 
 /**
+ * Redirection, if enabled in settings
+ */
+add_action( 'parse_request', function () {
+	if ( SermonManager::getOption( 'enable_podcast_redirection' ) ) {
+		$old_url     = wp_make_link_relative( preg_replace( '{/$}', '', SermonManager::getOption( 'podcast_redirection_old_url' ) ) );
+		$current_url = preg_replace( '{/$}', '', $_SERVER['REQUEST_URI'] );
+
+		if ( strpos( $current_url, $old_url ) !== false ) {
+			wp_redirect( SermonManager::getOption( 'podcast_redirection_new_url' ), 301 );
+			exit;
+		}
+	}
+} );
+
+/**
  * Add podcast data to the WordPress default XML feed
  *
  * @param WP_Query $query The query
@@ -62,6 +77,9 @@ function wpfc_podcast_add_hooks( $query ) {
 }
 
 /**
+ * Note: Unfinished feature.
+ * Take a look at comment at `views/wpfc-podcast-feed.php`.
+ *
  * Load the template used for podcast XML.
  *
  * It can be overridden by putting the `wpfc-podcast-feed.php` file in the root of your active theme.
@@ -70,11 +88,15 @@ function wpfc_podcast_add_hooks( $query ) {
  * @return void
  */
 function wpfc_podcast_render() {
-	if ( $overridden_template = locate_template( 'wpfc-podcast-feed.php' ) ) {
-		load_template( $overridden_template );
-	} else {
-		load_template( SM_PATH . 'views/wpfc-podcast-feed.php' );
-	}
+	add_action( 'after_setup_theme', function () {
+		if ( $overridden_template = locate_template( 'wpfc-podcast-feed.php' ) ) {
+			load_template( $overridden_template );
+		} else {
+			load_template( SM_PATH . 'views/wpfc-podcast-feed.php' );
+		}
+
+		exit;
+	} );
 }
 
 /**
@@ -106,13 +128,14 @@ function wpfc_podcast_add_head() {
 	);
 
 	?>
+    <!--suppress XmlUnboundNsPrefix, CheckEmptyScriptTag -->
     <copyright><?php echo html_entity_decode( esc_html( \SermonManager::getOption( 'copyright' ) ), ENT_COMPAT, 'UTF-8' ) ?></copyright>
     <itunes:subtitle><?php echo esc_html( \SermonManager::getOption( 'itunes_subtitle' ) ) ?></itunes:subtitle>
     <itunes:author><?php echo esc_html( \SermonManager::getOption( 'itunes_author' ) ) ?></itunes:author>
 	<?php if ( trim( category_description() ) !== '' ) : ?>
         <itunes:summary><?php echo str_replace( '&nbsp;', '',
 				\SermonManager::getOption( 'enable_podcast_html_description' ) ?
-					stripslashes( wpautop( wp_filter_kses( category_description() ) ), true ) :
+					stripslashes( wpautop( wp_filter_kses( category_description() ) ) ) :
 					stripslashes( wp_filter_nohtml_kses( category_description() ) ) ); ?></itunes:summary>
 	<?php else: ?>
         <itunes:summary><?php echo str_replace( '&nbsp;', '',
@@ -156,15 +179,11 @@ function wpfc_podcast_add_item() {
 
 	// Fix for relative audio file URLs
 	if ( substr( $audio, 0, 1 ) === '/' ) {
-		$audio = home_url( $audio );
+		$audio = site_url( $audio );
 	}
 	?>
     <itunes:author><?php echo esc_html( $speaker ); ?></itunes:author>
     <itunes:subtitle><?php echo esc_html( $series ); ?></itunes:subtitle>
-    <itunes:summary><?php echo preg_replace( '/&nbsp;/', '',
-			\SermonManager::getOption( 'enable_podcast_html_description' ) ?
-				stripslashes( wpautop( wp_filter_kses( get_wpfc_sermon_meta( 'sermon_description' ) ) ) ) :
-				stripslashes( wp_filter_nohtml_kses( get_wpfc_sermon_meta( 'sermon_description' ) ) ) ); ?></itunes:summary>
 	<?php if ( $post_image ) : ?>
         <itunes:image href="<?php echo esc_url( $post_image ); ?>"/>
 	<?php endif; ?>

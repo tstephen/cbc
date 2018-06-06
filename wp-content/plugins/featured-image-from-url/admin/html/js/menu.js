@@ -20,6 +20,7 @@ jQuery(function () {
     });
 
     jQuery("#accordion").accordion();
+    jQuery("#accordionCrop").accordion();
     jQuery("#tabs").tabs();
     jQuery("#fifu_input_spinner_image").spinner({min: 0});
     jQuery("#fifu_input_spinner_video").spinner({min: 0});
@@ -27,6 +28,7 @@ jQuery(function () {
     jQuery("#fifu_input_slider_speed").spinner({min: 0});
     jQuery("#fifu_input_slider_pause").spinner({min: 0});
     jQuery("#tabsApi").tabs();
+    jQuery("#tabsPremium").tabs();
 });
 
 function save(formName, url) {

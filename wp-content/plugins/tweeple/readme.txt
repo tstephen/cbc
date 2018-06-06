@@ -2,9 +2,9 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: twitter, api, status, tweets, list, favorites, tmhOAuth, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 0.9.4
+Stable Tag: 0.9.5
 
-Setup Twitter feeds to pull a user's public timeline, public list, favorite tweets, or a custom search term, phrase, or hashtag. 
+Setup Twitter feeds to pull a user's public timeline, public list, favorite tweets, or a custom search term, phrase, or hashtag.
 
 == Description ==
 
@@ -118,6 +118,10 @@ Note: We have safeguard implemented that does not allow you to set this less tha
 6. If you're using a Theme Blvd theme, the widget will integrate as your old Theme Blvd Twitter widget did.
 
 == Changelog ==
+
+= 0.9.5 - 12/19/2017 =
+
+* Added FontAwesome 5 compatibility (for Theme Blvd Framework 2.7+ themes).
 
 = 0.9.4 - 01/27/2016 =
 

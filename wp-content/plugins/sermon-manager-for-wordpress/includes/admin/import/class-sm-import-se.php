@@ -62,9 +62,11 @@ class SM_Import_SE {
 				$term_data = wp_insert_term( $book->book_name, 'wpfc_bible_book' );
 			}
 
-			$this->_imported_books[ $book->book_id ] = array(
-				'new_id' => $term_data['term_id'],
-			);
+			if ( ! $term_data instanceof WP_Error ) {
+				$this->_imported_books[ $book->book_id ] = array(
+					'new_id' => $term_data['term_id'],
+				);
+			}
 		}
 	}
 
@@ -123,9 +125,11 @@ class SM_Import_SE {
 				$term_data = wp_insert_term( trim( $speaker->first_name . ' ' . $speaker->last_name ), 'wpfc_preacher' );
 			}
 
-			$this->_imported_speakers[ $speaker->speaker_id ] = array(
-				'new_id' => $term_data['term_id'],
-			);
+			if ( ! $term_data instanceof WP_Error ) {
+				$this->_imported_speakers[ $speaker->speaker_id ] = array(
+					'new_id' => $term_data['term_id'],
+				);
+			}
 		}
 	}
 
@@ -149,17 +153,19 @@ class SM_Import_SE {
 				) );
 			}
 
-			// Set image
-			$attachment_id = sm_import_and_set_post_thumbnail( $item->thumbnail_url, 0 );
-			if ( is_int( $attachment_id ) ) {
-				$assigned_images                          = get_option( 'sermon_image_plugin' );
-				$assigned_images[ $term_data['term_id'] ] = $attachment_id;
-				update_option( 'sermon_image_plugin', $assigned_images );
-			}
+			if ( ! $term_data instanceof WP_Error ) {
+				// Set image
+				$attachment_id = sm_import_and_set_post_thumbnail( $item->thumbnail_url, 0 );
+				if ( is_int( $attachment_id ) ) {
+					$assigned_images                          = get_option( 'sermon_image_plugin' );
+					$assigned_images[ $term_data['term_id'] ] = $attachment_id;
+					update_option( 'sermon_image_plugin', $assigned_images );
+				}
 
-			$this->_imported_series[ $item->series_id ] = array(
-				'new_id' => $term_data['term_id'],
-			);
+				$this->_imported_series[ $item->series_id ] = array(
+					'new_id' => $term_data['term_id'],
+				);
+			}
 		}
 	}
 
@@ -181,9 +187,11 @@ class SM_Import_SE {
 				$term_data = wp_insert_term( $topic->name, 'wpfc_sermon_topics' );
 			}
 
-			$this->_imported_topics[ $topic->topic_id ] = array(
-				'new_id' => $term_data['term_id'],
-			);
+			if ( ! $term_data instanceof WP_Error ) {
+				$this->_imported_topics[ $topic->topic_id ] = array(
+					'new_id' => $term_data['term_id'],
+				);
+			}
 		}
 	}
 
@@ -233,27 +241,43 @@ class SM_Import_SE {
 
 		// start the import
 		foreach ( $messages as $message ) {
-			$the_post = get_post( $message->wp_post_id );
+			$post_id  = $message->wp_post_id;
+			$the_post = null;
+			if ( $post_id !== null ) {
+				$the_post = get_post( $message->wp_post_id );
+			} else {
+				$post_id = $message->message_id;
+			}
 
-			if ( ! isset( $imported[ $message->wp_post_id ] ) ) {
-				$id = wp_insert_post( apply_filters( 'sm_import_se_message', array(
-					'post_author'       => $the_post->post_author,
-					'post_date'         => $the_post->post_date,
-					'post_date_gmt'     => $the_post->post_date_gmt,
-					'post_content'      => '%todo_render%',
-					'post_title'        => $message->title,
-					'post_status'       => $the_post->post_status,
-					'post_type'         => 'wpfc_sermon',
-					'post_modified'     => $the_post->post_modified,
-					'post_modified_gmt' => $the_post->post_modified_gmt,
-				) ) );
+			if ( ! isset( $imported[ $post_id ] ) ) {
+				if ( $the_post === null ) {
+					$id = wp_insert_post( apply_filters( 'sm_import_se_message', array(
+						'post_date'    => $message->date . ' 12:00:00',
+						'post_content' => '%todo_render%',
+						'post_title'   => $message->title,
+						'post_type'    => 'wpfc_sermon',
+						'post_status'  => 'publish',
+					) ) );
+				} else {
+					$id = wp_insert_post( apply_filters( 'sm_import_se_message', array(
+						'post_author'       => $the_post->post_author,
+						'post_date'         => $the_post->post_date,
+						'post_date_gmt'     => $the_post->post_date_gmt,
+						'post_content'      => '%todo_render%',
+						'post_title'        => $message->title,
+						'post_status'       => $the_post->post_status,
+						'post_type'         => 'wpfc_sermon',
+						'post_modified'     => $the_post->post_modified,
+						'post_modified_gmt' => $the_post->post_modified_gmt,
+					) ) );
+				}
 
-				if ( $id === 0 ) {
+				if ( $id === 0 || $id instanceof WP_Error) {
 					// silently skip if error
 					continue;
 				}
 
-				$imported[ $message->wp_post_id ] = array(
+				$imported[ $post_id ] = array(
 					'new_id' => $id
 				);
 
@@ -263,7 +287,7 @@ class SM_Import_SE {
 				 */
 				update_option( '_sm_import_se_messages', $imported );
 			} else {
-				$id = $imported[ $message->wp_post_id ]['new_id'];
+				$id = $imported[ $post_id ]['new_id'];
 			}
 
 			// set speakers
@@ -336,7 +360,12 @@ class SM_Import_SE {
 			if ( ! empty( $message->date ) && $message->date !== '0000-00-00' ) {
 				update_post_meta( $id, 'sermon_date', strtotime( $message->date ) );
 			} else {
-				update_post_meta( $id, 'sermon_date', strtotime( $the_post->post_date ) );
+				if ( $the_post !== null ) {
+					update_post_meta( $id, 'sermon_date', strtotime( $the_post->post_date ) );
+				} else {
+					update_post_meta( $id, 'sermon_date', strtotime( $message->date ) );
+				}
+
 				update_post_meta( $id, 'sermon_date_auto', '1' );
 			}
 
@@ -389,6 +418,12 @@ class SM_Import_SE {
 			) as $terms_array => $taxonomy
 		) {
 			$terms = array();
+
+			if ( empty( $this->{
+			$terms_array
+			} ) ) {
+				continue;
+			}
 
 			foreach ( $this->{$terms_array} as $item ) {
 				$terms[] = intval( $item['new_id'] );

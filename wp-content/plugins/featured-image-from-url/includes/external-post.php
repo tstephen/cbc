@@ -70,8 +70,20 @@ function fifu_first_url_in_content($post_id) {
     preg_match_all('/<img[^>]*>/', $content, $matches);
     if (!$matches[0])
         return;
+
+    //double quotes
     $aux1 = explode('src="', $matches[0][0]);
-    $aux2 = explode('"', $aux1[1]);
+    if ($aux1) {
+        $aux2 = explode('"', $aux1[1]);
+    }
+
+    //single quotes
+    if (!$aux2[0]) {
+        $aux1 = explode("src='", $matches[0][0]);
+        if ($aux1)
+            $aux2 = explode("'", $aux1[1]);
+    }
+
     return $matches && $matches[0] ? $aux2[0] : null;
 }
 
@@ -79,3 +91,4 @@ function fifu_update_fake_attach_id($post_id) {
     if (get_option('fifu_fake_attach_id') && !get_post_thumbnail_id($post_id))
         set_post_thumbnail($post_id, get_option('fifu_fake_attach_id'));
 }
+
