@@ -1,24 +1,34 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template used for displaying taxonomy archive pages
+ *
+ * @package SM/Views
+ */
 
-<?php include 'partials/wrapper-start.php'; ?>
+get_header();
+?>
+
+<?php echo wpfc_get_partial('content-sermon-wrapper-start'); ?>
 
 <?php echo render_wpfc_sorting(); ?>
 
 <?php
 if ( have_posts() ) :
-	while ( have_posts() ) : the_post();
+	while ( have_posts() ) :
+		the_post();
 		wpfc_sermon_excerpt_v2();
 	endwhile;
 	if ( function_exists( 'wp_pagenavi' ) ) :
 		wp_pagenavi();
-	else:
+	else :
 		the_posts_pagination();
 	endif;
 else :
-	__( 'Sorry, but there aren\'t any posts matching your query.', 'placeholder' );
+	__( 'Sorry, but there are no posts matching your query.' );
 endif;
 ?>
 
-<?php include 'partials/wrapper-end.php'; ?>
+<?php echo wpfc_get_partial('content-sermon-wrapper-end'); ?>
 
-<?php get_footer();
+<?php
+get_footer();

@@ -159,6 +159,9 @@ Features:
 
 == Changelog ==
 
+= 1.8.7 =
+* New free feature: CSS Style.
+
 = 1.8.6 =
 * Bug fix: image URL was being shown in log file.
 
@@ -374,6 +377,9 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 1.8.7 =
+* New free feature: CSS Style.
 
 = 1.8.6 =
 * Bug fix: image URL was being shown in log file.

@@ -136,6 +136,33 @@
         </form>
     </div>
 
+    <a name="css"></a>
+
+    <div class="box">
+        <h2>CSS Style</h2>
+        <div class="greybox" id="grad1">
+            Here you can define a CSS style to be applied to all external featured images. Usage example:<br><br>
+            width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 5px;
+            <br><br>
+            <i>If this new FREE feature is useful to you, please cherish my work. Give FIFU a <a href="https://wordpress.org/support/view/plugin-reviews/featured-image-from-url?filter=5" target="_blank">5-star</a> rating!</i>         
+        </div>
+        <br>
+        <form 
+            id="fifu_form_css" 
+            action="javascript:void(0)" 
+            method="post">
+
+            <input id="fifu_input_css" 
+                   type="text" 
+                   name="fifu_input_css" 
+                   style="width:675px" 
+                   value="<?php echo $css_style; ?>">
+
+            <input type="submit" 
+                   value="Submit" >
+        </form>
+    </div>    
+
     <div class="box">
         <h2>Default External Featured Image</h2>
         <div class="greybox">
@@ -322,8 +349,6 @@
         <h2>Priority</h2>
         <div class="greybox" id="grad1">
             Enable the toggle below to prioritize the internal image rather than the external one, if both exist.
-            <br><br>
-            <i>If this new FREE feature is useful to you, please cherish my work. Give FIFU a <a href="https://wordpress.org/support/view/plugin-reviews/featured-image-from-url?filter=5" target="_blank">5-star</a> rating!</i>            
         </div>
         <br>
         <table style="text-align:left">
@@ -594,18 +619,6 @@
                        value="Submit" disabled>
             </div>
         </div>
-    </div>
-
-    <div class="box">
-        <h2>CSS Style</h2>
-        <div class="greybox" id="grad2">
-            <b>Premium feature</b><br><br>
-            Here you can define a CSS style to be applied to all external featured images. Usage example:<br><br>
-            width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 5px;
-        </div>
-        <br>
-        <input id="fifu_input_css" type="text" name="fifu_input_css" style="width:675px">
-        <input type="submit" value="Submit" disabled>
     </div>
 
     <div class="box">
