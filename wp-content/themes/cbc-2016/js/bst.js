@@ -12,6 +12,10 @@
 		$('select, input[type=text], input[type=email], input[type=password], textarea').addClass('form-control');
 		$('input[type=submit]').addClass('btn btn-primary');
 		
+		// Add missing container to sermon manager template
+		jQuery('body.single-wpfc_sermon').addClass('container');
+		jQuery('body.single-wpfc_sermon #sidebar').hide();
+
 		// Sermon contact form
 		jQuery('.sermon-contact:eq(0), .sermon-contact:eq(1), .sermon-contact:eq(2)').empty().append('<span class="dashicons dashicons-testimonial"></span><a class="sermon-contact-button" href="#">Ask a question or make a comment</a>');
 		jQuery('.sermon-contact:eq(0) .sermon-contact-button')
