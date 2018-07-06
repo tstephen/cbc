@@ -14,7 +14,6 @@
           <?php echo preg_replace('[\[/?wpmem_txt\]]','',do_shortcode('[wpmem_form register]')); ?>
         <?php } else { ?>
         <h1>Category: <?php echo single_cat_title(); ?></h1>
-        <hr>
         <?php get_template_part('includes/loops/content', get_post_format()); ?>
         <?php } ?>
       </div><!-- /#content -->
@@ -23,7 +22,7 @@
   </div><!-- /.row -->
 </div><!-- /.container -->
 
-<div class="container">
+<div class="container" role="complimentary">
   <div class="row">
     <div class="col-sm-6 col-xs-12" id="left-col" role="navigation">
       <?php get_template_part('includes/sidebar1'); ?>
