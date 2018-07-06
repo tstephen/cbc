@@ -8,8 +8,8 @@ function bst_widgets_init() {
   register_sidebar( array(
     'name'            => __( 'Sidebar 1', 'bst' ),
     'id'              => 'sidebar1-widget-area',
-    'description'     => __( 'The sidebar widget area', 'bst' ),
-    'before_widget'   => '<section class="%1$s %2$s">',
+    'description'     => __( 'First sidebar widget area', 'bst' ),
+    'before_widget'   => '<section class="no-print %1$s %2$s">',
     'after_widget'    => '</section>',
     'before_title'    => '<h4>',
     'after_title'     => '</h4>',
@@ -21,8 +21,8 @@ function bst_widgets_init() {
   register_sidebar( array(
     'name'            => __( 'Sidebar 2', 'bst' ),
     'id'              => 'sidebar2-widget-area',
-    'description'     => __( 'The sidebar widget area', 'bst' ),
-    'before_widget'   => '<section class="%1$s %2$s">',
+    'description'     => __( 'Second sidebar widget area', 'bst' ),
+    'before_widget'   => '<section class="no-print %1$s %2$s">',
     'after_widget'    => '</section>',
     'before_title'    => '<h4>',
     'after_title'     => '</h4>',

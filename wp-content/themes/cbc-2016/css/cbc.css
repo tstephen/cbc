@@ -356,3 +356,9 @@ article.type-wpfc_sermon section {
 .wpfc_searchform button[type='submit'] {
   margin-top: -2px;
 }
+
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}

@@ -17,7 +17,7 @@
   </div><!-- /.row -->
 </div><!-- /.container -->
 
-<div class="container">
+<div class="no-print container">
   <div class="row">
     <h2>Latest posts</h2>
     <?php 
