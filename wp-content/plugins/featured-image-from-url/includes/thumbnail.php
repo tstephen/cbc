@@ -167,7 +167,7 @@ function fifu_show_internal_instead_of_external($post_id) {
 }
 
 function fifu_is_in_editor() {
-    return !is_admin() ? false : get_current_screen()->parent_base == 'edit';
+    return !is_admin() || get_current_screen() == null ? false : get_current_screen()->parent_base == 'edit';
 }
 
 function fifu_internal_priority() {

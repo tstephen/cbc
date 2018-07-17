@@ -3,7 +3,7 @@
 	"meta_data": [
 		{
 			"key": "fifu_image_url",
-			"value": "http://ps.w.org/featured-image-from-url/assets/icon-256x256.png"
+			"value": "https://ps.w.org/featured-image-from-url/assets/icon-256x256.png"
 		},    
 		{
 			"key": "fifu_image_alt",
