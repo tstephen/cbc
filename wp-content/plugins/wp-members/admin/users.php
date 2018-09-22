@@ -71,7 +71,7 @@ function wpmem_bulk_user_action() {
  */
 function wpmem_insert_activate_link( $actions, $user_object ) {
 	global $wpmem;
-	if ( current_user_can( 'edit_users', $user_object->ID ) && $wpmem->mod_reg == 1 ) {
+	if ( 1 == $wpmem->mod_reg ) {
 
 		$var = get_user_meta( $user_object->ID, 'active', true );
 
@@ -193,9 +193,13 @@ function wpmem_users_page_load() {
 
 	case 'export':
 
-		$users  = ( isset( $_REQUEST['users'] ) ) ? $_REQUEST['users'] : false;
+		$users  = wpmem_get( 'users', false, 'request' );
+		$sanitized_users = array();
+		foreach ( $users as $user ) {
+			$sanitized_users[] = filter_var( $user, FILTER_VALIDATE_INT );
+		}
 		include_once( WPMEM_PATH . 'admin/user-export.php' );
-		wpmem_export_users( array( 'export'=>'selected' ), $users );
+		wpmem_export_users( array( 'export'=>'selected' ), $sanitized_users );
 		return;
 		break;
 
@@ -313,7 +317,7 @@ function wpmem_users_views( $views ) {
 		$arr['deactivated']  = __( 'Deactivated',   'wp-members' );
 	}
 	$arr['notexported']      = __( 'Not Exported',  'wp-members' );
-	$show = ( isset( $_GET['show'] ) ) ? sanitize_text_field( $_GET['show'] ) : false;
+	$show = sanitize_text_field( wpmem_get( 'show', false, 'get' ) );
 
 	foreach ( $arr as $key => $val ) {
 		$link = "users.php?action=show&amp;show=" . $key;
@@ -513,7 +517,7 @@ function wpmem_a_deactivate_user( $user_id ) {
 function wpmem_a_pre_user_query( $user_search ) {
 
 	global $wpdb;
-	$show = sanitize_text_field( $_GET['show'] );
+	$show = sanitize_text_field( wpmem_get( 'show', '', 'get' ) );
 	switch ( $show ) {
 
 		case 'notactive':

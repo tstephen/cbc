@@ -21,7 +21,6 @@
  * - wpmem_page_user_edit
  * - wpmem_page_forgot_username
  * - wpmem_inc_forgotusername
- * - wpmem_inc_status
  */
 
 // Exit if accessed directly.
@@ -62,6 +61,8 @@ function wpmem_inc_loginfailed() {
 	 *
 	 * @since 2.9.0
 	 *
+	 * @todo Needs probably to pass user ID or some identifier so we can get user info without going to the post object and then get_user_by().
+	 *
 	 * @param array An array of arguments to merge with defaults.
 	 */
 	$args = apply_filters( 'wpmem_login_failed_args', '' );
@@ -79,6 +80,8 @@ function wpmem_inc_loginfailed() {
 	 * Filter the login failed dialog.
 	 *
 	 * @since 2.7.3
+	 *
+	 * @todo Needs probably to pass user ID or some identifier so we can get user info without going to the post object and then get_user_by().
 	 *
 	 * @param string $str The login failed dialog.
 	 */
@@ -552,30 +555,5 @@ function wpmem_page_forgot_username( $wpmem_regchk, $content ) {
 	return $content;
 
 }
-
-if ( ! function_exists( 'wpmem_inc_status' ) ):
-/**
- * Generate users login status if logged in and gives logout link.
- *
- * @since 1.8
- * @since 3.2.0 Moved from sidebar.php (which is now obsolete).
- *
- * @global        $user_login
- * @global object $wpmem
- * @return string $status
- */
-function wpmem_inc_status() {
-
-	global $user_login, $wpmem;
-	
-	/** This filter is documented in wp-members/inc/dialogs.php */
-	$logout = apply_filters( 'wpmem_logout_link', $url . '/?a=logout' );
-
-	$status = '<p>' . sprintf( $wpmem->get_text( 'sb_login_status' ), $user_login )
-		. ' | <a href="' . esc_url( $logout ) . '">' . $wpmem->get_text( 'sb_logout_link' ) . '</a></p>';
-
-	return $status;
-}
-endif;
 
 // End of file.

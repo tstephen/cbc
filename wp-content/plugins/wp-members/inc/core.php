@@ -60,25 +60,6 @@ function wpmem_securify( $content = null ) {
 endif;
 
 
-if ( ! function_exists( 'wpmem_check_activated' ) ):
-/**
- * Checks if a user is activated.
- *
- * @since 2.7.1
- *
- * @param  object $user     The WordPress User object.
- * @param  string $username The user's username (user_login).
- * @param  string $password The user's password.
- * @return object $user     The WordPress User object.
- */ 
-function wpmem_check_activated( $user, $username, $password ) {
-	global $wpmem;
-	$user = $wpmem->user->check_activated( $user, $username, $password );
-	return $user;
-}
-endif;
-
-
 if ( ! function_exists( 'wpmem_login' ) ):
 /**
  * Logs in the user.
@@ -153,22 +134,6 @@ if ( ! function_exists( 'wpmem_reset_password' ) ):
 function wpmem_reset_password() {
 	global $wpmem;
 	return $wpmem->user->password_update( 'reset' );
-}
-endif;
-
-
-if ( ! function_exists( 'wpmem_no_reset' ) ):
-/**
- * Prevents users not activated from resetting their password.
- *
- * @since 2.5.1
- * @since 3.2.0 Now a wrapper for $wpmem->user->no_reset().
- *
- * @return bool Returns false if the user is not activated, otherwise true.
- */
-function wpmem_no_reset() {
-	global $wpmem;
-	return $wpmem->user->no_reset();
 }
 endif;
 

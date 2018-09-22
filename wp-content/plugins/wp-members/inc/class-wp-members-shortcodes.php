@@ -181,7 +181,7 @@ class WP_Members_Shortcodes {
 					// Fixes the wptexturize.
 					remove_filter( 'the_content', 'wpautop' );
 					remove_filter( 'the_content', 'wptexturize' );
-					add_filter( 'the_content', 'wpmem_texturize', 999 );
+					add_filter( 'the_content', array( 'WP_Members', 'texturize' ), 999 );
 				}
 			} // End texturize functions
 		}
@@ -198,6 +198,7 @@ class WP_Members_Shortcodes {
 	 * @since 3.0.0
 	 * @since 3.2.0 Moved to WP_Members_Shortcodes::logged_in().
 	 * @since 3.2.0 Added attributes for meta key/value pairs.
+	 * @since 3.2.3 Added product attribute.
 	 *
 	 * @global object $wpmem The WP_Members object.
 	 *
@@ -272,6 +273,13 @@ class WP_Members_Shortcodes {
 				if ( isset( $atts['meta_key'] ) ) {
 					$value = ( isset( $atts['meta_value'] ) ) ? $atts['meta_value'] : false;
 					if ( wpmem_user_has_meta( $atts['meta_key'], $value ) ) {
+						$do_return = true;
+					}
+				}
+				
+				// If there is a product attribute.
+				if ( isset( $atts['product'] ) ) {
+					if ( wpmem_user_has_access( 'product' ) ) {
 						$do_return = true;
 					}
 				}
@@ -356,7 +364,6 @@ class WP_Members_Shortcodes {
 	 *
 	 * @global object $wpmem        The WP_Members object.
 	 * @global string $wpmem_themsg The WP-Members message container.
-	 *
 	 * @param  string $atts {
 	 *     The shortcode attributes.
 	 *
@@ -378,7 +385,7 @@ class WP_Members_Shortcodes {
 
 		if ( $wpmem->regchk == "captcha" ) {
 			global $wpmem_captcha_err;
-			$wpmem_themsg = __( 'There was an error with the CAPTCHA form.' ) . '<br /><br />' . $wpmem_captcha_err;
+			$wpmem_themsg = $wpmem->get_text( 'reg_captcha_err' ) . '<br /><br />' . $wpmem_captcha_err;
 		}
 
 		if ( $wpmem->regchk == "loginfailed" ) {
@@ -507,6 +514,7 @@ class WP_Members_Shortcodes {
 	 * @since 3.1.4 Changed to display value rather than stored value for dropdown/multicheck/radio.
 	 * @since 3.1.5 Added display attribute, meta key as a direct attribute, and image/file display.
 	 * @since 3.2.0 Moved to WP_Members_Shortcodes::fields().
+	 * @since 3.2.0 Added clickable attribute.
 	 *
 	 * @global object $wpmem   The WP_Members object.
 	 * @param  array  $atts {
@@ -518,7 +526,7 @@ class WP_Members_Shortcodes {
 	 *     @type string $underscores
 	 *     @type string $display
 	 *     @type string $size
-	 *     @type string $clickable default:true
+	 *     @type string $clickable default:false
 	 * }
 	 * @param  string $content Any content passed with the shortcode (default:null).
 	 * @param  string $tag     The shortcode tag (wpmem_form).
@@ -594,7 +602,7 @@ class WP_Members_Shortcodes {
 			// Handle date fields.
 			if ( isset( $field_type ) && 'date' == $field_type ) {
 				if ( isset( $atts['format'] ) ) {
-					// Formats date: http://php.net/manual/en/function.date.php
+					// Formats date: https://secure.php.net/manual/en/function.date.php
 					$result = ( '' != $user_info->{$field} ) ? date( $atts['format'], strtotime( $user_info->{$field} ) ) : '';
 				} else {
 					// Formats date to whatever the WP setting is.
@@ -609,8 +617,8 @@ class WP_Members_Shortcodes {
 
 			$content = ( $content ) ? $result . $content : $result;
 			
-			// Is it clickable?
-			$content = ( isset( $atts['clickable'] ) && ( false == $atts['clickable'] || 'false' == $atts['clickable'] ) ) ? $content : make_clickable( $content );
+			// Make it clickable?
+			$content = ( isset( $atts['clickable'] ) && ( true === $atts['clickable'] || 'true' == $atts['clickable'] ) ) ? make_clickable( $content ) : $content;
 
 			return do_shortcode( $content );
 		}

@@ -107,19 +107,23 @@ function wpmem_a_render_fields_tab() {
 	if ( 'delete' == $delete_action ) {
 		$delete_fields = wpmem_get( 'delete' ); ?>
 		
-		<p><?php _e( 'Are you sure you want to delete the following fields?', 'wp-members' ); ?></p>
 		
-		<?php foreach ( $delete_fields as $meta ) {
-			$meta = esc_html( $meta );
-			echo esc_html( $wpmem->fields[ $meta ]['label'] ) . ' (meta key: ' . $meta . ')<br />';
-		} ?>
-		<form name="<?php echo esc_attr( $delete_action ); ?>" id="<?php echo esc_attr( $delete_action ); ?>" method="post" action="<?php echo esc_url( wpmem_admin_form_post_url() ); ?>">
-			<?php // wp_nonce_field( 'wpmem-delete-fields' ); ?>
-			<input type="hidden" name="delete_fields" value="<?php echo esc_attr( implode( ",", $delete_fields ) ); ?>" />
-			<input type="hidden" name="dodelete" value="delete_confirmed" />
-			<?php submit_button( 'Delete Fields' ); ?>
-		</form><?php
-
+		
+		<?php if ( empty( $delete_fields ) ) { ?>
+			<p><?php _e( 'No fields selected for deletion', 'wp-members' ); ?></p>
+		<?php } else { ?>
+			<p><?php _e( 'Are you sure you want to delete the following fields?', 'wp-members' ); ?></p>
+			<?php foreach ( $delete_fields as $meta ) {
+				$meta = esc_html( $meta );
+				echo esc_html( $wpmem->fields[ $meta ]['label'] ) . ' (meta key: ' . $meta . ')<br />';
+			} ?>
+			<form name="<?php echo esc_attr( $delete_action ); ?>" id="<?php echo esc_attr( $delete_action ); ?>" method="post" action="<?php echo esc_url( wpmem_admin_form_post_url() ); ?>">
+				<?php // wp_nonce_field( 'wpmem-delete-fields' ); ?>
+				<input type="hidden" name="delete_fields" value="<?php echo esc_attr( implode( ",", $delete_fields ) ); ?>" />
+				<input type="hidden" name="dodelete" value="delete_confirmed" />
+				<?php submit_button( 'Delete Fields' ); ?>
+			</form><?php
+		}
 	} else {
 		
 		if ( 'delete_confirmed' == wpmem_get( 'dodelete' ) ) {
@@ -436,10 +440,10 @@ function wpmem_a_render_fields_tab_field_table() {
 				'display'  => ( 'user_email' != $meta && 'username' != $meta ) ? wpmem_create_formfield( $meta . "_display",  'checkbox', 'y', $field[4] ) : '',
 				'req'      => ( 'user_email' != $meta && 'username' != $meta ) ? wpmem_create_formfield( $meta . "_required", 'checkbox', 'y', $field[5] ) : '',
 				//'profile'  => ( $meta != 'user_email' ) ? wpmem_create_formfield( $meta . "_profile",  'checkbox', true, $field[6] ) : '',
-				'edit'     => wpmem_fields_edit_link( $meta ),
 				'userscrn' => ( ! in_array( $meta, $wpmem_ut_fields_skip ) ) ? wpmem_create_formfield( 'ut_fields[' . $meta . ']', 'checkbox', $field[1], $ut_checked ) : '',
 				'usearch'  => ( ! in_array( $meta, $wpmem_us_fields_skip ) ) ? wpmem_create_formfield( 'us_fields[' . $meta . ']', 'checkbox', $field[1], $us_checked ) : '',
-				'sort'     => '<span class="ui-icon ui-icon-grip-dotted-horizontal" title="' . __( 'Drag and drop to reorder fields', 'wp-members' ) . '"></span>',
+				'edit'     => wpmem_fields_edit_link( $meta ),
+				'sort'     => '<span class="dashicons dashicons-sort" title="' . __( 'Drag and drop to reorder fields', 'wp-members' ) . '"></span>',
 			);
 		}
 	}
@@ -474,9 +478,9 @@ function wpmem_a_render_fields_tab_field_table() {
 			'display'  => '',
 			'req'      => '',
 			'profile'  => '',
-			'edit'     => '',
 			'userscrn' => $screen_item['userscrn'],
 			'usearch'  => '',
+			'edit'     => '',
 			'sort'     => '',
 		);
 	}
@@ -542,10 +546,10 @@ class WP_Members_Fields_Table extends WP_List_Table {
 			'display'  => __( 'Display?',      'wp-members' ),
 			'req'      => __( 'Required?',     'wp-members' ),
 			//'profile'  => __( 'Profile Only',  'wp-members' ),
-			'edit'     => __( 'Edit',          'wp-members' ),
 			'userscrn' => __( 'Users Screen',  'wp-members' ),
 			'usearch'  => __( 'Users Search',  'wp-members' ),
-			'sort'     => '',
+			'edit'     => __( 'Edit',          'wp-members' ),
+			'sort'     => __( 'Sort',          'wp-members' ),
 		);
 	}
 

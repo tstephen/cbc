@@ -68,7 +68,7 @@ function fifu_get_setting($type) {
     register_setting('settings-group', $type);
 
     if (!get_option($type)) {
-        if (strpos($type, "cpt") !== false || strpos($type, "default") !== false)
+        if (strpos($type, "cpt") !== false || strpos($type, "default") !== false || strpos($type, "css") !== false)
             update_option($type, '');
         else if (strpos($type, "fifu_column_height") !== false)
             update_option($type, "64");
@@ -190,3 +190,4 @@ function fifu_disable_fake() {
     wp_delete_attachment(get_option('fifu_fake_attach_id'));
     delete_option('fifu_fake_attach_id');
 }
+

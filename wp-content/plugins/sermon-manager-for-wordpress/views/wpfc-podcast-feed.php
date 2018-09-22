@@ -7,6 +7,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
+global $taxonomy, $term;
+
 /**
  * Create the query for sermons.
  */
@@ -31,6 +33,19 @@ $args = array(
 		),
 	),
 );
+
+/**
+ * If feed is being loaded via taxonomy feed URL, such as "https://www.example.com/service-type/service-type-slug"
+ */
+if ( $taxonomy && $term ) {
+	$args['tax_query'] = array(
+		array(
+			'taxonomy' => $taxonomy,
+			'field'    => 'slug',
+			'terms'    => $term,
+		),
+	);
+}
 
 /**
  * Allow filtering by taxonomies.
@@ -86,10 +101,9 @@ $categories = array(
 
 $title            = esc_html( \SermonManager::getOption( 'title' ) ) ?: get_wp_title_rss();
 $link             = esc_url( \SermonManager::getOption( 'website_link' ) ) ?: get_bloginfo_rss( 'url' );
-$atom_link        = ( ! empty( $_SERVER['HTTPS'] ) ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 $description      = esc_html( \SermonManager::getOption( 'description' ) ) ?: get_bloginfo_rss( 'description' );
 $language         = esc_html( \SermonManager::getOption( 'language' ) ) ?: get_bloginfo_rss( 'language' );
-$last_sermon_date = get_post_meta( $sermon_podcast_query->posts[0]->ID, 'sermon_date', true ) ?: null;
+$last_sermon_date = ! empty( $sermon_podcast_query->posts ) ? get_post_meta( $sermon_podcast_query->posts[0]->ID, 'sermon_date', true ) ?: null : null;
 $copyright        = html_entity_decode( esc_html( \SermonManager::getOption( 'copyright' ) ), ENT_COMPAT, 'UTF-8' );
 $subtitle         = esc_html( \SermonManager::getOption( 'itunes_subtitle' ) );
 $author           = esc_html( \SermonManager::getOption( 'itunes_author' ) );
@@ -111,7 +125,7 @@ $subcategory      = esc_attr( ! empty( $categories[ \SermonManager::getOption( '
 	<channel>
 		<title><?php echo $title; ?></title>
 		<link><?php echo $link; ?></link>
-		<atom:link href="<?php echo $atom_link; ?>" rel="self" type="application/rss+xml"/>
+		<atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml"/>
 		<description><?php echo $description; ?></description>
 		<language><?php echo $language; ?></language>
 		<lastBuildDate><?php echo $last_sermon_date ? date( 'r', intval( $last_sermon_date ) ) : date( 'r' ); ?></lastBuildDate>
@@ -154,8 +168,10 @@ $subcategory      = esc_attr( ! empty( $categories[ \SermonManager::getOption( '
 				$post_image      = str_ireplace( 'https://', 'http://', ! empty( $post_image['0'] ) ? $post_image['0'] : '' );
 				$audio_duration  = get_post_meta( $post->ID, '_wpfc_sermon_duration', true ) ?: '0:00';
 				$audio_file_size = get_post_meta( $post->ID, '_wpfc_sermon_size', 'true' ) ?: 0;
-				$description     = strip_shortcodes( get_post_meta( 'sermon_description' ) );
+				$description     = strip_shortcodes( get_post_meta( $post->ID, 'sermon_description', true ) );
 				$description     = str_replace( '&nbsp;', '', \SermonManager::getOption( 'enable_podcast_html_description' ) ? stripslashes( wpautop( wp_filter_kses( $description ) ) ) : stripslashes( wp_filter_nohtml_kses( $description ) ) );
+				$date_preached   = SM_Dates::get( 'D, d M Y H:i:s +0000', null, false, false );
+				$date_published  = get_the_date( 'D, d M Y H:i:s +0000', $post->ID );
 
 				// Fix for relative audio file URLs.
 				if ( substr( $audio, 0, 1 ) === '/' ) {
@@ -178,13 +194,14 @@ $subcategory      = esc_attr( ! empty( $categories[ \SermonManager::getOption( '
 						<comments><?php comments_link_feed(); ?></comments>
 					<?php endif; ?>
 
-					<pubDate><?php echo SM_Dates::get( 'D, d M Y H:i:s +0000' ); ?></pubDate>
+					<pubDate><?php echo SermonManager::getOption( 'use_published_date' ) ? $date_published : $date_preached; ?></pubDate>
 					<dc:creator><![CDATA[<?php echo esc_html( $speaker ); ?>]]></dc:creator>
 					<?php the_category_rss( 'rss2' ); ?>
 
 					<guid isPermaLink="false"><?php the_guid(); ?></guid>
 					<description><![CDATA[<?php echo $description; ?>]]></description>
 					<content:encoded><![CDATA[<?php echo $description; ?>]]></content:encoded>
+					<itunes:summary><![CDATA[<?php echo $description; ?>]]></itunes:summary>
 
 					<itunes:author><?php echo esc_html( $speakers ); ?></itunes:author>
 					<itunes:subtitle><?php echo esc_html( $series ); ?></itunes:subtitle>

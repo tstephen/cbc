@@ -5,7 +5,7 @@ Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts
 Requires at least: 4.7.0  
 Tested up to: 4.9  
 Requires PHP: 5.3  
-Stable tag: 2.13.1  
+Stable tag: 2.14.0  
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,34 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+### 2.14.0 ###
+* Add: Finally add support for Sermon Browser bible verses
+* Change: Adjust width of Title column in admin
+* Change: Organize "Debug" (now "Advanced") settings
+* Change: Make filters' width shorter
+* Fix: Taxonomy feed URLs not picked up by Sermon Manager
+* Fix: Allow deleted imported sermons to be re-imported
+
+### 2.13.4 ###
+* Change: Update Plyr to latest
+* Fix: Small bug in media seeking URL detection
+* Fix: PHP notice when non-existing taxonomy used in feed URL
+* Fix: URL-encode atom:link in podcast feed
+
+### 2.13.3 ###
+* New: Add an option to use native player in Safari
+* Change: Revert Plyr for Safari browser
+
+### 2.13.2 ###
+* New: Add an option to show date "Published" instead of date "Preached" in feed and frontend
+* Change: Use native player in Safari
+* Change: Separate "Preached" and "Published" dates in admin view
+* Fix: Excerpt meta box not showing up
+* Fix: Fix description not showing in the podcast feed
+* Fix: Fix memory leak when site has big number of sermons
+* Fix: Use non-localized dates in the RSS feed
+* Fix: Fix issues with Sermon Browser importing
+
 ### 2.13.1 ###
 * New: Add `list_podcasts` shortcode (thanks @macbookandrew!)
 * New: Support for OceanWP theme (thanks @zSeriesGuy!)

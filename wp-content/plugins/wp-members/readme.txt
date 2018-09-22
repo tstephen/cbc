@@ -3,7 +3,7 @@ Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 3.2.0.1
+Stable tag: 3.2.3.2
 License: GPLv2
 
 The WP-Members membership plugin turns your WordPress site into a membership site. Restrict premium content, create custom registration fields, and more.
@@ -104,7 +104,7 @@ Premium priority support is available at the plugin's site [RocketGeek.com](http
 == Upgrade Notice ==
 
 WP-Members 3.2.0 is a major update. See changelog for important details. Minimum WP version is 4.0.
-WP-Members 3.2.0.1 is a minor fix for 3.2.0. See changelog.
+WP-Members 3.2.3.2 is a minor update for 3.2.3. See changelog.
 
 == Screenshots ==
 
@@ -127,11 +127,55 @@ WP-Members 3.2.0.1 is a minor fix for 3.2.0. See changelog.
 
 == Changelog ==
 
-= 3.2.0.1 =
+= 3.2.3.2 =
 
-* Fix install routine for 3.2.0 beta users.
-* Fix forgot username email (username shortcode).
-* Reapply "toggle" and a key in the email array (wpmem_email_filter). This key is still deprecated and you should being using "tag" instead, but adding it back in will allow certain filter functions using it to still work (as long as the filter is not changing the value of the key).
+* Bug fix where export functions are not loaded correctly when exporting individual users.
+
+= 3.2.3.1 =
+
+* Login with username or email address was added in 3.2.3. HOWEVER, this was intended to be a "soft launch" and the login form label "Username" was not intended to be changed. This update changes the label back to "Username" until translations can catch up and other testing has been completed. The functionality remains for login with username or email, so feel free to filter the label.
+* Implemented change in the native WP registration form processing to allow values of "0" to be interpreted as string literals. Previously could be interpreted as boolean when being saved.
+
+= 3.2.3 =
+
+* Bug fix in user export that caused usernames to be dropped.
+* Bug fix to allow admins to edit their own profile.
+* Bug fix for jquery with regards to select2, only load if products are enabled.
+* Added email API.
+* Added product attribute to [wpmem_logged_in] shortcode.
+* Added wpmem_force_ssl() API function.
+* Added wpmem_set_as_logged_in() API function.
+* Added filters to remove posts marked hidden from previous/next links.
+* Updated user login function to use WP script, facilitates login with username OR email, removes wpmem_login_fields filter, changes to wp_safe_redirect().
+* Updated password change for maintaining login state.
+* Moved wpmem_fields(), wpmem_form_label(), and wpmem_form_field() to api-forms.php.
+* Moved wpmem_user_has_role(), wpmem_user_has_meta(), wpmem_is_user_activated(), wpmem_user_data(), wpmem_update_user_role(), and wpmem_user_has_access() to api-users.php.
+* Moved wpmem_do_excerpt(), wpmem_texturize(), wpmem_get_excluded_meta(), wpmem_use_ssl(), wpmem_write_log(), wpmem_load_dropins(), wpmem_array_insert(), and wpmem_get_sub_str() to api-utilities.php.
+* Moved wpmem_wp_reserved_terms() to admin API.
+* Deprecated wpmem_check_activated() and wpmem_use_ssl().
+* Removed obsolete functions wpmem_enqueue_style(), wpmem_convert_tag(), wpmem_no_reset(), and wpmem_user_profile_multipart(). 
+* Applied wpmem_force_ssl() to stylesheet in case it needs to load securely (even if the setting is saved as http://).
+
+= 3.2.2 =
+
+* Fixed bug in 3.2.1/3.2.2 for user activation when user creates password at registration and is activated from the user profile.
+* Fixed a 3.2 upgrade issue, verifies username field is properly added to field settings array.
+* Fixed issue with user product verification where only expiration products were validated.
+* Fixed logic in form field builder so multiselect will accept a custom class. 
+* Added select2 support for setting product access in the post editor.
+* Removed duplicate API function wpmem_current_postid() (use wpmem_current_post_id()).
+* Replaced sanitize_html_class() with WP_Members_Forms::sanitize_class() so variables may contain multiple classes.
+
+= 3.2.1 =
+
+* Fixed duplicate ID in login form.
+* Fixed user profile update for excluded fields.
+* Fixed native WP registration, excluded WP-Members username field in form validation.
+* Fixed update post when block status is not changed.
+* Rebuilt user interface for post restriction metabox to make it more intuitive.
+* Changed status column in All Posts to show all block statuses, not just those opposite the default.
+* Changed "clickable" attribute for field shortcode default to false.
+* Added wpmem_user_export_header and wpmem_user_export_row filter for export.
 
 = 3.2.0 =
 

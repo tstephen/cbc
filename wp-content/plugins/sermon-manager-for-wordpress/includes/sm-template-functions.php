@@ -96,28 +96,27 @@ function render_wpfc_sorting( $args = array() ) {
 		array(
 			'className' => 'sortPreacher',
 			'taxonomy'  => 'wpfc_preacher',
-			/* Translators: %s: Preacher label (sentence case; singular) */
-			'title'     => sprintf( __( 'Filter by %s', 'sermon-manager-for-wordpress' ), \SermonManager::getOption( 'preacher_label' ) ?: 'Preacher' ),
+			'title'     => \SermonManager::getOption( 'preacher_label' ) ?: __( 'Preacher', 'sermon-manager-for-wordpress' )
 		),
 		array(
 			'className' => 'sortSeries',
 			'taxonomy'  => 'wpfc_sermon_series',
-			'title'     => __( 'Filter by Series', 'sermon-manager-for-wordpress' ),
+			'title'     => __( 'Series', 'sermon-manager-for-wordpress' ),
 		),
 		array(
 			'className' => 'sortTopics',
 			'taxonomy'  => 'wpfc_sermon_topics',
-			'title'     => __( 'Filter by Topic', 'sermon-manager-for-wordpress' ),
+			'title'     => __( 'Topic', 'sermon-manager-for-wordpress' ),
 		),
 		array(
 			'className' => 'sortBooks',
 			'taxonomy'  => 'wpfc_bible_book',
-			'title'     => __( 'Filter by Book', 'sermon-manager-for-wordpress' ),
+			'title'     => __( 'Book', 'sermon-manager-for-wordpress' ),
 		),
 		array(
 			'className' => 'sortServiceTypes',
 			'taxonomy'  => 'wpfc_service_type',
-			'title'     => __( 'Filter by Service Type', 'sermon-manager-for-wordpress' ),
+			'title'     => __( 'Service Type', 'sermon-manager-for-wordpress' ),
 		),
 	);
 
@@ -145,12 +144,32 @@ function render_wpfc_sorting( $args = array() ) {
 	);
 	$args    = $args + $default;
 
-	$content = wpfc_get_partial( 'content-sermon-filtering', array(
-		'action'             => $action,
-		'filters'            => $filters,
-		'visibility_mapping' => $visibility_mapping,
-		'args'               => $args,
-	) );
+	/**
+	 * Allows to filter filtering args.
+	 *
+	 * @since 2.13.5
+	 *
+	 * @param array $args The args.
+	 */
+	$args = apply_filters( 'sm_render_wpfc_sorting_args', $args );
+
+	/**
+	 * Allows to skip rendering of filtering completely.
+	 *
+	 * @since 2.13.5
+	 *
+	 * @param bool True to show, false to hide. Default true.
+	 */
+	if ( apply_filters( 'sm_render_wpfc_sorting', true ) ) {
+		$content = wpfc_get_partial( 'content-sermon-filtering', array(
+			'action'             => $action,
+			'filters'            => $filters,
+			'visibility_mapping' => $visibility_mapping,
+			'args'               => $args,
+		) );
+	} else {
+		$content = '';
+	}
 
 	return $content;
 }
@@ -227,15 +246,16 @@ function wpfc_sermon_description( $before = '', $after = '', $return = false ) {
 /**
  * Renders the video player.
  *
- * @param string $url  The URL of the video file.
- * @param int    $seek Allows seeking to specific second in audio file.
+ * @param string   $url  The URL of the video file.
+ * @param int|bool $seek Allows seeking to specific second in audio file. Pass an int to override auto detection or
+ *                       false to disable auto detection.
  *
  * @since 2.11.0
  * @since 2.12.3 added $seek
  *
  * @return string Video player HTML.
  */
-function wpfc_render_video( $url = '', $seek = null ) {
+function wpfc_render_video( $url = '', $seek = true ) {
 	if ( ! is_string( $url ) || trim( $url ) === '' ) {
 		return '';
 	}
@@ -265,13 +285,22 @@ function wpfc_render_video( $url = '', $seek = null ) {
 		$extra_settings   = '';
 		$output           = '';
 
-		if ( is_numeric( $seek ) ) {
+		if ( is_numeric( $seek ) || true === $seek ) {
+			if ( is_numeric( $seek ) ) {
+				$seconds = $seek;
+			} else {
+				$seconds = wpfc_get_media_url_seconds( $url );
+			}
+
 			// Sanitation just in case.
-			$extra_settings = 'data-plyr_seek=\'' . intval( $seek ) . '\'';
+			$extra_settings = 'data-plyr_seek=\'' . intval( $seconds ) . '\'';
 		}
 
+		// Remove seek from URL.
+		$url = preg_replace( '/(\?|#|&)t.*$/', '', $url );
+
 		if ( 'plyr' === $player && ( $is_youtube || $is_vimeo ) ) {
-			$output .= '<div data-type="' . ( $is_youtube ? 'youtube' : 'vimeo' ) . '" data-video-id="' . $url . '" class="wpfc-sermon-video-player video-' . ( $is_youtube ? 'youtube' : 'vimeo' ) . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '></div>';
+			$output .= '<div data-plyr-provider="' . ( $is_youtube ? 'youtube' : 'vimeo' ) . '" data-plyr-embed-id="' . $url . '" class="plyr__video-embed wpfc-sermon-video-player video-' . ( $is_youtube ? 'youtube' : 'vimeo' ) . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '></div>';
 		} else {
 			$output .= '<video controls preload="metadata" class="wpfc-sermon-video-player ' . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '>';
 			$output .= '<source src="' . $url . '">';
@@ -333,7 +362,7 @@ function wpfc_render_audio( $source = '', $seek = null ) {
 		$output = '';
 
 		$output .= '<audio controls preload="metadata" class="wpfc-sermon-player ' . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '>';
-		$output .= '<source src="' . $source . '">';
+		$output .= '<source src="' . $source . '" type="audio/mp3">';
 		$output .= '</audio>';
 	}
 

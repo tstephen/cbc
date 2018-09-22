@@ -6,6 +6,7 @@ function fifu_column() {
     add_filter('manage_posts_columns', 'fifu_column_head');
     add_filter('manage_pages_columns', 'fifu_column_head');
     add_filter('manage_edit-product_cat_columns', 'fifu_column_head');
+    fifu_column_custom_post_type();
     add_action('manage_posts_custom_column', 'fifu_column_content', 10, 2);
     add_action('manage_pages_custom_column', 'fifu_column_content', 10, 2);
     add_action('manage_product_cat_custom_column', 'fifu_cat_column_content', 10, 3);
@@ -33,3 +34,9 @@ function fifu_column_content($column, $post_id) {
         echo sprintf('<img src="%s" height="%s"/>', $url, get_option('fifu_column_height'));
     }
 }
+
+function fifu_column_custom_post_type() {
+    for ($i = 0; $i < 5; $i++)
+        add_filter('manage_edit-' . get_option('fifu_cpt' . $i) . '_columns', 'fifu_column_head');
+}
+

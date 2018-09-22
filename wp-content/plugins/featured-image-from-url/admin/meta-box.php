@@ -80,6 +80,7 @@ function fifu_save_properties($post_id) {
     /* alt */
     if (isset($_POST['fifu_input_alt'])) {
         $alt = wp_strip_all_tags($_POST['fifu_input_alt']);
+        $alt = !$alt && $url ? get_the_title() : $alt;
         fifu_update_or_delete($post_id, 'fifu_image_alt', $alt);
     }
 }
@@ -91,3 +92,4 @@ function fifu_update_or_delete($post_id, $field, $url) {
     } else
         delete_post_meta($post_id, $field, $url);
 }
+
