@@ -268,6 +268,22 @@ footer text-3 {
 }
 
 /**********************/
+  CALL TO ACTION
+/**********************/
+.cta2 {
+  font-size: 4rem !important;
+  margin: 0.5rem 35% !important;
+  padding: 0.5rem 3rem !important;
+}
+.btn.tgw {
+  background-color: #f43252;
+  color: #d8d8d8;
+}
+.btn.tgw:active, .btn.tgw:hover {
+  color: #fff;
+}
+
+/**********************/
   WP-MEMBERS OVERIDES
 /**********************/
 
