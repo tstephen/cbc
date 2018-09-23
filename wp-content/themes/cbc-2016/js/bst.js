@@ -16,6 +16,11 @@
 		jQuery('body.single-wpfc_sermon').addClass('container');
 		jQuery('body.single-wpfc_sermon #sidebar').hide();
 
+		// make cycloneslider images responsive
+		jQuery('.cycloneslider-slide img').css('height','auto')
+			.css('margin-left','auto').css('margin-right','auto')
+			.css('width','100%');
+
 		// Sermon contact form
 		jQuery('.sermon-contact:eq(0), .sermon-contact:eq(1), .sermon-contact:eq(2)').empty().append('<span class="dashicons dashicons-testimonial"></span><a class="sermon-contact-button" href="#">Ask a question or make a comment</a>');
 		jQuery('.sermon-contact:eq(0) .sermon-contact-button')
