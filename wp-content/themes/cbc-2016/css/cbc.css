@@ -180,13 +180,17 @@ nav.navbar.navbar-default.navbar-static-bottom {
   padding-top: 20px;
 }
 .h1, h1 {
-    font-size: 30px;
-    color: #0066bf;
+  font-size: 30px;
+  color: #0066bf;
 }
 .h2, h2 {
-    font-size: 26px;
+  font-size: 26px;
 }
-.h1, .h2, .h3, h1, h2, h3, .h4, h4 {
+.h3, h3 {
+  border-bottom: solid 1px #666;
+  font-size: 20px;
+}
+h1, .h1, h2, .h2 {
   border-bottom: solid 1px #C8B89E;
   color: #666;
 }
@@ -252,6 +256,7 @@ img.pull-right {
     width: 1170px;
   }
 }
+
 footer .widget_nav_menu h4 {
   border-bottom: none;
   color: #333;
