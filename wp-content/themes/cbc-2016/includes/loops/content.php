@@ -15,7 +15,7 @@ Alternatively, notice that index.php, category.php and single.php have a post_cl
     <article role="article" id="post_<?php the_ID()?>" class="type-<?php echo get_post_type( get_the_ID() ) ?>">
         <header>
             <h1><a href="<?php the_permalink(); ?>"><?php the_title()?></a></h1>
-            <?php if ( get_post_type( get_the_ID() ) != 'wpfc_sermon' ) { ?>
+            <?php if ( get_post_type( get_the_ID() ) == 'post' ) { ?>
             <h5>
               <em>
                 <span class="text-muted author">
