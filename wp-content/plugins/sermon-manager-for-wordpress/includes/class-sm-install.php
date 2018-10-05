@@ -53,6 +53,13 @@ class SM_Install {
 		'2.14.0' => array(
 			'sm_update_2140_convert_bible_verse',
 		),
+		'2.15.0' => array(
+			'sm_update_2150_audio_file_ids',
+			'sm_update_2150_audio_duration_and_size',
+		),
+		'2.15.2' => array(
+			'sm_update_2152_remove_default_image',
+		),
 	);
 
 	/**

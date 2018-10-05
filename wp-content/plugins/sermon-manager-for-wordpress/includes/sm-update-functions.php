@@ -359,3 +359,80 @@ function sm_update_2140_convert_bible_verse() {
 	// Mark it as done, backup way.
 	update_option( 'wp_sm_updater_' . __FUNCTION__ . '_done', 1 );
 }
+
+/**
+ * Removes file ID of the files where they point to external URL.
+ *
+ * Future IDs won't be saved in that scenario.
+ */
+function sm_update_2150_audio_file_ids() {
+	global $wpdb;
+
+	// All sermons.
+	$sermons = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'wpfc_sermon' ) );
+
+	foreach ( $sermons as $sermon ) {
+		$id = $sermon->ID;
+
+		$audio_id  = get_post_meta( $id, 'sermon_audio_id', true );
+		$audio_url = get_post_meta( $id, 'sermon_audio', true );
+
+		if ( $audio_url && $audio_id ) {
+			$parsed_audio_url   = parse_url( $audio_url, PHP_URL_HOST );
+			$parsed_website_url = parse_url( home_url(), PHP_URL_HOST );
+
+			if ( $parsed_audio_url !== $parsed_website_url ) {
+				update_post_meta( $id, 'sermon_audio_id', '' );
+			}
+		}
+	}
+
+	// Mark it as done, backup way.
+	update_option( 'wp_sm_updater_' . __FUNCTION__ . '_done', 1 );
+}
+
+/**
+ * Update sermon audio duration and file size.
+ */
+function sm_update_2150_audio_duration_and_size() {
+	global $wpdb;
+
+	// All sermons.
+	$sermons = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'wpfc_sermon' ) );
+
+	foreach ( $sermons as $sermon ) {
+		$id = $sermon->ID;
+
+		$audio_id = get_post_meta( $id, 'sermon_audio_id', true );
+
+		if ( $audio_id ) {
+			$attachment_data = wp_get_attachment_metadata( $audio_id );
+
+			if ( $attachment_data ) {
+				if ( isset( $attachment_data['length'] ) ) {
+					update_post_meta( $id, '_wpfc_sermon_duration', date( 'H:i:s', $attachment_data['length'] ) );
+				}
+
+				if ( isset( $attachment_data['filesize'] ) ) {
+					update_post_meta( $id, '_wpfc_sermon_size', $attachment_data['filesize'] );
+				}
+			}
+		}
+	}
+
+	// Mark it as done, backup way.
+	update_option( 'wp_sm_updater_' . __FUNCTION__ . '_done', 1 );
+}
+
+/**
+ * The default image was not right, since it looked too much link an ad, so we removed it in 2.15.2.
+ * We need to remove the option if it was already set to it.
+ */
+function sm_update_2152_remove_default_image() {
+	if ( strpos( get_option( 'sermonmanager_default_image' ), 'SermonManagerDefaultImage.jpg' ) !== false ) {
+		update_option( 'sermonmanager_default_image', '' );
+	}
+
+	// Mark it as done, backup way.
+	update_option( 'wp_sm_updater_' . __FUNCTION__ . '_done', 1 );
+}

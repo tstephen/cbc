@@ -63,12 +63,21 @@ foreach (
 	) as $taxonomy
 ) {
 	if ( isset( $_GET[ $taxonomy ] ) ) {
-		$terms               = $_GET[ $taxonomy ];
-		$args['tax_query']   = ! empty( $args['tax_query'] ) ? $args['tax_query'] : array();
+		$terms = $_GET[ $taxonomy ];
+
+		// Override the default tax_query for that taxonomy.
+		if ( ! empty( $args['tax_query'] ) ) {
+			foreach ( $args['tax_query'] as $id => $arg ) {
+				if ( $arg['taxonomy'] === $taxonomy ) {
+					unset( $args['tax_query'][ $id ] );
+				}
+			}
+		}
+
 		$args['tax_query'][] = array(
 			'taxonomy' => $taxonomy,
 			'field'    => is_numeric( $terms ) ? 'term_id' : 'slug',
-			'terms'    => is_numeric( $terms ) ? intval( $terms ) : false !== strpos( $terms, ',' ) ? array_walk( explode( ',', $terms ), 'sanitize_title' ) : sanitize_title( $terms ),
+			'terms'    => is_numeric( $terms ) ? intval( $terms ) : false !== strpos( $terms, ',' ) ? array_map( 'sanitize_title', explode( ',', $terms ) ) : sanitize_title( $terms ),
 		);
 
 		if ( count( $args['tax_query'] ) > 1 ) {
@@ -154,7 +163,8 @@ $subcategory      = esc_attr( ! empty( $categories[ \SermonManager::getOption( '
 				global $post;
 
 				$audio_id        = get_post_meta( $post->ID, 'sermon_audio_id', true );
-				$audio_url       = $audio_id ? wp_get_attachment_url( intval( $audio_id ) ) : get_post_meta( $post->ID, 'sermon_audio', true );
+				$audio_url_wp    = $audio_id ? wp_get_attachment_url( intval( $audio_id ) ) : false;
+				$audio_url       = $audio_id && $audio_url_wp ? $audio_url_wp : get_post_meta( $post->ID, 'sermon_audio', true );
 				$audio_raw       = str_ireplace( 'https://', 'http://', $audio_url );
 				$audio_p         = strrpos( $audio_raw, '/' ) + 1;
 				$audio_raw       = urldecode( $audio_raw );

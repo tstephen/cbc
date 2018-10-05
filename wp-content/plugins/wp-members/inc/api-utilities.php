@@ -16,6 +16,29 @@
  * @copyright 2006-2018
  */
 
+if ( ! function_exists( 'wpmem_securify' ) ):
+/**
+ * The Securify Content Filter.
+ *
+ * This is the primary function that picks up where wpmem() leaves off.
+ * Determines whether content is shown or hidden for both post and pages.
+ * Since 3.0, this function is a wrapper for $wpmem->do_securify().
+ *
+ * @since 2.0.0
+ * @since 3.0.0 Now a wrapper for $wpmem->do_securify().
+ * @since 3.2.4 Moved to utility API (could be deprecated).
+ *
+ * @global object $wpmem The WP-Members object class.
+ *
+ * @param  string $content Content of the current post.
+ * @return string $content Content of the current post or replaced content if post is blocked and user is not logged in.
+ */
+function wpmem_securify( $content = null ) {
+	global $wpmem;
+	return $wpmem->do_securify( $content );
+}
+endif;
+
 /**
  * Sets an array of user meta fields to be excluded from update/insert.
  *
@@ -191,4 +214,30 @@ function wpmem_array_insert( array $array, array $new, $key, $loc = 'after' ) {
 function wpmem_load_dropins() {
 	global $wpmem;
 	$wpmem->load_dropins();
+}
+
+/**
+ * Display a localized date based on the WP date format setting.
+ *
+ * @since 3.2.4
+ *
+ * @param mixed $date
+ * @return date $date
+ */
+function wpmem_format_date( $date ) {
+	$args = array(
+		'date_format' => get_option( 'date_format' ),
+		'localize'    => true,
+		'date'        => $date,
+	);
+	/**
+	 * Filter the date display and format settings.
+	 *
+	 * @since 3.2.4
+	 *
+	 * @param arrag $args
+	 */
+	$args = apply_filters( 'wpmem_format_date_args', $args );
+	$date = ( true === $args['localize'] ) ? date_i18n( $args['date_format'], strtotime( $args['date'] ) ) : date( $args['date_format'], strtotime( $args['date'] ) );
+	return $date;
 }

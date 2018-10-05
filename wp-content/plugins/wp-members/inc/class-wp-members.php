@@ -254,7 +254,7 @@ class WP_Members {
 			/**
 			 * Load installation routine.
 			 */
-			require_once( WPMEM_PATH . 'wp-members-install.php' );
+			require_once( WPMEM_PATH . 'inc/install.php' );
 			// Update settings.
 			/** This filter is documented in /inc/class-wp-members.php */
 			$settings = apply_filters( 'wpmem_settings', wpmem_do_install() );
@@ -337,7 +337,7 @@ class WP_Members {
 		add_filter( 'registration_errors',       'wpmem_wp_reg_validate', 10, 3 );             // native registration validation
 		add_filter( 'comments_open',             array( $this, 'do_securify_comments' ), 99 ); // securifies the comments
 		add_filter( 'wpmem_securify',            array( $this, 'reg_securify' ) );             // adds success message on login form if redirected
-		add_filter( 'query_vars',                array( $this, 'add_query_vars' ), 10, 2 );    // adds custom query vars
+		//add_filter( 'query_vars',                array( $this, 'add_query_vars' ), 10, 2 );           // adds custom query vars
 		add_filter( 'get_pages',                 array( $this, 'filter_get_pages' ) );
 		add_filter( 'wp_get_nav_menu_items',     array( $this, 'filter_nav_menu_items' ), null, 3 );
 		add_filter( 'get_previous_post_where',   array( $this, 'filter_get_adjacent_post_where' ) );
@@ -469,7 +469,7 @@ class WP_Members {
 		require_once( WPMEM_PATH . 'inc/dialogs.php' );
 		require_once( WPMEM_PATH . 'inc/wp-registration.php' );
 		require_once( WPMEM_PATH . 'inc/deprecated.php' );
-		require_once( WPMEM_PATH . 'inc/core.php' ); // @todo Should be deprecated, functions are obsolete. Schedule for 3.3
+		//require_once( WPMEM_PATH . 'inc/core.php' ); // @deprectated 3.2.4
 		//require_once( WPMEM_PATH . 'inc/utilities.php' ); // @deprecated 3.2.3
 		//require_once( WPMEM_PATH . 'inc/sidebar.php' ); // @deprecated 3.2.0
 		//require_once( WPMEM_PATH . 'inc/shortcodes.php' ); // @deprecated 3.2.0
@@ -1373,8 +1373,8 @@ class WP_Members {
 	 */
 	public function loginout_script() {
 		if ( is_user_logged_in() ) {
-			wp_enqueue_script(  'jquery' );
-			add_action( 'wp_footer', array( $this, 'do_loginout_script' ) );
+			wp_enqueue_script( 'jquery' );
+			add_action( 'wp_footer', array( $this, 'do_loginout_script' ), 50 );
 		}
 	}
 	
