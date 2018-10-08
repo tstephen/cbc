@@ -1,6 +1,18 @@
+</div><!-- /.container -->
+
+<div class="container-fluid" role="complimentary">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12" id="left-col" role="navigation">
+      <?php get_template_part('includes/sidebar1'); ?>
+    </div>
+    <div class="col-sm-6 col-xs-12" id="right-col" role="navigation">
+      <?php get_template_part('includes/sidebar2'); ?>
+    </div>
+  </div><!-- /.row -->
+</div>
+
 <nav class="navbar navbar-default navbar-static-bottom">
-  <div class="container-fluid">
-    <footer class="container site-footer">
+    <footer class="container-fluid site-footer">
       <div class="row">
         <?php dynamic_sidebar('footer-widget-area'); ?>
       </div>
@@ -10,7 +22,6 @@
         </div>
       </div>
     </footer>
-  </div>
 </nav>
 
 <?php wp_footer(); ?>

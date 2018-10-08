@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-	<title><?php wp_title('•', true, 'right'); bloginfo('name'); ?></title>
+	<title><?php wp_title('&#8211;', true, 'right'); bloginfo('name'); ?></title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
 </div>
 
 <nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header visible-xs">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="sr-only">Toggle navigation</span>
@@ -79,3 +79,5 @@ See also the accompanying CSS example in css/bst.css .
   </div>
 </div>
 -->
+
+<div class="container-fluid">

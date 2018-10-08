@@ -364,6 +364,9 @@ article.type-wpfc_sermon section {
   display:none;
   padding-bottom: 0;
 }
+.wpfc-sermon-inner {
+  margin: 10px 0;
+}
 .wpfc_sermon_image img {
     border-radius: 5px;
 }
@@ -376,6 +379,10 @@ article.type-wpfc_sermon section {
 }
 .wpfc_searchform button[type='submit'] {
   margin-top: -2px;
+}
+#wpfc_sermon_sorting {
+  margin: 0 !important;
+  padding: 20px 0 0 0;
 }
 
 @media print {

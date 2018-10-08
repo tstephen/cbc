@@ -11,11 +11,10 @@
 		// Forms
 		$('select, input[type=text], input[type=email], input[type=password], textarea').addClass('form-control');
 		$('input[type=submit]').addClass('btn btn-primary');
-		
-		// Add missing container to sermon manager template
-		jQuery('body.single-wpfc_sermon').addClass('container');
-		jQuery('body.single-wpfc_sermon #sidebar').hide();
 
+		// hide standard sidebar
+		jQuery('body.single-wpfc_sermon #sidebar').hide();
+		
 		// make cycloneslider images responsive
 		jQuery('.cycloneslider-slide img').css('height','auto')
 			.css('margin-left','auto').css('margin-right','auto')
