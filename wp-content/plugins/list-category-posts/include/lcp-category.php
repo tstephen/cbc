@@ -58,15 +58,32 @@ class LcpCategory{
     return $lcp_category_id;
   }
 
-  public function current_category(){
+  public function current_category($mode){
+    // Only single post pages with assigned category and
+    // category archives have a 'current category',
+    // in all other cases no posts should be returned. (#69)
     $category = get_category( get_query_var( 'cat' ) );
     if( isset( $category->errors ) && $category->errors["invalid_term"][0] == __("Empty Term.") ){
       global $post;
-      $categories = get_the_category($post->ID);
+      // Since WP 4.9 global $post is nullified in text widgets
+      // when is_singular() is false.
+      if (is_singular()) {
+        $categories = get_the_category($post->ID);
+      }
       if ( !empty($categories) ){
-        return $categories[0]->cat_ID;
+        $cats = array_map(function($cat) {
+          return $cat->cat_ID;
+        }, $categories);
+        // AND relationship
+        if ('all' === $mode) return $cats;
+        // OR relationship, default
+        if ('yes' === $mode || '' === $mode) return implode(',', $cats);
+        // Exclude current categories
+        if ('other' === $mode) return implode(',', array_map(function($cat) {
+          return "-$cat";
+        }, $cats));
       } else {
-        return;
+        return [0]; // workaround to display no posts
       }
     }
     return $category->cat_ID;
