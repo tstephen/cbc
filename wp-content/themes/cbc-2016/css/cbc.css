@@ -364,6 +364,11 @@ article.type-wpfc_sermon section {
   display:none;
   padding-bottom: 0;
 }
+.wpfc-sermon-att-audio, .wpfc-sermon-att-notes, .wpfc-sermon-bulletin {
+  font-size: 4rem;
+  margin: 1rem;
+  padding: 0.2rem;
+}
 .wpfc-sermon-inner {
   margin: 10px 0;
 }
