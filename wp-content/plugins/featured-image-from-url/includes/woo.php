@@ -1,11 +1,11 @@
 <?php
 
 function fifu_woo_zoom() {
-    return get_option('fifu_wc_zoom') == 'toggleon' ? 'inline' : 'none';
+    return fifu_is_on('fifu_wc_zoom') ? 'inline' : 'none';
 }
 
 function fifu_woo_lbox() {
-    return get_option('fifu_wc_lbox') == 'toggleon';
+    return fifu_is_on('fifu_wc_lbox');
 }
 
 function fifu_woo_theme() {

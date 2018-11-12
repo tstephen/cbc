@@ -17,7 +17,7 @@ function fifu_remove_first_image_ext($data, $postarr) {
     if (!$img)
         return $data;
 
-    if (get_option('fifu_pop_first') == 'toggleoff')
+    if (fifu_is_off('fifu_pop_first'))
         return str_replace($img, fifu_show_image($img), $data);
 
     return str_replace($img, fifu_hide_image($img), $data);
@@ -31,7 +31,7 @@ function fifu_save_properties_ext($post_id) {
 
     $url = fifu_first_url_in_content($post_id);
 
-    if ($url && get_option('fifu_get_first') == 'toggleon') {
+    if ($url && fifu_is_on('fifu_get_first')) {
         update_post_meta($post_id, 'fifu_image_url', fifu_convert($url));
         fifu_update_fake_attach_id($post_id);
     }

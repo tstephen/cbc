@@ -29,15 +29,14 @@
         <h2>Report a Bug or Suggest an Improvement</h2>
         <div class="greybox">
             Suggestions for improvement are always welcome. Just send an email to <a href="mailto:marcel@featuredimagefromurl.com">marcel@featuredimagefromurl.com</a> and your request can be available in the next release.
-            But if you want to report a bug, please provide as many details as possible such as plugin version, screenshots, JS errors on browser console, PHP errors in debug file, domain etc. 
-            The most common related problem is that the images aren't shown on public area. And in 90% of times it's caused because of errors in another plugin.
+            But if you want to report a bug, first click on <button id="opener">About</button> to get your plugin version and options. You can also attach as many details as possible such as screenshots, JS errors on browser console, PHP errors in debug file etc.
         </div>
     </div>
 
     <div class="box">
 
         <h2>Auto Set Featured Image: configuration</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Perfect for external posts, this option allows to use the first image from a post/page/product content as featured image. It will happen when you click on Publish/Update button.
         </div>
 
@@ -127,8 +126,52 @@
     </div>
 
     <div class="box">
+
+        <h2>Auto Set Image Alt/Title</h2>
+
+        <div class="greybox">
+
+            Enable the toggle below to automatically set the attibutes "alt" and "title" of an external image with the title of the post/page. It will have effect when you click on publish/update button of your post/page.
+
+        </div>
+
+        <br>
+
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <form 
+                        id="fifu_form_auto_alt" 
+                        action="javascript:void(0)" 
+                        method="post">
+                        <input 
+                            type="image" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_auto_alt" 
+                            onclick="invert('auto_alt')" 
+                            name="fifu_toggle_auto_alt" 
+                            class="<?php echo $enable_auto_alt; ?>" 
+                            value=""
+                            style="display:block">
+
+                        <input 
+                            type="hidden"
+                            id="fifu_input_auto_alt" 
+                            name="fifu_input_auto_alt" 
+                            value="" >
+                    </form>
+                </th>
+                <th>   
+                    auto set image alt/title
+                </th>
+            </tr>             
+        </table>
+
+    </div>
+
+    <div class="box">
         <h2>Custom Post Types</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Featured Image from URL is preconfigured to work with only one Custom Post Type (WooCommerce Product). But you also can use this plugin with other ones. For that, you just need to know the correct Custom Post Type names and fill the fields below. Please, let me know if you need more than 5 inputs here.
         </div>
         <br>
@@ -150,7 +193,7 @@
 
     <div class="box">
         <h2>CSS Style</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Here you can define a CSS style to be applied to all external featured images. Usage example:<br><br>
             width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 5px;
             <br><br>
@@ -197,7 +240,7 @@
 
     <div class="box">
         <h2>Fake Internal Featured Image</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Even though FIFU works fine with the most of themes/plugins, some of them are not able to show the external featured image if there is no internal featured image associated to your post/page/product. Enabling the toggle below, a symbolic empty file will be added to your Media Library as an attempt to overcome that limitation.
         </div>
         <p/>
@@ -224,7 +267,7 @@
 
     <div class="box">
         <h2>Featured Image Column</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             The plugin adds a new column "FIFU" (Featured Image from URL) to your table of posts/pages/products in admin area. Below you can choose the height (px) of the image in the column. To disable that, just uncheck "FIFU" in the Screen Options.
         </div>
         <br>
@@ -239,34 +282,73 @@
 
     <div class="box">
         <h2>Featured Image in Content</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             It will sound crazy, but some themes don't show the Featured Image on the posts or pages. If it is your case and you would like to show the Featured Image there, just enable the toggle. The Featured Image will appear at the beginning of the content, before the text.
         </div>
         <br>
-        <form 
-            id="fifu_form_content" 
-            action="javascript:void(0)" 
-            method="post">
-            <input 
-                type="image" 
-                href="javascript:void(0)" 
-                id="fifu_toggle_content" 
-                onclick="invert('content')" 
-                name="fifu_toggle_content" 
-                class="<?php echo $enable_content; ?>" 
-                value=""
-                style="display:block">
-            <input 
-                type="hidden" 
-                id="fifu_input_content" 
-                name="fifu_input_content" 
-                value="" >
-        </form>
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <form 
+                        id="fifu_form_content_page" 
+                        action="javascript:void(0)" 
+                        method="post">
+
+                        <input 
+                            type="image" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_content_page" 
+                            onclick="invert('content_page')" 
+                            name="fifu_toggle_content_page" 
+                            class="<?php echo $enable_content_page; ?>" 
+                            value=""
+                            style="display:block">
+
+                        <input 
+                            type="hidden" 
+                            id="fifu_input_content_page" 
+                            name="fifu_input_content_page" 
+                            value="" >
+                    </form>
+                </th>
+                <th>   
+                    on page
+                </th>
+            </tr> 
+            <tr>
+                <th>
+                    <form 
+                        id="fifu_form_content" 
+                        action="javascript:void(0)" 
+                        method="post">
+
+                        <input 
+                            type="image" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_content" 
+                            onclick="invert('content')" 
+                            name="fifu_toggle_content" 
+                            class="<?php echo $enable_content; ?>" 
+                            value=""
+                            style="display:block">
+
+                        <input 
+                            type="hidden" 
+                            id="fifu_input_content" 
+                            name="fifu_input_content" 
+                            value="" >
+                    </form> 
+                </th>
+                <th>   
+                    on post
+                </th>
+            </tr>            
+        </table>
     </div>
 
     <div class="box">
         <h2>Hide Featured Media</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Enable the toggle if you want to hide the external featured image/video/slider on posts/pages but keeping its visibility on home.
         </div>
         <br>
@@ -328,7 +410,7 @@
 
     <div class="box">
         <h2>Lazy Load</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Enabling this feature the images/videos won't be loaded until user scrolls to them. So it will make your home/shop load faster.
         </div>
         <br>
@@ -357,7 +439,7 @@
 
     <div class="box">
         <h2>Priority</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Enable the toggle below to prioritize the internal image rather than the external one, if both exist.
         </div>
         <br>
@@ -394,7 +476,7 @@
 
     <div class="box">
         <h2>Social Tags</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             Featured Image from URL provides social tags to share the external images on the social networks. Here you can enable/disable this feature.
         </div>
         <br>
@@ -421,7 +503,7 @@
 
     <div class="box">
         <h2>WooCommerce</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             You can disable the product lightbox and zoom here once these features are only compatible with the premium version.
         </div>
         <br>
@@ -485,7 +567,7 @@
 
     <div class="box">
         <h2>WP All Import</h2>
-        <div class="greybox" id="grad1">
+        <div class="greybox">
             You can use Featured Image from URL with WP All Import plugin. For that, use the custom field <b>fifu_image_url</b>.<br/><br/> The other custom fields supported by FIFU are listed below, in the section WP REST API > Plugin Fields.
             <br/><br/>
             <div class="greybox" id="grad2">
@@ -583,7 +665,7 @@
 
         <div id="accordionCrop">
 
-            <h3>crop images</h3> 
+            <h3>&nbsp;&nbsp;&nbspcrop images</h3> 
             <div>       
                 <input 
                     type="image" 
@@ -595,7 +677,7 @@
                 P.S.: if the crop doesn't work, use a Selector to inform where is the group of external images that you want to crop. 
             </div>
 
-            <h3>inform a Selector</h3>    
+            <h3>&nbsp;&nbsp;&nbspinform a Selector</h3>    
             <div>
                 Examples of valid selectors: <b>#</b><i>products</i> (if the element <b>id</b>="<i>products</i>"), <b>.</b><i>my-post-area</i> (if the element <b>class</b>="<i>my-post-area</i>")
                 <br>
@@ -833,7 +915,7 @@
         <div class="greybox" id="grad2">
             <b>Premium feature</b><br><br>
             <div id="accordion">
-                <h3>Do you know Flickr?</h3>
+                <h3>&nbsp;&nbsp;&nbspDo you know Flickr?</h3>
                 <div>
                     <ol>
                         <li>It's free;</li>
@@ -842,7 +924,7 @@
                         <li>Creates automatic copies of your images in <b>many different sizes.</b></li>
                     </ol>
                 </div>
-                <h3>How does Featured Image From URL take advantage of Flickr?</h3>
+                <h3>&nbsp;&nbsp;&nbspHow does Featured Image From URL take advantage of Flickr?</h3>
                 <div>
                     Smaller the images, faster your site.<br><br> So the plugin will load the images from Flickr in the exactly size your site needs.
                     And the result is...<br><br>
@@ -936,11 +1018,125 @@
     </div>
 
     <div class="box">
+
+        <h2>Shortcode (beta feature)</h2>
+
+        <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
+
+            This experimental feature allows to use a shortcode as "featured image" of posts/pages/products. Using shortcodes you are not limited to images/videos/sliders anymore. You can use any content provided by the shortcode, what could be a music, a text, a whole site etc. However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortcode content, otherwise it will be shown the regular featured image. Important: shortcodes can be not compatible with other FIFU features, such as CSS Style and Crop Image.
+
+        </div>
+
+        <br>
+
+        <table style="text-align:left">
+            <tr>
+                <th>
+                    <form 
+                        id="fifu_form_shortcode" 
+                        action="javascript:void(0)" 
+                        method="post">
+
+                        <input 
+                            type="image" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_shortcode" 
+                            onclick="javascript:void(0)" 
+                            name="fifu_toggle_shortcode" 
+                            class="toggleoff" 
+                            value=""
+                            style="display:block">
+
+                        <input 
+                            type="hidden" 
+                            id="fifu_input_shortcode" 
+                            name="fifu_input_shortcode" 
+                            value="" >
+                    </form>
+                </th>
+                <th>
+                    shortcode
+                </th>
+            </tr>
+            <tr>
+                <th>
+
+                    <form 
+                        id="fifu_form_shortcode_min_width" 
+                        action="javascript:void(0)" 
+                        method="post">
+
+                        <input id="fifu_input_shortcode_min_width" 
+                               size=1
+                               type="text" 
+                               name="fifu_input_shortcode_min_width" 
+                               value="">
+
+                        <input type="submit" value="OK" >      
+                    </form>
+                </th>
+                <th>
+                    minimum width required (px)
+                </th>
+            </tr>
+            <tr>
+                <th>
+
+                    <form 
+                        id="fifu_form_shortcode_max_height" 
+                        action="javascript:void(0)" 
+                        method="post">
+
+                        <input id="fifu_input_shortcode_max_height" 
+                               size=1
+                               type="text" 
+                               name="fifu_input_shortcode_max_height" 
+                               value="">
+
+                        <input type="submit" value="OK" >      
+                    </form>
+                </th>
+                <th>
+                    maximum height (px)
+                </th>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="box">
         <h2>Slider Settings</h2>
         <div class="greybox" id="grad2">
             <b>Premium feature</b><br><br>
             Once you have added the first external image on a post/page/product, the slider meta box will show up. Adding more external images, you have a slider and you can define its settings here.<br><br>
             <table style="text-align:left">
+                <tr>
+                    <th>
+                        <form 
+                            id="fifu_form_slider" 
+                            action="javascript:void(0)" 
+                            method="post">
+                            <input 
+                                type="image" 
+                                href="javascript:void(0)" 
+                                id="fifu_toggle_slider" 
+                                onclick="javascript:void(0)" 
+                                name="fifu_toggle_slider" 
+                                class="toggleoff" 
+                                value="">
+
+                            <input 
+                                type="hidden" 
+                                id="fifu_input_slider" 
+                                name="fifu_input_slider" 
+                                value="" >
+                        </form>
+                    </th>
+                    <th>   
+                        slider
+                    </th>
+                </tr>  
                 <tr>
                     <th>
                         <input 
@@ -1037,6 +1233,43 @@
             href="javascript:void(0)" 
             class="toggleoff" 
             value="" style="display:block">
+    </div>
+
+    <div class="box">
+
+        <h2>Video</h2>
+
+        <div class="greybox" id="grad2">
+            <b>Premium feature</b><br><br>
+
+            Enable video meta box. If you are not using videos as featured images, you can disable this feature and make your site a little faster.
+
+        </div>
+
+        <br>
+
+        <form 
+            id="fifu_form_video" 
+            action="javascript:void(0)" 
+            method="post">
+
+            <input 
+                type="image" 
+                href="javascript:void(0)" 
+                id="fifu_toggle_video" 
+                onclick="javascript:void(0)" 
+                name="fifu_toggle_video" 
+                class="toggleoff" 
+                value=""
+                style="display:block">
+
+            <input 
+                type="hidden" 
+                id="fifu_input_video" 
+                name="fifu_input_video" 
+                value="" >
+        </form>
+
     </div>
 
     <div class="box">
@@ -1338,15 +1571,42 @@
                 </form>
             </div>
             <div style="display:inline-block;top:-20px;position:relative">
-                (US$ 50 or more, please) and receive the Premium version by email within 12 hours.
+                (US$ 50 or more, please) and receive the download link and your license key by email within 12 hours. After that, you'll need to inform your domain to activate your license key and receive lifetime automatic updates.
             </div>
         </div>
     </div>
 
-    <div class="box">
-        <h2>About The Author</h2>
-        <div class="greybox">
-            Hi! I'm Marcel Jacques Machado. Graduated in Computer Science and postgraduated in Deep and Machine Learning, I work as Software Engineer for 10 years. I already worked with C, Python, Shell Script and other programming languages and technologies. Nowadays, I develop web applications in Brazil using Java. About PHP, this plugin, Featured Image From URL, has been a great pratical experience.
-        </div>
+    <div id="dialog" title="About">
+        <textarea id="bar" style="width:600px;height:500px;resize:none;" readonly>
+<?php echo get_plugin_data(FIFU_PLUGIN_DIR.'featured-image-from-url.php')['Name'] ?>:<?php echo get_plugin_data(FIFU_PLUGIN_DIR.'featured-image-from-url.php')['Version'] ?>;
+Site:<?php echo get_home_url() ?>;
+Theme:<?php echo wp_get_theme() ?>;
+WooCommerce:<?php echo class_exists('WooCommerce') ? WC()->version : '' ?>;
+Pages:<?php echo wp_count_posts('page')->publish ?>;
+Posts:<?php echo wp_count_posts('post')->publish ?>;
+Products:<?php echo wp_count_posts('product')->publish ?>;
+fifu_auto_alt:<?php echo $enable_auto_alt ?>;
+fifu_column_height:<?php echo $column_height ?>;
+fifu_content:<?php echo $enable_content ?>;
+fifu_content_page:<?php echo $enable_content_page ?>;
+fifu_cpt0:<?php echo $array_cpt[0] ?>;
+fifu_cpt1:<?php echo $array_cpt[1] ?>;
+fifu_cpt2:<?php echo $array_cpt[2] ?>;
+fifu_cpt3:<?php echo $array_cpt[3] ?>;
+fifu_cpt4:<?php echo $array_cpt[4] ?>;
+fifu_css:<?php echo $css_style ?>;
+fifu_default_url:<?php echo $default_url ?>;
+fifu_fake:<?php echo $enable_fake ?>;
+fifu_get_first:<?php echo $enable_get_first ?>;
+fifu_hide_page:<?php echo $enable_hide_page ?>;
+fifu_hide_post:<?php echo $enable_hide_post ?>;
+fifu_lazy:<?php echo $enable_lazy ?>;
+fifu_ovw_first:<?php echo $enable_ovw_first ?>;
+fifu_pop_first:<?php echo $enable_pop_first ?>;
+fifu_priority:<?php echo $enable_priority ?>;
+fifu_social:<?php echo $enable_social ?>;
+fifu_wc_lbox:<?php echo $enable_wc_lbox ?>;
+fifu_wc_zoom:<?php echo $enable_wc_zoom ?>;
+        </textarea>
     </div>
 </div>

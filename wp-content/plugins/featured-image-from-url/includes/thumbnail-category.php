@@ -20,7 +20,7 @@ function fifu_cat_add_social_tags() {
     if ($term_id)
         $description = wp_strip_all_tags(category_description($term_id));
 
-    if ($url && get_option('fifu_social') == 'toggleon')
+    if ($url && fifu_is_on('fifu_social'))
         include 'html/social.html';
 }
 

@@ -42,3 +42,15 @@ function save(formName, url) {
         }
     });
 }
+
+jQuery(function () {
+    jQuery("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: "630px",
+    });
+
+    jQuery("#opener").on("click", function () {
+        jQuery("#dialog").dialog("open");
+    });
+});

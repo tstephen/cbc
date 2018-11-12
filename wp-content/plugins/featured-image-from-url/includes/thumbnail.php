@@ -17,7 +17,7 @@ function fifu_add_social_tags() {
     $title = get_the_title($post_id);
     $description = wp_strip_all_tags(get_post_field('post_content', $post_id));
 
-    if ($url && get_option('fifu_social') == 'toggleon')
+    if ($url && fifu_is_on('fifu_social'))
         include 'html/social.html';
 }
 
@@ -29,7 +29,7 @@ function fifu_add_sirv_js() {
 }
 
 function fifu_apply_css() {
-    if (get_option('fifu_wc_lbox') == 'toggleoff')
+    if (fifu_is_off('fifu_wc_lbox'))
         echo '<style>[class$="woocommerce-product-gallery__trigger"] {display:none !important;}</style>';
 }
 
@@ -82,10 +82,7 @@ function fifu_get_html($url, $alt) {
 add_filter('the_content', 'fifu_add_to_content');
 
 function fifu_add_to_content($content) {
-    if (is_singular() && has_post_thumbnail() && get_option('fifu_content') == 'toggleon')
-        return get_the_post_thumbnail() . $content;
-    else
-        return $content;
+    return is_singular() && has_post_thumbnail() && ((is_singular('post') && fifu_is_on('fifu_content')) or ( is_singular('page') && fifu_is_on('fifu_content_page'))) ? get_the_post_thumbnail() . $content : $content;
 }
 
 add_filter('wp_get_attachment_url', 'fifu_replace_attachment_url', 10, 2);
@@ -123,7 +120,7 @@ function fifu_replace_attachment_image_src($image, $att_id) {
 }
 
 function fifu_should_hide() {
-    return ((is_singular('post') && get_option('fifu_hide_post') == 'toggleon') || (is_singular('page') && get_option('fifu_hide_page') == 'toggleon'));
+    return ((is_singular('post') && fifu_is_on('fifu_hide_post')) || (is_singular('page') && fifu_is_on('fifu_hide_page')));
 }
 
 add_filter('genesis_get_image', 'fifu_genesis_image', 10, 4);
@@ -146,13 +143,13 @@ function fifu_no_internal_image($post_id) {
 }
 
 function fifu_lazy_url($url) {
-    if (get_option('fifu_lazy') != 'toggleon' || is_ajax_call())
+    if (!fifu_is_on('fifu_lazy') || is_ajax_call())
         return 'src="' . $url . '"';
     return (is_home() || (class_exists('WooCommerce') && is_shop()) ? 'data-src="' : 'src="') . $url . '"';
 }
 
 function fifu_is_fake_disabled() {
-    return get_option('fifu_fake') == 'toggleoff';
+    return fifu_is_off('fifu_fake');
 }
 
 function fifu_has_internal_image($post_id) {
@@ -171,5 +168,6 @@ function fifu_is_in_editor() {
 }
 
 function fifu_internal_priority() {
-    return get_option('fifu_priority') == 'toggleon';
+    return fifu_is_on('fifu_priority');
 }
+

@@ -59,7 +59,7 @@ function fifu_remove_first_image($data, $postarr) {
     if (!$img)
         return $data;
 
-    if (get_option('fifu_pop_first') == 'toggleoff')
+    if (fifu_is_off('fifu_pop_first'))
         return str_replace($img, fifu_show_image($img), $data);
 
     return str_replace($img, fifu_hide_image($img), $data);
@@ -72,7 +72,7 @@ function fifu_save_properties($post_id) {
     if (isset($_POST['fifu_input_url'])) {
         $url = esc_url($_POST['fifu_input_url']);
         $first = fifu_first_url_in_content($post_id);
-        if ($first && get_option('fifu_get_first') == 'toggleon' && (!$url || get_option('fifu_ovw_first') == 'toggleon'))
+        if ($first && fifu_is_on('fifu_get_first') && (!$url || fifu_is_on('fifu_ovw_first')))
             $url = $first;
         fifu_update_or_delete($post_id, 'fifu_image_url', $url);
     }
@@ -80,7 +80,7 @@ function fifu_save_properties($post_id) {
     /* alt */
     if (isset($_POST['fifu_input_alt'])) {
         $alt = wp_strip_all_tags($_POST['fifu_input_alt']);
-        $alt = !$alt && $url ? get_the_title() : $alt;
+        $alt = !$alt && $url && fifu_is_on('fifu_auto_alt') ? get_the_title() : $alt;
         fifu_update_or_delete($post_id, 'fifu_image_alt', $alt);
     }
 }

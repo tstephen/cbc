@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variable
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variable, shortcode
 Requires at least: 4.0
 Tested up to: 4.9.8
 Stable tag: 4.9.8
@@ -44,9 +44,11 @@ Features:
 
 * all features created for external images are available for external videos from YouTube, Vimeo, Cloudinary and Tumblr. For YouTube videos, it's possible to set player parameters. And you can define the video size for each screen type (**premium feature**);
 
-* you can use a slider of images as featured image (**premium feature**);
+* you can use a slider of images as "featured image" (**premium feature**);
 
-* you can use a video thumbnail or a video as featured image (**premium feature**);
+* you can use a video thumbnail or a video as "featured image" (**premium feature**);
+
+* you can use any content provided by a shortcode as "featured image" (**premium BETA feature**);
 
 * auto set product category images, with each image being chosen among the external product images from that category (**premium feature**);
 
@@ -158,6 +160,24 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 1.9.11 =
+* About button: options report for support purposes.
+
+= 1.9.10 =
+* Shortcode (premium feature) introduced on FIFU settings.
+
+= 1.9.9 =
+* "Featured Image in Content" can be enabled/disabled for pages/posts individually now.
+
+= 1.9.8 =
+* Allows to disable auto set image Alt/Title.
+
+= 1.9.7 =
+* If jQuery is not found, get that from a CDN.
+
+= 1.9.6 =
+* Update warning.
 
 = 1.9.5 =
 * Back to the version 1.9.1.
@@ -401,6 +421,24 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 1.9.11 =
+* About button: options report for support purposes.
+
+= 1.9.10 =
+* Shortcode (premium feature) introduced on FIFU settings.
+
+= 1.9.9 =
+* "Featured Image in Content" can be enabled/disabled for pages/posts individually now.
+
+= 1.9.8 =
+* Allows to disable auto set image Alt/Title.
+
+= 1.9.7 =
+* If jQuery is not found, get that from a CDN.
+
+= 1.9.6 =
+* Update warning.
 
 = 1.9.5 =
 * Back to the version 1.9.1.
