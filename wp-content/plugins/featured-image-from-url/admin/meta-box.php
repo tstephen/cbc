@@ -11,7 +11,12 @@ function fifu_insert_meta_box() {
         get_option('fifu_cpt1'),
         get_option('fifu_cpt2'),
         get_option('fifu_cpt3'),
-        get_option('fifu_cpt4')
+        get_option('fifu_cpt4'),
+        get_option('fifu_cpt5'),
+        get_option('fifu_cpt6'),
+        get_option('fifu_cpt7'),
+        get_option('fifu_cpt8'),
+        get_option('fifu_cpt9'),
     );
 
     foreach ($post_types as $post_type) {

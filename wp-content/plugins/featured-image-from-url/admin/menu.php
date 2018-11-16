@@ -30,9 +30,11 @@ function fifu_get_menu_html() {
     $column_height = get_option('fifu_column_height');
     $enable_priority = get_option('fifu_priority');
     $enable_auto_alt = get_option('fifu_auto_alt');
+    $enable_data_generation = get_option('fifu_data_generation');
+    $enable_data_clean = get_option('fifu_data_clean');
 
     $array_cpt = array();
-    for ($x = 0; $x <= 4; $x++)
+    for ($x = 0; $x < 10; $x++)
         $array_cpt[$x] = get_option('fifu_cpt' . $x);
 
     include 'html/menu.html';
@@ -43,6 +45,11 @@ function fifu_get_menu_html() {
         fifu_enable_fake();
     else
         fifu_disable_fake();
+
+    if (fifu_is_on('fifu_data_clean')) {
+        fifu_enable_clean();
+        update_option('fifu_data_clean', 'toggleoff');
+    }
 }
 
 function fifu_get_menu_settings() {
@@ -63,8 +70,10 @@ function fifu_get_menu_settings() {
     fifu_get_setting('fifu_column_height');
     fifu_get_setting('fifu_priority');
     fifu_get_setting('fifu_auto_alt');
+    fifu_get_setting('fifu_data_generation');
+    fifu_get_setting('fifu_data_clean');
 
-    for ($x = 0; $x <= 4; $x++)
+    for ($x = 0; $x < 10; $x++)
         fifu_get_setting('fifu_cpt' . $x);
 }
 
@@ -76,7 +85,7 @@ function fifu_get_setting($type) {
             update_option($type, '');
         else if (strpos($type, "fifu_column_height") !== false)
             update_option($type, "64");
-        else if (strpos($type, "wc") !== false || strpos($type, "fifu_auto_alt") !== false)
+        else if (strpos($type, "wc") !== false || strpos($type, "fifu_data_generation") !== false || strpos($type, "fifu_auto_alt") !== false)
             update_option($type, 'toggleon');
         else
             update_option($type, 'toggleoff');
@@ -101,8 +110,10 @@ function fifu_update_menu_options() {
     fifu_update_option('fifu_input_column_height', 'fifu_column_height');
     fifu_update_option('fifu_input_priority', 'fifu_priority');
     fifu_update_option('fifu_input_auto_alt', 'fifu_auto_alt');
+    fifu_update_option('fifu_input_data_generation', 'fifu_data_generation');
+    fifu_update_option('fifu_input_data_clean', 'fifu_data_clean');
 
-    for ($x = 0; $x <= 4; $x++)
+    for ($x = 0; $x < 10; $x++)
         fifu_update_option('fifu_input_cpt' . $x, 'fifu_cpt' . $x);
 }
 
@@ -195,5 +206,40 @@ function fifu_disable_fake() {
 
     wp_delete_attachment(get_option('fifu_fake_attach_id'));
     delete_option('fifu_fake_attach_id');
+}
+
+function fifu_enable_clean() {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'postmeta';
+    $table_posts = $wpdb->prefix . 'posts';
+
+    $where = array('meta_key' => '_thumbnail_id', 'meta_value' => -1);
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_thumbnail_id', 'meta_value' => get_option('fifu_fake_attach_id'));
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_thumbnail_id', 'meta_value' => get_option('fifu_default_attach_id'));
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_product_image_gallery', 'meta_value' => -1);
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_product_image_gallery', 'meta_value' => get_option('fifu_fake_attach_id'));
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_wp_attached_file', 'meta_value' => 'Featured Image from URL');
+    $wpdb->delete($table, $where);
+
+    $where = array('meta_key' => '_wp_attached_file', 'meta_value' => 'fifu.png');
+    $wpdb->delete($table, $where);
+
+    wp_delete_attachment(get_option('fifu_fake_attach_id'));
+    wp_delete_attachment(get_option('fifu_default_attach_id'));
+    delete_option('fifu_fake_attach_id');
+    fifu_disable_fake();
+    update_option('fifu_fake', 'toggleoff');
+    update_option('fifu_fake_created', false);
 }
 

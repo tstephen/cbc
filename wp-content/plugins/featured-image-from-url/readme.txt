@@ -161,6 +161,12 @@ Features:
 
 == Changelog ==
 
+= 1.9.13 =
+* Improvement: clean meta data feature.
+
+= 1.9.12 =
+* Improvement: 10 fields for Custom Post Types.
+
 = 1.9.11 =
 * About button: options report for support purposes.
 
@@ -421,6 +427,12 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 1.9.13 =
+* Improvement: clean meta data feature.
+
+= 1.9.12 =
+* Improvement: 10 fields for Custom Post Types.
 
 = 1.9.11 =
 * About button: options report for support purposes.

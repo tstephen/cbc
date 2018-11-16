@@ -36,7 +36,7 @@ function fifu_column_content($column, $post_id) {
 }
 
 function fifu_column_custom_post_type() {
-    for ($i = 0; $i < 5; $i++)
+    for ($i = 0; $i < 10; $i++)
         add_filter('manage_edit-' . get_option('fifu_cpt' . $i) . '_columns', 'fifu_column_head');
 }
 

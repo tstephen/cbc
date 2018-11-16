@@ -36,6 +36,9 @@ function fifu_apply_css() {
 add_action('the_post', 'fifu_choose');
 
 function fifu_choose($post) {
+    if (fifu_is_off('fifu_data_generation'))
+        return;
+
     $post_id = $post->ID;
 
     $image_url = fifu_main_image_url($post_id);
