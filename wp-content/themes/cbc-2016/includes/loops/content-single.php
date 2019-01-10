@@ -10,7 +10,7 @@ The Single Posts Loop
         <header>
             <h1><?php the_title()?></h1>
             <?php if ( get_post_type( get_the_ID() ) != 'wpfc_sermon' ) { ?>
-            <h5>
+            <h5 class="no-print">
                 <em>
                     <span class="text-muted author">
                       <img class="img-rounded" src="<?php echo 'https://www.gravatar.com/avatar/'.md5( strtolower( get_the_author_meta('email') ) ).'?d='.urlencode( $default ).'&s=48'; ?>">
@@ -19,12 +19,12 @@ The Single Posts Loop
                 </em>
             </h5>
             <?php } ?>
-            <p class="text-muted" style="margin-bottom: 30px;">
+            <p class="no-print text-muted" style="margin-bottom: 30px;">
               <?php if (has_category(get_post())) { ?>
                 <i class="glyphicon glyphicon-folder-open"></i>&nbsp; <?php _e('Filed under', 'bst'); ?>: <?php the_category(', ') ?><br/>
               <?php } ?>
               <?php if (comments_open()) { ?>
-                <i class="glyphicon glyphicon-comment"></i>&nbsp; <?php _e('Comments', 'bst'); ?>: <?php comments_popup_link(__('None', 'bst'), '1', '%'); ?>
+                <i class="no-print glyphicon glyphicon-comment"></i>&nbsp; <?php _e('Comments', 'bst'); ?>: <?php comments_popup_link(__('None', 'bst'), '1', '%'); ?>
               <?php } ?>
             </p>
         </header>

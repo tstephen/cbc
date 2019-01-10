@@ -1,6 +1,6 @@
 </div><!-- /.container -->
 
-<div class="container-fluid" role="complimentary">
+<div class="no-print container-fluid" role="complimentary">
   <div class="row">
     <div class="col-sm-6 col-xs-12" id="left-col" role="navigation">
       <?php get_template_part('includes/sidebar1'); ?>
@@ -11,7 +11,7 @@
   </div><!-- /.row -->
 </div>
 
-<nav class="navbar navbar-default navbar-static-bottom">
+<nav class="no-print navbar navbar-default navbar-static-bottom">
     <footer class="container-fluid site-footer">
       <div class="row">
         <?php dynamic_sidebar('footer-widget-area'); ?>

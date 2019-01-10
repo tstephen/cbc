@@ -215,6 +215,9 @@ figcaption {
   font-style: italic;
   margin-bottom: 10px;
 }
+.img-responsive {
+  margin: 0 auto;
+}
 .pull-right figcaption {
   padding-left: 20px;
 }
@@ -223,6 +226,9 @@ figcaption {
 }
 .wp-caption .wp-caption-text {
   font-style: italic;
+}
+.preacher-table tr td:nth-child(1) {
+  text-align: right;
 }
 .pull-left img,
 img.pull-left {
@@ -375,6 +381,9 @@ article.type-wpfc_sermon section {
 .wpfc_sermon_image img {
     border-radius: 5px;
 }
+.wpfc-sermon-single-image-img {
+  max-width: 100%;
+}
 .wpfc_searchform {
   clear: both;
 }
@@ -391,6 +400,9 @@ article.type-wpfc_sermon section {
 }
 
 @media print {
+  .jp-relatedposts,
+  .robots-nocontent,
+  .sharedaddy,
   .no-print, .no-print * {
     display: none !important;
   }

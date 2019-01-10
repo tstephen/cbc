@@ -7,7 +7,6 @@
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php wp_head(); ?>
 </head>
-
 <body <?php body_class(); ?>>
 
 <!--[if lt IE 8]>
@@ -18,14 +17,14 @@
 
 <div id="pre-navbar">
   <h1>Corsham Baptist Church</h1>
-<div class="<?php echo is_user_logged_in() ? 'logout' : 'login' ?>">
+<div class="no-print <?php echo is_user_logged_in() ? 'logout' : 'login' ?>">
       <?php
         $usr = wp_get_current_user();
         if (is_user_logged_in()) {
-          ?> <a class="logout dashicons dashicons-migrate navbar-default" href="/?a=logout"></a> <?php
+          ?> <a class="no-print logout dashicons dashicons-migrate navbar-default" href="/?a=logout"></a> <?php
           echo get_avatar($usr->ID, 46);
         } else {
-          ?> <a class="login navbar-default" href="/login">Login</a> <?php
+          ?> <a class="no-print login navbar-default" href="/login">Login</a> <?php
           ?> <!--a class="register navbar-default" href="/register">Register</a--> <?php
         }
       ?>
