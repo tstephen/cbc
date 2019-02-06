@@ -1,20 +1,33 @@
 .wrap { 
-    max-width: 900px; 
+    max-width: 1000px; 
     margin: 20px 20px 20px 15px; 
 }
 
-.box { 
-    margin: 20px 0 0; 
+.header-box { 
+    margin: 25px 0 0; 
     background: #fff; 
     border: 1px solid #dbdbdb; 
     padding: 20px; 
+    padding-top: 0px;
+    border-radius: 100px 0px 0px;
+    height: 25px !important;
+}
+
+.box { 
+    margin: 25px 0 0; 
+    background: #fff; 
+    border: 1px solid #dbdbdb; 
+    padding: 20px; 
+    padding-top: 10px;
+    border-radius: 15px 50px 30px;
 }
 
 .greybox { 
     margin: 10px 0 0; 
-    background: #f9f9f9; 
+    background: #efefef;
     border: 1px solid #dbdbdb; 
     padding: 20px; 
+    border-radius: 5px 5px 5px;
 }
 
 .greybox p { 
@@ -25,12 +38,12 @@
     overflow: hidden; 
     width: 72px; 
     height: 24px; 
-    background: url("<?php echo $image_button ?>") 0 0 no-repeat; 
+    background: url("../../images/onoff.jpg") 0 0 no-repeat; 
     text-align: center !important;
 }
 
 .toggleoff { 
-    background: url("<?php echo $image_button ?>") -72px 0 no-repeat; 
+    background: url("../../images/onoff.jpg") -72px 0 no-repeat; 
 }
 
 th, td {
@@ -43,7 +56,13 @@ th {
     height: 25px;
 }
 
+.ui-widget-header {
+    background: #f9f9f9 !important;
+    border: none !important;
+    font-weight: inherit !important;
+}
+
 #grad2 {
-    border: 1px solid red;
-    border-radius: 15px;
+    border: 1px dashed red;
+    border-radius: 1px;
 }

@@ -60,7 +60,7 @@ class WP_Members_Forms {
 		$id          = ( isset( $args['id'] ) ) ? esc_attr( $args['id'] ) : esc_attr( $args['name'] );
 		$name        = esc_attr( $args['name'] );
 		$type        = esc_attr( $args['type'] );
-		$value       = maybe_unserialize( $args['value'] );
+		$value       = ( isset( $args['value']       ) ) ? maybe_unserialize( $args['value'] ) : '';
 		$compare     = ( isset( $args['compare']     ) ) ? $args['compare']     : '';
 		$class       = ( isset( $args['class']       ) ) ? $args['class']       : 'textbox';
 		$required    = ( isset( $args['required']    ) ) ? $args['required']    : false;
@@ -594,10 +594,12 @@ class WP_Members_Forms {
 				 *
 				 * @since 2.8.0
 				 * @since 3.1.7 Combined all to a single process.
+				 * @since 3.2.5 Added $tag parameter.
 				 *
 				 * @param string The raw link.
+				 * @param string $tag forgot|reg|pwdreset.
 				 */
-				$link = apply_filters( "wpmem_{$tag}_link", $value['link'] );
+				$link = apply_filters( "wpmem_{$tag}_link", $value['link'], $tag );
 				$str  = $wpmem->get_text( "{$key}_link_before" ) . '<a href="' . esc_url( $link ) . '">' . $wpmem->get_text( "{$key}_link" ) . '</a>';
 				$link_str = $args['link_before'];
 				$link_str.= ( '' != $args['link_span_before'] ) ? sprintf( $args['link_span_before'], $key ) : '';
@@ -607,11 +609,13 @@ class WP_Members_Forms {
 				 * @since 2.9.0
 				 * @since 3.0.9 Added $link parameter.
 				 * @since 3.1.7 Combined all to a single process.
+				 * @since 3.2.5 Added $tag parameter.
 				 *
 				 * @param string $str  The link HTML.
 				 * @param string $link The link.
+				 * @param string $tag  forgot|reg|pwdreset.
 				 */
-				$link_str.= apply_filters( "wpmem_{$tag}_link_str", $str, $link );
+				$link_str.= apply_filters( "wpmem_{$tag}_link_str", $str, $link, $tag );
 				$link_str.= ( '' != $args['link_span_after'] ) ? $args['link_span_after'] : '';
 				$link_str.= $args['link_after'] . $args['n'];
 				/*
@@ -620,14 +624,18 @@ class WP_Members_Forms {
 				 * page, then do not add the register link, otherwise add the link.
 				 */
 				if ( 'register' == $key ) {
-					if ( isset( $wpmem->user_pages['login'] ) && $wpmem->user_pages['login'] != '' ) {
-						$form = ( 1 == $wpmem->show_reg[ get_post_type( get_the_ID() ) ] && wpmem_current_url( true, false ) != wpmem_login_url() ) ? $form : $form . $link_str;
+					if ( ! isset( $wpmem->user_pages['register'] ) || '' == $wpmem->user_pages['register'] ) {
+						$form = $form;
 					} else {
-						global $post;
-						if ( has_shortcode( $post->post_content, 'wpmem_profile' ) ) {
-							$form = $form;
+						if ( isset( $wpmem->user_pages['login'] ) && '' != $wpmem->user_pages['login'] ) {
+							$form = ( 1 == $wpmem->show_reg[ get_post_type( get_the_ID() ) ] && wpmem_current_url( true, false ) != wpmem_login_url() ) ? $form : $form . $link_str;
 						} else {
-							$form = ( 1 == $wpmem->show_reg[ get_post_type( get_the_ID() ) ] && ! has_shortcode( $post->post_content, 'wpmem_form' ) ) ? $form : $form . $link_str;
+							global $post;
+							if ( has_shortcode( $post->post_content, 'wpmem_profile' ) ) {
+								$form = $form;
+							} else {
+								$form = ( 1 == $wpmem->show_reg[ get_post_type( get_the_ID() ) ] && ! has_shortcode( $post->post_content, 'wpmem_form' ) ) ? $form : $form . $link_str;
+							}
 						}
 					}
 				} else {
@@ -690,6 +698,7 @@ class WP_Members_Forms {
 	 *
 	 * @since 2.5.1
 	 * @since 3.1.7 Moved to forms object class as register_form().
+	 * @since 3.2.5 use_nonce now obsolete (nonce is added automatically).
 	 *
 	 * @global object $wpmem        The WP_Members object.
 	 * @global string $wpmem_regchk Used to determine if the form is in an error state.
@@ -702,9 +711,10 @@ class WP_Members_Forms {
 		
 		// Handle legacy use.
 		if ( is_array( $mixed ) ) {
-			$tag         = $mixed['tag'];
-			$heading     = $mixed['heading'];
-			$redirect_to = $mixed['redirect_to'];
+			$id          = ( isset( $mixed['id']          ) ) ? $mixed['id']          : '';
+			$tag         = ( isset( $mixed['tag']         ) ) ? $mixed['tag']         : 'new';
+			$heading     = ( isset( $mixed['heading']     ) ) ? $mixed['heading']     : '';
+			$redirect_to = ( isset( $mixed['redirect_to'] ) ) ? $mixed['redirect_to'] : '';
 		} else {
 			$tag = $mixed;
 		}
@@ -749,7 +759,6 @@ class WP_Members_Forms {
 			// Other.
 			'post_to'          => get_permalink(),
 			'strip_breaks'     => true,
-			'use_nonce'        => false,
 			'wrap_inputs'      => true,
 			'n'                => "\n",
 			't'                => "\t",
@@ -763,11 +772,13 @@ class WP_Members_Forms {
 		 * includes default tags, labels, text, and small items including various booleans.
 		 *
 		 * @since 2.9.0
+		 * @since 3.2.5 Added $id
 		 *
 		 * @param array        An array of arguments to merge with defaults. Default null.
 		 * @param string $tag  Toggle new registration or profile update. new|edit.
+		 * @param string $id   An id for the form (optional).
 		 */
-		$args = apply_filters( 'wpmem_register_form_args', '', $tag );
+		$args = apply_filters( 'wpmem_register_form_args', '', $tag, $id );
 
 		// Merge $args with defaults.
 		$args = wp_parse_args( $args, $defaults );
@@ -888,7 +899,8 @@ class WP_Members_Forms {
 						'name'     => $meta_key, 
 						'type'     => $field['type'], 
 						'value'    => $field['checked_value'], 
-						'compare'  => $val 
+						'compare'  => $val,
+						'required' => $field['required'],
 					) );
 					$input = ( $field['required'] ) ? $input . $args['req_mark'] : $input;
 
@@ -1196,7 +1208,7 @@ class WP_Members_Forms {
 		$form = $form . wpmem_inc_attribution();
 
 		// Apply nonce.
-		$form = ( defined( 'WPMEM_USE_NONCE' ) || $args['use_nonce'] ) ? wp_nonce_field( 'wpmem-validate-submit', 'wpmem-form-submit' ) . $args['n'] . $form : $form;
+		$form = wp_nonce_field( 'wpmem_reg_nonce' ) . $args['n'] . $form;
 
 		// Apply form wrapper.
 		$enctype = ( $enctype == 'multipart/form-data' ) ? ' enctype="multipart/form-data"' : '';

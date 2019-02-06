@@ -8,12 +8,12 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2018 Chad Butler
+ * Copyright (c) 2006-2019 Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @author Chad Butler
- * @copyright 2006-2018
+ * @copyright 2006-2019
  *
  * Functions Included:
  * - wpmem_do_wp_register_form
@@ -310,10 +310,6 @@ function wpmem_do_wp_newuser_form() {
  * @since 3.1.8 Added $process argument.
  */
 function wpmem_wp_register_form( $process = 'wp' ) {
-	/**
-	 * Load native WP registration functions.
-	 */
-	require_once( WPMEM_PATH . 'inc/wp-registration.php' );
 	wpmem_do_wp_register_form( $process );
 }
 

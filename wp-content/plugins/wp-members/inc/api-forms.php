@@ -4,13 +4,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2018  Chad Butler
+ * Copyright (c) 2006-2019  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP-Members API Functions
  * @author Chad Butler 
- * @copyright 2006-2018
+ * @copyright 2006-2019
  *
  * Functions included:
  *
@@ -76,8 +76,8 @@ function wpmem_register_form( $args ) {
  * @param string|array  $args {
  *     @type string  $name        (required) The field meta key.
  *     @type string  $type        (required) The field HTML type (url, email, image, file, checkbox, text, textarea, password, hidden, select, multiselect, multicheckbox, radio).
- *     @type string  $value       (required) The field's value (can be a null value).
- *     @type string  $compare     (required) Compare value.
+ *     @type string  $value       (optional) The field's value (can be a null value).
+ *     @type string  $compare     (optional) Compare value.
  *     @type string  $class       (optional) Class identifier for the field.
  *     @type boolean $required    (optional) If a value is required default: true).
  *     @type string  $delimiter   (optional) The field delimiter (pipe or comma, default: | ).
@@ -153,7 +153,7 @@ function wpmem_fields( $tag = '', $form = 'default' ) {
 		$wpmem->load_fields( $form );
 	}
 	
-	// @todo Convert tag.
+	// @todo Review for removal.
 	$tag = $wpmem->convert_tag( $tag );
 	
 	/**

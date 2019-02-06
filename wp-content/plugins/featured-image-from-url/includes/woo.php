@@ -11,3 +11,4 @@ function fifu_woo_lbox() {
 function fifu_woo_theme() {
     return file_exists(get_template_directory() . '/woocommerce');
 }
+

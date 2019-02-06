@@ -100,6 +100,7 @@ class WP_Members_User {
 			 * can be used to override a default in login_redirect.
 			 *
 			 * @since 2.7.7
+			 * @since 2.9.2 Added $user_id
 			 *
 			 * @param string $redirect_to The url to direct to.
 			 * @param int    $user->ID    The user's primary key ID.
@@ -411,7 +412,7 @@ class WP_Members_User {
 	/**
 	 * Get user data for all fields in WP-Members.
 	 *
-	 * Retrieves user data for all WP-Members fields (and WP default fiels)
+	 * Retrieves user data for all WP-Members fields (and WP default fields)
 	 * in an array keyed by WP-Members field meta keys.
 	 *
 	 * @since 3.2.0
@@ -490,6 +491,10 @@ class WP_Members_User {
 	 * Validates user access to content.
 	 *
 	 * @since 3.2.0
+	 * @todo Currently checks in this order: expiration, role, "other". If expiration product,
+	 *       and the user is current, then access is granted. This doesn't consider if the 
+	 *       user is current but does not have a required role (if BOTH an expiration and role
+	 *       product). Maybe add role checking to the expiration block if both exist.
 	 *
 	 * @global object $wpmem
 	 * @param  mixed  $product
@@ -501,26 +506,38 @@ class WP_Members_User {
 		if ( ! is_user_logged_in() ) {
 			return false;
 		}
-		$user_id = ( ! $user_id ) ? get_current_user_id() : $user_id; //echo '<pre>'; global $wpmem; print_r( $wpmem ); 
+		
+		// Product must be an array.
+		$product_array = ( ! is_array( $product ) ) ? array( $product ) : $product;
+		
+		// Current user or requested user.
+		$user_id = ( ! $user_id ) ? get_current_user_id() : $user_id;
+		
+		// Start by assuming no access.
 		$access  = false;
-		foreach ( $product as $prod ) {
+		
+		foreach ( $product_array as $prod ) {
+			$expiration_product = false;
+			$role_product = false;
 			if ( isset( $this->access[ $prod ] ) ) {
 				// Is this an expiration product?
 				if ( isset( $wpmem->membership->products[ $prod ]['expires'][0] ) && ! is_bool( $this->access[ $prod ] ) ) {
+					$expiration_product = true;
 					if ( $this->is_current( $this->access[ $prod ] ) ) {
 						$access = true;
 						break;
 					}
-				} elseif ( '' != $wpmem->membership->products[ $prod ]['role'] ) {
+				}
+				if ( '' != $wpmem->membership->products[ $prod ]['role'] ) {
+					$role_product = true;
 					if ( $this->access[ $prod ] && wpmem_user_has_role( $wpmem->membership->products[ $prod ]['role'] ) ) {
 						$access = true;
 						break;
 					}
-				} else {
-					if ( $this->access[ $prod ] ) {
-						$access = true;
-						break;
-					}
+				}
+				if ( ! $expiration_product && ! $role_product && $this->access[ $prod ] ) {
+					$access = true;
+					break;
 				}
 			}
 		}
@@ -532,11 +549,11 @@ class WP_Members_User {
 		 * @since 3.2.3 Added $product argument.
 		 *
 		 * @param  boolean $access
-		 * @param  mixed   $product
+		 * @param  array   $product
 		 * @param  integer $user_id
 		 * @param  array   $args
 		 */
-		return apply_filters( 'wpmem_user_has_access', $access, $product, $user_id );
+		return apply_filters( 'wpmem_user_has_access', $access, $product_array, $user_id );
 
 	}
 	

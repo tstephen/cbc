@@ -3,9 +3,9 @@ Contributors: wpforchurch, nikolam
 Donate link: http://wpforchurch.com/
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes
 Requires at least: 4.7.0
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.3
-Stable tag: 2.15.8
+Stable tag: 2.15.13
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,42 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+### 2.15.13 ###
+* New: Dutch translation (thanks @LeonCB!)
+* New: Add support for Dunamis theme
+* New: Add support for TwentyNineteen
+* New: Add support for ExodosWP
+* Change: Add WordPress author metabox
+* Fix: Service Type not saving in quick edit
+
+### 2.15.12 ###
+* Fix: Fatal error when saving a sermon
+* Fix: Podcast buttons shortcode has unnecessary left margin (thanks @macbookandrew!)
+
+### 2.15.11 ###
+* New: Add support for "The7" theme
+* Change: Add "sermon" order to [sermon_images] shortcode. It will order the series by newest sermon
+* Fix: Improve the speed of post saving on websites with many sermons
+* Dev: Fix terms not having sermon date set
+
+### 2.15.10 ###
+* Change: Add "include" and "exclude" parameters to the shortcode
+* Change: Add an option to force loading plugin views
+* Fix: Edge case PHP bug in feed with taxonomy
+* Fix: Notice when using shortcode
+
+### 2.15.9 ###
+* New: Add support for Hueman and Hueman Pro themes
+* New: Add support for NativeChurch theme
+* New: Add support for Betheme theme
+* Change: Add NIV to verse Bible version
+* Change: Replace series subtitle with short description in the feed
+* Change: Add "action" parameter to filtering shortcode. Possible options: "none" (default), "home", "site".
+* Change: Update Plyr to 3.4.7
+* Fix: Notice in settings after saving a field
+* Fix: Filtering arguments not working in the sermons shortcode
+* Fix: Filtering not hiding
+
 ### 2.15.8 ###
 * Dev: Add callable select options (pass function name as string)
 * Dev: Add a way to pass custom values to settings

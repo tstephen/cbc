@@ -7,13 +7,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2018  Chad Butler
+ * Copyright (c) 2006-2019  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP_Members_Shortcodes
  * @author Chad Butler 
- * @copyright 2006-2018
+ * @copyright 2006-2019
  */
 
 // Exit if accessed directly.
@@ -32,7 +32,7 @@ class WP_Members_Shortcodes {
 		 */
 		do_action( 'wpmem_load_shortcodes' );
 		
-		add_shortcode( 'wp-members',       'wpmem_shortcode'              );
+		add_shortcode( 'wp-members',       'wpmem_shortcode'              ); // This shortcode is obsolete, and the associated function is deprecated.
 		add_shortcode( 'wpmem_field',      array( $this, 'fields'       ) );
 		add_shortcode( 'wpmem_logged_in',  array( $this, 'logged_in'    ) );
 		add_shortcode( 'wpmem_logged_out', array( $this, 'logged_out'   ) );
@@ -120,7 +120,7 @@ class WP_Members_Shortcodes {
 						 * If the user is not logged in, return an error message if a login
 						 * error state exists, or return the login form.
 						 */
-						$content = ( $wpmem->regchk == 'loginfailed' ) ? wpmem_inc_loginfailed() : wpmem_inc_login( 'login', $redirect_to );
+						$content = ( $wpmem->regchk == 'loginfailed' || ( is_customize_preview() && get_theme_mod( 'show_form_message_dialog', false ) ) ) ? wpmem_inc_loginfailed() : wpmem_inc_login( 'login', $redirect_to );
 					}
 					break;
 
@@ -131,7 +131,11 @@ class WP_Members_Shortcodes {
 						 * or the default bullet links if no nested content.
 						 */
 						$content = ( $content ) ? $content : wpmem_inc_memberlinks( 'register' );
-					} else {
+					} elseif ( is_customize_preview() && get_theme_mod( 'show_form_message_dialog', false ) ) {
+						$wpmem_themsg = __( "This is a generic message to display the form message dialog in the Customizer.", 'wp-members' );
+						$content  = wpmem_inc_regmessage( $wpmem->regchk, $wpmem_themsg );
+						$content .= wpmem_inc_registration( 'new', '', $redirect_to );
+					}else {
 						if ( $wpmem->regchk == 'loginfailed' ) {
 							$content = wpmem_inc_loginfailed() . wpmem_inc_login( 'login', $redirect_to );
 							break;
@@ -279,7 +283,8 @@ class WP_Members_Shortcodes {
 				
 				// If there is a product attribute.
 				if ( isset( $atts['product'] ) ) {
-					if ( wpmem_user_has_access( 'product' ) ) {
+					// @todo What if attribute is comma separated/multiple?
+					if ( wpmem_user_has_access( $atts['product'] ) ) {
 						$do_return = true;
 					}
 				}
@@ -515,6 +520,7 @@ class WP_Members_Shortcodes {
 	 * @since 3.1.5 Added display attribute, meta key as a direct attribute, and image/file display.
 	 * @since 3.2.0 Moved to WP_Members_Shortcodes::fields().
 	 * @since 3.2.0 Added clickable attribute.
+	 * @since 3.2.5 Added label attribute.
 	 *
 	 * @global object $wpmem   The WP_Members object.
 	 * @param  array  $atts {
@@ -526,7 +532,8 @@ class WP_Members_Shortcodes {
 	 *     @type string $underscores
 	 *     @type string $display
 	 *     @type string $size
-	 *     @type string $clickable default:false
+	 *     @type string $clickable   default:false
+	 *     @type string $label       default:false
 	 * }
 	 * @param  string $content Any content passed with the shortcode (default:null).
 	 * @param  string $tag     The shortcode tag (wpmem_form).
@@ -546,25 +553,26 @@ class WP_Members_Shortcodes {
 		$user_info = get_userdata( $the_ID );
 
 		// If there is userdata.
-		if ( $user_info ) {
+		if ( $user_info && isset( $user_info->{$field} ) ) {
 
 			global $wpmem;
 			$fields = wpmem_fields();
 			$field_type = ( isset( $fields[ $field ]['type'] ) ) ? $fields[ $field ]['type'] : 'native'; // @todo Is this needed? It seems to set the type to "native" if not set.
 
-			$result = $user_info->{$field};
+			$user_info_field = ( isset( $field ) && is_object( $user_info ) ) ? $user_info->{$field} : '';
+			$result = false;
 
 			// Handle select and radio groups (have single selections).
 			if ( 'select' == $field_type || 'radio' == $field_type ) {
-				$result = ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) ? $user_info->{$field} : $fields[ $field ]['options'][ $user_info->{$field} ];
+				$result = ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) ? $user_info_field : $fields[ $field ]['options'][ $user_info_field ];
 			}
 
 			// Handle multiple select and multiple checkbox (have multiple selections).
 			if ( 'multiselect' == $field_type || 'multicheckbox' == $field_type ) {
 				if ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) {
-					$result = $user_info->{$field};
+					$result = $user_info_field;
 				} else {
-					$saved_vals = explode( $fields[ $field ]['delimiter'], $user_info->{$field} );
+					$saved_vals = explode( $fields[ $field ]['delimiter'], $user_info_field );
 					$result = ''; $x = 1;
 					foreach ( $saved_vals as $value ) {
 						$result.= ( $x > 1 ) ? ', ' : ''; $x++;
@@ -576,18 +584,18 @@ class WP_Members_Shortcodes {
 			// Handle file/image fields.
 			if ( isset( $field_type ) && ( 'file' == $field_type || 'image' == $field_type ) ) {
 				if ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) {
-					$result = $user_info->{$field};
+					$result = $user_info_field;
 				} else {
 					if ( 'file' == $field_type ) {
-						$attachment_url = wp_get_attachment_url( $user_info->{$field} );
-						$result = ( $attachment_url ) ? '<a href="' . esc_url( $attachment_url ) . '">' .  get_the_title( $user_info->{$field} ) . '</a>' : '';
+						$attachment_url = wp_get_attachment_url( $user_info_field );
+						$result = ( $attachment_url ) ? '<a href="' . esc_url( $attachment_url ) . '">' .  get_the_title( $user_info_field ) . '</a>' : '';
 					} else {
 						$size = 'thumbnail';
 						if ( isset( $atts['size'] ) ) {
 							$sizes = array( 'thumbnail', 'medium', 'large', 'full' );
 							$size  = ( ! in_array( $atts['size'], $sizes ) ) ? explode( ",", $atts['size'] ) : $atts['size'];
 						}
-						$image = wp_get_attachment_image_src( $user_info->{$field}, $size );
+						$image = wp_get_attachment_image_src( $user_info_field, $size );
 						$result = ( $image ) ? '<img src="' . esc_url( $image[0] ) . '" width="' . esc_attr( $image[1] ) . '" height="' . esc_attr( $image[2] ) . '" />' : '';
 					}
 				}
@@ -596,19 +604,22 @@ class WP_Members_Shortcodes {
 
 			// Handle line breaks for textarea fields
 			if ( isset( $field_type ) && 'textarea' == $field_type ) {
-				$result = ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) ? $user_info->{$field} : nl2br( $user_info->{$field} );
+				$result = ( isset( $atts['display'] ) && 'raw' == $atts['display'] ) ? $user_info_field : nl2br( $user_info_field );
 			}
 
 			// Handle date fields.
 			if ( isset( $field_type ) && 'date' == $field_type ) {
 				if ( isset( $atts['format'] ) ) {
 					// Formats date: https://secure.php.net/manual/en/function.date.php
-					$result = ( '' != $user_info->{$field} ) ? date( $atts['format'], strtotime( $user_info->{$field} ) ) : '';
+					$result = ( '' != $user_info_field ) ? date( $atts['format'], strtotime( $user_info_field ) ) : '';
 				} else {
 					// Formats date to whatever the WP setting is.
-					$result = ( '' != $user_info->{$field} ) ? date_i18n( get_option( 'date_format' ), strtotime( $user_info->{$field} ) ) : '';
+					$result = ( '' != $user_info_field ) ? date_i18n( get_option( 'date_format' ), strtotime( $user_info_field ) ) : '';
 				}
 			}
+			
+			// Handle all other fields.
+			$result = ( ! $result ) ? $user_info_field : $result;
 
 			// Remove underscores from value if requested (default: on).
 			if ( isset( $atts['underscores'] ) && 'off' == $atts['underscores'] && $user_info ) {
@@ -618,11 +629,22 @@ class WP_Members_Shortcodes {
 			$content = ( $content ) ? $result . $content : $result;
 			
 			// Make it clickable?
-			$content = ( isset( $atts['clickable'] ) && ( true === $atts['clickable'] || 'true' == $atts['clickable'] ) ) ? make_clickable( $content ) : $content;
-
-			return do_shortcode( $content );
+			$content = ( isset( $atts['clickable'] ) && ( true == $atts['clickable'] || 'true' == $atts['clickable'] ) ) ? make_clickable( $content ) : $content;
+		
+			// Display field label?
+			$content = ( isset( $atts['label'] ) && ( true == $atts['label'] ) ) ? $fields[ $field ]['label'] . ": " . $content : $content;
 		}
-		return;
+		/**
+		 * Filters the field shortcode before returning value.
+		 *
+		 * @since 3.2.5
+		 *
+		 * @param string $content
+		 * @param array  $atts
+		 */
+		$content = apply_filters( 'wpmem_field_shortcode', $content, $atts );
+
+		return do_shortcode( $content );
 	}
 
 	/**
@@ -643,7 +665,7 @@ class WP_Members_Shortcodes {
 	function logout( $atts, $content, $tag ) {
 			// Logout link shortcode.
 		if ( is_user_logged_in() && $tag == 'wpmem_logout' ) {
-			$link = ( isset( $atts['url'] ) ) ? add_query_arg( 'a', 'logout', $atts['url'] ) : add_query_arg( 'a', 'logout' );
+			$link = ( isset( $atts['url'] ) ) ? add_query_arg( array( 'a'=>'logout', 'redirect_to'=>$atts['url'] ) ) : add_query_arg( 'a', 'logout' );
 			$text = ( $content ) ? $content : __( 'Click here to log out.', 'wp-members' );
 			return do_shortcode( '<a href="' . esc_url( $link ) . '">' . $text . '</a>' );
 		}

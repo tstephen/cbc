@@ -167,6 +167,9 @@ class SM_Admin_Settings {
 		 * Pass any false value to `sm_clear_feed_transients` filter to skip clearing transients.
 		 */
 		if ( 'podcast' === $current_tab && apply_filters( 'sm_clear_feed_transients', true ) ) {
+			/* @noinspection SqlNoDataSourceInspection */
+
+			/* @noinspection SqlResolve */
 			$wpdb->query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE ('_transient_feed_%') OR `option_name` LIKE ('_transient_timeout_feed_%')" );
 		}
 
@@ -216,6 +219,7 @@ class SM_Admin_Settings {
 				'desc_tip'    => '',
 				'placeholder' => '',
 				'size'        => '',
+				'disabled'    => false,
 			);
 
 			// Custom attribute handling.
@@ -238,43 +242,7 @@ class SM_Admin_Settings {
 
 			// Execute a function to get the options in (multi)select if it's specified.
 			if ( isset( $value['options'] ) ) {
-				$function = false;
-				$args     = null;
-
-				if ( is_string( $value['options'] ) ) {
-					$function = $value['options'];
-				} elseif ( is_array( $value['options'] ) ) {
-					if ( count( $value['options'] ) === 1 ) {
-						foreach ( $value['options'] as $function => $args ) {
-							// Let's assume that it's a function with arguments.
-							if ( is_array( $args ) ) {
-								break;
-							}
-						}
-					}
-				}
-
-				if ( $function ) {
-					if ( function_exists( $function ) ) {
-						if ( is_array( $args ) ) {
-							$value['options'] = call_user_func_array( $function, $args );
-						} else {
-							$value['options'] = call_user_func( $function );
-						}
-
-						if ( ! is_array( $value['options'] ) ) {
-							$value['options'] = array();
-						}
-
-						if ( count( $value['options'] ) === 0 ) {
-							$value['options'] = array( 0 => '-- ' . __( 'None' ) . ' --' );
-						}
-					} else {
-						$value['options'] = array(
-							0 => __( 'Error.' ),
-						);
-					}
-				}
+				$value['options'] = self::_maybe_populate_options( $value['options'] );
 			}
 
 			// Get the value.
@@ -336,6 +304,9 @@ class SM_Admin_Settings {
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									size="<?php echo esc_attr( $value['size'] ); ?>"
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
 								<?php echo implode( ' ', $custom_attributes ); ?>
 							/> <?php echo $description; ?>
 						</td>
@@ -363,6 +334,9 @@ class SM_Admin_Settings {
 									value="<?php echo esc_attr( $option_value ); ?>"
 									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
 								<?php echo implode( ' ', $custom_attributes ); ?>
 							/>&lrm; <?php echo $description; ?>
 							<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv"
@@ -390,6 +364,9 @@ class SM_Admin_Settings {
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 								<?php echo implode( ' ', $custom_attributes ); ?>
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
 							><?php echo esc_textarea( $option_value ); ?></textarea>
 						</td>
 					</tr>
@@ -413,6 +390,9 @@ class SM_Admin_Settings {
 									class="<?php echo esc_attr( $value['class'] ); ?>"
 								<?php echo implode( ' ', $custom_attributes ); ?>
 								<?php echo ( 'multiselect' == $value['type'] ) ? 'multiple="multiple"' : ''; ?>
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
 							>
 								<?php
 								foreach ( $value['options'] as $key => $val ) {
@@ -446,7 +426,11 @@ class SM_Admin_Settings {
 							<?php echo $tooltip_html; ?>
 						</th>
 						<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ); ?>">
-							<fieldset>
+							<fieldset
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
+							>
 								<?php echo $description; ?>
 								<ul>
 									<?php
@@ -500,7 +484,11 @@ class SM_Admin_Settings {
 						<!--suppress XmlDefaultAttributeValue -->
 						<th scope="row" class="titledesc"><?php echo esc_html( $value['title'] ); ?></th>
 						<td class="forminp forminp-checkbox">
-							<fieldset>
+							<fieldset
+								<?php if ( $value['disabled'] ) : ?>
+									disabled="disabled"
+								<?php endif; ?>
+							>
 								<?php
 
 								if ( ! empty( $value['title'] ) ) {
@@ -547,6 +535,9 @@ class SM_Admin_Settings {
 										value="<?php echo esc_attr( $option_value ); ?>"
 										class="<?php echo esc_attr( $value['class'] ); ?>"
 										placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
+									<?php if ( $value['disabled'] ) : ?>
+										disabled="disabled"
+									<?php endif; ?>
 									<?php echo implode( ' ', $custom_attributes ); ?>
 								/>
 								<a
@@ -555,7 +546,8 @@ class SM_Admin_Settings {
 										class="button upload-image"
 										title="Choose Default Image">
 									<img
-											src="<?php echo admin_url(); ?>/images/media-button.png"
+											src="<?php echo admin_url( '/images/media-button.png' ); ?>"
+											alt="Upload Default Image"
 											width="15"
 											height="15"
 											class="upload_image_button"
@@ -668,6 +660,56 @@ class SM_Admin_Settings {
 	}
 
 	/**
+	 * Used to populate options field of select and multiselect fields. Calls a function if the value is string
+	 * and function exists, otherwise returns the (maybe empty) array.
+	 *
+	 * @param array|string $options The options or the function.
+	 *
+	 * @return array The options.
+	 */
+	protected static function _maybe_populate_options( $options ) {
+		$function = false;
+		$args     = null;
+
+		if ( is_string( $options ) ) {
+			$function = $options;
+		} elseif ( is_array( $options ) ) {
+			if ( count( $options ) === 1 ) {
+				foreach ( $options as $function => $args ) {
+					// Let's assume that it's a function with arguments.
+					if ( is_array( $args ) ) {
+						break;
+					}
+				}
+			} else {
+				return $options;
+			}
+		}
+
+		if ( $function && function_exists( $function ) ) {
+			if ( is_array( $args ) ) {
+				$options = call_user_func_array( $function, $args );
+			} else {
+				$options = call_user_func( $function );
+			}
+
+			if ( ! is_array( $options ) ) {
+				$options = array();
+			}
+
+			if ( count( $options ) === 0 ) {
+				$options = array( 0 => '-- ' . __( 'None' ) . ' --' );
+			}
+		} else {
+			$options = array(
+				0 => __( 'Error.' ),
+			);
+		}
+
+		return $options;
+	}
+
+	/**
 	 * Get a setting from the settings API.
 	 *
 	 * @param string $option_name The option name.
@@ -768,16 +810,7 @@ class SM_Admin_Settings {
 					$value = array_filter( array_map( 'sm_clean', (array) $raw_value ) );
 					break;
 				case 'select':
-					if ( '%pages%' === $option['options'] ) {
-						$pages             = get_pages();
-						$option['options'] = array(
-							0 => '-- ' . __( 'None', 'sermon-manager-for-wordpress' ) . ' --',
-						);
-
-						foreach ( $pages as $page ) {
-							$option['options'][ $page->ID ] = $page->post_title;
-						}
-					}
+					$option['options'] = self::_maybe_populate_options( $option['options'] );
 
 					$allowed_values = empty( $option['options'] ) ? array() : array_keys( $option['options'] );
 					if ( empty( $option['default'] ) && empty( $allowed_values ) ) {

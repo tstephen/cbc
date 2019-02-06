@@ -6,12 +6,12 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2018  Chad Butler
+ * Copyright (c) 2006-2019  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @author Chad Butler
- * @copyright 2006-2018
+ * @copyright 2006-2019
  *
  * Functions Included:
  * - wpmem_inc_loginfailed
@@ -61,8 +61,6 @@ function wpmem_inc_loginfailed() {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @todo Needs probably to pass user ID or some identifier so we can get user info without going to the post object and then get_user_by().
-	 *
 	 * @param array An array of arguments to merge with defaults.
 	 */
 	$args = apply_filters( 'wpmem_login_failed_args', '' );
@@ -80,8 +78,6 @@ function wpmem_inc_loginfailed() {
 	 * Filter the login failed dialog.
 	 *
 	 * @since 2.7.3
-	 *
-	 * @todo Needs probably to pass user ID or some identifier so we can get user info without going to the post object and then get_user_by().
 	 *
 	 * @param string $str The login failed dialog.
 	 */

@@ -6,13 +6,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2018 Chad Butler
+ * Copyright (c) 2006-2019 Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP-Members Registration Functions
  * @author Chad Butler
- * @copyright 2006-2018
+ * @copyright 2006-2019
  *
  * Functions Included:
  * - wpmem_registration
@@ -48,11 +48,9 @@ function wpmem_registration( $tag ) {
 	global $user_ID, $wpmem, $wpmem_themsg, $userdata; 
 	
 	// Check the nonce.
-	if ( defined( 'WPMEM_USE_NONCE' ) ) {
-		if ( empty( $_POST ) || ! wp_verify_nonce( $_POST['wpmem-form-submit'], 'wpmem-validate-submit' ) ) {
-			$wpmem_themsg = __( 'There was an error processing the form.', 'wp-members' );
-			return;
-		}
+	if ( empty( $_POST ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpmem_reg_nonce' ) ) {
+		$wpmem_themsg = __( 'There was an error processing the form.', 'wp-members' );
+		return;
 	}
 
 	// Is this a registration or a user profile update?

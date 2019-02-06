@@ -77,7 +77,7 @@ class SM_Settings_Debug extends SM_Settings_Page {
 			array(
 				'title'    => __( 'Theme Compatibility', 'sermon-manager-for-wordpress' ),
 				'type'     => 'checkbox',
-				'desc'     => __( 'Use alternative layout ovverride.', 'sermon-manager-for-wordpress' ),
+				'desc'     => __( 'Use alternative layout override.', 'sermon-manager-for-wordpress' ),
 				'desc_tip' => __( 'This will disable full-page layout override, and use alternative layout algorithm, which was used in very old Sermon Manager versions.', 'sermon-manager-for-wordpress' ),
 				'id'       => 'theme_compatibility',
 				'default'  => 'no',
@@ -165,6 +165,14 @@ class SM_Settings_Debug extends SM_Settings_Page {
 				'desc'     => __( 'Disable loading of Sermon Manager\'s views.', 'sermon-manager-for-wordpress' ),
 				'desc_tip' => __( 'Completely disables loading of views, including overrides. Uses whatever the theme is using. Default disabled.', 'sermon-manager-for-wordpress' ),
 				'id'       => 'disable_layouts',
+				'default'  => 'no',
+			),
+			array(
+				'title'    => __( 'Force Plugin Views', 'sermon-manager-for-wordpress' ),
+				'type'     => 'checkbox',
+				'desc'     => __( 'Force plugin views.', 'sermon-manager-for-wordpress' ),
+				'desc_tip' => __( 'Forces loading of Sermon Manager views, while overriding theme overrides.', 'sermon-manager-for-wordpress' ),
+				'id'       => 'force_layouts',
 				'default'  => 'no',
 			),
 

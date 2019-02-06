@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variable, shortcode
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variation, shortcode
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 4.9.8
+Tested up to: 5.0.3
+Stable tag: 5.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,10 +113,6 @@ Features:
 
 * There is a toggle (on/off) in Featured Image from URL settings. This functionality was added to attend some themes that didn't show the Featured Image before the content of Posts, Pages or Products.
 
-= How to use Featured Image from URL with my Custom Post Types? =
-
-* There are some text fields in Featured Image from URL settings. For now you can define there until 5 Custom Post Types. Just type the correct names and click on Submit button.
-
 == Screenshots ==
 
 1. Just fill the URL field with the image address and click on preview button.
@@ -161,8 +157,98 @@ Features:
 
 == Changelog ==
 
+= 2.2.9 =
+* Bug fix: WP All Import.
+
+= 2.2.8 =
+* Bug fix: allows URLs with special characters now.
+
+= 2.2.7 =
+* Improvement: block UI added to the menu settings.
+
+= 2.2.6 =
+* Bug fixes: menu settings, product category and default external image.
+
+= 2.2.5 =
+* New feature: settings > featured image > original size.
+
+= 2.2.4 =
+* Bug fix: conflict with internal image sizes.
+
+= 2.2.3 =
+* Improvement: URL field is added to all Custom Post Types automatically now.
+
+= 2.2.2 =
+* Bug fix: support dialog (click here button).
+
+= 2.2.1 =
+* Improvement: supports URLs up to 2048 characters now.
+
+= 2.2.0 =
+* Improvement: hide inconvenient notices from other plugins/themes in FIFU settings.
+
+= 2.1.9 =
+* Improvement: new menu of settings.
+
+= 2.1.8 =
+* Bug fix: product category.
+
+= 2.1.7 =
+* Improvement: WP All Import usage example.
+
+= 2.1.6 =
+* Bug fixes: product category; clean metadata; style issues.
+
+= 2.1.5 =
+* Bug fix: parse error on menu.html; Style issue: Gutemberg + Meta Box; Improvement (Premium): integration with Product Variation + WooCommerce Rest API + Product Image Gallery.
+
+= 2.1.4 =
+* Improvement: now FIFU can generate/remove all the fake internal featured images in a few seconds, even if you have thousands of products/posts.
+
+= 2.1.3 =
+* Bug fixes: parse error, featured image not shown on WooCommerce column.
+
+= 2.1.2 =
+* Bug fix: parse error on util.php
+
+= 2.1.1 =
+* Deprecated: WooCommerce Theme Support feature.
+
+= 2.1.0 =
+* Bug fix: about button.
+
+= 2.0.9 =
+* Improvement: allows to show/hide the WooCommerce category image on category page, before the product grid.
+
+= 2.0.8 =
+* Bug fix: stop button for fake internal featured image process.
+
+= 2.0.7 =
+* Improvement: stop button for fake internal featured image process.
+
+= 2.0.6 =
+* Bug fix: fake internal featured image.
+
+= 2.0.5 =
+* Compatibility with WordPress 5.
+
+= 2.0.4 =
+* New Fake Internal Featured Image enabled by default.
+
+= 2.0.3 =
+* FIFU 2 released.
+
+= 2.0.2 =
+* Bug fix: priority feature.
+
+= 2.0.1 =
+* Bug fix: lazy load.
+
+= 2.0.0 =
+* Beta Version (NOT STABLE): a lot of changes were done to overcome some old known issues in FIFU 1, such as problems in image sizes or images that were not shown in some areas, including WooCommerce lightbox and categories. Fake Internal Featured Image and Default External Featured Image features have changed. And Default Width was created.
+
 = 1.9.13 =
-* Improvement: clean meta data feature.
+* Improvement: clean metadata feature.
 
 = 1.9.12 =
 * Improvement: 10 fields for Custom Post Types.
@@ -428,8 +514,98 @@ was removed. To finish, a Premium version is now been presented.
 
 == Upgrade Notice ==
 
+= 2.2.9 =
+* Bug fix: WP All Import.
+
+= 2.2.8 =
+* Bug fix: allows URLs with special characters now.
+
+= 2.2.7 =
+* Improvement: block UI added to the menu settings.
+
+= 2.2.6 =
+* Bug fixes: menu settings, product category and default external image.
+
+= 2.2.5 =
+* New feature: settings > featured image > original size.
+
+= 2.2.4 =
+* Bug fix: conflict with internal image sizes.
+
+= 2.2.3 =
+* Improvement: URL field is added to all Custom Post Types automatically now.
+
+= 2.2.2 =
+* Bug fix: support dialog (click here button).
+
+= 2.2.1 =
+* Improvement: supports URLs up to 2048 characters now.
+
+= 2.2.0 =
+* Improvement: hide inconvenient notices from other plugins/themes in FIFU settings.
+
+= 2.1.9 =
+* Improvement: new menu of settings.
+
+= 2.1.8 =
+* Bug fix: product category.
+
+= 2.1.7 =
+* Improvement: WP All Import usage example.
+
+= 2.1.6 =
+* Bug fixes: product category; clean metadata; style issues.
+
+= 2.1.5 =
+* Bug fix: parse error on menu.html; Style issue: Gutemberg + Meta Box; Improvement (Premium): integration with Product Variation + WooCommerce Rest API + Product Image Gallery.
+
+= 2.1.4 =
+* Improvement: now FIFU can generate/remove all the fake internal featured images in a few seconds, even if you have thousands of products/posts.
+
+= 2.1.3 =
+* Bug fixes: parse error, featured image not shown on WooCommerce column.
+
+= 2.1.2 =
+* Bug fix: parse error on util.php
+
+= 2.1.1 =
+* Deprecated: WooCommerce Theme Support feature.
+
+= 2.1.0 =
+* Bug fix: about button.
+
+= 2.0.9 =
+* Improvement: allows to show/hide the WooCommerce category image on category page, before the product grid.
+
+= 2.0.8 =
+* Bug fix: stop button for fake internal featured image process.
+
+= 2.0.7 =
+* Improvement: stop button for fake internal featured image process.
+
+= 2.0.6 =
+* Bug fix: fake internal featured image.
+
+= 2.0.5 =
+* Compatibility with WordPress 5.
+
+= 2.0.4 =
+* New Fake Internal Featured Image enabled by default.
+
+= 2.0.3 =
+* FIFU 2 released.
+
+= 2.0.2 =
+* Bug fix: priority feature.
+
+= 2.0.1 =
+* Bug fix: lazy load.
+
+= 2.0.0 =
+* Beta Version (NOT STABLE): a lot of changes were done to overcome some old known issues in FIFU 1, such as problems in image sizes or images that were not shown in some areas, including WooCommerce lightbox and categories. Fake Internal Featured Image and Default External Featured Image features have changed. And Default Width was created.
+
 = 1.9.13 =
-* Improvement: clean meta data feature.
+* Improvement: clean metadata feature.
 
 = 1.9.12 =
 * Improvement: 10 fields for Custom Post Types.

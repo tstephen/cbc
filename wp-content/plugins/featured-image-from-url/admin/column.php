@@ -9,7 +9,7 @@ function fifu_column() {
     fifu_column_custom_post_type();
     add_action('manage_posts_custom_column', 'fifu_column_content', 10, 2);
     add_action('manage_pages_custom_column', 'fifu_column_content', 10, 2);
-    add_action('manage_product_cat_custom_column', 'fifu_cat_column_content', 10, 3);
+    add_action('manage_product_cat_custom_column', 'fifu_ctgr_column_content', 10, 3);
 }
 
 function fifu_column_head($default) {
@@ -17,7 +17,7 @@ function fifu_column_head($default) {
     return $default;
 }
 
-function fifu_cat_column_content($internal_image, $column, $term_id) {
+function fifu_ctgr_column_content($internal_image, $column, $term_id) {
     if ($column == 'featured_image') {
         $url = get_term_meta($term_id, 'fifu_image_url', true);
         if ($url != '')
@@ -36,7 +36,7 @@ function fifu_column_content($column, $post_id) {
 }
 
 function fifu_column_custom_post_type() {
-    for ($i = 0; $i < 10; $i++)
-        add_filter('manage_edit-' . get_option('fifu_cpt' . $i) . '_columns', 'fifu_column_head');
+    foreach (fifu_get_post_types() as $post_type)
+        add_filter('manage_edit-' . $post_type . '_columns', 'fifu_column_head');
 }
 

@@ -323,6 +323,7 @@ class WP_Members {
 		add_action( 'login_enqueue_scripts', 'wpmem_wplogin_stylesheet' ); // styles the native registration
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_style' ) );  // Enqueues the stylesheet.
 		add_action( 'wp_enqueue_scripts',    array( $this, 'loginout_script' ) );
+		add_action( 'init',                  array( $this, 'load_textdomain' ) ); //add_action( 'plugins_loaded', 'wpmem_load_textdomain' );
 		add_action( 'init',                  array( $this->membership, 'add_cpt' ), 0 ); // Adds membership plans custom post type.
 		add_action( 'wpmem_pwd_change',      array( $this->user, 'set_password' ), 9, 2 );
 		add_action( 'wpmem_pwd_change',      array( $this->user, 'set_as_logged_in' ), 10 );
@@ -453,13 +454,14 @@ class WP_Members {
 		}
 		
 		require_once( WPMEM_PATH . 'inc/class-wp-members-api.php' );
-		require_once( WPMEM_PATH . 'inc/class-wp-members-user.php' );
 		require_once( WPMEM_PATH . 'inc/class-wp-members-email.php' );
 		require_once( WPMEM_PATH . 'inc/class-wp-members-forms.php' );
 		require_once( WPMEM_PATH . 'inc/class-wp-members-menus.php' );
-		require_once( WPMEM_PATH . 'inc/class-wp-members-widget.php' );
 		require_once( WPMEM_PATH . 'inc/class-wp-members-products.php' );
 		require_once( WPMEM_PATH . 'inc/class-wp-members-shortcodes.php' );
+		require_once( WPMEM_PATH . 'inc/class-wp-members-user.php' );
+		require_once( WPMEM_PATH . 'inc/class-wp-members-user-profile.php' );
+		require_once( WPMEM_PATH . 'inc/class-wp-members-widget.php' );
 		require_once( WPMEM_PATH . 'inc/api.php' );
 		require_once( WPMEM_PATH . 'inc/api-email.php' );
 		require_once( WPMEM_PATH . 'inc/api-forms.php' );
@@ -922,29 +924,25 @@ class WP_Members {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @global object $wpmem
 	 * @return array  $hidden
 	 */
 	function get_hidden_posts() {
-		global $wpmem;
 		$hidden = array();
-		// @todo This should really be either a transient, or an array of
-		// post IDs should be updated anytime a post is saved/updated.
 		if ( ! is_admin() && ( ! is_user_logged_in() ) ) {
 			$hidden = $this->hidden_posts();
 		}
-
-		// @todo Separate query here to check. If the user IS logged in, check what posts they DON'T have access to.
-		if ( ! is_admin() && is_user_logged_in() && 1 == $wpmem->enable_products ) {
+		// @todo Possibly separate query here to check. If the user IS logged in, check what posts they DON'T have access to.
+		if ( ! is_admin() && is_user_logged_in() && 1 == $this->enable_products ) { 
 			// Get user product access.
-			// @todo This should certainly be a transient stored in the user object.
-			foreach ( $wpmem->membership->products as $key => $value ) {
-				if ( ! isset( $wpmem->user->access[ $key ] ) || ! $wpmem->user->is_current( $wpmem->user->access[ $key ] ) ) {
-					$hidden_posts = $this->hidden_posts();
-					$hidden_posts = ( is_array( $hidden_posts ) ) ? $hidden_posts : array();
-					foreach ( $hidden_posts as $post_id ) {
-						if ( 1 == get_post_meta( $post_id, $wpmem->membership->post_stem . $key, true ) ) {
-							$hidden[] = $post_id;
+			// @todo This maybe should be a transient stored in the user object.
+			$hidden = $this->hidden_posts();
+			$hidden = ( is_array( $hidden ) ) ? $hidden : array();
+			foreach ( $this->membership->products as $key => $value ) {
+				if ( isset( $this->user->access[ $key ] ) && ( true === $this->user->access[ $key ] || $this->user->is_current( $this->user->access[ $key ] ) ) ) {
+					foreach ( $hidden as $post_id ) {
+						if ( 1 == get_post_meta( $post_id, $this->membership->post_stem . $key, true ) ) {
+							$hidden_key = array_search( $post_id, $hidden );
+    						unset( $hidden[ $hidden_key ] );	
 						}
 					}
 				}
@@ -1198,13 +1196,14 @@ class WP_Members {
 		);
 		
 		/*
-		 * Strings to be added in a future version, included so they will
-		 * be in the translation template ahead of time.
-		 * @todo Remove this once these strings have been officially included.
+		 * Strings to be added or removed in future versions, included so they will
+		 * be in the translation template.
+		 * @todo Check whether any of these should be removed.
 		 */
 		$benign_strings = array(
 			__( 'No fields selected for deletion', 'wp-members' ),
 			__( 'Username or Email', 'wp-members' ),
+			__( 'You are not logged in.', 'wp-members' ), // Technically removed 3.5
 		);
 	
 		$defaults = array(
@@ -1289,8 +1288,8 @@ class WP_Members {
 			'sb_status'            => __( 'You are logged in as %s', 'wp-members' ),
 			'sb_logout'            => __( 'click here to log out', 'wp-members' ),
 			'sb_login_failed'      => __( 'Login Failed!<br />You entered an invalid username or password.', 'wp-members' ),
-			'sb_not_logged_in'     => __( 'You are not logged in.', 'wp-members' ),
-			'sb_login_username'    => __( 'Username', 'wp-members' ),
+			'sb_not_logged_in'     => '',
+			'sb_login_username'    => __( 'Username or Email', 'wp-members' ),
 			'sb_login_password'    => __( 'Password', 'wp-members' ),
 			'sb_login_button'      => __( 'log in', 'wp-members' ),
 			'sb_login_forgot'      => __( 'Forgot?', 'wp-members' ),
@@ -1414,6 +1413,14 @@ class WP_Members {
 			'transport'  => 'refresh',
 		) );
 
+		// Add settings for output description
+		$wp_customize->add_setting( 'show_form_message_dialog', array(
+			'default'    => '1',
+			'type'       => 'theme_mod', //'option'
+			'capability' => 'edit_theme_options',
+			'transport'  => 'refresh',
+		) );
+
 		// Add control and output for select field
 		$wp_customize->add_control( 'show_form_logged_out', array(
 			'label'      => __( 'Show forms as logged out', 'wp-members' ),
@@ -1421,6 +1428,15 @@ class WP_Members {
 			'settings'   => 'show_logged_out_state',
 			'type'       => 'checkbox',
 			'std'        => '1'
+		) );
+		
+		// Add control for showing dialog
+		$wp_customize->add_control( 'show_form_dialog', array(
+			'label'      => __( 'Show form message dialog', 'wp-members' ),
+			'section'    => 'wp_members',
+			'settings'   => 'show_form_message_dialog',
+			'type'       => 'checkbox',
+			'std'        => '0'
 		) );
 	}
 
@@ -1473,6 +1489,7 @@ class WP_Members {
 	 *
 	 * @since 2.6
 	 * @since 3.2.3 Moved to WP_Members class.
+	 * @since 3.2.5 Check if post object exists.
 	 *
 	 * @global object $post  The post object.
 	 * @global object $wpmem The WP_Members object.
@@ -1483,88 +1500,96 @@ class WP_Members {
 	function do_excerpt( $content ) {
 
 		global $post, $more, $wpmem;
+		
+		if ( is_object( $post ) ) {
+			
+			$post_id   = $post->ID;
+			$post_type = $post->post_type;
 
-		$autoex = ( isset( $wpmem->autoex[ $post->post_type ] ) && 1 == $wpmem->autoex[ $post->post_type ]['enabled'] ) ? $wpmem->autoex[ $post->post_type ] : false;
+			$autoex = ( isset( $wpmem->autoex[ $post->post_type ] ) && 1 == $wpmem->autoex[ $post->post_type ]['enabled'] ) ? $wpmem->autoex[ $post->post_type ] : false;
 
-		// Is there already a 'more' link in the content?
-		$has_more_link = ( stristr( $content, 'class="more-link"' ) ) ? true : false;
+			// Is there already a 'more' link in the content?
+			$has_more_link = ( stristr( $content, 'class="more-link"' ) ) ? true : false;
 
-		// If auto_ex is on.
-		if ( $autoex ) {
+			// If auto_ex is on.
+			if ( $autoex ) {
 
-			// Build an excerpt if one does not exist.
-			if ( ! $has_more_link ) {
+				// Build an excerpt if one does not exist.
+				if ( ! $has_more_link ) {
 
-				$is_singular = ( is_singular( $post->post_type ) ) ? true : false;
+					$is_singular = ( is_singular( $post->post_type ) ) ? true : false;
 
-				if ( $is_singular ) {
-					// If it's a single post, we don't need the 'more' link.
-					$more_link_text = '';
-					$more_link      = '';
-				} else {
-					// The default $more_link_text.
-					if ( isset( $wpmem->autoex[ $post->post_type ]['text'] ) && '' != $wpmem->autoex[ $post->post_type ]['text'] ) {
-						$more_link_text = __( $wpmem->autoex[ $post->post_type ]['text'], 'wp-members' );
+					if ( $is_singular ) {
+						// If it's a single post, we don't need the 'more' link.
+						$more_link_text = '';
+						$more_link      = '';
 					} else {
-						$more_link_text = __( '(more&hellip;)' );
+						// The default $more_link_text.
+						if ( isset( $wpmem->autoex[ $post->post_type ]['text'] ) && '' != $wpmem->autoex[ $post->post_type ]['text'] ) {
+							$more_link_text = __( $wpmem->autoex[ $post->post_type ]['text'], 'wp-members' );
+						} else {
+							$more_link_text = __( '(more&hellip;)' );
+						}
+						// The default $more_link.
+						$more_link = ' <a href="'. get_permalink( $post->ID ) . '" class="more-link">' . $more_link_text . '</a>';
 					}
-					// The default $more_link.
-					$more_link = ' <a href="'. get_permalink( $post->ID ) . '" class="more-link">' . $more_link_text . '</a>';
-				}
 
-				// Apply the_content_more_link filter if one exists (will match up all 'more' link text).
-				/** This filter is documented in /wp-includes/post-template.php */
-				$more_link = apply_filters( 'the_content_more_link', $more_link, $more_link_text );
+					// Apply the_content_more_link filter if one exists (will match up all 'more' link text).
+					/** This filter is documented in /wp-includes/post-template.php */
+					$more_link = apply_filters( 'the_content_more_link', $more_link, $more_link_text );
 
-				$defaults = array(
-					'length'           => $autoex['length'],
-					'more_link'        => $more_link,
-					'blocked_only'     => false,
-				);
-				/**
-				 * Filter auto excerpt defaults.
-				 *
-				 * @since 3.0.9
-				 * @since 3.1.5 Deprecated add_ellipsis, strip_tags, close_tags, parse_shortcodes, strip_shortcodes.
-				 *
-				 * @param array {
-				 *     An array of settings to override the function defaults.
-				 *
-				 *     @type int         $length           The default length of the excerpt.
-				 *     @type string      $more_link        The more link HTML.
-				 *     @type boolean     $blocked_only     Run autoexcerpt only on blocked content. default: false.
-				 * }
-				 * @param string $post->ID        The post ID.
-				 * @param string $post->post_type The content's post type.					 
-				 */
-				$args = apply_filters( 'wpmem_auto_excerpt_args', '', $post->ID, $post->post_type );
+					$defaults = array(
+						'length'           => $autoex['length'],
+						'more_link'        => $more_link,
+						'blocked_only'     => false,
+					);
+					/**
+					 * Filter auto excerpt defaults.
+					 *
+					 * @since 3.0.9
+					 * @since 3.1.5 Deprecated add_ellipsis, strip_tags, close_tags, parse_shortcodes, strip_shortcodes.
+					 *
+					 * @param array {
+					 *     An array of settings to override the function defaults.
+					 *
+					 *     @type int         $length           The default length of the excerpt.
+					 *     @type string      $more_link        The more link HTML.
+					 *     @type boolean     $blocked_only     Run autoexcerpt only on blocked content. default: false.
+					 * }
+					 * @param string $post->ID        The post ID.
+					 * @param string $post->post_type The content's post type.					 
+					 */
+					$args = apply_filters( 'wpmem_auto_excerpt_args', '', $post->ID, $post->post_type );
 
-				// Merge settings.
-				$args = wp_parse_args( $args, $defaults );
+					// Merge settings.
+					$args = wp_parse_args( $args, $defaults );
 
-				// Are we only excerpting blocked content?
-				if ( $args['blocked_only'] ) {
-					$post_meta = get_post_meta( $post->ID, '_wpmem_block', true );
-					if ( 1 == $wpmem->block[ $post->post_type ] ) {
-						// Post type is blocked, if post meta unblocks it, don't do excerpt.
-						$do_excerpt = ( "0" == $post_meta ) ? false : true;
+					// Are we only excerpting blocked content?
+					if ( $args['blocked_only'] ) {
+						$post_meta = get_post_meta( $post->ID, '_wpmem_block', true );
+						if ( 1 == $wpmem->block[ $post->post_type ] ) {
+							// Post type is blocked, if post meta unblocks it, don't do excerpt.
+							$do_excerpt = ( "0" == $post_meta ) ? false : true;
+						} else {
+							// Post type is unblocked, if post meta blocks it, do excerpt.
+							$do_excerpt = ( "1" == $post_meta ) ? true : false;
+						} 
 					} else {
-						// Post type is unblocked, if post meta blocks it, do excerpt.
-						$do_excerpt = ( "1" == $post_meta ) ? true : false;
-					} 
-				} else {
-					$do_excerpt = true;
-				}
+						$do_excerpt = true;
+					}
 
-				if ( $do_excerpt ) {
-					$content = wp_trim_words( $content, $args['length'], $args['more_link'] );
-					// Check if the more link was added (note: singular has no more_link):
-					if ( ! $is_singular && ! strpos( $content, $args['more_link'] ) ) {
-						$content = $content . $args['more_link'];
+					if ( $do_excerpt ) {
+						$content = wp_trim_words( $content, $args['length'], $args['more_link'] );
+						// Check if the more link was added (note: singular has no more_link):
+						if ( ! $is_singular && ! strpos( $content, $args['more_link'] ) ) {
+							$content = $content . $args['more_link'];
+						}
 					}
 				}
-
 			}
+		} else {
+			$post_id   = false;
+			$post_type = false;
 		}
 
 		/**
@@ -1572,12 +1597,13 @@ class WP_Members {
 		 *
 		 * @since 2.8.1
 		 * @since 3.0.9 Added post ID and post type parameters.
+		 * @since 3.2.5 Post ID and post type may be false if there is no post object.
 		 * 
-		 * @param string $content         The content excerpt.
-		 * @param string $post->ID        The post ID.
-		 * @param string $post->post_type The content's post type.
+		 * @param string $content   The content excerpt.
+		 * @param string $post_id   The post ID.
+		 * @param string $post_type The content's post type.
 		 */
-		$content = apply_filters( 'wpmem_auto_excerpt', $content, $post->ID, $post->post_type );
+		$content = apply_filters( 'wpmem_auto_excerpt', $content, $post_id, $post_type );
 
 		// Return the excerpt.
 		return $content;
@@ -1621,6 +1647,69 @@ class WP_Members {
 				break;
 		}
 		return $tag;
+	}
+
+	/**
+	 * Loads translation files.
+	 *
+	 * @since 3.0.0
+	 * @since 3.2.5 Moved to main object, dropped wpmem_ stem.
+	 */
+	function load_textdomain() {
+
+		// @see: https://ulrich.pogson.ch/load-theme-plugin-translations for notes on changes.
+
+		// Plugin textdomain.
+		$domain = 'wp-members';
+
+		// Wordpress locale.
+		/** This filter is documented in wp-includes/l10n.php */
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+
+		/**
+		 * Filter translation file.
+		 *
+		 * If the translate.wordpress.org language pack is available, it will
+		 * be /wp-content/languages/plugins/wp-members-{locale}.mo by default.
+		 * You can filter this if you want to load a language pack from a
+		 * different location (or different file name).
+		 *
+		 * @since 3.0.0
+		 * @since 3.2.0 Added locale as a parameter.
+		 *
+		 * @param string $file   The translation file to load.
+		 * @param string $locale The current locale.
+		 */
+		$file = apply_filters( 'wpmem_localization_file', trailingslashit( WP_LANG_DIR ) . 'plugins/' . $domain . '-' . $locale . '.mo', $locale );
+
+		$loaded = load_textdomain( $domain, $file );
+		if ( $loaded ) {
+			return $loaded;
+		} else {
+
+			/*
+			 * If there is no wordpress.org language pack or the filtered
+			 * language file does not load, $loaded will be false and will
+			 * end up here to attempt to load one of the legacy language
+			 * packs. Note that the legacy language files are no longer
+			 * actively maintained and may not contain all strings.
+			 * The directory that the file will load from can be changed
+			 * using the wpmem_localization_dir filter.
+			 */
+
+			/**
+			 * Filter translation directory.
+			 *
+			 * @since 3.0.3
+			 * @since 3.2.0 Added locale as a parameter.
+			 *
+			 * @param string $dir    The translation directory.
+			 * @param string $locale The current locale.
+			 */
+			$dir = apply_filters( 'wpmem_localization_dir', dirname( plugin_basename( __FILE__ ) ) . '/lang/', $locale );
+			load_plugin_textdomain( $domain, FALSE, $dir );
+		}
+		return;
 	}
 
 } // End of WP_Members class.

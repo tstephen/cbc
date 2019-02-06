@@ -403,7 +403,7 @@ class SM_Shortcodes {
 	 *
 	 * @type string $atts ['display'] The taxonomy, possible options: series, preachers.
 	 * @type string $atts ['order'] Sorting order, possible options: ASC, DESC.
-	 * @type string $atts ['ordrerby'] Possible options: id, count, name, slug, term_group, none.
+	 * @type string $atts ['ordrerby'] Possible options: id, count, name, slug, term_group, sermon (or date), none.
 	 * @type string $atts ['size'] Possible options: sermon_small, sermon_medium, sermon_wide, thumbnail, medium,
 	 *       large, full, or any size added with add_image_size().
 	 * @type bool   $atts ['hide_title'] Should we hide title, default false.
@@ -459,14 +459,25 @@ class SM_Shortcodes {
 			return '<strong>Error: Invalid "list" parameter.</strong><br> Possible values are: "series", "preachers", "topics" and "books".<br> You entered: "<em>' . $args['display'] . '</em>"';
 		}
 
-		// Get images.
-		$terms = apply_filters( 'sermon-images-get-terms', '', array( // phpcs:ignore
+		// Format args.
+		$args = array(
 			'taxonomy'  => $args['display'],
 			'term_args' => array(
 				'order'   => $args['order'],
 				'orderby' => $args['orderby'],
 			),
-		) );
+		);
+
+		// Order by most recent sermon.
+		if ( in_array( $args['term_args']['orderby'], array( 'sermon', 'date' ) ) ) {
+			$args['term_args']['orderby']      = 'meta_value_num';
+			$args['term_args']['meta_key']     = 'sermon_date';
+			$args['term_args']['meta_value']   = time();
+			$args['term_args']['meta_compare'] = '<';
+		}
+
+		// Get images.
+		$terms = apply_filters( 'sermon-images-get-terms', '', $args ); // phpcs:ignore
 
 		// $terms will always return an array
 		if ( ! empty( $terms ) ) {
@@ -769,13 +780,21 @@ class SM_Shortcodes {
 			'after'              => '',
 			'before'             => '',
 			'hide_filters'       => true,
+			'hide_topics'        => '',
+			'hide_series'        => '',
+			'hide_preachers'     => '',
+			'hide_books'         => '',
+			'include'            => '',
+			'exclude'            => '',
+			'hide_service_types' => \SermonManager::getOption( 'service_type_filtering' ) ? '' : 'yes',
 		);
 
 		// Legacy convert.
 		$old_options = array(
 			'posts_per_page'  => 'per_page',
-			'id'              => 'sermons',
-			'sermon'          => 'sermons',
+			'id'              => 'include',
+			'sermon'          => 'include',
+			'sermons'         => 'include',
 			'hide_nav'        => 'hide_pagination',
 			'taxonomy'        => 'filter_by',
 			'tax_term'        => 'filter_value',
@@ -791,6 +810,15 @@ class SM_Shortcodes {
 
 		// Merge default and user options.
 		$args = shortcode_atts( $args, $atts, 'sermons' );
+
+		// Set filtering args.
+		$filtering_args = array(
+			'hide_topics'        => $args['hide_topics'],
+			'hide_series'        => $args['hide_series'],
+			'hide_preachers'     => $args['hide_preachers'],
+			'hide_books'         => $args['hide_books'],
+			'hide_service_types' => $args['hide_service_types'],
+		);
 
 		// Set query args.
 		$query_args = array(
@@ -830,8 +858,8 @@ class SM_Shortcodes {
 		$query_args['orderby'] = $args['orderby'];
 
 		// If we should show just specific sermons.
-		if ( $args['sermons'] ) {
-			$posts_in = explode( ',', $args['sermons'] );
+		if ( $args['include'] ) {
+			$posts_in = explode( ',', $args['include'] );
 
 			if ( ! empty( $posts_in ) ) {
 				foreach ( $posts_in as &$post_in ) {
@@ -846,6 +874,25 @@ class SM_Shortcodes {
 				}
 
 				$query_args['post__in'] = (array) $posts_in;
+			}
+		}
+
+		if ( $args['exclude'] ) {
+			$posts_in = explode( ',', $args['exclude'] );
+
+			if ( ! empty( $posts_in ) ) {
+				foreach ( $posts_in as &$post_in ) {
+					// Remove if it's not an ID.
+					if ( ! is_numeric( trim( $post_in ) ) ) {
+						unset( $post_in );
+						continue;
+					}
+
+					// Convert to int.
+					$posts_in = intval( trim( $post_in ) );
+				}
+
+				$query_args['post__not_in'] = (array) $posts_in;
 			}
 		}
 
@@ -938,8 +985,12 @@ class SM_Shortcodes {
 				<div id="wpfc-sermons-shortcode">
 					<div id="wpfc-sermons-container">
 						<?php
-						if ( ! $args['hide_filters'] ) :
-							echo SM_Shortcodes::display_sermon_sorting( $atts );
+						if ( $args['hide_filters'] !== true && ! in_array( $args['hide_filters'], array(
+								'yes',
+								1,
+								'1',
+							) ) ) :
+							echo SM_Shortcodes::display_sermon_sorting( $filtering_args );
 						endif;
 
 						while ( $query->have_posts() ) {
@@ -1041,18 +1092,20 @@ class SM_Shortcodes {
 
 		// Default shortcode options.
 		$args = array(
-			'series_filter'       => '',
-			'service_type_filter' => '',
-			'series'              => '',
-			'preachers'           => '',
-			'topics'              => '',
-			'books'               => '',
-			'visibility'          => 'suggest',
-			'hide_topics'         => '',
-			'hide_series'         => '',
-			'hide_preachers'      => '',
-			'hide_books'          => '',
-			'hide_service_types'  => 'yes',
+			'series_filter'         => '',
+			'service_type_filter'   => '',
+			'series'                => '',
+			'preachers'             => '',
+			'topics'                => '',
+			'books'                 => '',
+			'visibility'            => 'suggest',
+			'hide_topics'           => '',
+			'hide_series'           => '',
+			'hide_preachers'        => '',
+			'hide_books'            => '',
+			'hide_service_types'    => \SermonManager::getOption( 'service_type_filtering' ) ? '' : 'yes',
+			'action'                => 'none',
+			'smp_override_settings' => true,
 		);
 
 		// Merge default and user options.
