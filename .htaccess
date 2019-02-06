@@ -1,8 +1,59 @@
 
-# TS 16 Nov 18 Must appear here not with other CPanels, unclear why
-RewriteCond %{HTTP_HOST} ^corshambaptists\.org$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.corshambaptists\.org$
-RewriteRule ^preferences$ "https\:\/\/corshambaptists\.org\/privacy\-notice\/update\-your\-preferences\/" [R=301,L]
+
+
+# BEGIN LBCWpFastestCache
+<FilesMatch "\.(webm|ogg|mp4|ico|pdf|flv|jpg|jpeg|png|gif|webp|js|css|swf|x-html|css|xml|js|woff|woff2|ttf|svg|eot)(\.gz)?$">
+<IfModule mod_expires.c>
+AddType application/font-woff2 .woff2
+ExpiresActive On
+ExpiresDefault A0
+ExpiresByType video/webm A2592000
+ExpiresByType video/ogg A2592000
+ExpiresByType video/mp4 A2592000
+ExpiresByType image/webp A2592000
+ExpiresByType image/gif A2592000
+ExpiresByType image/png A2592000
+ExpiresByType image/jpg A2592000
+ExpiresByType image/jpeg A2592000
+ExpiresByType image/ico A2592000
+ExpiresByType image/svg+xml A2592000
+ExpiresByType text/css A2592000
+ExpiresByType text/javascript A2592000
+ExpiresByType application/javascript A2592000
+ExpiresByType application/x-javascript A2592000
+ExpiresByType application/font-woff2 A2592000
+</IfModule>
+<IfModule mod_headers.c>
+Header set Expires "max-age=2592000, public"
+Header unset ETag
+Header set Connection keep-alive
+FileETag None
+</IfModule>
+</FilesMatch>
+# END LBCWpFastestCache
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Audio
+  ExpiresByType audio/mpeg "access plus 1 year"
+  ExpiresByType audio/mpeg3 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # TS 16 Nov 18 Must appear here not with other CPanels, unclear why
+  RewriteCond %{HTTP_HOST} ^corshambaptists\.org$ [OR]
+  RewriteCond %{HTTP_HOST} ^www\.corshambaptists\.org$
+  RewriteRule ^preferences$ "https\:\/\/corshambaptists\.org\/privacy\-notice\/update\-your\-preferences\/" [R=301,L]
+
+  # TS 06 Feb 19 Protect church directory or other media from direct access
+  RewriteCond %{HTTP_REFERER} !^https://(www\.)?corshambaptists\.org/ [NC]
+  RewriteCond %{REQUEST_URI} !hotlink\.(gif|png|jpg|doc|xls|pdf|html|htm|xlsx|docx|mp4|mov) [NC]
+  RewriteCond %{HTTP_COOKIE} !^.*wordpress_logged_in.*$ [NC]
+  RewriteRule .*\.(gif|png|jpg|doc|xls|pdf|html|htm|xlsx|docx|mp4|mov)$ https://corshambaptists.org/ [NC]
+</IfModule>
 
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
