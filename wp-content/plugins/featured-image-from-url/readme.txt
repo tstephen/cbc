@@ -157,6 +157,9 @@ Features:
 
 == Changelog ==
 
+= 2.3.0 =
+* Bug fix: CSS Style feature.
+
 = 2.2.9 =
 * Bug fix: WP All Import.
 
@@ -513,6 +516,9 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+* Bug fix: CSS Style feature.
 
 = 2.2.9 =
 * Bug fix: WP All Import.

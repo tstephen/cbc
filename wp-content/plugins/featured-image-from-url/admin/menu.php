@@ -5,8 +5,7 @@ define('FIFU_SETTINGS', serialize(array('fifu_social', 'fifu_original', 'fifu_la
 add_action('admin_menu', 'fifu_insert_menu');
 
 function fifu_insert_menu() {
-    // jquery
-    wp_enqueue_style('jquery-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css');
+    wp_enqueue_style('jquery-ui-style', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css');
     wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js');
     wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-1.11.3.min.js');
     wp_enqueue_script('jquery-block-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js');

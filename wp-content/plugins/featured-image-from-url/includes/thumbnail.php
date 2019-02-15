@@ -75,11 +75,12 @@ function fifu_replace($html, $post_id, $post_thumbnail_id, $size) {
         if (fifu_is_on('fifu_lazy') && !is_admin())
             $html = str_replace("src", "data-src", $html);
 
-        if (get_post_meta($post_id, 'fifu_image_url', true))
-            return $html;
-
         $url = get_post_meta($post_id, 'fifu_image_url', true);
         $alt = get_post_meta($post_id, 'fifu_image_alt', true);
+        $css = get_option('fifu_css');
+
+        if ($url)
+            return $css ? str_replace('/>', ' style="' . $css . '"/>', $html) : $html;
 
         return !$url ? $html : fifu_get_html($url, $alt, $width, $height);
     }
