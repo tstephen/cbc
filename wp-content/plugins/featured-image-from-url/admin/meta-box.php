@@ -66,12 +66,12 @@ function fifu_remove_first_image($data, $postarr) {
 add_action('save_post', 'fifu_save_properties');
 
 function fifu_save_properties($post_id) {
-    if (!$_POST)
+    if (!$_POST || get_post_type($post_id) == 'nav_menu_item')
         return;
 
     /* image url */
     if (isset($_POST['fifu_input_url'])) {
-        $url = $_POST['fifu_input_url'];
+        $url = esc_url_raw($_POST['fifu_input_url']);
         $first = fifu_first_url_in_content($post_id);
         if ($first && fifu_is_on('fifu_get_first') && (!$url || fifu_is_on('fifu_ovw_first')))
             $url = $first;
@@ -115,4 +115,13 @@ function fifu_wai_save($post_id) {
 }
 
 add_action('before_delete_post', 'fifu_db_before_delete_post');
+
+// regular woocommerce import
+add_action('woocommerce_product_import_inserted_product_object', 'fifu_woocommerce_import');
+
+function fifu_woocommerce_import($object) {
+    $post_id = $object->get_id();
+    fifu_wai_save($post_id);
+    fifu_update_fake_attach_id($post_id);
+}
 

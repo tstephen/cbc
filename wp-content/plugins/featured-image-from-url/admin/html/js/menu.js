@@ -37,6 +37,7 @@ jQuery(function () {
     jQuery("#fifu_input_slider_pause").spinner({min: 0});
     jQuery("#tabsApi").tabs();
     jQuery("#tabsPremium").tabs();
+    jQuery("#tabsWooImport").tabs();
     jQuery("#tabsWpAllImport").tabs();
 });
 

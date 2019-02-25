@@ -52,7 +52,7 @@ function fifu_ctgr_save_properties($term_id) {
         update_term_meta($term_id, 'fifu_image_alt', wp_strip_all_tags($_POST['fifu_input_alt']));
 
     if (isset($_POST['fifu_input_url'])) {
-        $url = $_POST['fifu_input_url'];
+        $url = esc_url_raw($_POST['fifu_input_url']);
         update_term_meta($term_id, 'fifu_image_url', fifu_convert($url));
         fifu_db_ctgr_update_fake_attach_id($term_id);
     }
