@@ -5,7 +5,7 @@
     <node CREATED="1532368068852" ID="826b8ff5c30b4368734347edae99b548" MODIFIED="1532368095512" POSITION="left" TEXT="Governance">
       <edge COLOR="#e68782"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-200" y="-90"/>
-      <node CREATED="1532368068852" ID="32fe64578e1e32736563fb473d63e20e" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/CharityWithoutPartB.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0" MODIFIED="1532368169214" TEXT="Charity commission">
+      <node CREATED="1532368068852" ID="f8893a1c4f28562986ae0a2d468bbd44" MODIFIED="1532368068852" TEXT="Leadership Team" LINK="/leadership-team">
         <edge COLOR="#e77d79"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-150"/>
       </node>
@@ -13,7 +13,7 @@
         <edge COLOR="#e7837f"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-90"/>
       </node>
-      <node CREATED="1532368068852" ID="f8893a1c4f28562986ae0a2d468bbd44" MODIFIED="1532368068852" TEXT="Proposed structure" LINK="https://docs.google.com/document/d/1MSPmIXMEDHGNRy5RLy2-pAxNIbFqznOVDHRny3IJ1JI">
+      <node CREATED="1532368068852" ID="32fe64578e1e32736563fb473d63e20e" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/CharityWithoutPartB.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0" MODIFIED="1532368169214" TEXT="Charity commission">
         <edge COLOR="#e68782"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-30"/>
       </node>
@@ -51,8 +51,24 @@
       </node>
     </node>
     <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1538744826983" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
-        <edge COLOR="#93c47d"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="70"/>
+      <edge COLOR="#93c47d"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="70"/>
+    </node>
+    <node CREATED="1551116651901" ID="resources" MODIFIED="1551116651901" POSITION="right" TEXT="Resources">
+      <edge COLOR="#e69138"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="175"/>
+      <node CREATED="1551118522435" ID="directory" MODIFIED="1551118522435" POSITION="right" TEXT="Directory" LINK="/wp-content/uploads/2019/02/cbc-directory.pdf">
+          <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="175"/>
+      </node>
+      <node CREATED="1551118522435" ID="directoryBooklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory (to print)" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
+          <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
+      </node>
+      <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
+          <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="315"/>
+      </node>
     </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
       <edge COLOR="#67d7c4"/>
@@ -76,7 +92,7 @@
     </node>
     <node CREATED="1532368068854" ID="4be6ab412bd08a5389436233adb01c1c" MODIFIED="1532368095518" POSITION="left" TEXT="Finance">
       <edge COLOR="#e096e9"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-19.764767724554833" y="175.19547933504174"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-20" y="175"/>
       <node CREATED="1532368068854" ID="2ead74414f9c1ec81df42ea2405c0114" MODIFIED="1532368068854" TEXT="Latest accounts" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/DocumentList.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0&amp;DocType=AccountList">
         <edge COLOR="#e29eeb"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-87.89013732833958" y="248.36717261318088"/>
