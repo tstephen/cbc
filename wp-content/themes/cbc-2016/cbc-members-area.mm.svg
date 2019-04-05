@@ -28,25 +28,9 @@
       <node CREATED="1532368068853" ID="ae0db48a4b7ab8ea14e5ee8b661c0afa" MODIFIED="1532368098153" TEXT="Mission">
         <edge COLOR="#edda69"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-70"/>
-        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1532368076457" TEXT="Policy (2016-17)" LINK="https://docs.google.com/presentation/d/15LlCrScjYLrnGVtE0GDOE_gexAXpdzS_YzHb-ZN5BIU/edit?usp=sharing">
+        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1532368076457" TEXT="Policy (Draft)" LINK="https://docs.google.com/document/d/1jieL-PTLG-mFLRtApeedF7opI7Gj63c_UPHU31l0md8/edit?usp=sharing">
           <edge COLOR="#eed862"/>
           <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="750" y="-130"/>
-          <node CREATED="1532368068853" ID="eae3724487d9dfe08e1440e5a6d4570a" MODIFIED="1532368068853" TEXT="Detail" LINK="https://docs.google.com/document/d/1Of9WD9rJi5j5WHcIQ0jVNPCXMMmV31elzbbeqXYpMqU/edit?usp=sharing">
-            <edge COLOR="#f0d65e"/>
-            <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="1000" y="-130"/>
-          </node>
-        </node>
-        <node CREATED="1532368068853" ID="9d2c14d1c1f754cd7699871d64666461" MODIFIED="1532368068853" TEXT="Anne Killingback Fund" LINK="https://docs.google.com/document/d/1XXTu25Z2pnk7Grgzj8WiQLPEa7m6_kpPJ2LNBFcH1Cw/edit?usp=sharing">
-          <edge COLOR="#eed866"/>
-          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="750" y="-70"/>
-        </node>
-        <node CREATED="1532368068853" ID="06ea9826c2717669953cfed59176369c" MODIFIED="1532368068853" TEXT="Funding policy" LINK="https://drive.google.com/file/d/12ZI1aK30-rMbJGQ0u0uKGxCWar8RC8oB/view?usp=sharing">
-          <edge COLOR="#edd86b"/>
-          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="750" y="-10"/>
-        </node>
-        <node CREATED="1532368068853" ID="0e7d33ccf4760ef9c1982c50536d46c7" MODIFIED="1532368068853" TEXT="Fundraising policy" LINK="https://docs.google.com/document/d/1ES8QgWvhVgo9cZV6ZHZ0iPvr-Fm8ZsJ0EDzU8wnyfqA/edit?usp=sharing">
-          <edge COLOR="#eed75e"/>
-          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="750" y="50"/>
         </node>
       </node>
     </node>
