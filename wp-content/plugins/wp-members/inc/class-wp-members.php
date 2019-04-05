@@ -325,10 +325,13 @@ class WP_Members {
 		add_action( 'wp_enqueue_scripts',    array( $this, 'loginout_script' ) );
 		add_action( 'init',                  array( $this, 'load_textdomain' ) ); //add_action( 'plugins_loaded', 'wpmem_load_textdomain' );
 		add_action( 'init',                  array( $this->membership, 'add_cpt' ), 0 ); // Adds membership plans custom post type.
-		add_action( 'wpmem_pwd_change',      array( $this->user, 'set_password' ), 9, 2 );
-		add_action( 'wpmem_pwd_change',      array( $this->user, 'set_as_logged_in' ), 10 );
 		add_action( 'pre_get_posts',         array( $this, 'do_hide_posts' ) );
 		add_action( 'customize_register',    array( $this, 'customizer_settings' ) );
+
+		if ( is_user_logged_in() ) {
+			add_action( 'wpmem_pwd_change',  array( $this->user, 'set_password' ), 9, 2 );
+			add_action( 'wpmem_pwd_change',  array( $this->user, 'set_as_logged_in' ), 10 );
+		}
 		
 		// Add filters.
 		add_filter( 'the_content',               array( $this, 'do_securify' ), 99 );
@@ -942,7 +945,7 @@ class WP_Members {
 					foreach ( $hidden as $post_id ) {
 						if ( 1 == get_post_meta( $post_id, $this->membership->post_stem . $key, true ) ) {
 							$hidden_key = array_search( $post_id, $hidden );
-    						unset( $hidden[ $hidden_key ] );	
+							unset( $hidden[ $hidden_key ] );	
 						}
 					}
 				}
@@ -1202,7 +1205,6 @@ class WP_Members {
 		 */
 		$benign_strings = array(
 			__( 'No fields selected for deletion', 'wp-members' ),
-			__( 'Username or Email', 'wp-members' ),
 			__( 'You are not logged in.', 'wp-members' ), // Technically removed 3.5
 		);
 	
@@ -1210,7 +1212,7 @@ class WP_Members {
 			
 			// Login form.
 			'login_heading'        => __( 'Existing Users Log In', 'wp-members' ),
-			'login_username'       => __( 'Username', 'wp-members' ),
+			'login_username'       => __( 'Username or Email', 'wp-members' ),
 			'login_password'       => __( 'Password', 'wp-members' ),
 			'login_button'         => __( 'Log In', 'wp-members' ),
 			'remember_me'          => __( 'Remember Me', 'wp-members' ),
@@ -1297,14 +1299,19 @@ class WP_Members {
 			
 			// Default Dialogs.
 			'restricted_msg'       => __( "This content is restricted to site members.  If you are an existing user, please log in.  New users may register below.", 'wp-members' ),
+			'success'              => __( "Congratulations! Your registration was successful.<br /><br />You may now log in using the password that was emailed to you.", 'wp-members' ),
+			
+			// @todo Under consideration for removal from the Dialogs tab.
 			'user'                 => __( "Sorry, that username is taken, please try another.", 'wp-members' ),
 			'email'                => __( "Sorry, that email address already has an account.<br />Please try another.", 'wp-members' ),
-			'success'              => __( "Congratulations! Your registration was successful.<br /><br />You may now log in using the password that was emailed to you.", 'wp-members' ),
 			'editsuccess'          => __( "Your information was updated!", 'wp-members' ),
+			
+			// @todo These are defaults and are under consideration for removal from the dialogs tab, possibly as we change the password reset to a link based process.
 			'pwdchangerr'          => __( "Passwords did not match.<br /><br />Please try again.", 'wp-members' ),
 			'pwdchangesuccess'     => __( "Password successfully changed!", 'wp-members' ),
 			'pwdreseterr'          => __( "Either the username or email address do not exist in our records.", 'wp-members' ),
 			'pwdresetsuccess'      => __( "Password successfully reset!<br /><br />An email containing a new password has been sent to the email address on file for your account.", 'wp-members' ),
+			
 			'product_restricted'   => __( "Sorry, you do not have access to this content.", 'wp-members' ),
 		
 		); // End of $defaults array.

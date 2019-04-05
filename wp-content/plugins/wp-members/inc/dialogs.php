@@ -402,6 +402,7 @@ if ( ! function_exists( 'wpmem_page_pwd_reset' ) ):
  * password forms for page=password shortcode.
  *
  * @since 2.7.6
+ * @since 3.2.6 Added nonce validation.
  *
  * @global object $wpmem
  * @param  string $wpmem_regchk
@@ -416,23 +417,16 @@ function wpmem_page_pwd_reset( $wpmem_regchk, $content ) {
 	
 		switch ( $wpmem_regchk ) {
 
-		case "pwdchangempty":
-			$content = wpmem_inc_regmessage( $wpmem_regchk, $wpmem->get_text( 'pwdchangempty' ) );
-			$content = $content . wpmem_inc_changepassword();
-			break;
+			case "pwdchangesuccess":
+				$content = $content . wpmem_inc_regmessage( $wpmem_regchk );
+				break;
 
-		case "pwdchangerr":
-			$content = wpmem_inc_regmessage( $wpmem_regchk );
-			$content = $content . wpmem_inc_changepassword();
-			break;
-
-		case "pwdchangesuccess":
-			$content = $content . wpmem_inc_regmessage( $wpmem_regchk );
-			break;
-
-		default:
-			$content = $content . wpmem_inc_changepassword();
-			break;
+			default:
+				if ( isset( $wpmem_regchk ) && '' != $wpmem_regchk ) {
+					$content .= wpmem_inc_regmessage( $wpmem_regchk, $wpmem->get_text( $wpmem_regchk ) );
+				}
+				$content = $content . wpmem_inc_changepassword();
+				break;
 		}
 
 	} else {
@@ -445,22 +439,18 @@ function wpmem_page_pwd_reset( $wpmem_regchk, $content ) {
 		} else {
 
 			switch( $wpmem_regchk ) {
-	
-			case "pwdreseterr":
-				$content = $content 
-					. wpmem_inc_regmessage( $wpmem_regchk )
-					. wpmem_inc_resetpassword();
-				$wpmem_regchk = ''; // Clear regchk.
-				break;
-	
-			case "pwdresetsuccess":
-				$content = $content . wpmem_inc_regmessage( $wpmem_regchk );
-				$wpmem_regchk = ''; // Clear regchk.
-				break;
-	
-			default:
-				$content = $content . wpmem_inc_resetpassword();
-				break;
+
+				case "pwdresetsuccess":
+					$content = $content . wpmem_inc_regmessage( $wpmem_regchk );
+					$wpmem_regchk = ''; // Clear regchk.
+					break;
+
+				default:
+					if ( isset( $wpmem_regchk ) && '' != $wpmem_regchk ) {
+						$content = wpmem_inc_regmessage( $wpmem_regchk, $wpmem->get_text( $wpmem_regchk ) );
+					}
+					$content = $content . wpmem_inc_resetpassword();
+					break;
 			}
 		
 		}

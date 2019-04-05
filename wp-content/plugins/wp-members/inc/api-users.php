@@ -118,11 +118,12 @@ function wpmem_is_user_activated( $user_id = false ) {
  *
  * @global object  $wpmem
  * @param  integer $user_id
+ * @param  bool    $all
  * @return array   $user_fields
  */
-function wpmem_user_data( $user_id = false ) {
+function wpmem_user_data( $user_id = false, $all = false ) {
 	global $wpmem;
-	return $wpmem->user_fields( $user_id );
+	return $wpmem->user->user_data( $user_id, $all );
 }
 
 /**
@@ -163,15 +164,17 @@ function wpmem_user_has_access( $product, $user_id = false ) {
  * Sets product access for a user.
  *
  * @since 3.2.3
+ * @since 3.2.6 Added $date to set a specific expiration date.
  *
  * @global object $wpmem
  * @param  string $product The meta key of the product.
  * @param  int    $user_id
+ * @param  string $date    Expiration date (optional) format: MySQL timestamp
  * @return bool   $result
  */
-function wpmem_set_user_product( $product, $user_id = false ) {
+function wpmem_set_user_product( $product, $user_id = false, $date = false ) {
 	global $wpmem;
-	return $wpmem->user->set_user_product( $product, $user_id );
+	return $wpmem->user->set_user_product( $product, $user_id, $date );
 }
 
 /**

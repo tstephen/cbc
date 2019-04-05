@@ -36,7 +36,8 @@ class WP_Members_Forms {
 	 * @since 3.2.0 Added $id argument.
 	 * @since 3.2.4 Added radio group and multiple checkbox individual item labels.
 	 *
-	 * @param array  $args {
+	 * @global object $wpmem The WP_Members object class.
+	 * @param  array  $args {
 	 *     @type string  $id
 	 *     @type string  $name
 	 *     @type string  $type
@@ -57,6 +58,9 @@ class WP_Members_Forms {
 	 */
 	function create_form_field( $args ) {
 		
+		global $wpmem;
+		
+		// Set defaults for most possible $args.
 		$id          = ( isset( $args['id'] ) ) ? esc_attr( $args['id'] ) : esc_attr( $args['name'] );
 		$name        = esc_attr( $args['name'] );
 		$type        = esc_attr( $args['type'] );
@@ -69,8 +73,15 @@ class WP_Members_Forms {
 		$pattern     = ( isset( $args['pattern']     ) ) ? $args['pattern']     : false;
 		$title       = ( isset( $args['title']       ) ) ? $args['title']       : false;
 	
+		// Handle field creation by type.
 		switch ( $type ) { 
 
+		/*
+		 * Field types text|url|email|number|date are all handled essentially the 
+		 * same. The primary differences are CSS class (with a default fallback
+		 * of 'textbox'), how values are escaped, and the application of min|max
+		 * values for number fields.
+		 */
 		case "text":
 		case "url":
 		case "email":
@@ -84,10 +95,8 @@ class WP_Members_Forms {
 				case 'email':
 					$value = esc_attr( wp_unslash( $value ) );
 					break;
-				//case 'number':
-					//$value = esc_attr( $value );
 				default:
-					$value = stripslashes( esc_attr( $value ) );
+					$value = stripslashes( esc_attr( $value ) ); // @todo Could email and default be combined? Both seem to unslash and esc_attr().
 					break;
 			}
 			$required    = ( $required    ) ? ' required' : '';
@@ -137,10 +146,17 @@ class WP_Members_Forms {
 	
 		case "select":
 		case "multiselect":
+		case "membership":
 			$class = ( 'textbox' == $class && 'multiselect' != $type ) ? "dropdown"    : $class;
 			$class = ( 'textbox' == $class && 'multiselect' == $type ) ? "multiselect" : $class;
 			$pname = ( 'multiselect' == $type ) ? $name . "[]" : $name;
 			$str = "<select name=\"$pname\" id=\"$id\" class=\"$class\"" . ( ( 'multiselect' == $type ) ? " multiple " : "" ) . ( ( $required ) ? " required " : "" ) . ">\n";
+			if ( 'membership' == $type ) {
+				$value = array( 'Choose membership|' );
+				foreach( $wpmem->membership->products as $membership_key => $membership_value ) {
+					$value[] = $membership_value['title'] . '|' . $membership_key;
+				}
+			}
 			foreach ( $value as $option ) {
 				$pieces = explode( '|', $option );
 				if ( 'multiselect' == $type ) {
@@ -380,6 +396,7 @@ class WP_Members_Forms {
 	 * @since 2.5.1
 	 * @since 3.1.7 Moved to forms object class as login_form().
 	 * @since 3.1.7 Added WP action login_form.
+	 * @since 3.2.6 Added nonce to the short form.
 	 *
 	 * @param  string $page 
 	 * @param  array  $arr {
@@ -506,11 +523,13 @@ class WP_Members_Forms {
 		 * parts of a row without needing to parse through a string of HTML.
 		 *
 		 * @since 2.9.0
+		 * @since 3.2.6 Added $arr parameter so all settings are passed.
 		 *
 		 * @param array  $rows          An array containing the form rows.
 		 * @param string $arr['action'] The action being performed by the form. login|pwdreset|pwdchange|getusername.
+		 * @param array  $arr           An array containing all of the form settings.
 		 */
-		$rows = apply_filters( 'wpmem_login_form_rows', $rows, $arr['action'] );
+		$rows = apply_filters( 'wpmem_login_form_rows', $rows, $arr['action'], $arr );
 
 		// Put the rows from the array into $form.
 		$form = '';
@@ -649,6 +668,9 @@ class WP_Members_Forms {
 
 		// Apply fieldset wrapper.
 		$form = $args['fieldset_before'] . $args['n'] . $form . $args['fieldset_after'] . $args['n'];
+		
+		// Apply nonce.
+		$form = wp_nonce_field( 'wpmem_login_nonce', '_wpnonce', true, false ) . $args['n'] . $form;
 
 		// Apply form wrapper.
 		$form = '<form action="' . esc_url( get_permalink() ) . '" method="POST" id="' . $this->sanitize_class( $args['form_id'] ) . '" class="' . $this->sanitize_class( $args['form_class'] ) . '">' . $args['n'] . $form . '</form>';
@@ -838,8 +860,8 @@ class WP_Members_Forms {
 					) );
 				}
 
-				// Label for all but TOS.
-				if ( 'tos' != $meta_key ) {
+				// Label for all but TOS and hidden fields.
+				if ( 'tos' != $meta_key && 'hidden' != $field['type'] ) {
 
 					$class = ( $field['type'] == 'password' || $field['type'] == 'email' || $field['type'] == 'url' ) ? 'text' : $field['type'];
 					
@@ -907,11 +929,22 @@ class WP_Members_Forms {
 					// Determine if TOS is a WP page or not.
 					$tos_content = stripslashes( get_option( 'wpmembers_tos' ) );
 					if ( has_shortcode( $tos_content, 'wpmem_tos' ) || has_shortcode( $tos_content, 'wp-members' ) ) {	
-						$link = do_shortcode( $tos_content );
-						$tos_pop = '<a href="' . esc_url( $link ) . '" target="_blank">';
-					} else { 
-						$tos_pop = "<a href=\"#\" onClick=\"window.open('" . WPMEM_DIR . "/wp-members-tos.php','mywindow');\">";
+						$tos_link_url = do_shortcode( $tos_content );
+						$tos_link_tag = '<a href="' . esc_url( $tos_link_url ) . '" target="_blank">';
+					} else {
+						$tos_link_url = WPMEM_DIR . "/wp-members-tos.php";
+						$tos_link_tag = "<a href=\"#\" onClick=\"window.open('" . $tos_link_url . "','mywindow');\">";
 					}
+					
+					/**
+					 * Filter the TOS link.
+					 *
+					 * @since 3.2.6
+					 *
+					 * @param string $tos_link_tag
+					 * @param string $tos_link_url
+					 */
+					$tos_link_tag = apply_filters( 'wpmem_tos_link_tag', $tos_link_tag, $tos_link_url );
 
 					/**
 					 * Filter the TOS link text.
@@ -936,13 +969,13 @@ class WP_Members_Forms {
 						$tos_link_text = '%s' . $tos_link_text . '%s';
 					}
 					
-					$input .= ' ' . sprintf( $tos_link_text, $tos_pop, '</a>' );
+					$input .= ' ' . sprintf( $tos_link_text, $tos_link_tag, '</a>' );
 
 					// In previous versions, the div class would end up being the same as the row before.
 					$field_before = ( $args['wrap_inputs'] ) ? '<div class="div_text">' : '';
 					$field_after  = ( $args['wrap_inputs'] ) ? '</div>' : '';
 
-				} else {
+				} elseif ( 'hidden' != $field['type'] ) {
 
 					// For checkboxes.
 					if ( 'checkbox' == $field['type'] ) { 
@@ -1010,7 +1043,7 @@ class WP_Members_Forms {
 			}
 
 			// If the row is set to display, add the row to the form array.
-			if ( $field['register'] ) {
+			if ( $field['register'] && 'hidden' != $field['type'] ) {
 
 				$values = '';
 				if ( 'multicheckbox' == $field['type'] || 'select' == $field['type'] || 'multiselect' == $field['type'] || 'radio' == $field['type'] ) {
@@ -1168,8 +1201,11 @@ class WP_Members_Forms {
 
 		// Create buttons and wrapper.
 		$button_text = ( $tag == 'edit' ) ? $args['submit_update'] : $args['submit_register'];
-		$buttons = ( $args['show_clear_form'] ) ? '<input name="reset" type="reset" value="' . esc_attr( $args['clear_form'] ) . '" class="' . $this->sanitize_class( $args['button_class'] ) . '" /> ' . $args['n'] : '';
-		$buttons.= '<input name="submit" type="submit" value="' . esc_attr( $button_text ) . '" class="' . $this->sanitize_class( $args['button_class'] ) . '" />' . $args['n'];
+		$button_html = array(
+			'reset' =>  ( $args['show_clear_form'] ) ? '<input name="reset" type="reset" value="' . esc_attr( $args['clear_form'] ) . '" class="' . $this->sanitize_class( $args['button_class'] ) . '" /> ' : '',
+			'submit' => '<input name="submit" type="submit" value="' . esc_attr( $button_text ) . '" class="' . $this->sanitize_class( $args['button_class'] ) . '" />',
+		);
+		$buttons = $button_html['reset'] . $args['n'] . $button_html['submit'] . $args['n'];
 
 		/**
 		 * Filter the HTML for form buttons.
@@ -1177,11 +1213,13 @@ class WP_Members_Forms {
 		 * The string passed through the filter includes the buttons, as well as the HTML wrapper elements.
 		 *
 		 * @since 2.9.0
+		 * @since 3.2.6 Added $button_html parameter
 		 *
-		 * @param string $buttons The generated HTML of the form buttons.
-		 * @param string $tag     Toggle new registration or profile update. new|edit.
+		 * @param string $buttons     The generated HTML of the form buttons.
+		 * @param string $tag         Toggle new registration or profile update. new|edit.
+		 * @param array  $button_html The individual button html.
 		 */
-		$buttons = apply_filters( 'wpmem_register_form_buttons', $buttons, $tag );
+		$buttons = apply_filters( 'wpmem_register_form_buttons', $buttons, $tag, $button_html );
 
 		// Add the buttons to the form.
 		$form.= $args['buttons_before'] . $args['n'] . $buttons . $args['buttons_after'] . $args['n'];
@@ -1208,7 +1246,7 @@ class WP_Members_Forms {
 		$form = $form . wpmem_inc_attribution();
 
 		// Apply nonce.
-		$form = wp_nonce_field( 'wpmem_reg_nonce' ) . $args['n'] . $form;
+		$form = wp_nonce_field( 'wpmem_reg_nonce', '_wpnonce', true, false ) . $args['n'] . $form;
 
 		// Apply form wrapper.
 		$enctype = ( $enctype == 'multipart/form-data' ) ? ' enctype="multipart/form-data"' : '';
@@ -1491,7 +1529,7 @@ class WP_Members_Forms {
 				'name'   => $wpmem->get_text( 'pwdreset_email' ), 
 				'type'   => 'text', 
 				'tag'    => 'email', 
-				'class'  => 'password',
+				'class'  => 'text',
 				'div'    => 'div_text',
 			),
 		);

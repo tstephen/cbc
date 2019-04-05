@@ -153,6 +153,7 @@ class WP_Members_User {
 	 * User registration functions.
 	 *
 	 * @since 3.1.7
+	 * @since 3.2.6 Added handler for membership field type.
 	 *
 	 * @global object $wpmem
 	 * @param  int    $user_id
@@ -170,7 +171,12 @@ class WP_Members_User {
 			// If the field is not excluded, update accordingly.
 			if ( ! in_array( $meta_key, $wpmem->excluded_meta ) && ! in_array( $meta_key, $new_user_fields_meta ) ) {
 				if ( $field['register'] && 'user_email' != $meta_key ) {
-					update_user_meta( $user_id, $meta_key, $this->post_data[ $meta_key ] );
+					// Assign memberships, if applicable.
+					if ( 'membership' == $field['type'] && 1 == $wpmem->enable_products ) {
+						wpmem_set_user_product( $this->post_data[ $meta_key ], $user_id );
+					} else {
+						update_user_meta( $user_id, $meta_key, $this->post_data[ $meta_key ] );
+					}
 				}
 			}
 		}
@@ -280,6 +286,10 @@ class WP_Members_User {
 		 * @param string $args['pass1']    The user's new plain text password.
 		 */
 		$is_error = apply_filters( 'wpmem_pwd_change_error', $is_error, $user_ID, $args['pass1'] );
+		// User must be logged in.
+		$is_error = ( ! is_user_logged_in() ) ? "loggedin" : $is_error;
+		// Verify nonce.
+		$is_error = ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpmem_login_nonce' ) ) ? "reg_generic" : $is_error;
 		if ( $is_error ) {
 			return $is_error;
 		}
@@ -320,6 +330,9 @@ class WP_Members_User {
 
 		} else {
 
+			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpmem_login_nonce' ) ) {
+				return "reg_generic";
+			}
 			if ( username_exists( $arr['user'] ) ) {
 				$user = get_user_by( 'login', $arr['user'] );
 				if ( strtolower( $user->user_email ) !== strtolower( $arr['email'] ) || ( ( $wpmem->mod_reg == 1 ) && ( get_user_meta( $user->ID, 'active', true ) != 1 ) ) ) {
@@ -391,6 +404,7 @@ class WP_Members_User {
 	 * Handle user file uploads for registration and profile update.
 	 *
 	 * @since 3.1.8
+	 * @since 3.2.6 Add file's post ID to $this->post_data.
 	 *
 	 * @param string $user_id
 	 * @param array  $fields
@@ -404,6 +418,8 @@ class WP_Members_User {
 					$file_post_id = $wpmem->forms->do_file_upload( $_FILES[ $meta_key ], $user_id );
 					// Save the attachment ID as user meta.
 					update_user_meta( $user_id, $meta_key, $file_post_id );
+					// Add attachement ID to post data array.
+					$this->post_data[ $meta_key ] = $file_post_id;
 				}
 			}
 		}
@@ -416,20 +432,31 @@ class WP_Members_User {
 	 * in an array keyed by WP-Members field meta keys.
 	 *
 	 * @since 3.2.0
+	 * @since 3.2.6 Added option for "all" fields (default:false).
 	 *
-	 * @param  mixed $user_id
-	 * @return array $user_fields 
+	 * @param  string $user_id optional (defaults to current user)
+	 * @param  string $all     optional (default to false)
+	 * @return array  $user_fields 
 	 */
-	function user_data( $user_id = false ) {
-		$fields = wpmem_fields();
+	function user_data( $user_id = false, $all = false ) {
 		$user_id = ( $user_id ) ? $user_id : get_current_user_id();
-		$user_data = get_userdata( $user_id );
-		$excludes = array( 'first_name', 'last_name', 'description', 'nickname' );
-		foreach ( $fields as $meta => $field ) {
-			if ( $field['native'] == 1 && ! in_array( $meta, $excludes ) ) {
-				$user_fields[ $meta ] = $user_data->data->$meta;
-			} else {
-				$user_fields[ $meta ] = get_user_meta( $user_id, $meta, true );
+		if ( true == $all ) {
+			$user_info = get_user_meta( $user_id ); 
+			foreach( $user_info as $key => $value ) {
+				$formatted = maybe_unserialize( $value[0] );
+				$user_fields[ $key ] = $formatted;
+			}
+		} else {
+			$fields = wpmem_fields();
+			$user_data = get_userdata( $user_id );
+			$excludes = array( 'first_name', 'last_name', 'description', 'nickname' );
+			foreach ( $fields as $meta => $field ) {
+				$meta = ( 'username' == $meta ) ? 'user_login' : $meta;
+				if ( $field['native'] == 1 && ! in_array( $meta, $excludes ) ) {
+					$user_fields[ $meta ] = $user_data->data->{$meta};
+				} else {
+					$user_fields[ $meta ] = get_user_meta( $user_id, $meta, true );
+				}
 			}
 		}
 		return $user_fields;
@@ -561,12 +588,15 @@ class WP_Members_User {
 	 * Loads anything the user has access to.
 	 *
 	 * @since 3.2.0
+	 * @since 3.2.6 Updated to return empty array if no products exist for this user.
 	 *
-	 * @param int $user_id
+	 * @param  int   $user_id
+	 * @return array $products
 	 */
 	function get_user_products( $user_id = false ) {
-		$user_id = ( ! $user_id ) ? get_current_user_id() : $user_id;
-		return get_user_meta( $user_id, '_wpmem_products', true );
+		$user_id  = ( ! $user_id ) ? get_current_user_id() : $user_id;
+		$products = get_user_meta( $user_id, '_wpmem_products', true );
+		return ( $products ) ? $products : array();
 	}
 	
 	/**
@@ -577,11 +607,13 @@ class WP_Members_User {
 	 * set to "true" (which does not expire).
 	 *
 	 * @since 3.2.0
+	 * @since 3.2.6 Added $date to set a specific expiration date.
 	 *
 	 * @param string $product
 	 * @param int    $user_id
+	 * @param string $set_date
 	 */
-	function set_user_product( $product, $user_id = false ) {
+	function set_user_product( $product, $user_id = false, $set_date = false ) {
 
 		global $wpmem;
 		
@@ -598,7 +630,11 @@ class WP_Members_User {
 		if ( is_array( $expires ) ) {
 			$add_date = explode( "|", $wpmem->membership->products[ $product ]['expires'][0] );
 			$add = ( 1 < $add_date[0] ) ? $add_date[0] . " " . $add_date[1] . "s" : $add_date[0] . " " . $add_date[1];
-			$user_products[ $product ] = ( isset( $user_products[ $product ] ) ) ? date( 'Y-m-d H:i:s', strtotime( $add, strtotime( $user_products[ $product ] ) ) ) : date( 'Y-m-d H:i:s', strtotime( $add ) );
+			if ( $set_date ) {
+				$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $set_date ) );
+			} else {
+				$user_products[ $product ] = ( isset( $user_products[ $product ] ) ) ? date( 'Y-m-d H:i:s', strtotime( $add, strtotime( $user_products[ $product ] ) ) ) : date( 'Y-m-d H:i:s', strtotime( $add ) );
+			}
 		} else {
 			$user_products[ $product ] = true;
 		}
