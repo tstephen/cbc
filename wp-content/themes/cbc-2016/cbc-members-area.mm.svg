@@ -45,10 +45,10 @@
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="175"/>
       </node>
-      <node CREATED="1551118522435" ID="directoryBooklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory (to print)" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
+      <!--node CREATED="1551118522435" ID="directoryBooklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory (to print)" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
-      </node>
+      </node-->
       <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="315"/>
