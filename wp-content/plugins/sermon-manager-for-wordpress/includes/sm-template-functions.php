@@ -94,6 +94,7 @@ function render_wpfc_sorting( $args = array() ) {
 		'wpfc_preacher'      => 'hide_preachers',
 		'wpfc_bible_book'    => 'hide_books',
 		'wpfc_service_type'  => 'hide_service_types',
+		'wpfc_dates'         => 'hide_dates',
 	) );
 
 	// Save orig args for filters.
@@ -114,6 +115,7 @@ function render_wpfc_sorting( $args = array() ) {
 		'hide_preachers'      => '',
 		'hide_books'          => '',
 		'hide_service_types'  => SermonManager::getOption( 'service_type_filtering' ) ? '' : 'yes',
+		'hide_dates'          => '',
 		'hide_filters'        => ! SermonManager::getOption( 'hide_filters' ),
 		'action'              => 'none',
 	);
@@ -338,59 +340,84 @@ function wpfc_render_video( $url = '', $seek = true ) {
 /**
  * Renders the audio player.
  *
- * @param string|int $source The URL or the attachment ID of the audio file.
- * @param int        $seek   Allows seeking to specific second in audio file.
+ * @param int|string $source The ID of the sermon, or alternatively, the URL or the attachment ID of the audio file.
+ * @param int        $seek   Seek to specific second in audio file.
  *
  * @since 2.12.3 added $seek
+ * @since 2.15.15 The sermon can be used as first parameter
  *
- * @return string Audio player HTML.
+ * @return string|false Audio player HTML or false if sermon has no audio.
  */
 function wpfc_render_audio( $source = '', $seek = null ) {
-	if ( is_int( $source ) || is_numeric( $source ) ) {
-		$source = wp_get_attachment_url( intval( $source ) );
+	// For later filtering.
+	$source_orig = $source;
 
-		if ( ! $source ) {
-			return '';
+	// Check if it's a sermon or attachment ID.
+	if ( is_numeric( $source ) ) {
+		$object = get_post( $source );
+
+		if ( ! $object ) {
+			return false;
 		}
-	} elseif ( is_string( $source ) ) {
-		if ( '' === trim( $source ) ) {
-			return '';
+
+		switch ( $object->post_type ) {
+			case 'wpfc_sermon':
+				$sermon_audio_id     = get_wpfc_sermon_meta( 'sermon_audio_id' );
+				$sermon_audio_url    = get_wpfc_sermon_meta( 'sermon_audio' );
+				$sermon_audio_url_wp = $sermon_audio_id ? wp_get_attachment_url( intval( $sermon_audio_id ) ) : false;
+
+				$source = $sermon_audio_id && $sermon_audio_url_wp ? $sermon_audio_url_wp : $sermon_audio_url;
+				break;
+			case 'attachment':
+				$source = wp_get_attachment_url( $object->ID );
+				break;
 		}
-	} else {
-		return '';
 	}
 
+	// Check if set.
+	if ( ! $source ) {
+		return false;
+	}
+
+	// Get the current player.
 	$player = strtolower( \SermonManager::getOption( 'player' ) ?: 'plyr' );
 
-	if ( strtolower( 'WordPress' ) === $player ) {
-		$attr = array(
-			'src'     => $source,
-			'preload' => 'none',
-		);
+	switch ( strtolower( $player ) ) {
+		case 'wordpress': // phpcs:ignore
+			$attr = array(
+				'src'     => $source,
+				'preload' => 'none',
+			);
 
-		$output = wp_audio_shortcode( $attr );
-	} else {
-		$extra_settings = '';
+			$output = wp_audio_shortcode( $attr );
+			break;
+		default:
+			$extra_settings = '';
 
-		if ( is_numeric( $seek ) ) {
-			// Sanitation just in case.
-			$extra_settings = 'data-plyr_seek=\'' . intval( $seek ) . '\'';
-		}
+			if ( is_numeric( $seek ) ) {
+				// Sanitation just in case.
+				$extra_settings = 'data-plyr_seek=\'' . intval( $seek ) . '\'';
+			}
 
-		$output = '';
+			$output = '';
 
-		$output .= '<audio controls preload="metadata" class="wpfc-sermon-player ' . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '>';
-		$output .= '<source src="' . $source . '" type="audio/mp3">';
-		$output .= '</audio>';
+			$output .= '<audio controls preload="metadata" class="wpfc-sermon-player ' . ( 'mediaelement' === $player ? 'mejs__player' : '' ) . '" ' . $extra_settings . '>';
+			$output .= '<source src="' . $source . '" type="audio/mp3">';
+			$output .= '</audio>';
+
+			break;
 	}
 
 	/**
 	 * Allows changing of the audio player to any HTML.
 	 *
-	 * @param string $output Audio player HTML.
-	 * @param string $source Audio source URL.
+	 * @param string     $output      Audio player HTML.
+	 * @param string     $source      Audio source URL.
+	 * @param int|string $source_orig The original source parameter.
+	 *
+	 * @since 2.15.15 Added $source_orig.
 	 */
-	return apply_filters( 'sm_audio_player', $output, $source );
+	return apply_filters( 'sm_audio_player', $output, $source, $source_orig );
 }
 
 /**
@@ -736,4 +763,37 @@ function sm_get_views_path( $template = '' ) {
 	}
 
 	return $template;
+}
+
+/**
+ * Renders the pagination in views files.
+ *
+ * @since 2.15.14
+ */
+function sm_pagination() {
+	if ( SermonManager::getOption( 'use_prev_next_pagination' ) ) {
+		posts_nav_link();
+	} else {
+		if ( function_exists( 'wp_pagenavi' ) ) :
+			wp_pagenavi();
+		elseif ( function_exists( 'oceanwp_pagination' ) ) :
+			oceanwp_pagination();
+		elseif ( function_exists( 'pagination' ) ) :
+			pagination();
+		elseif ( function_exists( 'mfn_pagination' ) ) :
+			echo mfn_pagination();
+		elseif ( function_exists( 'presscore_complex_pagination' ) ) :
+			presscore_complex_pagination( $GLOBALS['wp_query'] );
+		elseif ( function_exists( 'cro_paging' ) ) :
+			cro_paging();
+		elseif ( function_exists( 'twentynineteen_the_posts_navigation' ) ) :
+			twentynineteen_the_posts_navigation();
+		elseif ( function_exists( 'exodoswp_pagination' ) ) :
+			echo '<div class="modeltheme-pagination-holder col-md-12"><div class="modeltheme-pagination pagination">';
+			exodoswp_pagination();
+			echo '</div></div>';
+		else :
+			the_posts_pagination();
+		endif;
+	}
 }
