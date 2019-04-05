@@ -16,8 +16,8 @@ function fifu_insert_meta_box() {
 add_action('add_meta_boxes', 'fifu_add_css');
 
 function fifu_add_css() {
-    wp_register_style('fifu-premium', plugins_url('/html/css/editor.css', __FILE__));
-    wp_enqueue_style('fifu-premium');
+    wp_register_style('featured-image-from-url', plugins_url('/html/css/editor.css', __FILE__));
+    wp_enqueue_style('featured-image-from-url');
 }
 
 function fifu_show_elements($post) {
@@ -116,7 +116,8 @@ function fifu_wai_save($post_id) {
 
 add_action('before_delete_post', 'fifu_db_before_delete_post');
 
-// regular woocommerce import
+/* regular woocommerce import */
+
 add_action('woocommerce_product_import_inserted_product_object', 'fifu_woocommerce_import');
 
 function fifu_woocommerce_import($object) {

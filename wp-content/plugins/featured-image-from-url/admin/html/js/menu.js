@@ -23,8 +23,7 @@ jQuery(function () {
         });
     });
 
-    jQuery("#accordion").accordion();
-    jQuery("#accordionCrop").accordion();
+    jQuery("#tabs-flickr").tabs();
     jQuery("#accordionClean").accordion();
     jQuery("#tabs").tabs();
     jQuery("#tabs-top").tabs();
@@ -36,6 +35,7 @@ jQuery(function () {
     jQuery("#fifu_input_slider_speed").spinner({min: 0});
     jQuery("#fifu_input_slider_pause").spinner({min: 0});
     jQuery("#tabsApi").tabs();
+    jQuery("#tabsCrop").tabs();
     jQuery("#tabsPremium").tabs();
     jQuery("#tabsWooImport").tabs();
     jQuery("#tabsWpAllImport").tabs();
