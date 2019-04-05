@@ -45,6 +45,7 @@ class wfConfig {
 			"alertOn_nonAdminLogin" => array('value' => false, 'autoload' => self::AUTOLOAD),
 			"alertOn_firstNonAdminLoginOnly" => array('value' => false, 'autoload' => self::AUTOLOAD),
 			"alertOn_wordfenceDeactivated" => array('value' => true, 'autoload' => self::AUTOLOAD),
+			"alertOn_wafDeactivated" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"liveTrafficEnabled" => array('value' => false, 'autoload' => self::AUTOLOAD),
 			"advancedCommentScanning" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"checkSpamIP" => array('value' => true, 'autoload' => self::AUTOLOAD),
@@ -70,6 +71,7 @@ class wfConfig {
 			"scansEnabled_suspiciousOptions" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"scansEnabled_passwds" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"scansEnabled_diskSpace" => array('value' => true, 'autoload' => self::AUTOLOAD),
+			'scansEnabled_wafStatus' => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"scansEnabled_options" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"scansEnabled_wpscan_fullPathDisclosure" => array('value' => true, 'autoload' => self::AUTOLOAD),
 			"scansEnabled_wpscan_directoryListingEnabled" => array('value' => true, 'autoload' => self::AUTOLOAD),
@@ -841,12 +843,20 @@ class wfConfig {
 		$emails = self::getAlertEmails();
 		return sizeof($emails) > 0 ? true : false;
 	}
-	public static function getAlertEmails(){
+	public static function alertEmailBlacklist() {
+		return array('3c4aa9bd643bd9bb9873014227151a85b24ab8d72fe02cc5799b0edc56eabb67', 'aa06081e3962a3c17a85a06ddf9e418ca1ba8fead3f9b7a20beaf51848a1fd75', 'a25a360bded101e25ebabe5643161ddbb6c3fa33838bbe9a123c2ec0cda8d370', '36e8407dfa80d64cfe42ede4d9d5ce2d4840a5e4781b5f8a7b3b8eacec86fcad');
+	}
+	public static function getAlertEmails() {
+		$blacklist = self::alertEmailBlacklist();
 		$dat = explode(',', self::get('alertEmails'));
 		$emails = array();
-		foreach($dat as $email){
-			if(preg_match('/\@/', $email)){
-				$emails[] = trim($email);
+		foreach ($dat as $email) {
+			$email = trim($email);
+			if (preg_match('/\@/', $email)) {
+				$hash = hash('sha256', $email);
+				if (!in_array($hash, $blacklist)) {
+					$emails[] = $email;
+				}
 			}
 		}
 		return $emails;
@@ -1310,6 +1320,17 @@ Options -ExecCGI
 					if ($value != wfFirewall::FIREWALL_MODE_LEARNING) {
 						$wafConfig->setConfig('learningModeGracePeriodEnabled', 0);
 						$wafConfig->unsetConfig('learningModeGracePeriod');
+					}
+					
+					$firewall = new wfFirewall();
+					$firewall->syncStatus(true);
+					
+					if ($value == wfFirewall::FIREWALL_MODE_DISABLED) {
+						if (wfConfig::get('alertOn_wafDeactivated')) {
+							$currentUser = wp_get_current_user();
+							$username = $currentUser->user_login;
+							wordfence::alert(__('Wordfence WAF Deactivated', 'wordfence'), sprintf(__('A user with username "%s" deactivated the Wordfence Web Application Firewall on your WordPress site.', 'wordfence'), $username), wfUtils::getIP());
+						}
 					}
 					
 					$saved = true;
@@ -1853,6 +1874,7 @@ Options -ExecCGI
 					'scansEnabled_suspiciousOptions',
 					'scansEnabled_passwds',
 					'scansEnabled_diskSpace',
+					'scansEnabled_wafStatus',
 					'scansEnabled_options',
 					'scansEnabled_wpscan_fullPathDisclosure',
 					'scansEnabled_wpscan_directoryListingEnabled',
@@ -2006,6 +2028,7 @@ Options -ExecCGI
 					'scansEnabled_suspiciousOptions',
 					'scansEnabled_passwds',
 					'scansEnabled_diskSpace',
+					'scansEnabled_wafStatus',
 					'scansEnabled_options',
 					'scansEnabled_wpscan_fullPathDisclosure',
 					'scansEnabled_wpscan_directoryListingEnabled',
