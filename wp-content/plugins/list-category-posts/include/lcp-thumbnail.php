@@ -42,9 +42,13 @@ class LcpThumbnail{
                        '" title="' . esc_attr($single->post_title) . '">';
 
         $lcp_thumbnail .= get_the_post_thumbnail(
-          $single->ID,
-          $lcp_thumb_size,
-          ( $lcp_thumb_class != null ) ? array( 'class' => $lcp_thumb_class ) : null
+            $single->ID,
+            $lcp_thumb_size,
+            array(
+                'alt' => esc_attr($single->post_title),
+                // If we have a class use it, otherwise use default
+                'class' => ( $lcp_thumb_class != null ) ? $lcp_thumb_class : 'lcp_thumbnail'
+            )
         );
         $lcp_thumbnail .= '</a>';
       } else {
