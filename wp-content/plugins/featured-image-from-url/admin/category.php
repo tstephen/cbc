@@ -9,7 +9,6 @@ function fifu_ctgr_edit_box($term) {
     $height = 'height:200px;';
     $align = 'text-align:left;';
     $show_news = 'display:none';
-    $is_sirv_active = is_plugin_active('sirv/sirv.php');
     $url = $alt = null;
 
     if (is_object($term)) {
@@ -18,12 +17,11 @@ function fifu_ctgr_edit_box($term) {
     }
 
     if ($url) {
-        $show_button = $show_sirv = 'display:none;';
+        $show_button = 'display:none;';
         $show_alt = $show_image = $show_link = '';
     } else {
-        $show_button = $show_sirv = '';
+        $show_button = '';
         $show_alt = $show_image = $show_link = 'display:none;';
-        $show_sirv = ($is_sirv_active ? '' : 'display:none;');
     }
 
     include 'html/category.html';
@@ -35,11 +33,9 @@ function fifu_ctgr_add_box() {
     $height = 'height:200px;';
     $align = 'text-align:left;';
     $show_news = 'display:none';
-    $is_sirv_active = is_plugin_active('sirv/sirv.php');
 
-    $show_button = $show_sirv = $url = $alt = '';
+    $show_button = $url = $alt = '';
     $show_alt = $show_image = $show_link = 'display:none;';
-    $show_sirv = ($is_sirv_active ? '' : 'display:none;');
 
     include 'html/category.html';
 }

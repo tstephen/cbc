@@ -9,7 +9,7 @@ function fifu_replace_attached_file($att_url, $att_id) {
         if ($att_url) {
             $url = explode(";", $att_url);
             if (sizeof($url) > 1)
-                return strpos($url[1], "/wp-content/uploads/") !== false ? get_post($att_id)->guid : $url[1];
+                return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
         }
     }
     return $att_url;
@@ -22,7 +22,17 @@ function fifu_replace_attachment_url($att_url, $att_id) {
         if ($att_url) {
             $url = explode(";", $att_url);
             if (sizeof($url) > 1)
-                return strpos($url[1], "/wp-content/uploads/") !== false ? get_post($att_id)->guid : $url[1];
+                return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
+            else {
+                // external wordpress images
+                if (sizeof($url) > 0 && strpos($url[0], fifu_get_internal_image_path()) !== false) {
+                    if (get_post($att_id)) {
+                        $url = get_post($att_id)->guid;
+                        if ($url)
+                            return $url;
+                    }
+                }
+            }
         }
     }
 
@@ -59,16 +69,18 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
         $image_size = fifu_get_image_size($size);
         if (fifu_is_on('fifu_original')) {
             return array(
-                strpos($image[0], "/wp-content/uploads/") !== false ? get_post($att_id)->guid : $image[0],
+                strpos($image[0], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $image[0],
                 null,
                 null,
                 null,
             );
         }
+        $width = fifu_maximum('width');
+        $height = fifu_maximum('height');
         return array(
-            strpos($image[0], "/wp-content/uploads/") !== false ? get_post($att_id)->guid : $image[0],
-            isset($image_size['width']) ? $image_size['width'] : (get_option('fifu_default_width') ? get_option('fifu_default_width') : 800),
-            isset($image_size['height']) ? $image_size['height'] : 600,
+            strpos($image[0], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $image[0],
+            isset($image_size['width']) && $image_size['width'] < $width ? $image_size['width'] : $width,
+            isset($image_size['height']) && $image_size['height'] < $height ? $image_size['height'] : $height,
             isset($image_size['crop']) ? $image_size['crop'] : '',
         );
     }
@@ -92,5 +104,26 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
 
 function fifu_is_internal_image($image) {
     return $image && $image[1] > 1 && $image[2] > 1;
+}
+
+function fifu_get_internal_image_path() {
+    return $_SERVER['SERVER_NAME'] . "/wp-content/uploads/";
+}
+
+// yoast warnings and notices
+
+add_filter('wp_get_attachment_metadata', 'fifu_filter_wp_get_attachment_metadata', 10, 2);
+
+function fifu_filter_wp_get_attachment_metadata($data, $post_id) {
+    if (!function_exists('is_plugin_active'))
+        require_once(ABSPATH . '/wp-admin/includes/plugin.php');
+
+    if (is_plugin_active('wordpress-seo/wp-seo.php') && !$data) {
+        $arr_size = array();
+        $arr_size['width'] = null;
+        $arr_size['height'] = null;
+        return $arr_size;
+    }
+    return $data;
 }
 

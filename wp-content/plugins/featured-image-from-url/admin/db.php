@@ -484,6 +484,7 @@ class FifuDb {
             $aux = $this->get_formatted_value(fifu_main_image_url($res->post_id), get_post_meta($res->post_id, 'fifu_image_alt', true), $res->post_id);
             $value = ($i == 1) ? $aux : ($value . "," . $aux);
             if ($value && (($i % $this->MAX_INSERT == 0) || ($i % $this->MAX_INSERT != 0 && count($result) == $count))) {
+                wp_cache_flush();
                 $this->insert_attachment_by($value);
                 $this->insert_thumbnail_id($ids);
                 $this->insert_attachment_meta_url($ids);
@@ -501,24 +502,40 @@ class FifuDb {
 
     function delete_attachment() {
         $ids = null;
-        $i = 0;
+        $i = 1;
+        $count = 1;
         // delete fake attachments and _thumbnail_ids
-        foreach ($this->get_fake_attachments() as $res)
-            $ids = ($i++ == 0) ? $res->id : ($ids . "," . $res->id);
-        if ($ids) {
-            $this->delete_thumbnail_ids($ids);
-            $this->delete_attachments($ids);
+        $result = $this->get_fake_attachments();
+        foreach ($result as $res) {
+            $ids = ($i == 1) ? $res->id : ($ids . "," . $res->id);
+            if ($ids && (($i % $this->MAX_INSERT == 0) || ($i % $this->MAX_INSERT != 0 && count($result) == $count))) {
+                wp_cache_flush();
+                $this->delete_thumbnail_ids($ids);
+                $this->delete_attachments($ids);
+                $ids = null;
+                $i = 1;
+            } else
+                $i++;
+            $count++;
         }
 
         $ids = null;
-        $i = 0;
+        $i = 1;
+        $count = 1;
         // delete attachment data and more _thumbnail_ids
-        foreach ($this->get_posts_with_url() as $res)
-            $ids = ($i++ == 0) ? $res->post_id : ($ids . "," . $res->post_id);
-        if ($ids) {
-            $this->delete_invalid_thumbnail_ids($ids);
-            $this->delete_fake_thumbnail_id($ids);
-            $this->delete_attachment_meta_url($ids);
+        $result = $this->get_posts_with_url();
+        foreach ($result as $res) {
+            $ids = ($i == 1) ? $res->post_id : ($ids . "," . $res->post_id);
+            if ($ids && (($i % $this->MAX_INSERT == 0) || ($i % $this->MAX_INSERT != 0 && count($result) == $count))) {
+                wp_cache_flush();
+                $this->delete_invalid_thumbnail_ids($ids);
+                $this->delete_fake_thumbnail_id($ids);
+                $this->delete_attachment_meta_url($ids);
+                $ids = null;
+                $i = 1;
+            } else
+                $i++;
+            $count++;
         }
 
         // delete data without attachment

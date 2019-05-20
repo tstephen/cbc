@@ -1,7 +1,7 @@
 <div class="wrap" style="opacity:0">
 
     <div class="header-box" style="background-color:#23282d">
-        <h1 style="color:white"><img src="wp-content/plugins/featured-image-from-url/admin/images/favicon.png" alt=""> <b>Featured Image from URL</b> 2</h1>
+        <h1 style="color:white"><img src="<?php echo plugins_url()?>/featured-image-from-url/admin/images/favicon.png" alt=""> <b> featured image from url</b> 2</h1>
     </div>
 
     <div id="tabs-top">        
@@ -20,7 +20,7 @@
             <li><a href="#tabs-c">Video</a></li>
             <li><a href="#tabs-o">WooCommerce</a></li>
             <li><a href="#tabs-p">WP All Import</a></li>
-            <li><a href="#tabs-a">Premium version <b style="border-radius:2px;padding:3px;background-color:darkblue;color:white">30%OFF</b></a></li>
+            <li><a href="#tabs-a">Premium version <b style="border-radius:2px;padding:3px;background-color:#32373c;color:white">20%OFF</b></a></li>
             <br>
             <br>
             <div id="tabs-a">
@@ -33,14 +33,14 @@
                         <div style="display:inline-block;;position:relative;top:-30px">                        
                             <table style="width:100%;border: 0px dotted #000">
                                 <tr>
-                                    <td><center></center></td><td><center>Money</center></td><td><center>Bitcoin</center></td>
+                                    <td><center></center></td><td><center>Money (PayPal)</center></td><td><center>Bitcoin</center></td>
                                 </tr>
                                 <tr>
                                     <td style="width:60%"
                                         <div>
-                                            Donate <b>US$ 35</b> and receive the download link by email within 12 hours.<br>
+                                            Donate <b>US$ 39,90</b> and receive the download link by email within 12 hours.<br>
                                             Moreover, <b>you will have lifetime automatic updates</b>.<br><br>
-                                            <i>* price valid for April 2019</i>
+                                            <i>* price valid for May 2019</i>
                                         </div>
                                     </td>
                                     <td style="width:20%">
@@ -453,6 +453,22 @@
                 </div>
 
                 <div class="box">
+                    <h2>Replace broken image</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        Here you can define the URL of an image to be shown in case of error (image not found).
+                        <br><br>
+                        <input id="fifu_input_error_url" 
+                               type="text" 
+                               name="fifu_input_error_url" 
+                               style="width:675px" 
+                               value="">
+                        <input type="submit" 
+                               value="Submit" disabled>
+                    </div>
+                </div>
+
+                <div class="box">
                     <h2>Original Size</h2>
                     <div class="greybox">
                         Useful if you have small external images, here you can define if the image will be shown in the original size or if it will be resized to the dimensions of the available area.
@@ -730,37 +746,201 @@
                         <input type="submit" 
                                value="Submit" >
                     </form>
-                </div>   
-
-                <div class="box">
-
-                    <h2>Default Width</h2>
-
-                    <div class="greybox">
-
-                        If your theme doesn't define an image width in some area of the site, FIFU can use a default value (px).
-
-                    </div>
-
-                    <br>
-
-                    <form 
-                        id="fifu_form_default_width" 
-                        action="javascript:void(0)" 
-                        method="post">
-
-                        <input id="fifu_input_default_width" 
-                               size=4
-                               type="text" 
-                               name="fifu_input_default_width" 
-                               value="<?php echo $default_width; ?>">
-
-                        <input type="submit" value="Submit" >      
-                    </form>
-
                 </div>
 
-                <a name="priority"></a>
+                <div class="box">
+                    <h2>Maximum Sizes</h2>
+                    <div class="greybox">
+                        When you are working with external images, there is no way to know the image dimensions before loading the page. 
+                        As consequence, some themes may show the images in their real (sometimes huge) sizes. Here you can define the max size (px) of the featured images at different layouts.<br><br>
+                        <form 
+                            id="fifu_form_image_size" 
+                            action="javascript:void(0)" 
+                            method="post">
+
+                            <table style="text-align:left">                            
+                                <tr>
+                                    <th>   
+                                        Archive:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_arch" 
+                                               name="fifu_input_image_width_arch" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_arch; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_arch" 
+                                               name="fifu_input_image_height_arch" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_arch; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Cart:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_cart" 
+                                               name="fifu_input_image_width_cart" 
+                                               placeholder="max-width" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_cart" 
+                                               name="fifu_input_image_height_arch" 
+                                               placeholder="max-height" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Category:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_ctgr" 
+                                               name="fifu_input_image_width_ctgr" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_ctgr; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_ctgr" 
+                                               name="fifu_input_image_height_ctgr" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_ctgr; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Home:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_home" 
+                                               name="fifu_input_image_width_home" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_home; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_home" 
+                                               name="fifu_input_image_height_home" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_home; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>   
+                                        Page:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_page" 
+                                               name="fifu_input_image_width_page" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_page; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_page" 
+                                               name="fifu_input_image_height_page" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_page; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Post:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_post" 
+                                               name="fifu_input_image_width_post" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_post; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_post" 
+                                               name="fifu_input_image_height_post" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_post; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Product:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_prod" 
+                                               name="fifu_input_image_width_prod" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_prod; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_prod" 
+                                               name="fifu_input_image_height_prod" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_prod; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                                <tr>
+                                    <th>   
+                                        Shop:
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_width_shop" 
+                                               name="fifu_input_image_width_shop" 
+                                               placeholder="max-width" 
+                                               value="<?php echo $max_image_width_shop; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <input id="fifu_input_image_height_shop" 
+                                               name="fifu_input_image_height_shop" 
+                                               placeholder="max-height" 
+                                               value="<?php echo $max_image_height_shop; ?>" 
+                                               size="7">
+                                    </th>
+                                    <th>
+                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
+                                    </th>
+                                </tr> 
+                            </table>
+
+                            <br>
+
+                            <input type="submit" value="Submit" >
+                        </form>
+                    </div>
+                </div>                
 
                 <div class="box">
                     <h2>Priority</h2>
@@ -857,11 +1037,7 @@
                                     href="javascript:void(0)" 
                                     id="fifu_toggle_fake2" 
                                     onclick="invert('fake2');
-                                            time = '<?php echo fifu_db_number_of_posts();?>' / 2;
-                                            jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
-                                            setTimeout(function () {
-                                                jQuery('.wrap').unblock();
-                                            }, time > 10000 ? time : 5000);"; 
+                                            fifu_fake_js();";
                                     name="fifu_toggle_fake2" 
                                     class="<?php echo $enable_fake2; ?>" 
                                     value=""
@@ -909,12 +1085,7 @@
                                     href="javascript:void(0)" 
                                     id="fifu_toggle_data_clean" 
                                     onclick="invert('data_clean');
-                                            time = '<?php echo fifu_db_number_of_posts();?>' / 2;
-                                            jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
-                                            setTimeout(function () {
-                                                window.location.href = '#tabs-j';
-                                                location.reload();
-                                            }, time > 10000 ? time : 5000);";
+                                            fifu_clean_js();";
                                     name="fifu_toggle_data_clean" 
                                     class="<?php echo $enable_data_clean; ?>" 
                                     value=""
@@ -957,12 +1128,12 @@
             <div id="tabs-l">
                 <div class="box">
 
-                    <h2>Shortcode (beta feature)</h2>
+                    <h2>Shortcode</h2>
 
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
 
-                        This experimental feature allows to use a shortcode as "featured image" of posts/pages/products. Using shortcodes you are not limited to images/videos/sliders anymore. You can use any content provided by the shortcode, what could be a music, a text, a whole site etc. However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortcode content, otherwise it will be shown the regular featured image. Important: shortcodes can be not compatible with other FIFU features, such as CSS Style and Crop Image.
+                        This experimental feature allows to use a shortcode as "featured image" of posts/pages/products. Using shortcodes you are not limited to images/videos/sliders anymore. You can use any content provided by the shortcode, what could be a music, a text, a whole site etc. However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortcode content, otherwise it will be shown the regular featured image (required field). Important: shortcodes can be not compatible with other FIFU features, such as CSS Style, Crop Image, Lazy Load etc.
 
                     </div>
 
@@ -1146,7 +1317,7 @@
                     <h2>Video Sizes</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        The default value applied to the videos is "100%" and it usually works fine. However, here you can define the max size (px, cm etc) of the featured videos at different screens and the ratio for these videos as well.<br><br>
+                        The default value applied to the videos is "100%" and it usually works fine. However, here you can define the max size of the featured videos at different layouts and the ratio for those videos as well.<br><br>
                         <table style="text-align:left">
                             <tr>
                                 <th>   
@@ -1155,12 +1326,12 @@
                                 <th>
                                     <input id="fifu_input_video_width_rtio" 
                                            name="fifu_input_video_width_rtio" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_rtio" 
                                            name="fifu_input_video_height_rtio" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 1, 2, 3...</div>
@@ -1173,7 +1344,7 @@
                                 <th>
                                     <input id="fifu_input_video_margin_bottom" 
                                            name="fifu_input_video_margin_bottom" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 10px, 1cm...</div>
@@ -1186,7 +1357,7 @@
                                 <th>
                                     <input id="fifu_input_video_vertical_margin" 
                                            name="fifu_input_video_vertical_margin"
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 10px, 1cm...</div>
@@ -1200,13 +1371,13 @@
                                     <input id="fifu_input_video_width_arch" 
                                            name="fifu_input_video_width_arch" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_arch" 
                                            name="fifu_input_video_height_arch" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1220,13 +1391,13 @@
                                     <input id="fifu_input_video_width_ctgr" 
                                            name="fifu_input_video_width_ctgr" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_ctgr" 
                                            name="fifu_input_video_height_ctgr" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1240,13 +1411,13 @@
                                     <input id="fifu_input_video_width_home" 
                                            name="fifu_input_video_width_home" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_home" 
                                            name="fifu_input_video_height_home" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1260,13 +1431,13 @@
                                     <input id="fifu_input_video_width_page" 
                                            name="fifu_input_video_width_page" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_page" 
                                            name="fifu_input_video_height_page" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1280,13 +1451,13 @@
                                     <input id="fifu_input_video_width_post" 
                                            name="fifu_input_video_width_post" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_post" 
                                            name="fifu_input_video_height_post" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1300,13 +1471,13 @@
                                     <input id="fifu_input_video_width_prod" 
                                            name="fifu_input_video_width_prod" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_prod" 
                                            name="fifu_input_video_height_prod" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1320,13 +1491,13 @@
                                     <input id="fifu_input_video_width_shop" 
                                            name="fifu_input_video_width_shop" 
                                            placeholder="max-width" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <input id="fifu_input_video_height_shop" 
                                            name="fifu_input_video_height_shop" 
                                            placeholder="max-height" 
-                                           size="4">
+                                           size="7">
                                 </th>
                                 <th>
                                     <div style="font-style: italic;font-weight:normal;">e.g.: 300px, 8cm...</div>
@@ -1336,6 +1507,17 @@
                         <br>
                     </div>
                     <br>
+                    <input type="submit" value="Submit" disabled>
+                </div>
+
+                <div class="box">
+                    <h2>Minimum Width</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        Minimum width that an available area should have to show a video. Otherwise the thumbnail will be shown.
+                    </div>
+                    <br>
+                    <input id="fifu_input_video_min_width" type="text" name="fifu_input_video_min_width"  value="" size="4">
                     <input type="submit" value="Submit" disabled>
                 </div>
 
@@ -1375,8 +1557,6 @@
                         </tr>              
                     </table>
                 </div>
-
-
             </div>
             <div id="tabs-m">
                 <div class="box">
@@ -1387,25 +1567,13 @@
                         <table style="text-align:left">
                             <tr>
                                 <th>
-                                    <form 
-                                        id="fifu_form_slider" 
-                                        action="javascript:void(0)" 
-                                        method="post">
-                                        <input 
-                                            type="image" 
-                                            href="javascript:void(0)" 
-                                            id="fifu_toggle_slider" 
-                                            onclick="javascript:void(0)" 
-                                            name="fifu_toggle_slider" 
-                                            class="toggleoff" 
-                                            value="">
-
-                                        <input 
-                                            type="hidden" 
-                                            id="fifu_input_slider" 
-                                            name="fifu_input_slider" 
-                                            value="" >
-                                    </form>
+                                    <input 
+                                        type="image" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_slider" 
+                                        name="fifu_toggle_slider" 
+                                        class="toggleoff" 
+                                        value="" style="display:block">
                                 </th>
                                 <th>   
                                     slider
@@ -1583,7 +1751,7 @@
                                 </div>
                                 <div id="tabs-flickr-d">
                                     <br><br><br>
-                                    You don't need to change anything here to make the images appear. However, some themes can't calculate the sufficient size that an image should have in each place, which is a waste. So if in a post, for example, a 1600px wide image is being loaded in an area that you know that is never larger than 750px wide, you could disable the options 1024 and 1600, which will make your site much faster without losing quality.
+                                    You don't need to change anything here to make the images appear. However, some themes can't calculate the sufficient size that an image should have in each place, which is a waste. So if in a post, for example, a 1024px wide image is being loaded in an area that you know that is never larger than 750px wide, you could disable the option 1024, which will make your site much faster without losing quality.
                                     <br><br>
                                     <table id="thumbnail-size">
                                         <tr>
@@ -1597,7 +1765,6 @@
                                             <th>640</th>
                                             <th>800</th>
                                             <th>1024</th>
-                                            <th>1600</th>
                                         </tr>
                                         <tr>
                                             <td><center>post</center></td>
@@ -1610,7 +1777,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-post-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-post-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-post-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-post-1600"></center></td>        
                                         </tr>
                                         <tr>
                                             <td><center>page</center></td>
@@ -1623,7 +1789,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-page-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-page-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-page-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-page-1600"></center></td>         
                                         </tr>
                                         <tr>
                                             <td><center>archive</center></td>
@@ -1636,7 +1801,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-arch-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-arch-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-arch-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-arch-1600"></center></td>         
                                         </tr>
                                         <tr>
                                             <td><center>cart</center></td>
@@ -1649,7 +1813,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-cart-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-cart-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-cart-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-cart-1600"></center></td>         
                                         </tr>
                                         <tr>
                                             <td><center>category</center></td>
@@ -1662,7 +1825,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-ctgr-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-ctgr-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-ctgr-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-ctgr-1600"></center></td>         
                                         </tr>
                                         <tr>
                                             <td><center>home</center></td>
@@ -1675,7 +1837,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-home-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-home-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-home-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-home-1600"></center></td>         
                                         </tr>
                                         <tr>
                                             <td><center>product</center></td>
@@ -1688,7 +1849,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-prod-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-prod-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-prod-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-prod-1600"></center></td>         
                                         </tr>                                                                                                    
                                         <tr>
                                             <td><center>shop</center></td>
@@ -1701,7 +1861,6 @@
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-shop-640"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-shop-800"></center></td>
                                         <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-shop-1024"></center></td>
-                                        <td><center><input type="checkbox" onclick="javascript:void(0)" id="cb-shop-1600"></center></td>         
                                         </tr>
                                     </table>
                                 </div>
@@ -1721,10 +1880,11 @@
                             <ul>
                                 <li><a href="#tabs-1">Endpoints</a></li>
                                 <li><a href="#tabs-2">Custom Fields</a></li>
-                                <li><a href="#tabs-3">Creating your first product...</a></li>
-                                <li><a href="#tabs-6">product category...</a></li>
-                                <li><a href="#tabs-4">product variation...</a></li>
-                                <li><a href="#tabs-5">post...</a></li>
+                                <li><a href="#tabs-3">Creating your first product</a></li>
+                                <li><a href="#tabs-6">product category</a></li>
+                                <li><a href="#tabs-7">product variable</a></li>
+                                <li><a href="#tabs-4">product variation</a></li>
+                                <li><a href="#tabs-5">post</a></li>
                             </ul>
                             <div id="tabs-1">
                                 <table style="text-align:left">
@@ -1757,6 +1917,12 @@
                                         <th>Post</th>
                                         <th>
                                             http://yourdomain/wp-json/wp/v2/posts
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Custom Post Type</th>
+                                        <th>
+                                            http://yourdomain/wp-json/wp/v2/{post_type}
                                         </th>
                                     </tr>
                                 </table>
@@ -1792,6 +1958,12 @@
                                         <th>Post</th>
                                         <th>
                                             http://yourdomain/wp-json/wp/v2/posts/{id}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Custom Post Type</th>
+                                        <th>
+                                            http://yourdomain/wp-json/wp/v2/{post_type}/{id}
                                         </th>
                                     </tr>
                                 </table>
@@ -1866,29 +2038,36 @@
 
                             <div id="tabs-3">
 
-                                <iframe src="../wp-content/plugins/featured-image-from-url/admin/html/txt/product.txt"
+                                <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product.txt"
                                         width="800px" height="250px" ></iframe>
 
                             </div>
 
                             <div id="tabs-4">
 
-                                <iframe src="../wp-content/plugins/featured-image-from-url/admin/html/txt/product-variation.txt"
+                                <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-variation.txt"
                                         width="800px" height="450px" ></iframe>
 
                             </div>
 
                             <div id="tabs-5">
 
-                                <iframe src="../wp-content/plugins/featured-image-from-url/admin/html/txt/post.txt"
+                                <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/post.txt"
                                         width="800px" height="150px" ></iframe>
 
                             </div>
 
                             <div id="tabs-6">
 
-                                <iframe src="../wp-content/plugins/featured-image-from-url/admin/html/txt/product-category.txt"
+                                <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-category.txt"
                                         width="800px" height="225px" ></iframe>
+
+                            </div>
+
+                            <div id="tabs-7">
+
+                                <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-variable.txt"
+                                        width="800px" height="550px" ></iframe>
 
                             </div>
 
@@ -2185,7 +2364,7 @@
                             </div>
 
                             <div id="tabs-3">
-                                <a href="../wp-content/plugins/featured-image-from-url/admin/html/txt/csv-woo.txt">CSV example</a>
+                                <a href="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/csv-woo.txt">CSV example</a>
                                 <br>
                                 <br>
                                 <center><img src="https://c1.staticflickr.com/1/216/31480097476_bf4915184b_o_d.jpg" style="width:90%"></center>
@@ -2308,7 +2487,7 @@
                             </div>
 
                             <div id="tabs-3">
-                                <a href="../wp-content/plugins/featured-image-from-url/admin/html/txt/csv.txt">CSV example</a>
+                                <a href="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/csv.txt">CSV example</a>
                                 <br>
                                 <br>
                                 <img src="https://c1.staticflickr.com/5/4860/44640581850_30311e210a_c_d.jpg" style="width:100%">
@@ -2352,7 +2531,6 @@ fifu_css:<?php echo $css_style ?>;
 fifu_data_clean:<?php echo $enable_data_clean ?>;
 fifu_data_generation:<?php echo $enable_data_generation ?>;
 fifu_default_url:<?php echo $default_url ?>;
-fifu_default_width:<?php echo $default_width ?>;
 fifu_enable_default_url:<?php echo $enable_default_url ?>;
 fifu_fake:<?php echo $enable_fake ?>;
 fifu_fake2:<?php echo $enable_fake2 ?>;
@@ -2360,6 +2538,22 @@ fifu_get_first:<?php echo $enable_get_first ?>;
 fifu_grid_category:<?php echo $enable_grid_category ?>;
 fifu_hide_page:<?php echo $enable_hide_page ?>;
 fifu_hide_post:<?php echo $enable_hide_post ?>;
+fifu_image_height_arch:<?php echo $max_image_height_arch ?>;
+fifu_image_height_cart:<?php echo $max_image_height_cart ?>;
+fifu_image_height_ctgr:<?php echo $max_image_height_ctgr ?>;
+fifu_image_height_home:<?php echo $max_image_height_home ?>;
+fifu_image_height_page:<?php echo $max_image_height_page ?>;
+fifu_image_height_post:<?php echo $max_image_height_post ?>;
+fifu_image_height_prod:<?php echo $max_image_height_prod ?>;
+fifu_image_height_shop:<?php echo $max_image_height_shop ?>;
+fifu_image_width_arch:<?php echo $max_image_width_arch ?>;
+fifu_image_width_cart:<?php echo $max_image_width_cart ?>;
+fifu_image_width_ctgr:<?php echo $max_image_width_ctgr ?>;
+fifu_image_width_home:<?php echo $max_image_width_home ?>;
+fifu_image_width_page:<?php echo $max_image_width_page ?>;
+fifu_image_width_post:<?php echo $max_image_width_post ?>;
+fifu_image_width_prod:<?php echo $max_image_width_prod ?>;
+fifu_image_width_shop:<?php echo $max_image_width_shop ?>;
 fifu_lazy:<?php echo $enable_lazy ?>;
 fifu_original:<?php echo $enable_original ?>;
 fifu_ovw_first:<?php echo $enable_ovw_first ?>;

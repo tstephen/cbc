@@ -6,7 +6,6 @@ jQuery(document).ready(function ($) {
             visibleOnly: false,
             updateEvent: 'load orientationchange resize scroll touchmove focus hover'
         });
-        jQuery('img').css('opacity', 1);
     }
 
     // woocommerce lightbox/zoom
@@ -38,9 +37,13 @@ function resizeImg($) {
             //original size
             var width = $(this)['0'].naturalWidth;
             var height = $(this)['0'].naturalHeight;
-            var ratio = width / height;
-            jQuery(this).attr('data-large_image_width', jQuery(window).width() * ratio);
-            jQuery(this).attr('data-large_image_height', jQuery(window).width());
+            jQuery(this).attr('data-large_image_width', width);
+            jQuery(this).attr('data-large_image_height', height);
+
+            //100%
+            //var ratio = width / height;
+            //jQuery(this).attr('data-large_image_width', jQuery(window).width() * ratio);
+            //jQuery(this).attr('data-large_image_height', jQuery(window).width());
         });
     };
     resizeImage(imgSelector);

@@ -2,6 +2,13 @@ jQuery(document).ready(function () {
     jQuery('.wrap').css('opacity', 1);
 });
 
+function homeUrl() {
+    var href = window.location.href;
+    var index = href.indexOf('/wp-admin');
+    var homeUrl = href.substring(0, index);
+    return homeUrl;
+}
+
 function invert(id) {
     if (jQuery("#fifu_toggle_" + id).attr("class") == "toggleon") {
         jQuery("#fifu_toggle_" + id).attr("class", "toggleoff");
@@ -64,3 +71,60 @@ jQuery(function () {
         jQuery("#dialog").dialog("open");
     });
 });
+
+function fifu_fake_js() {
+    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+
+    toggle = jQuery("#fifu_toggle_fake2").attr('class');
+    switch (toggle) {
+        case "toggleon":
+            option = "enable_fake_api";
+            break;
+        case "toggleoff":
+            option = "disable_fake_api";
+            break;
+        default:
+            option = "none_fake_api";
+    }
+    jQuery.ajax({
+        method: "POST",
+        url: homeUrl() + '/wp-json/featured-image-from-url/v2/' + option + '/',
+        async: true,
+        success: function (data) {
+            jQuery('.wrap').unblock();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            jQuery('.wrap').unblock();
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        timeout: 0
+    });
+}
+
+function fifu_clean_js() {
+    if (jQuery("#fifu_toggle_data_clean").attr('class') != 'toggleon')
+        return;
+
+    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+
+    jQuery.ajax({
+        method: "POST",
+        url: homeUrl() + '/wp-json/featured-image-from-url/v2/data_clean_api/',
+        async: true,
+        success: function (data) {
+            window.location.href = '#tabs-j';
+            jQuery("#fifu_toggle_data_clean").attr('toggleoff');
+            location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            window.location.href = '#tabs-j';
+            jQuery("#fifu_toggle_data_clean").attr('toggleoff');
+            location.reload();
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}

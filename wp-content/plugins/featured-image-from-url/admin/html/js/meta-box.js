@@ -7,9 +7,6 @@ function removeImage() {
     jQuery("#fifu_input_url").val("");
 
     jQuery("#fifu_button").show();
-
-    if (jQuery("#sirv-add-featured-image").attr("active"))
-        jQuery("#sirv-add-featured-image").show();
 }
 
 function previewImage() {
@@ -18,7 +15,7 @@ function previewImage() {
 
     if ($url) {
         jQuery("#fifu_button").hide();
-        jQuery("#sirv-add-featured-image").hide();
+        jQuery("#fifu_news").hide();
 
         jQuery("#fifu_image").css('background-image', "url('" + $url + "')");
 

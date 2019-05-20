@@ -26,18 +26,16 @@ function fifu_show_elements($post) {
     $height = 'height:200px;';
     $align = 'text-align:left;';
     $show_news = 'display:inline';
-    $is_sirv_active = is_plugin_active('sirv/sirv.php');
 
     $url = get_post_meta($post->ID, 'fifu_image_url', true);
     $alt = get_post_meta($post->ID, 'fifu_image_alt', true);
 
     if ($url) {
-        $show_button = $show_sirv = 'display:none;';
+        $show_button = 'display:none;';
         $show_alt = $show_image = $show_link = '';
     } else {
         $show_alt = $show_image = $show_link = 'display:none;';
         $show_button = '';
-        $show_sirv = ($is_sirv_active ? '' : 'display:none;');
     }
 
     include 'html/meta-box.html';
