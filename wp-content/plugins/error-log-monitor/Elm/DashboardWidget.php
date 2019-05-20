@@ -397,7 +397,7 @@ class Elm_DashboardWidget {
 				//Remove the "PHP " prefix from trace items.
 				$item = preg_replace('@^PHP @', '', $item, 1);
 				printf(
-					'<tr class="%s"><td><span class="elm-stack-frame-content">%s</span></td></tr>' . "\n",
+					'<tr class="%s"><td colspan="2"><span class="elm-stack-frame-content">%s</span></td></tr>' . "\n",
 					implode(' ', $classes),
 					$this->insertPathBreaks(esc_html($this->plugin->formatLogMessage($item)))
 				);
