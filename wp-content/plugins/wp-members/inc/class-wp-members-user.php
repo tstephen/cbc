@@ -145,7 +145,7 @@ class WP_Members_User {
 		/** This action is defined in /wp-includes/pluggable.php. */
 		do_action( 'wp_logout' );
 
-		wp_redirect( $redirect_to );
+		wp_safe_redirect( $redirect_to );
 		exit();
 	}
 	
@@ -236,7 +236,7 @@ class WP_Members_User {
 		$redirect_to = wpmem_get( 'redirect_to', false );
 		if ( $redirect_to ) {
 			$nonce_url = wp_nonce_url( $redirect_to, 'register_redirect', 'reg_nonce' );
-			wp_redirect( $nonce_url );
+			wp_safe_redirect( $nonce_url );
 			exit();
 		}
 	}
@@ -289,7 +289,7 @@ class WP_Members_User {
 		// User must be logged in.
 		$is_error = ( ! is_user_logged_in() ) ? "loggedin" : $is_error;
 		// Verify nonce.
-		$is_error = ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpmem_login_nonce' ) ) ? "reg_generic" : $is_error;
+		$is_error = ( ! wp_verify_nonce( $_REQUEST['_wpmem_pwdchange_nonce'], 'wpmem_shortform_nonce' ) ) ? "reg_generic" : $is_error;
 		if ( $is_error ) {
 			return $is_error;
 		}
@@ -330,7 +330,7 @@ class WP_Members_User {
 
 		} else {
 
-			if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wpmem_login_nonce' ) ) {
+			if ( ! wp_verify_nonce( $_REQUEST['_wpmem_pwdreset_nonce'], 'wpmem_shortform_nonce' ) ) {
 				return "reg_generic";
 			}
 			if ( username_exists( $arr['user'] ) ) {
@@ -379,6 +379,11 @@ class WP_Members_User {
 	function retrieve_username() {
 		global $wpmem;
 		if ( isset( $_POST['formsubmit'] ) ) {
+			
+			if ( ! wp_verify_nonce( $_REQUEST['_wpmem_getusername_nonce'], 'wpmem_shortform_nonce' ) ) {
+				return "reg_generic";
+			}
+			
 			$email = sanitize_email( $_POST['user_email'] );
 			$user  = ( isset( $_POST['user_email'] ) ) ? get_user_by( 'email', $email ) : false;
 			if ( $user ) {

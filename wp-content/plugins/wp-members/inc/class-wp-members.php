@@ -1320,11 +1320,23 @@ class WP_Members {
 		 * Filter default terms.
 		 *
 		 * @since 3.1.0
+		 * @deprecated 3.2.7 Use wpmem_default_text instead.
 		 */
 		$text = apply_filters( 'wpmem_default_text_strings', '' );
 		
 		// Merge filtered $terms with $defaults.
 		$text = wp_parse_args( $text, $defaults );
+		
+		/**
+		 * Filter the default terms.
+		 *
+		 * Replaces 'wpmem_default_text_strings' so that multiple filters could
+		 * be run. This allows for custom filters when also running the Text
+		 * String Editor extension.
+		 *
+		 * @since 3.2.7
+		 */
+		$text = apply_filters( 'wpmem_default_text', $text );
 		
 		// Return the requested text string.
 		return $text[ $str ];
@@ -1413,7 +1425,7 @@ class WP_Members {
 		) );
 
 		// Add settings for output description
-		$wp_customize->add_setting( 'show_logged_out_state', array(
+		$wp_customize->add_setting( 'wpmem_show_logged_out_state', array(
 			'default'    => '1',
 			'type'       => 'theme_mod', //'option'
 			'capability' => 'edit_theme_options',
@@ -1421,7 +1433,7 @@ class WP_Members {
 		) );
 
 		// Add settings for output description
-		$wp_customize->add_setting( 'show_form_message_dialog', array(
+		$wp_customize->add_setting( 'wpmem_show_form_message_dialog', array(
 			'default'    => '1',
 			'type'       => 'theme_mod', //'option'
 			'capability' => 'edit_theme_options',
@@ -1429,19 +1441,19 @@ class WP_Members {
 		) );
 
 		// Add control and output for select field
-		$wp_customize->add_control( 'show_form_logged_out', array(
+		$wp_customize->add_control( 'wpmem_show_form_logged_out', array(
 			'label'      => __( 'Show forms as logged out', 'wp-members' ),
 			'section'    => 'wp_members',
-			'settings'   => 'show_logged_out_state',
+			'settings'   => 'wpmem_show_logged_out_state',
 			'type'       => 'checkbox',
 			'std'        => '1'
 		) );
 		
 		// Add control for showing dialog
-		$wp_customize->add_control( 'show_form_dialog', array(
+		$wp_customize->add_control( 'wpmem_show_form_dialog', array(
 			'label'      => __( 'Show form message dialog', 'wp-members' ),
 			'section'    => 'wp_members',
-			'settings'   => 'show_form_message_dialog',
+			'settings'   => 'wpmem_show_form_message_dialog',
 			'type'       => 'checkbox',
 			'std'        => '0'
 		) );

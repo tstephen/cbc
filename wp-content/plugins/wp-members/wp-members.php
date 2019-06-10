@@ -3,7 +3,7 @@
 Plugin Name: WP-Members
 Plugin URI:  https://rocketgeek.com
 Description: WP access restriction and user registration.  For more information on plugin features, refer to <a href="https://rocketgeek.com/plugins/wp-members/users-guide/">the online Users Guide</a>. A <a href="https://rocketgeek.com/plugins/wp-members/quick-start-guide/">Quick Start Guide</a> is also available. WP-Members(tm) is a trademark of butlerblog.com.
-Version:     3.2.6.1
+Version:     3.2.7
 Author:      Chad Butler
 Author URI:  http://butlerblog.com/
 Text Domain: wp-members
@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Initialize constants.
-define( 'WPMEM_VERSION',    '3.2.6.1' );
+define( 'WPMEM_VERSION',    '3.2.7' );
 define( 'WPMEM_DB_VERSION', '2.1.4' );
 define( 'WPMEM_DIR',  plugin_dir_url ( __FILE__ ) );
 define( 'WPMEM_PATH', plugin_dir_path( __FILE__ ) );
@@ -190,20 +190,16 @@ function wpmem_downgrade() {
 }
 
 
-add_action( 'wpmu_new_blog', 'wpmem_mu_new_site', 10, 6 );
+add_action( 'wp_insert_site', 'wpmem_mu_new_site' );
 /**
  * Install default plugin options for a newly added blog in multisite.
  *
  * @since 2.9.3
+ * @since 3.2.7 Updated to wp_insert_site (wpmu_new_blog is deprecated).
  *
- * @param $blog_id
- * @param $user_id
- * @param $domain
- * @param $path
- * @param $site_id
- * @param $meta
+ * @param $new_site
  */
-function wpmem_mu_new_site( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function wpmem_mu_new_site( $new_site ) {
 
 	/**
 	 * Load the install file.
@@ -211,7 +207,7 @@ function wpmem_mu_new_site( $blog_id, $user_id, $domain, $path, $site_id, $meta 
 	require_once( WPMEM_PATH . 'inc/install.php' );
 
 	// Switch to the new blog.
-	switch_to_blog( $blog_id );
+	switch_to_blog( $new_site->id );
 
 	// Run the WP-Members install.
 	wpmem_do_install();
