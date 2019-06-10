@@ -16,6 +16,9 @@ function fifu_none_fake_api(WP_REST_Request $request) {
 function fifu_data_clean_api(WP_REST_Request $request) {
     fifu_db_enable_clean();
     update_option('fifu_data_clean', 'toggleoff', 'no');
+
+    fifu_disable_fake(); // fake1
+    update_option('fifu_data_generation', 'toggleoff', 'no');
 }
 
 function fifu_test_execution_time() {

@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+    window.scrollTo(0, 0);
     jQuery('.wrap').css('opacity', 1);
 });
 
@@ -88,16 +89,17 @@ function fifu_fake_js() {
     }
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '/wp-json/featured-image-from-url/v2/' + option + '/',
+        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/' + option + '/',
         async: true,
         success: function (data) {
-            jQuery('.wrap').unblock();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            jQuery('.wrap').unblock();
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
+        },
+        complete: function () {
+            jQuery('.wrap').unblock();
         },
         timeout: 0
     });
@@ -111,20 +113,21 @@ function fifu_clean_js() {
 
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '/wp-json/featured-image-from-url/v2/data_clean_api/',
+        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/data_clean_api/',
         async: true,
         success: function (data) {
-            window.location.href = '#tabs-j';
-            jQuery("#fifu_toggle_data_clean").attr('toggleoff');
-            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            window.location.href = '#tabs-j';
-            jQuery("#fifu_toggle_data_clean").attr('toggleoff');
-            location.reload();
             console.log(jqXHR);
             console.log(textStatus);
             console.log(errorThrown);
+        },
+        complete: function () {
+            jQuery("#fifu_toggle_data_clean").attr('class', 'toggleoff');
+            jQuery("#fifu_toggle_fake").attr('class', 'toggleoff');
+            jQuery("#fifu_toggle_fake2").attr('class', 'toggleoff');
+            jQuery("#fifu_toggle_data_generation").attr('class', 'toggleoff');
+            jQuery('.wrap').unblock();
         }
     });
 }

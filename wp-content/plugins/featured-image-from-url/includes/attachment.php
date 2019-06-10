@@ -50,8 +50,10 @@ function fifu_replace_attachment_url($att_url, $att_id) {
 add_filter('posts_where', 'fifu_query_attachments');
 
 function fifu_query_attachments($where) {
-    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments'))
-        $where .= ' AND post_author <> 77777 ';
+    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments')) {
+        global $wpdb;
+        $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> 77777 ';
+    }
     return $where;
 }
 

@@ -56,9 +56,9 @@ function fifu_remove_first_image($data, $postarr) {
         return $data;
 
     if (fifu_is_off('fifu_pop_first'))
-        return str_replace($img, fifu_show_image($img), $data);
+        return str_replace($img, fifu_show_media($img), $data);
 
-    return str_replace($img, fifu_hide_image($img), $data);
+    return str_replace($img, fifu_hide_media($img), $data);
 }
 
 add_action('save_post', 'fifu_save_properties');
@@ -66,6 +66,11 @@ add_action('save_post', 'fifu_save_properties');
 function fifu_save_properties($post_id) {
     if (!$_POST || get_post_type($post_id) == 'nav_menu_item')
         return;
+
+    //if (isset($_POST['fifu_input_image_width']))
+    //$width = $_POST['fifu_input_image_width'];
+    //if (isset($_POST['fifu_input_image_height']))
+    //$height = $_POST['fifu_input_image_height'];
 
     /* image url */
     if (isset($_POST['fifu_input_url'])) {

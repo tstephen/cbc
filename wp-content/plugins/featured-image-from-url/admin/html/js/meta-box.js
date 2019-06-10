@@ -22,5 +22,17 @@ function previewImage() {
         jQuery("#fifu_input_alt").show();
         jQuery("#fifu_image").show();
         jQuery("#fifu_link").show();
+
+        //getMeta($url);
     }
+}
+
+function getMeta(url) {
+    jQuery("<img/>", {
+        load: function () {
+            jQuery("#fifu_input_image_width").val(this.width);
+            jQuery("#fifu_input_image_height").val(this.height);
+        },
+        src: url
+    });
 }

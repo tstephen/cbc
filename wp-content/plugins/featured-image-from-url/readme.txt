@@ -3,8 +3,8 @@ Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
 Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variation, shortcode
 Requires at least: 4.0
-Tested up to: 5.2
-Stable tag: 5.2
+Tested up to: 5.2.1
+Stable tag: 5.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,7 @@ Features:
 
 * Featured Image from URL plugin allows you to use an external image as Featured Image of your post, page and Custom Post Type, such as WooCommerce Product;
 
-* perfect for external posts, the plugin is able to use the first image as Featured Image;
+* perfect for external posts, the plugin is able to use the first image/video as Featured Image;
 
 * when you access the table of posts/pages/products/categories in admin menu, the Featured Images are shown in a new column;
 
@@ -28,7 +28,7 @@ Features:
 
 * all included content still has social tags to facilitate sharing on social networks;
 
-* compatible with WP All Import plugin;
+* compatible with WP All Import plugin and WooCommerce import;
 
 * some nonstandard image URLs, such as Instagram and Google Drive's, will work as well;
 
@@ -46,7 +46,7 @@ Features:
 
 * you can use a slider of images as "featured image" (**premium feature**);
 
-* you can use a video thumbnail or a video as "featured image" (**premium feature**);
+* you can use an external video thumbnail or an external video (from YouTube, Vimeo, Cloudinary or Tumblr) as "featured image" (**premium feature**);
 
 * you can use any content provided by a shortcode as "featured image" (**premium BETA feature**);
 
@@ -59,6 +59,8 @@ Features:
 * it's able to crop all the external featured images on home/shop to the same size (**premium feature**);
 
 * auto play/pause videos on mouse over/out (**premium feature**);
+
+* replace broken URLs by a default one (**premium feature**);
 
 **<a href="https://featuredimagefromurl.com/">Official Site</a>**	
 **<a href="https://blog.featuredimagefromurl.com/">Live Preview (Blog)</a>**
@@ -156,6 +158,12 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 2.5.0 =
+* New premium feature: auto set first video; Bug fix: conflict with Enhanced Media Library plugin.
+
+= 2.4.9 =
+* Bug fix: metadata generation (route not found).
 
 = 2.4.8 =
 * New premium feature: replace broken image.
@@ -570,6 +578,12 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 2.5.0 =
+* New premium feature: auto set first video; Bug fix: conflict with Enhanced Media Library plugin.
+
+= 2.4.9 =
+* Bug fix: metadata generation (route not found).
 
 = 2.4.8 =
 * New premium feature: replace broken image.

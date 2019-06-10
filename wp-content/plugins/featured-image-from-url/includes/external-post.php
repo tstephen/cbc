@@ -18,9 +18,9 @@ function fifu_remove_first_image_ext($data, $postarr) {
         return $data;
 
     if (fifu_is_off('fifu_pop_first'))
-        return str_replace($img, fifu_show_image($img), $data);
+        return str_replace($img, fifu_show_media($img), $data);
 
-    return str_replace($img, fifu_hide_image($img), $data);
+    return str_replace($img, fifu_hide_media($img), $data);
 }
 
 add_action('save_post', 'fifu_save_properties_ext');
@@ -47,19 +47,19 @@ function fifu_show_all_images($content) {
     $matches = array();
     preg_match_all('/<img[^>]*display:[ ]*none[^>]*>/', $content, $matches);
     foreach ($matches[0] as $img) {
-        $content = str_replace($img, fifu_show_image($img), $content);
+        $content = str_replace($img, fifu_show_media($img), $content);
     }
     return $content;
 }
 
-function fifu_hide_image($img) {
-    if (strpos($img, 'style=\"') !== false)
-        return preg_replace('/style=..[^"]*["]/', 'style=\"display:none\"', $img);
-    return str_replace('/>', ' style=\"display:none\"/>', $img);
+function fifu_hide_media($img) {
+    if (strpos($img, 'style="') !== false)
+        return preg_replace('/style=.[^"]*["]/', 'style="display:none"', $img);
+    return preg_replace('/[\/]*>/', ' style="display:none">', $img);
 }
 
-function fifu_show_image($img) {
-    return preg_replace('/style=..display:[ ]*none../', '', $img);
+function fifu_show_media($img) {
+    return preg_replace('/style=[\\\]*.display:[ ]*none[\\\]*./', '', $img);
 }
 
 function fifu_first_url_in_content($post_id) {
@@ -71,16 +71,18 @@ function fifu_first_url_in_content($post_id) {
     if (!$matches[0])
         return;
 
+    $aux2 = null;
+
     //double quotes
     $aux1 = explode('src="', $matches[0][0]);
-    if ($aux1) {
+    if ($aux1 && count($aux1) > 1) {
         $aux2 = explode('"', $aux1[1]);
     }
 
     //single quotes
-    if (!$aux2[0]) {
+    if (!$aux2 || !$aux2[0]) {
         $aux1 = explode("src='", $matches[0][0]);
-        if ($aux1)
+        if ($aux1 && count($aux1) > 1)
             $aux2 = explode("'", $aux1[1]);
     }
 
