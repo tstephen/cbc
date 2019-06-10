@@ -28,7 +28,7 @@
       <node CREATED="1532368068853" ID="ae0db48a4b7ab8ea14e5ee8b661c0afa" MODIFIED="1532368098153" TEXT="Mission">
         <edge COLOR="#edda69"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-70"/>
-        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1532368076457" TEXT="Policy (Draft)" LINK="https://docs.google.com/document/d/1jieL-PTLG-mFLRtApeedF7opI7Gj63c_UPHU31l0md8/edit?usp=sharing">
+        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1532368076457" TEXT="Policy" LINK="https://docs.google.com/document/d/1jieL-PTLG-mFLRtApeedF7opI7Gj63c_UPHU31l0md8/edit?usp=sharing">
           <edge COLOR="#eed862"/>
           <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="750" y="-130"/>
         </node>
@@ -51,7 +51,7 @@
       </node-->
       <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
           <edge COLOR="#e69138"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="315"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
       </node>
     </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
