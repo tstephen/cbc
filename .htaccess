@@ -39,9 +39,6 @@ FileETag None
   RewriteRule . /index.php [L]
 
   # TS 16 Nov 18 Must appear here not with other CPanels, unclear why
-  RewriteCond %{HTTP_HOST} ^corshambaptists\.org$ [OR]
-  RewriteCond %{HTTP_HOST} ^www\.corshambaptists\.org$
-  RewriteRule ^preferences$ "https\:\/\/corshambaptists\.org\/privacy\-notice\/update\-your\-preferences\/" [R=301,L]
   RewriteRule ^sermon\/$ "https\:\/\/corshambaptists\.org\/teaching\/feed\/" [R=301,L]
 
   # TS 06 Feb 19 Protect church directory or other media from direct access
@@ -81,15 +78,3 @@ RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ 
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Beyond here is added by CPanel
-RewriteCond %{HTTP_HOST} ^debtadvicecentre\.org\.uk$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.debtadvicecentre\.org\.uk$
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-RewriteRule ^/?$ "http\:\/\/corshammoneyanddebtadvicecentre\.co\.uk\/" [R=301,L]
-
-RewriteCond %{HTTP_HOST} ^priorystreetbaptistchurch\.org\.uk$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.priorystreetbaptistchurch\.org\.uk$
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-RewriteRule ^/?$ "http\:\/\/corshambaptists\.org\/" [R=301,L]
-
