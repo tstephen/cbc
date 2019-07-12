@@ -2,8 +2,8 @@
 Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
-Tested up to: 5.1
-Stable tag: 3.2.7
+Tested up to: 5.2
+Stable tag: 3.2.9.2
 License: GPLv2
 
 == Description ==
@@ -27,37 +27,37 @@ __Simple to install and configure - yet customizable and scalable!__
 * Notify admin of new user registrations
 * Hold new registrations for admin approval
 * Create post excerpt teaser content automatically
-* [Shortcodes for login, registration, content restriction, and more](https://rkt.bz/docssc)
-* Create powerful customizations with [more than 120 action and filter hooks](https://rkt.bz/hooks)
-* [A library of API functions for extensibility](https://rkt.bz/api)
+* [Shortcodes for login, registration, content restriction, and more](https://rocketgeek.com/plugins/wp-members/docs/shortcodes/)
+* Create powerful customizations with [more than 120 action and filter hooks](https://rocketgeek.com/plugins/wp-members/docs/filter-hooks/)
+* [A library of API functions for extensibility](https://rocketgeek.com/plugins/wp-members/docs/api-functions/)
 
 WP-Members allows you to restrict content as restricted or hidden, limiting access to registered users.
 
-A full Users Guide is [available here](https://rkt.bz/docs). The guide outlines the installation process, and also documents how to use all of the settings.
+A full Users Guide is [available here](https://rocketgeek.com/plugins/wp-members/docs/). The guide outlines the installation process, and also documents how to use all of the settings.
 
-Get support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rkt.bz/pro)
+Get support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rocketgeek.com/product/wp-members-pro-bundle/)
 
 = Premium Support =
 
-Premium support subscribers have access to priority email support, examples, tutorials, and code snippets that will help you extend and customize the base plugin using the plugin's framework. [Visit the site for more info](https://rkt.bz/getsupport).
+Premium support subscribers have access to priority email support, examples, tutorials, and code snippets that will help you extend and customize the base plugin using the plugin's framework. [Visit the site for more info](https://rocketgeek.com/plugins/wp-members/support-options/).
 
 = Premium Extensions =
 
 The plugin has several premium extensions for additional functionality. You can purchase any of them individually, or get them all for a significant discount in the Pro Bundle.
 
-* [Advanced Options](https://rkt.bz/advanced) - adds additional settings to WP-Members for redirecting core WP created URLs, redirecting restricted content, hiding the WP toolbar, and more! Also includes integrations with popular plugins like WooCommerce, BuddyPress, bbPress, ADF, Easy Digital Downloads, and The Events Calendar.
-* [Download Protect](https://rkt.bz/downloadprotect) - Allows you to restrict access to specific files, requiring the user to be logged in to access.
-* [Invite Codes](https://rkt.bz/invitecodes) - set up invitation codes to restrict registration to only those with a valide invite code.
-* [MailChimp Integration](https://rkt.bz/mailchimp) - add MailChimp list subscription to your registation form.
-* [Memberships for WooCommerce](https://rkt.bz/fR) - Sell memberships through WooCommerce.
-* [PayPal Subscriptions](https://rkt.bz/paypal) - Sell restricted content access through PayPal.
-* [Security](https://rkt.bz/security) - adds a number of security features to the plugin such as preventing concurrent logins, registration form honey pot (spam blocker), require passwords be changed on first use, require passwords to be changed after defined period of time, require strong passwords, block registration by IP and email, restrict specified usernames from being registered.
-* [Text Editor](https://rkt.bz/te) - Adds an editor to the WP-Members admin panel to easily customize all user facing strings in the plugin.
-* [User List](https://rkt.bz/userlist) - Display lists of users on your site. Great for creating user directories with detailed and customizable profiles.
-* [User Tracking](https://rkt.bz/usertrack) - Track what pages logged in users are visting and when.
-* [WordPass Pro](https://rkt.bz/3O) - Change your random password generator from gibberish to word-based passwords (can be used with or without WP-Members).
+* [Advanced Options](https://rocketgeek.com/plugins/wp-members-advanced-options/) - adds additional settings to WP-Members for redirecting core WP created URLs, redirecting restricted content, hiding the WP toolbar, and more! Also includes integrations with popular plugins like WooCommerce, BuddyPress, bbPress, ADF, Easy Digital Downloads, and The Events Calendar.
+* [Download Protect](https://rocketgeek.com/plugins/wp-members-download-protect/) - Allows you to restrict access to specific files, requiring the user to be logged in to access.
+* [Invite Codes](https://rocketgeek.com/plugins/wp-members-invite-codes/) - set up invitation codes to restrict registration to only those with a valide invite code.
+* [MailChimp Integration](https://rocketgeek.com/plugins/wp-members-mailchimp-integration/) - add MailChimp list subscription to your registation form.
+* [Memberships for WooCommerce](https://rocketgeek.com/plugins/wp-members-memberships-for-woocommerce/) - Sell memberships through WooCommerce.
+* [PayPal Subscriptions](https://rocketgeek.com/plugins/wp-members-paypal-subscriptions/) - Sell restricted content access through PayPal.
+* [Security](https://rocketgeek.com/plugins/wp-members-security/) - adds a number of security features to the plugin such as preventing concurrent logins, registration form honey pot (spam blocker), require passwords be changed on first use, require passwords to be changed after defined period of time, require strong passwords, block registration by IP and email, restrict specified usernames from being registered.
+* [Text Editor](https://rocketgeek.com/plugins/wp-members-text-editor/) - Adds an editor to the WP-Members admin panel to easily customize all user facing strings in the plugin.
+* [User List](https://rocketgeek.com/plugins/wp-members-user-list/) - Display lists of users on your site. Great for creating user directories with detailed and customizable profiles.
+* [User Tracking](https://rocketgeek.com/plugins/wp-members-user-tracking/) - Track what pages logged in users are visting and when.
+* [WordPass Pro](https://rocketgeek.com/plugins/wordpass/) - Change your random password generator from gibberish to word-based passwords (can be used with or without WP-Members).
 
-Get support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rkt.bz/pro)
+Get support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rocketgeek.com/product/wp-members-pro-bundle/)
 
 
 == Installation ==
@@ -66,7 +66,7 @@ WP-Members is designed to run "out-of-the-box" with no modifications to your WP 
 
 = Basic Install: =
 
-The best way to begin is to review the [Initial Setup Video](https://rkt.bz/videos). There is also a complete [Users Guide available](https://rkt.bz/docs) that covers all of the plugin's features in depth.
+The best way to begin is to review the [Initial Setup Video](https://rocketgeek.com/plugins/wp-members/docs/videos/). There is also a complete [Users Guide available](https://rocketgeek.com/plugins/wp-members/docs/) that covers all of the plugin's features in depth.
 
 1. Upload the `/wp-members/` directory and its contents to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress&reg;
@@ -88,9 +88,9 @@ There are also some special pages that can be created with simple shortcodes:
 * A User Profile page where registered members can edit their information and change/reset their password: [wpmem_profile]
 * A Registration page available for those that need a specific URL for registrations (such as email marketing or banner ad landing pages). Note: this is strictly optional as a registration form can also be included by default on blocked content pages: [wpmem_form register]
 * A Login page. This is also an optional page as the login form is included by default on blocked content. But if you need a specific login page, this can be created with a simple shortcode: [wpmem_form login]
-* [And more shortcodes are available](https://rkt.bz/docssc)!
+* [And more shortcodes are available](https://rocketgeek.com/plugins/wp-members/docs/shortcodes/)!
 
-Powerful cusotmizations can be constructed with [over 120 action and filter hooks](https://rkt.bz/hooks), as well as user accessible functions.
+Powerful cusotmizations can be constructed with [over 120 action and filter hooks](https://rocketgeek.com/plugins/wp-members/docs/filter-hooks/), as well as user accessible functions.
 
 
 == Frequently Asked Questions ==
@@ -101,7 +101,7 @@ The FAQs are maintained at https://rocketgeek.com/plugins/wp-members/docs/faqs/
 == Upgrade Notice ==
 
 WP-Members 3.2.0 is a major update. See changelog for important details. Minimum WP version is 4.0.
-WP-Members 3.2.7 is a fix release. See changelog for details.
+WP-Members 3.2.9 is a fix release. See changelog for details.
 
 == Screenshots ==
 
@@ -123,6 +123,32 @@ WP-Members 3.2.7 is a fix release. See changelog for details.
 
 
 == Changelog ==
+
+= 3.2.9.2 =
+
+* Fixes a bug with file extension validation in image and file upload fields.
+
+= 3.2.9.1 =
+
+* Fixes an issue with loading the select2 and jQuery UI libraries locally. This problem primarily affects users who run WP-Members with WooCommerce.
+
+= 3.2.9 =
+
+* Load jQuery UI and Select2 libraries locally (if they have not already been enqueued).
+* Use (local) template file for default tos field link (can be customized and saved in theme folder).
+* Added new sanitization functions to API: wpmem_sanitize_class() and wpmem_sanitize_array().
+* Review and cleanup of form data sanitization.
+* Improved file/image field upload file type validation.
+* Fixed issue with loading legacy translation files.
+* Added "membership" attribute to [wpmem_logged_in] shortcode (same as "product" attribute, they are interchangeable).
+* Added datepicker for setting user expiration (when membership products are used).
+
+= 3.2.8 =
+
+* Include jQuery UI CSS and Select2 library locally.
+* Updated default TOS to a template file.
+* Added additional data sanitization.
+* Fixed potential security issues to prevent CSRF (Cross Site Request Forgery).
 
 = 3.2.7 =
 

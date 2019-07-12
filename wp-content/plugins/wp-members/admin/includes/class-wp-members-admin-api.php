@@ -73,6 +73,7 @@ class WP_Members_Admin_API {
 	 * @since 3.1.0
 	 * @since 3.1.1 Added tab-about.php.
 	 * @since 3.1.7 Loads all admin dependent files.
+	 * @since 3.2.9 Removed tab-about.php until we can re-do it.
 	 */
 	function load_dependencies() {
 		
@@ -88,7 +89,7 @@ class WP_Members_Admin_API {
 			include_once( WPMEM_PATH . 'admin/tab-options.php' );
 			include_once( WPMEM_PATH . 'admin/tab-emails.php' );
 			include_once( WPMEM_PATH . 'admin/tab-captcha.php' );
-			include_once( WPMEM_PATH . 'admin/tab-about.php' );
+			// include_once( WPMEM_PATH . 'admin/tab-about.php' );
 			include_once( WPMEM_PATH . 'admin/tab-dialogs.php' );
 			include_once( WPMEM_PATH . 'admin/tab-dropins.php' );
 		}
@@ -110,12 +111,12 @@ class WP_Members_Admin_API {
 		add_action( 'wp_ajax_wpmem_a_field_reorder', 'wpmem_a_do_field_reorder' );
 		add_action( 'user_new_form',                 'wpmem_admin_add_new_user' );
 		add_filter( 'plugin_action_links',           array( $this, 'plugin_links' ), 10, 2 );
-		add_filter( 'wpmem_admin_tabs',              'wpmem_add_about_tab'       );
+		// add_filter( 'wpmem_admin_tabs',              'wpmem_add_about_tab'       );
 		
 		add_action( 'wpmem_admin_do_tab',            'wpmem_a_options_tab', 1 );
 		add_action( 'wpmem_admin_do_tab',            'wpmem_a_dialogs_tab', 10 );
 		add_action( 'wpmem_admin_do_tab',            'wpmem_a_emails_tab', 15 );
-		add_action( 'wpmem_admin_do_tab',            'wpmem_a_about_tab', 999, 1 );
+		// add_action( 'wpmem_admin_do_tab',            'wpmem_a_about_tab', 999, 1 );
 		
 		// If user has a role that cannot edit users, set profile actions for non-admins.
 		
@@ -521,26 +522,33 @@ class WP_Members_Admin_API {
 			wp_enqueue_script( 'wpmem-admin', WPMEM_DIR . 'admin/js/admin.js', '', WPMEM_VERSION );
 		}
 		if ( ( 'post.php' == $hook || 'post-new.php' == $hook ) && 1 == $wpmem->enable_products ) {
-			wp_register_style( 'select2css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css', false, '4.0.5', 'all' );
-			wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js', array( 'jquery' ), '4.0.5', true );
-			wp_enqueue_style( 'select2css' );
-			wp_enqueue_script( 'select2' );
+			if ( ! wp_script_is( 'select2', 'enqueued' ) ) {
+				wp_register_style( 'select2-style', WPMEM_DIR . 'admin/css/select2.min.css', false, '4.0.5', 'all' );
+				wp_register_script( 'select2',   WPMEM_DIR . 'admin/js/select2.min.js', array( 'jquery' ), '4.0.5', true );
+				wp_enqueue_style( 'select2-style' );
+				wp_enqueue_script( 'select2' );
+			}
 		}
 		if ( 'user-edit' == $current_screen->id ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' ); // enqueue jQuery UI Core
 			wp_enqueue_script( 'jquery-ui-tabs' ); // enqueue jQuery UI Tabs
+			wp_enqueue_script( 'jquery-ui-datepicker' ); // enqueue jQuery UI Datepicker
 
-			wp_register_style( 'jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-			wp_enqueue_style( 'jquery-ui' ); 
+			if ( ! wp_style_is( 'jquery-ui-style', 'enqueued' ) ) {
+				wp_register_style( 'jquery-ui-style', WPMEM_DIR . 'admin/css/jquery-ui.min.css' );
+			}
+			wp_enqueue_style( 'jquery-ui-style' ); 
 		}
 		if ( 'settings_page_wpmem-settings' == $hook ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );// enqueue jQuery UI Core
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			
-			wp_register_style( 'jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-			wp_enqueue_style( 'jquery-ui' ); 
+			if ( ! wp_style_is( 'jquery-ui-style', 'enqueued' ) ) {
+				wp_register_style( 'jquery-ui-style', WPMEM_DIR . 'admin/css/jquery-ui.min.css' );
+			}
+			wp_enqueue_style( 'jquery-ui-style' ); 
 			 
 		}
 	}

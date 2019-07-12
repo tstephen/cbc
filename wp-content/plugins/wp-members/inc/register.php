@@ -84,10 +84,10 @@ function wpmem_registration( $tag ) {
 					case 'multiselect':
 					case 'multicheckbox':
 						$delimiter = ( isset( $field['delimiter'] ) ) ? $field['delimiter'] : '|';
-						$wpmem->user->post_data[ $meta_key ] = ( isset( $_POST[ $meta_key ] ) ) ? implode( $delimiter, $_POST[ $meta_key ] ) : '';
+						$wpmem->user->post_data[ $meta_key ] = ( isset( $_POST[ $meta_key ] ) ) ? implode( $delimiter, wpmem_sanitize_array( $_POST[ $meta_key ] ) ) : '';
 						break;
 					case 'textarea':
-						$wpmem->user->post_data[ $meta_key ] = $_POST[ $meta_key ];
+						$wpmem->user->post_data[ $meta_key ] = sanitize_textarea_field( $_POST[ $meta_key ] );
 						break;
 					default:
 						$wpmem->user->post_data[ $meta_key ] = sanitize_text_field( $_POST[ $meta_key ] );
@@ -129,7 +129,7 @@ function wpmem_registration( $tag ) {
 	// Check for required fields, reverse the array for logical error message order.
 	foreach ( array_reverse( $wpmem->fields ) as $meta_key => $field ) {
 		// Validation if the field is required.
-		if ( $field['required'] ) { // @todo - verify $field['required']
+		if ( $field['required'] ) {
 			if ( 'file' == $field['type'] || 'image' == $field['type'] ) {
 				// If this is a new registration.
 				if ( 'register' == $tag ) {
@@ -142,6 +142,18 @@ function wpmem_registration( $tag ) {
 				// If the required field is any other field type.
 				if ( null == $wpmem->user->post_data[ $meta_key ] ) {
 					$wpmem_themsg = sprintf( $wpmem->get_text( 'reg_empty_field' ), __( $field['label'], 'wp-members' ) );
+				}
+			}
+		}
+		
+		// Validate file field type.
+		if ( 'file' == $field['type'] || 'image' == $field['type'] ) {
+			$allowed_file_types = explode( '|', $field['file_types'] );
+			$msg_types  = implode( ', ', $allowed_file_types );
+			if ( ! empty( $_FILES[ $meta_key ]['name'] ) ) {
+				$extension = pathinfo( $_FILES[ $meta_key ]['name'], PATHINFO_EXTENSION );
+				if ( ! in_array( $extension, $allowed_file_types ) ) {
+					$wpmem_themsg = sprintf( $wpmem->get_text( 'reg_file_type' ), __( $field['label'], 'wp-members' ), str_replace( '|', ',', $msg_types ) );
 				}
 			}
 		}

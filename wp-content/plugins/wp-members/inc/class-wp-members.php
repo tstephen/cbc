@@ -297,6 +297,15 @@ class WP_Members {
 		if ( $this->dropins ) {
 			$this->load_dropins();
 		}
+		
+		// Check for anything that we should stop execution for (currently just the default tos).
+		if ( 'display' == wpmem_get( 'tos', false, 'get' ) ) {
+
+			// If themes are not loaded, we don't need them.
+			$user_themes = ( ! defined( 'WP_USE_THEMES'  ) ) ? define( 'WP_USE_THEMES',  false  ) : '';
+			$this->load_default_tos();
+			die();
+		}
 	}
 	
 	/**
@@ -1273,6 +1282,7 @@ class WP_Members {
 			'reg_invalid_captcha'  => __( 'CAPTCHA was not valid.', 'wp-members' ),
 			'reg_generic'          => __( 'There was an error processing the form.', 'wp-members' ),
 			'reg_captcha_err'      => __( 'There was an error with the CAPTCHA form.', 'wp-members' ),
+			'reg_file_type'        => __( 'Sorry, you can only upload the following file types for the %s field: %s.', 'wp-members' ),
 			
 			// Links.
 			'profile_edit'         => __( 'Edit My Information', 'wp-members' ),
@@ -1725,10 +1735,25 @@ class WP_Members {
 			 * @param string $dir    The translation directory.
 			 * @param string $locale The current locale.
 			 */
-			$dir = apply_filters( 'wpmem_localization_dir', dirname( plugin_basename( __FILE__ ) ) . '/lang/', $locale );
+			$dir = apply_filters( 'wpmem_localization_dir', basename( WPMEM_PATH ) . '/lang/', $locale );
 			load_plugin_textdomain( $domain, FALSE, $dir );
 		}
 		return;
+	}
+	
+	/**
+	 * Load default tos template.
+	 *
+	 * @since 3.2.8
+	 */
+	function load_default_tos() {
+		// Check for custom template or load default.
+		$custom_template = get_stylesheet_directory() . '/wp-members/templates/tos.php';
+		if ( file_exists( $custom_template ) ) {
+			require_once( $custom_template );
+		} else {
+			require_once( WPMEM_PATH . 'inc/template_tos.php' );
+		}
 	}
 
 } // End of WP_Members class.
