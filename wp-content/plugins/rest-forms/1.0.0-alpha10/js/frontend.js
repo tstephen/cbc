@@ -39,7 +39,18 @@ var $p = (function ($) {
       try {
         return str.replace(/'/g, '\'');
       } catch (e) {
-        console.error('problem removing diacritics from '+str+', attempt to continue');
+        console.error('problem escaping apostrophes in '+str+', attempt to continue');
+        return str;
+      }
+    }
+  }
+  function _escapeCarriageReturn(str) {
+    if (str==undefined) return;
+    else {
+      try {
+        return str.replace(/\n/g, '<br/>');
+      } catch (e) {
+        console.error('problem escaping carriage returns in '+str+', attempt to continue');
         return str;
       }
     }
@@ -478,6 +489,7 @@ var $p = (function ($) {
         var k = Object.keys(msg)[idx];
         msg[k]=_removeDiacritics(msg[k]);
         msg[k]=_escapeApostrophe(msg[k]);
+        msg[k]=_escapeCarriageReturn(msg[k]);
       }
       msg.tenantId = $p.tenant;
       $p.json = msg;
