@@ -10,14 +10,7 @@ The Single Posts Loop
         <header>
             <h1><?php the_title()?></h1>
             <?php if ( get_post_type( get_the_ID() ) != 'wpfc_sermon' ) { ?>
-            <h5 class="no-print">
-                <em>
-                    <span class="text-muted author">
-                      <img class="img-rounded" src="<?php echo 'https://www.gravatar.com/avatar/'.md5( strtolower( get_the_author_meta('email') ) ).'?d='.urlencode( $default ).'&s=48'; ?>">
-                      <?php the_author() ?>,</span>
-                    <time  class="text-muted" datetime="<?php the_time('d-m-Y')?>"><?php the_time('jS F Y') ?></time>
-                </em>
-            </h5>
+              <?php get_template_part('includes/loops/content', 'author'); ?>
             <?php } ?>
             <p class="no-print text-muted" style="margin-bottom: 30px;">
               <?php if (has_category(get_post())) { ?>

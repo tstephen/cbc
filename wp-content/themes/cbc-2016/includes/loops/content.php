@@ -10,20 +10,12 @@ If you require different templates for different post types, then simply duplica
 Alternatively, notice that index.php, category.php and single.php have a post_class() function-call that inserts different classes for different post types into the section tag (e.g. <section id="" class="format-aside">). Therefore you can simply use e.g. .format-aside {your styles} in css/bst.css style the different formats in different ways.
 */
 ?>
-
 <?php if(have_posts()): while(have_posts()): the_post();?>
     <article role="article" id="post_<?php the_ID()?>" class="type-<?php echo get_post_type( get_the_ID() ) ?>">
         <header>
             <h1><a href="<?php the_permalink(); ?>"><?php the_title()?></a></h1>
             <?php if ( get_post_type( get_the_ID() ) == 'post' ) { ?>
-            <h5>
-              <em>
-                <span class="text-muted author">
-                  <img class="img-rounded" src="<?php echo 'https://www.gravatar.com/avatar/'.md5( strtolower( get_the_author_meta('email') ) ).'?d='.urlencode( $default ).'&s=48'; ?>">
-                  <?php the_author() ?>,</span>
-                <time  class="text-muted" datetime="<?php the_time('d-m-Y')?>"><?php the_time('jS F Y') ?></time>
-              </em>
-            </h5>
+                <?php get_template_part('includes/loops/content', 'author'); ?>
             <?php } ?>
         </header>
         <section>
