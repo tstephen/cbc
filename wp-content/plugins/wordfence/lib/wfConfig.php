@@ -491,6 +491,8 @@ class wfConfig {
 				wfWAF::getInstance()->getStorageEngine()->setConfig($key, $val, 'synced');
 			} catch (wfWAFStorageFileException $e) {
 				error_log($e->getMessage());
+			} catch (wfWAFStorageEngineMySQLiException $e) {
+				error_log($e->getMessage());
 			}
 		}
 		
@@ -730,8 +732,16 @@ class wfConfig {
 				}
 				else {
 					if (!self::getDB()->queryWrite(sprintf("insert ignore into " . self::table() . " (name, val, autoload) values (%%s, X'%s', 'no')", $dataChunk), $chunkedValueKey . $chunks)) {
-						$errno = mysql_errno($wpdb->dbh);
-						wordfence::status(2, 'error', "Error writing value chunk for {$key} (MySQL error: [$errno] {$wpdb->last_error})");
+						if ($useMySQLi) {
+							$errno = mysqli_errno($wpdb->dbh);
+							wordfence::status(2, 'error', "Error writing value chunk for {$key} (MySQL error: [$errno] {$wpdb->last_error})");
+						}
+						else if (function_exists('mysql_errno')) {
+							// phpcs:ignore PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
+							$errno = mysql_errno($wpdb->dbh);
+							wordfence::status(2, 'error', "Error writing value chunk for {$key} (MySQL error: [$errno] {$wpdb->last_error})");
+						}
+						
 						return false;
 					}
 				}
@@ -872,7 +882,7 @@ class wfConfig {
 	}
 	public static function liveTrafficEnabled(&$overriden = null){
 		$enabled = self::get('liveTrafficEnabled');
-		if (WORDFENCE_DISABLE_LIVE_TRAFFIC || function_exists('wpe_site')) {
+		if (WORDFENCE_DISABLE_LIVE_TRAFFIC || WF_IS_WP_ENGINE) {
 			$enabled = false;
 			if ($overriden !== null) {
 				$overriden = true;
@@ -1408,6 +1418,23 @@ Options -ExecCGI
 				case 'disableWAFBlacklistBlocking':
 				{
 					$wafConfig->setConfig($key, wfUtils::truthyToInt($value));
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
+					if ($value) {
+						$cron = wfWAF::getInstance()->getStorageEngine()->getConfig('cron', array(), 'livewaf');
+						if (!is_array($cron)) {
+							$cron = array();
+						}
+						foreach ($cron as $cronKey => $cronJob) {
+							if ($cronJob instanceof wfWAFCronFetchBlacklistPrefixesEvent) {
+								unset($cron[$cronKey]);
+							}
+						}
+						$cron[] = new wfWAFCronFetchBlacklistPrefixesEvent(time() - 1);
+						wfWAF::getInstance()->getStorageEngine()->setConfig('cron', $cron, 'livewaf');
+					}
+
 					$saved = true;
 					break;
 				}
@@ -1456,6 +1483,10 @@ Options -ExecCGI
 						wfConfig::set($key, '');
 					}
 					
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
+					
 					$saved = true;
 					break;
 				}
@@ -1469,6 +1500,11 @@ Options -ExecCGI
 					}
 					
 					$wafConfig->setConfig('whitelistedServiceIPs', @json_encode(wfUtils::whitelistedServiceIPs()));
+					
+					if (method_exists(wfWAF::getInstance()->getStorageEngine(), 'purgeIPBlocks')) {
+						wfWAF::getInstance()->getStorageEngine()->purgeIPBlocks(wfWAFStorageInterface::IP_BLOCKS_BLACKLIST);
+					}
+					
 					$saved = true;
 					break;
 				}
@@ -1666,7 +1702,6 @@ Options -ExecCGI
 					wfConfig::set($key, $value);
 				}
 				else if (WFWAF_DEBUG) {
-					//TODO: remove me when done with QA
 					error_log("*** DEBUG: Config option '{$key}' missing save handler.");
 				}
 			}
