@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, priority, seo, variable, tumblr, variation, product variation, shortcode
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, 9gag, wcfm
 Requires at least: 4.0
-Tested up to: 5.2.1
-Stable tag: 5.2.1
+Tested up to: 5.2.3
+Stable tag: 5.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,9 +99,9 @@ Features:
 
 * It's used to remove the external image.
 
-= What happens if I have two featured images (internal and external)? =
+= Can I have two featured images (internal and external)? =
 
-* The external image has priority in this case and the internal image won't be shown. However you can revert the priority in the plugin settings.
+* No for the same post. The external image will be used and the internal will be unlinked.
 
 = Which WooCommerce versions are supported by Featured Image from URL?
 
@@ -158,6 +158,60 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 2.6.8 =
+* Bug fixes: Ignore Auto Set option removed from Category editor; quotation marks issue on Social Tags.
+
+= 2.6.7 =
+* Bug fixes: conflict between internal featured image and Default External Featured Image; Social Tags wasn't creating an image tag for the Default External Featured Image. Improvement: description social tag will use post_excerpt instead of post_content.
+
+= 2.6.6 =
+* Bug fixes: title/logo disappeared in some themes; menu broken due instability on jquery.com (replaced by Cloudflare).
+
+= 2.6.5 =
+* Deprecated: Featured Image > Priority.
+
+= 2.6.4 =
+* New premium feature: Video > Related Videos; Bug fix: undefined variable.
+
+= 2.6.3 =
+* New feature: Auto Set First Image > Remove Query Strings; Integration: Toolset Forms plugin; New: WordPress Plugins tab.
+
+= 2.6.2 =
+* Notice: about conflict with Facebook social tags from Yoast SEO plugin.
+
+= 2.6.1 =
+* Bug fix: menu settings style issue on Firefox.
+
+= 2.6.0 =
+* Bug fix: Auto Set First Image will ignore base64 images now.
+
+= 2.5.9 =
+* New features: Add Class and Save Image Dimensions > Follow Redirects.
+
+= 2.5.8 =
+* Improvement: Save Image Dimensions is faster now.
+
+= 2.5.7 =
+* Improvement: documentation added to REST API; bug fix: Save Image Dimensions.
+
+= 2.5.6 =
+* Improvements: countdown added to Save Image Dimensions; FAQ added to WP All Import.
+
+= 2.5.5 =
+* Improvements: option to show/hide external images in media library; option to clean image dimensions.
+
+= 2.5.4 =
+* Improvement: integration with Accelerated Mobile Pages plugin.
+
+= 2.5.3 =
+* Improvement: integration with WooCommerce Frontend Manager plugin and Wordpress Automatic plugin.
+
+= 2.5.2 =
+* Improvement: ignore Auto Set First Image checkbox added to post editor.
+
+= 2.5.1 =
+* New feature: save image dimensions.
 
 = 2.5.0 =
 * New premium feature: auto set first video; Bug fix: conflict with Enhanced Media Library plugin.
@@ -578,6 +632,60 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 2.6.8 =
+* Bug fixes: Ignore Auto Set option removed from Category editor; quotation marks issue on Social Tags.
+
+= 2.6.7 =
+* Bug fixes: conflict between internal featured image and Default External Featured Image; Social Tags wasn't creating an image tag for the Default External Featured Image. Improvement: description social tag will use post_excerpt instead of post_content.
+
+= 2.6.6 =
+* Bug fixes: title/logo disappeared in some themes; menu broken due instability on jquery.com (replaced by Cloudflare).
+
+= 2.6.5 =
+* Deprecated: Featured Image > Priority.
+
+= 2.6.4 =
+* New premium feature: Video > Related Videos; Bug fix: undefined variable.
+
+= 2.6.3 =
+* New feature: Auto Set First Image > Remove Query Strings; Integration: Toolset Forms plugin; New: WordPress Plugins tab.
+
+= 2.6.2 =
+* Notice: about conflict with Facebook social tags from Yoast SEO plugin.
+
+= 2.6.1 =
+* Bug fix: menu settings style issue on Firefox.
+
+= 2.6.0 =
+* Bug fix: Auto Set First Image will ignore base64 images now.
+
+= 2.5.9 =
+* New features: Add Class and Save Image Dimensions > Follow Redirects.
+
+= 2.5.8 =
+* Improvement: Save Image Dimensions is faster now.
+
+= 2.5.7 =
+* Improvement: documentation added to REST API; bug fix: Save Image Dimensions.
+
+= 2.5.6 =
+* Improvements: countdown added to Save Image Dimensions; FAQ added to WP All Import.
+
+= 2.5.5 =
+* Improvements: option to show/hide external images in media library; option to clean image dimensions.
+
+= 2.5.4 =
+* Improvement: integration with Accelerated Mobile Pages plugin.
+
+= 2.5.3 =
+* Improvement: integration with WooCommerce Frontend Manager plugin and Wordpress Automatic plugin.
+
+= 2.5.2 =
+* Improvement: ignore Auto Set First Image checkbox added to post editor.
+
+= 2.5.1 =
+* New feature: save image dimensions.
 
 = 2.5.0 =
 * New premium feature: auto set first video; Bug fix: conflict with Enhanced Media Library plugin.

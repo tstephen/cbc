@@ -23,6 +23,7 @@ function fifu_ctgr_edit_box($term) {
         $show_button = '';
         $show_alt = $show_image = $show_link = 'display:none;';
     }
+    $show_ignore = 'display:none;';
 
     include 'html/category.html';
 }
@@ -36,6 +37,7 @@ function fifu_ctgr_add_box() {
 
     $show_button = $url = $alt = '';
     $show_alt = $show_image = $show_link = 'display:none;';
+    $show_ignore = 'display:none;';
 
     include 'html/category.html';
 }

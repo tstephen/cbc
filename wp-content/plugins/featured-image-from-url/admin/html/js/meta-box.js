@@ -22,8 +22,6 @@ function previewImage() {
         jQuery("#fifu_input_alt").show();
         jQuery("#fifu_image").show();
         jQuery("#fifu_link").show();
-
-        //getMeta($url);
     }
 }
 

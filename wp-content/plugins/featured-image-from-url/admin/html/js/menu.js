@@ -69,6 +69,7 @@ jQuery(function () {
     });
 
     jQuery("#opener").on("click", function () {
+        jQuery("#dialog").load(location.href + " #dialog");
         jQuery("#dialog").dialog("open");
     });
 });
@@ -99,7 +100,9 @@ function fifu_fake_js() {
             console.log(errorThrown);
         },
         complete: function () {
-            jQuery('.wrap').unblock();
+            setTimeout(function () {
+                jQuery('.wrap').unblock();
+            }, 1000);
         },
         timeout: 0
     });
@@ -123,11 +126,72 @@ function fifu_clean_js() {
             console.log(errorThrown);
         },
         complete: function () {
-            jQuery("#fifu_toggle_data_clean").attr('class', 'toggleoff');
-            jQuery("#fifu_toggle_fake").attr('class', 'toggleoff');
-            jQuery("#fifu_toggle_fake2").attr('class', 'toggleoff');
-            jQuery("#fifu_toggle_data_generation").attr('class', 'toggleoff');
-            jQuery('.wrap').unblock();
+            setTimeout(function () {
+                jQuery("#fifu_toggle_data_clean").attr('class', 'toggleoff');
+                jQuery("#fifu_toggle_fake").attr('class', 'toggleoff');
+                jQuery("#fifu_toggle_fake2").attr('class', 'toggleoff');
+                jQuery("#fifu_toggle_data_generation").attr('class', 'toggleoff');
+                jQuery('.wrap').unblock();
+            }, 1000);
+        }
+    });
+}
+
+function fifu_save_dimensions_all_js() {
+    if (jQuery("#fifu_toggle_save_dimensions_all").attr('class') != 'toggleon')
+        return;
+
+    jQuery('.wrap').block({message: 'Please wait. It can take several minutes...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+
+    interval = setInterval(function () {
+        jQuery("#countdown").load(location.href + " #countdown");
+    }, 3000);
+
+    jQuery.ajax({
+        method: "POST",
+        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/save_dimensions_all_api/',
+        async: true,
+        success: function (data) {
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        complete: function () {
+            setTimeout(function () {
+                jQuery("#fifu_toggle_save_dimensions_all").attr('class', 'toggleoff');
+                jQuery('.wrap').unblock();
+            }, 1000);
+            jQuery("#countdown").load(location.href + " #countdown");
+            clearInterval(interval);
+        }
+    });
+}
+
+function fifu_clean_dimensions_all_js() {
+    if (jQuery("#fifu_toggle_clean_dimensions_all").attr('class') != 'toggleon')
+        return;
+
+    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+
+    jQuery.ajax({
+        method: "POST",
+        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/clean_dimensions_all_api/',
+        async: true,
+        success: function (data) {
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        complete: function () {
+            setTimeout(function () {
+                jQuery("#fifu_toggle_clean_dimensions_all").attr('class', 'toggleoff');
+                jQuery('.wrap').unblock();
+            }, 1000);
+            jQuery("#countdown").load(location.href + " #countdown");
         }
     });
 }

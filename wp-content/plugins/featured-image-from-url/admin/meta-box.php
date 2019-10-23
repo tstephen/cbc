@@ -38,12 +38,18 @@ function fifu_show_elements($post) {
         $show_button = '';
     }
 
+    $show_ignore = fifu_is_on('fifu_get_first') || fifu_is_on('fifu_pop_first') || fifu_is_on('fifu_ovw_first') ? '' : 'display:none;';
+
     include 'html/meta-box.html';
 }
 
 add_filter('wp_insert_post_data', 'fifu_remove_first_image', 10, 2);
 
 function fifu_remove_first_image($data, $postarr) {
+    /* invalid or external or ignore */
+    if (!$_POST || !isset($_POST['fifu_input_url']) || isset($_POST['fifu_ignore_auto_set']))
+        return $data;
+
     $content = $postarr['post_content'];
     if (!$content)
         return $data;
@@ -67,25 +73,41 @@ function fifu_save_properties($post_id) {
     if (!$_POST || get_post_type($post_id) == 'nav_menu_item')
         return;
 
-    //if (isset($_POST['fifu_input_image_width']))
-    //$width = $_POST['fifu_input_image_width'];
-    //if (isset($_POST['fifu_input_image_height']))
-    //$height = $_POST['fifu_input_image_height'];
+    $ignore = false;
+    if (isset($_POST['fifu_ignore_auto_set']))
+        $ignore = $_POST['fifu_ignore_auto_set'] == 'on';
 
     /* image url */
+    $url = null;
     if (isset($_POST['fifu_input_url'])) {
         $url = esc_url_raw($_POST['fifu_input_url']);
-        $first = fifu_first_url_in_content($post_id);
-        if ($first && fifu_is_on('fifu_get_first') && (!$url || fifu_is_on('fifu_ovw_first')))
-            $url = $first;
+        if (!$ignore) {
+            $first = fifu_first_url_in_content($post_id);
+            if ($first && fifu_is_on('fifu_get_first') && (!$url || fifu_is_on('fifu_ovw_first')))
+                $url = $first;
+        }
         fifu_update_or_delete($post_id, 'fifu_image_url', $url);
+    }
+
+    /* image url from wcfm */
+    if (!$url && fifu_is_wcfm_active() && isset($_POST['wcfm_products_manage_form'])) {
+        $url = esc_url_raw(fifu_get_wcfm_url($_POST['wcfm_products_manage_form']));
+        if ($url)
+            fifu_update_or_delete($post_id, 'fifu_image_url', $url);
+    }
+
+    /* image url from toolset forms */
+    if (fifu_is_toolset_active() && isset($_POST['wpcf-fifu_image_url'])) {
+        $url = esc_url_raw($_POST['wpcf-fifu_image_url']);
+        if ($url)
+            fifu_update_or_delete($post_id, 'fifu_image_url', $url);
     }
 
     /* alt */
     if (isset($_POST['fifu_input_alt'])) {
         $alt = wp_strip_all_tags($_POST['fifu_input_alt']);
         $alt = !$alt && $url && fifu_is_on('fifu_auto_alt') ? get_the_title() : $alt;
-        fifu_update_or_delete_alt($post_id, 'fifu_image_alt', $alt);
+        fifu_update_or_delete_value($post_id, 'fifu_image_alt', $alt);
     }
 
     fifu_save($post_id);
@@ -102,7 +124,7 @@ function fifu_update_or_delete($post_id, $field, $url) {
         delete_post_meta($post_id, $field, $url);
 }
 
-function fifu_update_or_delete_alt($post_id, $field, $value) {
+function fifu_update_or_delete_value($post_id, $field, $value) {
     if ($value)
         update_post_meta($post_id, $field, $value);
     else
@@ -127,5 +149,22 @@ function fifu_woocommerce_import($object) {
     $post_id = $object->get_id();
     fifu_wai_save($post_id);
     fifu_update_fake_attach_id($post_id);
+}
+
+/* plugin: wcfm */
+
+function fifu_is_wcfm_active() {
+    return is_plugin_active('wc-frontend-manager/wc_frontend_manager.php');
+}
+
+function fifu_get_wcfm_url($content) {
+    $url = explode('fifu_image_url=', $content)[1];
+    return $url ? urldecode(explode('&', $url)[0]) : null;
+}
+
+/* plugin: toolset forms */
+
+function fifu_is_toolset_active() {
+    return is_plugin_active('cred-frontend-editor/plugin.php');
 }
 
