@@ -42,7 +42,7 @@ var $p = (function ($) {
         console.error('problem escaping apostrophes in '+str+', attempt to continue');
         return str;
       }
-    }
+     }
   }
   function _escapeCarriageReturn(str) {
     if (str==undefined) return;

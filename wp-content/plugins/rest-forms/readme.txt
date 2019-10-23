@@ -122,6 +122,7 @@ The form's JSON payload may be accessed as $_REQUEST['json'].
 
 = 1.0.0.alpha10 =
 
+- escape carriage returns in field values before submitting form
 - typo breaking add controls on admin screen
 
 = 1.0.0.alpha9 =
