@@ -3,7 +3,7 @@ Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
 Tested up to: 5.2
-Stable tag: 3.2.9.2
+Stable tag: 3.2.9.3
 License: GPLv2
 
 == Description ==
@@ -123,6 +123,10 @@ WP-Members 3.2.9 is a fix release. See changelog for details.
 
 
 == Changelog ==
+
+= 3.2.9.3 =
+
+* Data input/output improvements.
 
 = 3.2.9.2 =
 
