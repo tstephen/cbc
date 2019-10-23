@@ -1,14 +1,14 @@
 === Smush Image Compression and Optimization ===
 Plugin Name: Smush Image Compression and Optimization
-Version: 3.2.1
+Version: 3.3.0
 Author: WPMU DEV
 Author URI: https://premium.wpmudev.org/
 Contributors: WPMUDEV, alexdunae
 Tags: image, resize, optimize, optimise, compress, performance, optimisation, lazy load, WebP, photography, optimizer, Smush WordPress Compression, Smush.it
 Requires at least: 4.6
-Tested up to: 5.2.1
-Stable tag: 3.2.1
-Requires PHP: 5.2.4
+Tested up to: 5.3.0
+Stable tag: 3.3.0
+Requires PHP: 5.3
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 Compress and optimize (or optimise) image files, improve performance and boost your SEO rank using Smush WordPress image compression and optimization.
@@ -46,14 +46,14 @@ Smush meticulously scans every image you upload – or have already added to you
 
 ### Compress any Image in any Directory
 
-In addition to smushing your media uploads, you may want to compress the images stored in other folders. Smush now lets you compress any image in any directory so that you can optimize all the images on your site – including [NextGEN](https://wordpress.org/plugins/nextgen-gallery/) images, images stored on Amazon S3 using [WP Offload S3](https://wordpress.org/plugins/amazon-s3-and-cloudfront/) and images in EVERY WordPress plugin and theme package!
+In addition to smushing your media uploads, you may want to compress the images stored in other folders. Smush now lets you compress any image in any directory so that you can optimize all the images on your site – including [NextGEN](https://wordpress.org/plugins/nextgen-gallery/) images, images stored on Amazon S3 using [WP Offload Media](https://wordpress.org/plugins/amazon-s3-and-cloudfront/) and images in EVERY WordPress plugin and theme package!
 
 ### Compatible with Your Favorite Media Library Plugins
 
 No matter what plugins you use to better manage your WordPress media library, Smush has you covered. Check out just a few of the plugins Smush is working with to help make your site faster and more efficient:
 
 - [WP All Import](https://wordpress.org/plugins/wp-all-import/)
-- [WP Offload S3](https://wordpress.org/plugins/amazon-s3-and-cloudfront/)
+- [WP Offload Media](https://wordpress.org/plugins/amazon-s3-and-cloudfront/)
 - [WP Media Folder](https://www.joomunited.com/wordpress-products/wp-media-folder)
 - [WP Retina 2x](https://wordpress.org/plugins/wp-retina-2x/)
 - [NextGen Gallery](https://wordpress.org/plugins/nextgen-gallery/)
@@ -159,6 +159,67 @@ It depends what side of the pond you live on...but whether you say optimize, opt
 3. Smush will find and optimize images for you.
 
 == Changelog ==
+
+= 3.3.0 =
+
+- New: Integration with Envira Gallery
+- New: Integration with Avada Fusion Builder background images
+- Enhance: Compatibility with staging environment on WPMU DEV hosting
+- Enhance: SmartCrawl readability analysis compatibility
+- Enhance: Allow optimizing directories in root folder
+- Enhance: Error descriptions during optimization
+- Enhance: Detection of image sizes when "All" option is selected in Bulk Smush settings
+- Enhance: CDN detection of background images
+- Fix: Issue with CDN auto resize and Revolution Slider
+- Fix: CDN auto resize feature overwriting the correct sizes attribute
+- Fix: NextGen summary meta box layout
+- Fix: PHP warnings on NextGen integration
+- Fix: UI layout in NextGen integration
+- Fix: Lazy loading spinner layout issue
+- Fix: Compatibility with RT Media
+
+= 3.2.4 =
+
+- Enhance: Minor user experience improvements and updates
+- Fix: Bulk Smush notices and errors
+
+= 3.2.3 =
+
+- New: Pro page to highlight Smush Pro features
+- Enhance: Minor user experience improvements and updates
+- Enhance: CDN activation process
+- Fix: CDN upgrade status issue
+- Fix: Remove auto sizing in lazy loading
+- Fix: Images with empty class not lazy loading
+- Fix: Lazy loading not working on front page when a static page is selected as a homepage
+
+= 3.2.2.1 =
+
+- Fix: Preserve network settings after update
+
+= 3.2.2 =
+
+- New: Bulk restore
+- New: Network access control settings
+- New: Lazy loading onboarding step
+- New: Lazy loading custom placeholders
+- New: Lazy loading custom spinners
+- New: CDN support for background images
+- Enhance: Lazy loading support for ACF
+- Enhance: Lazy loading page parser
+- Enhance: Do not allow enabling CDN for sites that are not registered on the Hub
+- Enhance: Bulk compressing images without proper meta data
+- Enhance: Do not lazy load images on AMP pages
+- Enhance: Translation strings
+- Enhance: UI in media library
+- Enhance: API calls
+- Fix: Plugin texts
+- Fix: PHP warning when Smush is not able to detect site language
+- Fix: Excluding frontpage post type from lazy loading
+- Fix: Missing icons in resize my full size images notice
+- Fix: Inability to resize full size images several times
+- Fix: Image count calculations during images re-check
+- Fix: Directory Smush on SiteGround, GoDaddy and Bluehost
 
 = 3.2.1 =
 
