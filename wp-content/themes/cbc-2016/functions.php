@@ -37,10 +37,11 @@ add_filter( 'the_content', 'inject_grace_place_integrator' );
 function add_missing_thumbnail( $post_id, $post ) {
   $thumb = get_the_post_thumbnail($post_id);
   if ( empty($thumb) && in_category( 'notices', $post_id ) ) {
-    set_post_thumbnail( $post_id, 5008 );
-  }
-  if ( empty($thumb) && in_category( 'women', $post_id ) ) {
-    set_post_thumbnail( $post_id, 2456 );
+    set_post_thumbnail( $post_id, 6860 );
+  } elseif ( empty($thumb) && in_category( 'women', $post_id ) ) {
+    set_post_thumbnail( $post_id, 6861 );
+  } elseif ( empty($thumb) ) {
+    set_post_thumbnail( $post_id, 6964 );
   }
 }
 add_action( 'save_post', 'add_missing_thumbnail', 20, 2 );
