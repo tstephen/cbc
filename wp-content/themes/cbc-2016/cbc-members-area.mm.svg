@@ -43,13 +43,13 @@
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="175"/>
       <node CREATED="1551118522435" ID="directory" MODIFIED="1551118522435" POSITION="right" TEXT="Directory" LINK="/wp-content/uploads/2019/02/cbc-directory.pdf">
           <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="105"/>
+      </node>
+      <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
+          <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="175"/>
       </node>
-      <!--node CREATED="1551118522435" ID="directoryBooklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory (to print)" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
-          <edge COLOR="#e69138"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
-      </node-->
-      <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
+      <node CREATED="1562927318223" ID="mailshot" MODIFIED="1562927318223" POSITION="right" TEXT="Mailshot" LINK="/communications/mailshot/">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
       </node>
@@ -76,10 +76,18 @@
     </node>
     <node CREATED="1532368068854" ID="4be6ab412bd08a5389436233adb01c1c" MODIFIED="1532368095518" POSITION="left" TEXT="Finance">
       <edge COLOR="#e096e9"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-20" y="175"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-100" y="170"/>
       <node CREATED="1532368068854" ID="2ead74414f9c1ec81df42ea2405c0114" MODIFIED="1532368068854" TEXT="Latest accounts" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/DocumentList.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0&amp;DocType=AccountList">
         <edge COLOR="#e29eeb"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-87.89013732833958" y="248.36717261318088"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="230"/>
+      </node>
+      <node CREATED="" ID="finance-gad" MODIFIED="" TEXT="Gift Aid Declaration" LINK="/gift-aid-declaration">
+        <edge COLOR="#e29eeb"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="290"/>
+      </node>
+      <node CREATED="" ID="finance-standing-order" MODIFIED="" TEXT="Standing Order form" LINK="https://corshambaptists.org/wp-content/uploads/2019/11/Standing-Order-Authority.pdf">
+        <edge COLOR="#e29eeb"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="350"/>
       </node>
     </node>
   </node>
