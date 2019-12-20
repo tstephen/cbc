@@ -1,9 +1,9 @@
 === Plugin Name ===
-Contributors: levertechadmin, danlester
+Contributors: levertechadmin
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 4.0
-Tested up to: 4.9
-Stable tag: 3.2
+Tested up to: 5.3.1
+Stable tag: 3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -196,6 +196,13 @@ Personalized instructions to configure the plugin by registering your site with 
 the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 3.3 =
+
+Added permission check functionality
+Added Google Drive Embedder insufficient permission error fixes
+Added Login With Google buttons branding
+Updated compatibility with the WordPress 5.3.1 release
 
 = 3.2 =
 
