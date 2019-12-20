@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: dashboard widget, administration, error reporting, admin, maintenance, php
 Requires at least: 4.5
-Tested up to: 5.2
-Stable tag: 1.6.6
+Tested up to: 5.3
+Stable tag: 1.6.9
 
 Adds a Dashboard widget that displays the latest messages from your PHP error log. It can also send logged errors to email.
 
@@ -45,6 +45,17 @@ Follow these steps to install the plugin on your site:
 2. Dashboard widget configuration screen.
 
 == Changelog ==
+
+= 1.6.9 =
+* Fixed the erorr "call to undefined function get_blog_list()" when trying to access the network admin on a non-Multisite site.
+
+= 1.6.8 =
+* Fixed a conflict with WP-PageNavi, again. The fix included in the previous version was not fully effective.
+
+= 1.6.7 =
+* Fixed a conflict with WP-PageNavi that could cause a fatal error.
+* Updated Freemius SDK to the latest version, which may fix some Freemius-related issues.
+* Tested up to WP 5.3.
 
 = 1.6.6 =
 * Improved the way the plugin displays truncated stack traces. Now it should no longer display the last entry as a very tall and narrow block of text.
