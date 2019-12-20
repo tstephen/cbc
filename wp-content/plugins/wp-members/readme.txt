@@ -2,8 +2,8 @@
 Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
-Tested up to: 5.2
-Stable tag: 3.2.9.3
+Tested up to: 5.3
+Stable tag: 3.3.0.1
 License: GPLv2
 
 == Description ==
@@ -100,8 +100,8 @@ The FAQs are maintained at https://rocketgeek.com/plugins/wp-members/docs/faqs/
 
 == Upgrade Notice ==
 
-WP-Members 3.2.0 is a major update. See changelog for important details. Minimum WP version is 4.0.
-WP-Members 3.2.9 is a fix release. See changelog for details.
+WP-Members 3.3.0 is a major update. WP-Members 3.3.0.1 contains some fixes for stylesheet and captcha issues. See changelog for important details. Minimum WP version is 4.0.
+
 
 == Screenshots ==
 
@@ -124,17 +124,149 @@ WP-Members 3.2.9 is a fix release. See changelog for details.
 
 == Changelog ==
 
-= 3.2.9.3 =
+= 3.3.0.1 = 
 
-* Data input/output improvements.
+* Fixes issue when updating where the stylesheet selector indicates "use_custom" but the actual URL is to a default stylesheet. The problem can be corrected manually, but this fix applies the custom URL to the new standard setting for the defaults.
+* Fixes bug where any stylesheet other than the default reverts to the default ("no float"). This was due to the database version being wiped when settings were updated. This fix correctly applies the database version when updating settings.
+* Fixes bug when captcha is used (unknown validate() function). The validate() function should have been declared and used as a static method. This fix declares validate() as static and then uses it as such.
+* Fixes undefined string variable when successful registration is executed.
 
-= 3.2.9.2 =
+= 3.3.0 =
 
-* Fixes a bug with file extension validation in image and file upload fields.
+* @todo Need to resolve duplicate wpmem_login_form_defaults. (maybe took care of itself with backing out of _args deprecation)
 
-= 3.2.9.1 =
+* REMOVED [wp-members] shortcode tag. THIS TAG IS OBSOLETE WILL NO LONGER FUNCTION. See: https://rocketgeek.com/shortcodes/list-of-replacement-shortcodes/
+* REMOVED tinymce button for shortcodes as no longer necessary with gutenberg.
+* Deprecated wpmem_inc_login_args filter, use wpmem_login_form_defaults instead.
+* Deprecated wpmem_inc_{$form}_inputs and wpmem_inc_{$form}_args filters, use wpmem_{$form}_form_defaults instead. (changepassword|resetpassword|forgotusername)
+* Deprecated wpmem_sb_login_args filter, use wpmem_login_widget_args instead.
+* Deprecated wpmem_msg_args and wpmem_msg_dialog_arr filters, use wpmem_msg_defaults instead.
+* The following functions are deprecated, replacements should no longer be considered "pluggable":
+  - wpmem_inc_registration() Use wpmem_register_form() instead ($heading argument obsolete).
+  - wpmem_inc_changepassword()
+  - wpmem_inc_resetpassword()
+  - wpmem_inc_forgotusername()
+  - wpmem_inc_recaptcha()
+  - wpmem_build_rs_captcha()
+* The following functions and filters are obsolete and have been removed:
+  - wpmem_shortcode() (deprecated 3.1.2)
+  - wpmem_do_sc_pages() (deprecated 3.1.8)
+  - wpmem_admin_fields() (deprecated 3.1.9)
+  - wpmem_admin_update() (deprecated 3.1.9)
+  - wpmem_user_profile() (deprecated 3.1.9)
+  - wpmem_profile_update() (deprecated 3.1.9)
+  - wpmem_dashboard_enqueue_scripts() (deprecated 3.2.0 Use $wpmem->admin->dashboard_enqueue_script() instead.)
+  - wpmem_sc_forms() (deprecated 3.2.0 Use $wpmem->shortcodes->forms() instead.)
+  - wpmem_sc_logged_in() (deprecated 3.2.0 Use $wpmem->shortcodes->logged_in() instead.)
+  - wpmem_sc_logged_out() (deprecated 3.2.0 Use $wpmem->shortcodes->logged_out() instead.)
+  - wpmem_sc_user_profile (deprecated 3.2.0 Use $wpmem->shortcodes->profile() instead.)
+  - wpmem_sc_user_count() (3.2.0 Use $wpmem->shortcodes->user_count() instead.)
+  - wpmem_sc_loginout 3.2.0() (deprecated Use $wpmem->shortcodes->loginout() instead.)
+  - wpmem_sc_fields() (deprecated 3.2.0 Use $wpmem->shortcodes->fields() instead.)
+  - wpmem_sc_logout() (deprecated 3.2.0 Use $wpmem->shortcodes->logout() instead.)
+  - wpmem_sc_tos() (deprecated 3.2.0 Use $wpmem->shortcodes->tos() instead.)
+  - wpmem_sc_avatar() (deprecated 3.2.0 Use $wpmem->shortcodes->avatar() instead.)
+  - wpmem_sc_link() (deprecated 3.2.0 Use $wpmem->shortcodes->login_link() instead.)
+  - wpmem_register_fields_arr (obsolete 3.1.7, use wpmem_fields instead.)
+  
+IMPORTANT UPDATES/CHANGES
 
-* Fixes an issue with loading the select2 and jQuery UI libraries locally. This problem primarily affects users who run WP-Members with WooCommerce.
+* Major filesystem changes. The directory structure has changed and several files
+  moved/renamed/made obsolete. If you have ANY WP-Members customization that directly
+  includes a file, that step is probably obsolete. The plugin has loaded most of the
+  include files automatically since at least version 3.2, so this step has not been
+  necessary for quite some time. However, this set of changes is more significant.
+  (If you do not have code snippets using file includes from WP-Members, this most 
+  likely will not affect you.)
+
+* Updated registration function to hook to user_register, IMPORTANT: this 
+  changes the order in which the user meta fields are saved, and also changes 
+  when the email is sent. Email is now hooked to user_register, but can be 
+  unloaded if necessary.
+  
+* Major overhaul of registration and login form, validation, and processing
+  functions. Moved things into appropriate object classes (user, forms) and
+  deprecated legacy functions and files (register.php, forms.php).
+  
+* Updated membership product meta and date format, IMPORTANT: this changes the 
+  way the user product access information is stored (going from an array of 
+  all memberships to individual meta for each) as well as the format (dates 
+  are now unix timestamp). There is an update script that will run during 
+  upgrade to handle this. For now, the legacy format is also maintained (so 
+  consider this if customzizing any processing) so that rollback is possible.
+
+* Updated wpmem_user_has_meta() to include a check by array when the field is 
+  multiple checkbox or multiple select.
+
+* Updated [wpmem_logged_in] shortcode to include an msg attribute to display a 
+  message if the user does not have access to a specified product (product must
+  be passed as attribute).
+  
+* Updated [wpmem_logged_in] shortcode to include a compare attribute. Possible
+  values for "compare" are "=" and "!=" to restrict if the has a meta value or
+  the meta value is "not equal to" respectively. Passing only meta_key/meta_value
+  will still assume an "=" comparison.
+
+* Updated register page shortcode [wpmem_form register] logged in state - if a 
+  profile page is set, second link links to profile rather than "begin using 
+  the site".
+
+* Updated Users > All Users screen filters, removed "Not Activated" replaced
+  with "Pending Activation". Filter now only shows users who have not been
+  activated, no longer includes users who were deactivated.
+
+* Major menus change - if you use the $wpmem->menus object directly, this is 
+  now $wpmem->menus_clone (setting $wpmem->clone_menus remains the same).
+  wpmem_menu_settings and wpmem_menus are now wpmem_clone_menu_settings and 
+  wpmem_clone_menus. New menu handing has been introduced in the $wpmem->menus
+  object and that will take the place of the cloned menu options.
+  
+* Updated the way stylesheets are handled. Added wpmem_get_suffix() API function to
+  get the appropriate suffix for files (.min.css or .css) for both js and css. Also,
+  minified all CSS files that were not previously minified. Note: you can no longer
+  filter custom stylesheets into the plugin's dropdown selector (no one was using
+  this feature as far as I am aware anyway). You *can* still filter the stylesheet
+  being loaded as well as indicate the path of a custom stylesheet.
+
+* Added reCAPTCHA v3 support.
+* Added default membership product(s) at registration.
+* Added membership product(s) for user export.
+* Added support for selecting fields to display on the registration form or the profile form.
+* Added wpmem_activate_user() and wpmem_deactivate_user() to user API.
+* Added wpmem_user_sets_password() API function.
+* Added wpmem_get_block_setting() API function.
+* Added wpmem_set_user_status() API function.
+* Added wpmem_export_users() as API function (function already existed, but the original has been moved to an object class, and the function has been included in the API).
+* Added wpmem_sanitize_field() API function. This is a general utility that allows for different sanitization by type.
+* Added wpmem_maybe_unserialize() API function. If result is serialized, it unserializes to an array, if an array, it sanitizes using wpmem_sanitize_array().
+* Added wpmem_get_user_role() API function.
+* Added wpmem_get_user_ip() API function.
+* Added wpmem_get_user_meta() API function.
+* Added wpmem_get_user_products() API function.
+* Added wpmem_user_has_meta filter.
+* Added wpmem_login_form_settings filter.
+* Added wpmem_block_settings filter.
+* Added wpmem_msg_settings filter.
+* Added wpmem_sc_product_access_denied filter.
+* Added wpmem_views_users filter.
+* Added wpmem_dialogs filter.
+* Added wpmem_query_where filter.
+* Added wpmem_user_action.
+* Added admin user class for handling Users > All users screen and user activation.
+* Added user export class.
+* Added "msg" attribute support for [wpmem_logged_in] when using the "membership" or "product" attributes.
+* Replaced WPMEM_VERSION constant with $wpmem->version.
+* Replaced WPMEM_PATH constant with $wpmem->path. WPMEM_PATH will still function for backward compatibility.
+* Replaced WPMEM_URL constant with $wpmem->url.
+* New folder structure being implemented
+  - All admin js & css now load from /assets/ not /admin/ !!!
+
+Other Improvements
+
+* Changed load for WP-Members Admin API so that emails, dialogs, and tabs only load on the WP-Members settings screens (where they are used).
+* Changed email "from" to only load if the WP-Members Email object is doing a send (user or admin). This saves an option load when not needed.
+* Fixed an issue where a PHP notice was thrown if one of the User Pages (login/register/profile) was deleted but the setting not updated. Fixes the PHP notice issue, but also adds an admin notice to indicate the page was deleted, but the setting not updated. (This also adds a new admin notice function/process that can be expanded on later.)
+* Fixed an issue with wpmem_user_has_access() that prevented proper results when used to check a specific user ID (other than the current user).
 
 = 3.2.9 =
 

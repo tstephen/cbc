@@ -3,14 +3,13 @@
 Plugin Name: WP-Members
 Plugin URI:  https://rocketgeek.com
 Description: WP access restriction and user registration.  For more information on plugin features, refer to <a href="https://rocketgeek.com/plugins/wp-members/users-guide/">the online Users Guide</a>. A <a href="https://rocketgeek.com/plugins/wp-members/quick-start-guide/">Quick Start Guide</a> is also available. WP-Members(tm) is a trademark of butlerblog.com.
-Version:     3.2.9.3
+Version:     3.3.0.1
 Author:      Chad Butler
 Author URI:  http://butlerblog.com/
 Text Domain: wp-members
-Domain Path: /lang
+Domain Path: /i18n/languages/
 License:     GPLv2
 */
-
 
 /*  
 	Copyright (c) 2006-2019  Chad Butler
@@ -33,7 +32,6 @@ License:     GPLv2
 	You may also view the license here:
 	http://www.gnu.org/licenses/gpl.html
 */
-
 
 /*
 	A NOTE ABOUT LICENSE:
@@ -66,11 +64,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Initialize constants.
-define( 'WPMEM_VERSION',    '3.2.9.3' );
-define( 'WPMEM_DB_VERSION', '2.1.4' );
-define( 'WPMEM_DIR',  plugin_dir_url ( __FILE__ ) );
+define( 'WPMEM_VERSION',    '3.3.0.1' );
+define( 'WPMEM_DB_VERSION', '2.2.0' );
 define( 'WPMEM_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WPMEM_DEBUG', false );
 
 // Initialize the plugin.
 add_action( 'after_setup_theme', 'wpmem_init', 10 );
@@ -110,7 +106,7 @@ function wpmem_init() {
 	/**
 	 * Load the WP_Members class.
 	 */
-	require_once( WPMEM_PATH . 'inc/class-wp-members.php' );
+	require_once( 'includes/class-wp-members.php' );
 	
 	// Invoke the WP_Members class.
 	$wpmem = new WP_Members();
@@ -150,22 +146,23 @@ function wpmem_install() {
 	/**
 	 * Load the install file.
 	 */
-	require_once( WPMEM_PATH . 'inc/install.php' );
+	require_once( 'includes/install.php' );
 
 	// Multisite requires different install process.
 	if ( is_multisite() ) {
 
 		// If it is multisite, install options for each blog.
 		global $wpdb;
-		$blogs = $wpdb->get_results(
+		$blogs = $wpdb->get_results( $wpdb->prepare( 
 			"SELECT blog_id
 			FROM {$wpdb->blogs}
-			WHERE site_id = '{$wpdb->siteid}'
+			WHERE site_id = %d
 			AND spam = '0'
 			AND deleted = '0'
-			AND archived = '0'"
-		);
-		$original_blog_id = get_current_blog_id();   
+			AND archived = '0'",
+			$wpdb->siteid
+		) );
+		$original_blog_id = get_current_blog_id(); 
 		foreach ( $blogs as $blog_id ) {
 			switch_to_blog( $blog_id->blog_id );
 			wpmem_do_install();
@@ -204,7 +201,7 @@ function wpmem_mu_new_site( $new_site ) {
 	/**
 	 * Load the install file.
 	 */
-	require_once( WPMEM_PATH . 'inc/install.php' );
+	require_once( 'includes/install.php' );
 
 	// Switch to the new blog.
 	switch_to_blog( $new_site->id );
