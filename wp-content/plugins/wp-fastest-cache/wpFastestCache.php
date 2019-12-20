@@ -3,7 +3,7 @@
 Plugin Name: WP Fastest Cache
 Plugin URI: http://wordpress.org/plugins/wp-fastest-cache/
 Description: The simplest and fastest WP Cache system
-Version: 0.8.9.9
+Version: 0.9.0.1
 Author: Emre Vona
 Author URI: http://tr.linkedin.com/in/emrevona
 Text Domain: wp-fastest-cache
@@ -633,17 +633,20 @@ GNU General Public License for more details.
 			if(!defined('WPFC_HIDE_TOOLBAR') || (defined('WPFC_HIDE_TOOLBAR') && !WPFC_HIDE_TOOLBAR)){
 				$show = false;
 
-				// Admin
-				$show = (current_user_can( 'manage_options' ) || current_user_can('edit_others_pages')) ? true : false;
+				$user = wp_get_current_user();
+				$allowed_roles = array('administrator');
 
 				// Author
 				if(defined('WPFC_TOOLBAR_FOR_AUTHOR') && WPFC_TOOLBAR_FOR_AUTHOR){
-					if(current_user_can( 'delete_published_posts' ) || current_user_can('edit_published_posts')) {
-						$show = true;
-					}
+					array_push($allowed_roles, "author");
+				}
+
+				// Editor
+				if(defined('WPFC_TOOLBAR_FOR_EDITOR') && WPFC_TOOLBAR_FOR_EDITOR){
+					array_push($allowed_roles, "editor");
 				}
 				
-				if($show){
+				if(array_intersect($allowed_roles, $user->roles)){
 					include_once plugin_dir_path(__FILE__)."inc/admin-toolbar.php";
 
 					$toolbar = new WpFastestCacheAdminToolbar();
@@ -785,7 +788,11 @@ GNU General Public License for more details.
 					//https://wpml.org/forums/topic/wpml-language-switch-wp-fastest-cache-issue/
 					$language_negotiation_type = apply_filters('wpml_setting', false, 'language_negotiation_type');
 					if(($language_negotiation_type == 2) && $this->isPluginActive('sitepress-multilingual-cms/sitepress.php')){
-					    $path = preg_replace("/\/cache\/(all|wpfc-minified|wpfc-widget-cache|wpfc-mobile-cache)/", "/cache/".$_SERVER['HTTP_HOST']."/$1", $path);
+						$my_home_url = apply_filters('wpml_home_url', get_option('home'));
+						$my_home_url = preg_replace("/https?\:\/\//i", "", $my_home_url);
+						$my_home_url = trim($my_home_url, "/");
+						
+					    $path = preg_replace("/\/cache\/(all|wpfc-minified|wpfc-widget-cache|wpfc-mobile-cache)/", "/cache/".$my_home_url."/$1", $path);
 					}
 
 					if(is_multisite()){
@@ -910,6 +917,7 @@ GNU General Public License for more details.
 			CdnWPFC::cloudflare_clear_cache();
 
 			$to_clear_parents = true;
+			$to_clear_feed = true;
 
 			// not to clear cache of homepage/cats/tags after ajax request by other plugins
 			if(isset($_POST) && isset($_POST["action"])){
@@ -927,6 +935,11 @@ GNU General Public License for more details.
 				if($_POST["action"] == "yasr_send_visitor_rating"){
 					$to_clear_parents = false;
 					$post_id = $_POST["post_id"];
+				}
+
+				// All In One Schema.org Rich Snippets
+				if(preg_match("/bsf_(update|submit)_rating/i", $_POST["action"])){
+					$to_clear_feed = false;
 				}
 			}
 
@@ -986,14 +999,16 @@ GNU General Public License for more details.
 						}
 					}
 
-					// to clear cache of /feed
-					if(preg_match("/https?:\/\/[^\/]+\/(.+)/", get_feed_link(), $feed_out)){
-						array_push($files, $this->getWpContentDir("/cache/all/").$feed_out[1]);
-					}
+					if($to_clear_feed){
+						// to clear cache of /feed
+						if(preg_match("/https?:\/\/[^\/]+\/(.+)/", get_feed_link(), $feed_out)){
+							array_push($files, $this->getWpContentDir("/cache/all/").$feed_out[1]);
+						}
 
-					// to clear cache of /comments/feed/
-					if(preg_match("/https?:\/\/[^\/]+\/(.+)/", get_feed_link("comments_"), $comment_feed_out)){
-						array_push($files, $this->getWpContentDir("/cache/all/").$comment_feed_out[1]);
+						// to clear cache of /comments/feed/
+						if(preg_match("/https?:\/\/[^\/]+\/(.+)/", get_feed_link("comments_"), $comment_feed_out)){
+							array_push($files, $this->getWpContentDir("/cache/all/").$comment_feed_out[1]);
+						}
 					}
 
 					foreach((array)$files as $file){
@@ -1049,8 +1064,14 @@ GNU General Public License for more details.
 				$path = urldecode($path);
 
 				// to remove the cache of tag/cat
-				@unlink($this->getWpContentDir("/cache/all/").$path."/index.html");
-				@unlink($this->getWpContentDir("/cache/wpfc-mobile-cache/").$path."/index.html");
+				if(file_exists($this->getWpContentDir("/cache/all/").$path."/index.html")){
+					@unlink($this->getWpContentDir("/cache/all/").$path."/index.html");
+				}
+
+				if(file_exists($this->getWpContentDir("/cache/wpfc-mobile-cache/").$path."/index.html")){
+					@unlink($this->getWpContentDir("/cache/wpfc-mobile-cache/").$path."/index.html");
+				}
+
 
 				// to remove the cache of the pages
 				$this->rm_folder_recursively($this->getWpContentDir("/cache/all/").$path."/page");
@@ -1716,7 +1737,7 @@ GNU General Public License for more details.
 						$cdn->originurl = str_replace("\/", "\\\\\/", $cdn->originurl);
 						
 						if(preg_match("/".$cdn->originurl."/", $matches[0])){
-							$matches[0] = preg_replace("/(quot\;)(http(s?)\:)?".preg_quote("\/\/", "/")."(www\.)?/i", "$1", $matches[0]);
+							$matches[0] = preg_replace("/(quot\;|\s)(http(s?)\:)?".preg_quote("\/\/", "/")."(www\.)?/i", "$1", $matches[0]);
 							$matches[0] = preg_replace("/".$cdn->originurl."/i", $cdnurl, $matches[0]);
 						}
 					}else if(preg_match("/\{\"concatemoji\"\:\"[^\"]+\"\}/i", $matches[0])){
