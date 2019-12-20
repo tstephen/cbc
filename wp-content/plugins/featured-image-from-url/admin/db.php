@@ -21,7 +21,7 @@ class FifuDb {
         $this->term_taxonomy = $wpdb->prefix . 'term_taxonomy';
         $this->term_relationships = $wpdb->prefix . 'term_relationships';
         $this->author = 77777;
-        $this->MAX_INSERT = 100;
+        $this->MAX_INSERT = get_option('fifu_spinner_db');
         $this->MAX_URL_LENGTH = 2048;
         $this->types = $this->get_types();
     }
@@ -270,16 +270,6 @@ class FifuDb {
             GROUP BY post_parent"
         );
         return $result ? $result[0]->ids : null;
-    }
-
-    function get_posts_with_valid_url() {
-        return $this->wpdb->get_results("
-            SELECT post_id 
-            FROM " . $this->postmeta . " 
-            WHERE meta_key = 'fifu_image_url'
-            AND meta_value IS NOT NULL
-            AND meta_value <> ''"
-        );
     }
 
     function get_ctgr_attachments_without_post($term_id) {
@@ -722,9 +712,6 @@ class FifuDb {
     /* save 1 category */
 
     function ctgr_update_fake_attach_id($term_id) {
-        if (fifu_is_on('fifu_data_generation'))
-            return;
-
         $att_id = get_term_meta($term_id, 'thumbnail_id');
         $att_id = $att_id ? $att_id[0] : null;
         $has_fifu_attachment = $att_id ? $this->is_fifu_attachment($att_id) : false;
@@ -828,36 +815,8 @@ class FifuDb {
         wp_delete_attachment(get_option('fifu_default_attach_id'));
         delete_option('fifu_fake_attach_id');
         fifu_disable_fake();
-        fifu_disable_fake2();
         update_option('fifu_fake', 'toggleoff', 'no');
-        update_option('fifu_fake2', 'toggleoff', 'no');
         update_option('fifu_fake_created', false, 'no');
-    }
-
-    /* fake internal featured image 1 */
-
-    function enable_fake1() {
-        $old_attach_id = get_option('fifu_fake_attach_id');
-        $value = $this->get_formatted_value('Featured Image from URL', null, 0);
-        $this->insert_attachment_by($value);
-        $att_id = $this->wpdb->insert_id;
-
-        update_post_meta($att_id, '_wp_attached_file', ';');
-        update_option('fifu_fake_attach_id', $att_id);
-
-        foreach ($this->get_posts_without_meta() as $i)
-            $this->wpdb->insert($this->postmeta, array('post_id' => $i->post_id, 'meta_key' => '_thumbnail_id', 'meta_value' => $att_id));
-
-        $this->wpdb->update($this->postmeta, array('meta_value' => $att_id), array('meta_key' => '_thumbnail_id', 'meta_value' => $old_attach_id), null, null);
-
-        foreach ($this->get_posts_with_valid_url() as $i)
-            $this->wpdb->update($this->postmeta, array('meta_value' => $att_id), array('post_id' => $i->post_id, 'meta_key' => '_thumbnail_id', 'meta_value' => -1), null, null);
-    }
-
-    function disable_fake1() {
-        $this->wpdb->delete($this->postmeta, array('meta_key' => '_thumbnail_id', 'meta_value' => get_option('fifu_fake_attach_id')));
-        wp_delete_attachment(get_option('fifu_fake_attach_id'));
-        delete_option('fifu_fake_attach_id');
     }
 
 }
@@ -907,8 +866,11 @@ function fifu_db_clean_dimensions_all() {
 
 function fifu_db_missing_dimensions() {
     $db = new FifuDb();
-    $aux = $db->get_count_posts_without_dimensions()[0];
-    return $aux ? $aux->amount : -1;
+    if (fifu_is_on('fifu_save_dimensions')) {
+        $aux = $db->get_count_posts_without_dimensions()[0];
+        return $aux ? $aux->amount : -1;
+    }
+    return null;
 }
 
 /* count: metadata */
@@ -982,17 +944,5 @@ function fifu_db_before_delete_post($post_id) {
 function fifu_db_number_of_posts() {
     $db = new FifuDb();
     return $db->get_number_of_posts();
-}
-
-/* fake internal featured image 1 */
-
-function fifu_db_enable_fake1() {
-    $db = new FifuDb();
-    return $db->enable_fake1();
-}
-
-function fifu_db_disable_fake1() {
-    $db = new FifuDb();
-    return $db->disable_fake1();
 }
 

@@ -4,7 +4,7 @@
  * Plugin Name: Featured Image from URL
  * Plugin URI: https://featuredimagefromurl.com/
  * Description: Use an external image as Featured Image of your post/page/custom post type (WooCommerce). Includes Auto Set (External Post), Product Gallery, Social Tags and more.
- * Version: 2.6.9
+ * Version: 2.7.6
  * Author: Marcel Jacques Machado 
  * Author URI: https://www.linkedin.com/in/marceljm/
  */
@@ -27,6 +27,7 @@ require_once (FIFU_ADMIN_DIR . '/category.php');
 require_once (FIFU_ADMIN_DIR . '/column.php');
 require_once (FIFU_ADMIN_DIR . '/menu.php');
 require_once (FIFU_ADMIN_DIR . '/meta-box.php');
+require_once (FIFU_ADMIN_DIR . '/wai-addon.php');
 
 register_activation_hook(__FILE__, 'fifu_activate');
 
@@ -35,10 +36,20 @@ function fifu_activate($network_wide) {
         global $wpdb;
         foreach ($wpdb->get_col("SELECT blog_id FROM $wpdb->blogs") as $blog_id) {
             switch_to_blog($blog_id);
-            fifu_db_change_url_length();
+            fifu_activate_actions();
         }
-    } else
-        fifu_db_change_url_length();
+    } else {
+        fifu_activate_actions();
+    }
+}
+
+function fifu_activate_actions() {
+    fifu_db_change_url_length();
+
+    if (fifu_is_on('fifu_fake2')) {
+        update_option('fifu_fake', 'toggleon');
+        delete_option('fifu_fake2');
+    }
 }
 
 add_action('upgrader_process_complete', 'fifu_upgrade', 10, 2);
@@ -48,7 +59,7 @@ function fifu_upgrade($upgrader_object, $options) {
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         foreach ($options['plugins'] as $each_plugin) {
             if ($each_plugin == $current_plugin_path_name)
-                fifu_db_change_url_length();
+                fifu_activate_actions();
         }
     }
 }

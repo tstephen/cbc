@@ -1,12 +1,12 @@
 <?php
 
 function fifu_enable_fake_api(WP_REST_Request $request) {
-    update_option('fifu_data_generation', 'toggleoff');
-    fifu_enable_fake2();
+    fifu_enable_fake();
 }
 
 function fifu_disable_fake_api(WP_REST_Request $request) {
-    fifu_disable_fake2();
+    fifu_disable_fake();
+    delete_option('fifu_fake_attach_id');
 }
 
 function fifu_none_fake_api(WP_REST_Request $request) {
@@ -16,9 +16,6 @@ function fifu_none_fake_api(WP_REST_Request $request) {
 function fifu_data_clean_api(WP_REST_Request $request) {
     fifu_db_enable_clean();
     update_option('fifu_data_clean', 'toggleoff', 'no');
-
-    fifu_disable_fake(); // fake1
-    update_option('fifu_data_generation', 'toggleoff', 'no');
 }
 
 function fifu_save_dimensions_all_api(WP_REST_Request $request) {
@@ -37,6 +34,14 @@ function fifu_clean_dimensions_all_api(WP_REST_Request $request) {
         return;
 
     fifu_db_clean_dimensions_all();
+}
+
+function fifu_disable_default_api(WP_REST_Request $request) {
+    fifu_db_delete_default_url();
+}
+
+function fifu_none_default_api(WP_REST_Request $request) {
+    
 }
 
 function fifu_test_execution_time() {
@@ -70,6 +75,14 @@ add_action('rest_api_init', function () {
     register_rest_route('featured-image-from-url/v2', '/clean_dimensions_all_api/', array(
         'methods' => 'POST',
         'callback' => 'fifu_clean_dimensions_all_api'
+    ));
+    register_rest_route('featured-image-from-url/v2', '/disable_default_api/', array(
+        'methods' => 'POST',
+        'callback' => 'fifu_disable_default_api'
+    ));
+    register_rest_route('featured-image-from-url/v2', '/none_default_api/', array(
+        'methods' => 'POST',
+        'callback' => 'fifu_none_default_api'
     ));
 });
 

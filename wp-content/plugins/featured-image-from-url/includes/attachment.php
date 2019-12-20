@@ -5,12 +5,10 @@ define("FIFU_URL", "/localhost/fifu/");
 add_filter('get_attached_file', 'fifu_replace_attached_file', 10, 2);
 
 function fifu_replace_attached_file($att_url, $att_id) {
-    if (fifu_is_off('fifu_data_generation')) {
-        if ($att_url) {
-            $url = explode(";", $att_url);
-            if (sizeof($url) > 1)
-                return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
-        }
+    if ($att_url) {
+        $url = explode(";", $att_url);
+        if (sizeof($url) > 1)
+            return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
     }
     return $att_url;
 }
@@ -18,31 +16,17 @@ function fifu_replace_attached_file($att_url, $att_id) {
 add_filter('wp_get_attachment_url', 'fifu_replace_attachment_url', 10, 2);
 
 function fifu_replace_attachment_url($att_url, $att_id) {
-    if (fifu_is_off('fifu_data_generation')) {
-        if ($att_url) {
-            $url = explode(";", $att_url);
-            if (sizeof($url) > 1)
-                return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
-            else {
-                // external wordpress images
-                if (sizeof($url) > 0 && strpos($url[0], fifu_get_internal_image_path()) !== false) {
-                    if (get_post($att_id)) {
-                        $url = get_post($att_id)->guid;
-                        if ($url)
-                            return $url;
-                    }
-                }
+    if ($att_url) {
+        $url = explode(";", $att_url);
+        if (sizeof($url) > 1)
+            return strpos($url[1], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $url[1];
+        else {
+            if (get_post($att_id)) {
+                $url = get_post($att_id)->guid;
+                if ($url && strpos($url, 'http') === 0)
+                    return $url;
             }
         }
-    }
-
-    if (fifu_show_internal_instead_of_external(get_the_ID()))
-        return $att_url;
-
-    if ($att_id == get_post_thumbnail_id(get_the_ID())) {
-        $url = fifu_main_image_url(get_the_ID());
-        if ($url)
-            $att_url = $url;
     }
     return $att_url;
 }
@@ -76,43 +60,25 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
 
     $post = get_post($att_id);
 
-    if (fifu_is_off('fifu_data_generation')) {
-        if (fifu_should_hide())
-            return null;
-        $image_size = fifu_get_image_size($size);
-        if (fifu_is_on('fifu_original')) {
-            return array(
-                strpos($image[0], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $image[0],
-                null,
-                null,
-                null,
-            );
-        }
-        $dimension = $post ? get_post_meta($post, 'fifu_image_dimension') : null;
-        $arrFIFU = fifu_get_width_height($dimension);
+    if (fifu_should_hide())
+        return null;
+    $image_size = fifu_get_image_size($size);
+    if (fifu_is_on('fifu_original')) {
         return array(
             strpos($image[0], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $image[0],
-            !$dimension && isset($image_size['width']) && $image_size['width'] < $arrFIFU['width'] ? $image_size['width'] : $arrFIFU['width'],
-            !$dimension && isset($image_size['height']) && $image_size['height'] < $arrFIFU['height'] ? $image_size['height'] : $arrFIFU['height'],
-            isset($image_size['crop']) ? $image_size['crop'] : '',
+            null,
+            null,
+            null,
         );
     }
-
-    if (fifu_show_internal_instead_of_external(get_the_ID()))
-        return $image;
-
-    if ($att_id == get_post_thumbnail_id(get_the_ID())) {
-        $url = fifu_main_image_url(get_the_ID());
-        if ($url) {
-            return array(
-                $url,
-                0,
-                0,
-                false
-            );
-        }
-    }
-    return $image;
+    $dimension = $post ? get_post_meta($post, 'fifu_image_dimension') : null;
+    $arrFIFU = fifu_get_width_height($dimension);
+    return array(
+        strpos($image[0], fifu_get_internal_image_path()) !== false ? get_post($att_id)->guid : $image[0],
+        !$dimension && isset($image_size['width']) && $image_size['width'] < $arrFIFU['width'] ? $image_size['width'] : $arrFIFU['width'],
+        !$dimension && isset($image_size['height']) && $image_size['height'] < $arrFIFU['height'] ? $image_size['height'] : $arrFIFU['height'],
+        isset($image_size['crop']) ? $image_size['crop'] : '',
+    );
 }
 
 function fifu_is_internal_image($image) {
@@ -120,7 +86,7 @@ function fifu_is_internal_image($image) {
 }
 
 function fifu_get_internal_image_path() {
-    return $_SERVER['SERVER_NAME'] . "/wp-content/uploads/";
+    return explode("//", get_home_url())[1] . "/wp-content/uploads/";
 }
 
 add_filter('wp_get_attachment_metadata', 'fifu_filter_wp_get_attachment_metadata', 10, 2);
@@ -142,6 +108,10 @@ function fifu_get_width_height($dimension) {
         $dimension = null;
         $width = fifu_maximum('width');
         $height = fifu_maximum('height');
+
+        // a value is required, otherwise the zoom doesn't work
+        if (!$width)
+            $width = 1000;
     }
     return array('width' => $width, 'height' => $height);
 }

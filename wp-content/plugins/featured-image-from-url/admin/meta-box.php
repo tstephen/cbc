@@ -70,7 +70,7 @@ function fifu_remove_first_image($data, $postarr) {
 add_action('save_post', 'fifu_save_properties');
 
 function fifu_save_properties($post_id) {
-    if (!$_POST || get_post_type($post_id) == 'nav_menu_item')
+    if (!$_POST || get_post_type($post_id) == 'nav_menu_item' || get_post_type($post_id) == 'revision')
         return;
 
     $ignore = false;
@@ -131,12 +131,9 @@ function fifu_update_or_delete_value($post_id, $field, $value) {
         delete_post_meta($post_id, $field, $value);
 }
 
-add_action('pmxi_saved_post', 'fifu_wai_save');
-
 function fifu_wai_save($post_id) {
     $url = get_post_meta($post_id, 'fifu_image_url', true);
     fifu_update_or_delete($post_id, 'fifu_image_url', $url);
-    fifu_save($post_id);
 }
 
 add_action('before_delete_post', 'fifu_db_before_delete_post');

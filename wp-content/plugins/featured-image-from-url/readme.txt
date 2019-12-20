@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, 9gag, wcfm
+Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, 9gag, wcfm, add-on
 Requires at least: 4.0
-Tested up to: 5.3
-Stable tag: 2.6.9
+Tested up to: 5.4
+Stable tag: 2.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,27 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 2.7.6 =
+* New: Getting Started; New FREE Feature: Admin Area > Database; Bug Fix: WooCommerce zoom; Deprecated: Fake Internal Featured Image (1 attachment for all); Improvement: faster menu settings.
+
+= 2.7.5 =
+* Improvement: menu settings is faster now; Bug fix: conflict with internal images in some sites.
+
+= 2.7.4 =
+* Bug fixes: conflict between Social Tags and Yoast plugin; conflict between Default External Featured Image and Classic Editor plugin; style issue on Safari browser; conflict with internal featured images in some sites.
+
+= 2.7.3 =
+* New feature: Settings > Admin Area > jQuery; bug fix: Copy Link was wrong in some sites.
+
+= 2.7.2 =
+* New feature: FIFU has its own WP All Import add-on now. ACF add-on is not required anymore.
+
+= 2.7.1 =
+* New feature: Text > Auto Set Image Alt > always use the post title; Improvement: icons added to menu settings.
+
+= 2.7.0 =
+* Deprecated: Metadata > Metadata Generation; Improvement: Metadata > Fake Internal Featured Image layout is more intuitive now.
 
 = 2.6.9 =
 * Notice: ready for WordPress 5.3.
@@ -635,6 +656,27 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 2.7.6 =
+* New: Getting Started; New FREE Feature: Admin Area > Database; Bug Fix: WooCommerce zoom; Deprecated: Fake Internal Featured Image (1 attachment for all); Improvement: faster menu settings.
+
+= 2.7.5 =
+* Improvement: menu settings is faster now; Bug fix: conflict with internal images in some sites.
+
+= 2.7.4 =
+* Bug fixes: conflict between Social Tags and Yoast plugin; conflict between Default External Featured Image and Classic Editor plugin; style issue on Safari browser; conflict with internal featured images in some sites.
+
+= 2.7.3 =
+* New feature: Settings > Admin Area > jQuery; bug fix: Copy Link was wrong in some sites.
+
+= 2.7.2 =
+* New feature: FIFU has its own WP All Import add-on now. ACF add-on is not required anymore.
+
+= 2.7.1 =
+* New feature: Text > Auto Set Image Alt > always use the post title; Improvement: icons added to menu settings.
+
+= 2.7.0 =
+* Deprecated: Metadata > Metadata Generation; Improvement: Metadata > Fake Internal Featured Image layout is more intuitive now.
 
 = 2.6.9 =
 * Notice: ready for WordPress 5.3.

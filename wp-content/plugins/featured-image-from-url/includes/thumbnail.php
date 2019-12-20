@@ -1,7 +1,16 @@
 <?php
 
+add_filter('wp_head', 'fifu_add_jquery');
 add_filter('wp_head', 'fifu_add_js');
-add_filter('wp_head', 'fifu_add_social_tags');
+
+if (!function_exists('is_plugin_active'))
+    require_once(ABSPATH . '/wp-admin/includes/plugin.php');
+
+if (is_plugin_active('wordpress-seo/wp-seo.php'))
+    add_action('wpseo_add_opengraph_images', 'fifu_add_social_tags');
+else
+    add_filter('wp_head', 'fifu_add_social_tags');
+
 add_filter('wp_head', 'fifu_apply_css');
 
 function fifu_add_js() {
@@ -23,32 +32,16 @@ function fifu_add_social_tags() {
         include 'html/social.html';
 }
 
+function fifu_add_jquery() {
+    if (fifu_is_on('fifu_jquery'))
+        include 'html/jquery.html';
+}
+
 function fifu_apply_css() {
     if (fifu_is_off('fifu_wc_lbox'))
         echo '<style>[class$="woocommerce-product-gallery__trigger"] {display:none !important;}</style>';
     else
         echo '<style>[class$="woocommerce-product-gallery__trigger"] {visibility:hidden;}</style>';
-}
-
-add_action('the_post', 'fifu_choose');
-
-function fifu_choose($post) {
-    if (fifu_is_off('fifu_data_generation'))
-        return;
-
-    $post_id = $post->ID;
-
-    $image_url = fifu_main_image_url($post_id);
-
-    $featured_image = get_post_meta($post_id, '_thumbnail_id', true);
-
-    if ($image_url || (get_option('fifu_default_url') && fifu_is_on('fifu_enable_default_url'))) {
-        if (!$featured_image)
-            update_post_meta($post_id, '_thumbnail_id', -1);
-    } else {
-        if ($featured_image == -1)
-            delete_post_meta($post_id, '_thumbnail_id');
-    }
 }
 
 add_filter('woocommerce_product_get_image', 'fifu_woo_replace', 10, 5);
@@ -60,34 +53,34 @@ function fifu_woo_replace($html, $product, $woosize) {
 add_filter('post_thumbnail_html', 'fifu_replace', 10, 4);
 
 function fifu_replace($html, $post_id, $post_thumbnail_id, $size) {
-    if (fifu_is_off('fifu_data_generation')) {
-        $width = fifu_get_attribute('width', $html);
-        $height = fifu_get_attribute('height', $html);
+    $url = get_post_meta($post_id, 'fifu_image_url', true);
 
-        if (fifu_is_on('fifu_lazy') && !is_admin())
-            $html = str_replace("src", "data-src", $html);
-
-        $url = get_post_meta($post_id, 'fifu_image_url', true);
+    if (fifu_is_on('fifu_dynamic_alt')) {
+        $alt = get_the_title($post_id);
+        $html = preg_replace('/alt=[\'\"][^[\'\"]*[\'\"]/', 'alt="' . $alt . '"', $html);
+    } else
         $alt = get_post_meta($post_id, 'fifu_image_alt', true);
-        $css = get_option('fifu_css');
 
-        if ($url) {
-            if (fifu_is_on('fifu_class')) {
-                if (strpos($html, 'class='))
-                    $html = preg_replace('/class=[\'\"][^[\'\"]*[\'\"]/', 'class="fifu-class"', $html);
-                else
-                    $html = str_replace('<img', '<img class="fifu-class"', $html);
-            }
+    $width = fifu_get_attribute('width', $html);
+    $height = fifu_get_attribute('height', $html);
 
-            return $css ? str_replace('/>', ' style="' . $css . '"/>', $html) : $html;
+    if (fifu_is_on('fifu_lazy') && !is_admin())
+        $html = str_replace("src", "data-src", $html);
+
+    $css = get_option('fifu_css');
+
+    if ($url) {
+        if (fifu_is_on('fifu_class')) {
+            if (strpos($html, 'class='))
+                $html = preg_replace('/class=[\'\"][^[\'\"]*[\'\"]/', 'class="fifu-class"', $html);
+            else
+                $html = str_replace('<img', '<img class="fifu-class"', $html);
         }
 
-        return !$url ? $html : fifu_get_html($url, $alt, $width, $height);
+        return $css ? str_replace('/>', ' style="' . $css . '"/>', $html) : $html;
     }
-    $url = get_post_meta($post_id, 'fifu_image_url', true);
-    $alt = get_post_meta($post_id, 'fifu_image_alt', true);
 
-    return !$url || fifu_show_internal_instead_of_external($post_id) ? $html : fifu_get_html($url, $alt, null, null);
+    return !$url ? $html : fifu_get_html($url, $alt, $width, $height);
 }
 
 function is_ajax_call() {
@@ -101,11 +94,7 @@ function fifu_get_html($url, $alt, $width, $height) {
         $css = 'display:none';
     }
 
-    if (fifu_is_off('fifu_data_generation')) {
-        return sprintf('<!-- Powered by Featured Image from URL plugin --> <img %s alt="%s" title="%s" style="%s" data-large_image="%s" data-large_image_width="%s" data-large_image_height="%s" onerror="%s" width="%s" height="%s">', fifu_lazy_url($url), $alt, $alt, $css, $url, "800", "600", "jQuery(this).hide();", $width, $height);
-    }
-
-    return sprintf('<!-- Featured Image from URL plugin --> <img %s alt="%s" title="%s" style="%s">', fifu_lazy_url($url), $alt, $alt, $css);
+    return sprintf('<!-- Powered by Featured Image from URL plugin --> <img %s alt="%s" title="%s" style="%s" data-large_image="%s" data-large_image_width="%s" data-large_image_height="%s" onerror="%s" width="%s" height="%s">', fifu_lazy_url($url), $alt, $alt, $css, $url, "800", "600", "jQuery(this).hide();", $width, $height);
 }
 
 add_filter('the_content', 'fifu_add_to_content');
@@ -142,14 +131,8 @@ function fifu_is_main_page() {
 }
 
 function fifu_has_internal_image($post_id) {
-    $att_id = get_post_meta($post_id, '_thumbnail_id', true);
-    return $att_id && $att_id != -1 && $att_id != get_option('fifu_fake_attach_id') && (get_post($att_id) && get_post($att_id)->post_author != 77777);
-}
-
-function fifu_show_internal_instead_of_external($post_id) {
-    if (!fifu_has_internal_image($post_id))
-        return false;
-    return fifu_is_in_editor();
+    $featured_image = get_post_meta($post_id, '_thumbnail_id', true);
+    return $featured_image && $featured_image != -1 && $featured_image != get_option('fifu_fake_attach_id');
 }
 
 function fifu_is_in_editor() {

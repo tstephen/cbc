@@ -1,5 +1,5 @@
 .wrap { 
-    max-width: 1000px; 
+    max-width: 1020px; 
     margin: 20px 20px 20px 15px;
 }
 
@@ -98,4 +98,46 @@ th {
     padding-bottom: 6px;
     background-color: #23282d;
     color: white;
+}
+
+.speech-bubble {
+    position: relative;
+    background: #799d60;
+    border-radius: 1em;
+    width: 660px;
+}
+
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-left-color: #799d60;
+    border-right: 0;
+    margin-top: -12px;
+    margin-right: -12px;
+}
+
+.speech-bubble2 {
+    position: relative;
+    background: #4193aa;
+    border-radius: 1em;
+    width: 100%;
+}
+
+.speech-bubble2:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 88%;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-bottom-color: #4193aa;
+    border-top: 0;
+    margin-left: -12px;
+    margin-top: -12px;     
 }
