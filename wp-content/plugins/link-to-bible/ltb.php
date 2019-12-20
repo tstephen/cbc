@@ -2,12 +2,12 @@
 /*
  * Plugin Name: Link To Bible
  * Description: Automatically links bible references in posts to the appropriate bible verse(s) at bibleserver.com
- * Version: 2.5.5
+ * Version: 2.5.6
  * Plugin URI: https://wordpress.org/extend/plugins/link-to-bible/
  * Author: Thomas Kuhlmann
- * Author URI: http://oss.thk-systems.de
+ * Author URI: http://www.thk-systems.de
  * Min WP Version: 3.2.1
- * Max WP Version: 4.8.1
+ * Max WP Version: 5.3.0
  * Text Domain: ltb
  */
 
@@ -255,22 +255,18 @@ function ltb_get_locale() {
 }
 
 function ltb_retrieve_apikey() {
-	$params = array (
-			'apikey_content' => get_option ( 'siteurl' ),
-			'apikey_send' => 'API-Key+generieren' 
-	);
-	$html = ltb_http_post_request ( "https://www.bibleserver.com/webmasters/index.php#apikey", $params );
-	if (! $html)
-		return null; // Connection error
-	
-	$pattern = "/<input.*name=\"apikey_result\".*value=\"(.+)\".*\/>/";
-	if (preg_match ( $pattern, $html, $matches )) {
-		return $matches [1];
-	} else {
-		return null;
-	}
-}
+    $params = array(
+        'domain' => get_option('siteurl'),
+    );
+    $html = ltb_http_post_request("https://www.bibleserver.com/api/webmasters/key", $params);
+    if (!$html && strpos($html, 'error') !== false) {
+        return null; // Connection error
+    }
 
+    $html = json_decode($html, true);
+
+    return $html['data']['api_key'];
+}
 // ---------------------------------------------
 // --------------- DATA ------------------------
 // ---------------------------------------------

@@ -2,8 +2,8 @@
 Contributors: Thomas Kuhlmann
 Tags: bible, bible verse, bible reference, bibleserver.com, bibelvers, bibel, bibelstelle
 Requires at least: 3.2.1
-Tested up to: 4.8.1
-Stable tag: 2.5.5
+Tested up to: 5.3.0
+Stable tag: 2.5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/copyleft/gpl.html
 
@@ -31,6 +31,8 @@ The following information is transmitted to bibleserver.com to add the links:<ul
 <li>The version of this plugin, the version of your wordpress installation and the php version running your wordpress installation</li>
 </ul>
 
+For more information see the privacy statement of bibleserver.com: https://www.bibleserver.com/webmasters/#privacy
+
 = License =
 - This plugin is licensed under the GPLv3. (http://www.gnu.org/licenses/gpl.html). You can use it free of charge on your personal or commercial blog.
 - It is published with the explicit permission of bibleserver.com (ERF Medien e.V.)
@@ -57,6 +59,10 @@ Yes. You can set the bible version using the metadata of a post with 'LTB_BIBLE_
 If you have any issues with the plugin, please write to mail@thomas-kuhlmann.de (german or english).
 
 == Changelog ==
+
+= 2.5.6 =
+
+- Changed to new bibleversion.com api (to get api key)
 
 = 2.5.5 =
 
