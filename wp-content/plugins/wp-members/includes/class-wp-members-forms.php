@@ -578,7 +578,12 @@ class WP_Members_Forms {
 		// Build the input rows.
 		foreach ( $arr['inputs'] as $input ) {
 			$label = '<label for="' . esc_attr( $input['tag'] ) . '">' . $input['name'] . '</label>';
-			$field = wpmem_create_formfield( $input['tag'], $input['type'], '', '', $input['class'] );
+			$field = wpmem_form_field( array(
+				'name'     => $input['tag'], 
+				'type'     => $input['type'],
+				'class'    => $input['class'],
+				'required' => true,
+			) );
 			$field_before = ( $args['wrap_inputs'] ) ? '<div class="' . $this->sanitize_class( $input['div'] ) . '">' : '';
 			$field_after  = ( $args['wrap_inputs'] ) ? '</div>' : '';
 			$rows[] = array( 
@@ -924,7 +929,8 @@ class WP_Members_Forms {
 			$val = ''; $label = ''; $input = ''; $field_before = ''; $field_after = '';
 
 			// If the field is set to display and we aren't skipping, construct the row.
-			if ( ( 'new' == $tag && $field['register'] ) || ( 'edit' == $tag && $field['profile'] ) ) {
+			// if ( ( 'new' == $tag && $field['register'] ) || ( 'edit' == $tag && $field['profile'] ) ) { // @todo Wait for profile fix
+			if ( $field['register'] ) {
 				
 				// Handle hidden fields
 				if ( 'hidden' == $field['type'] ) {
@@ -1885,7 +1891,7 @@ class WP_Members_Forms {
 
 		$msg = '';
 
-		if ( $page == "page" ) {
+		if ( "login" == $form && "page" == $page ) {
 			$msg = $this->add_restricted_msg();
 		} 
 

@@ -42,8 +42,6 @@ class WP_Members_Products_Admin {
 				add_action( 'manage_' . $key . '_posts_custom_column', array( $this, 'post_columns_content' ), 10, 2 );
 			}
 			
-
-
 			add_filter( 'wpmem_user_profile_tabs',         array( $this, 'user_profile_tabs' ), 1 );
 			add_action( 'wpmem_user_profile_tabs_content', array( $this, 'user_profile_tab_content' ), 10 );
 		}
@@ -158,7 +156,8 @@ class WP_Members_Products_Admin {
 		$product_default = $this->get_meta( 'wpmem_product_default' );
 		$product_expires = $this->get_meta( 'wpmem_product_expires' );
 		$product_role    = $this->get_meta( 'wpmem_product_role'    );
-	
+		$product_no_gap  = $this->get_meta( 'wpmem_product_no_gap'  );
+
 		$product_expires = ( false !== $product_expires ) ? $product_expires[0] : $product_expires;
 		
 		$periods = array( __( 'Period', 'wp-members' ) . '|', __( 'Day', 'wp-members' ) . '|day', __( 'Week', 'wp-members' ) . '|week', __( 'Month', 'wp-members' ) . '|month', __( 'Year', 'wp-members' ) . '|year' ); 
@@ -166,16 +165,13 @@ class WP_Members_Products_Admin {
 		$show_exp_detail  = ( false !== $product_expires ) ? 'show' : 'hide'; ?>
 
 			<?php wp_nonce_field( '_wpmem_product_nonce', 'wpmem_product_nonce' ); ?>
+			<p><?php _e( 'Name (slug)', 'wp-members' ); ?>: <?php echo esc_attr( $post->post_name ); ?></p>
 			<p>
-				<label for="wpmem_product_name"><?php _e( 'Name (slug)', 'wp-members' ); ?></label>
-				<input type="text" name="wpmem_product_name" id="wpmem_product_name" value="<?php echo esc_attr( $post->post_name ); ?>">
-			</p>
-			<p>
-				<input type="checkbox" name="wpmem_product_default" id="wpmem_product_default" value="1" <?php echo ( 1 == $product_default ) ? 'checked' : ''; ?>>
+				<input type="checkbox" name="wpmem_product_default" id="wpmem_product_default" value="1" <?php echo ( 1 == $product_default ) ? 'checked' : ''; ?> />
 				<label for="wpmem_product_default"><?php _e( 'Assign as default at registration? (optional)', 'wp-members' ); ?></label>
 			</p>
 			<p>
-				<input type="checkbox" name="wpmem_product_role_required" id="wpmem_product_role_required" value="role-required" <?php echo ( false !== $product_role ) ? 'checked' : ''; ?>>
+				<input type="checkbox" name="wpmem_product_role_required" id="wpmem_product_role_required" value="role-required" <?php echo ( false !== $product_role ) ? 'checked' : ''; ?> />
 				<label for="wpmem_product_role_required"><?php _e( 'Role Required? (optional)', 'wp-members' ); ?></label>
 				<label for="wpmem_product_role"></label>
 				<select name="wpmem_product_role" id="wpmem_product_role">
@@ -184,7 +180,7 @@ class WP_Members_Products_Admin {
 				</select>
 			</p>
 			<p>
-				<input type="checkbox" name="wpmem_product_expires" id="wpmem_product_expires" value="expires" <?php echo ( false !== $product_expires ) ? 'checked' : ''; ?>>
+				<input type="checkbox" name="wpmem_product_expires" id="wpmem_product_expires" value="expires" <?php echo ( false !== $product_expires ) ? 'checked' : ''; ?> />
 				<label for="wpmem_product_expires"><?php _e( 'Expires (optional)', 'wp-members' ); ?></label>
 				<span id="wpmem_product_expires_wrap">
 					<label for="wpmem_product_number_of_periods" style="display:none;"><?php _e( 'Number', 'wp-members' ); ?></label>
@@ -192,6 +188,8 @@ class WP_Members_Products_Admin {
 					<input type="text" name="wpmem_product_number_of_periods" id="wpmem_product_number_of_periods" value="<?php echo esc_attr( $period[0] ); ?>" class="small-text" placeholder="<?php _e( 'Number', 'membership_product' ); ?>" style="width:66px;height:28px;vertical-align:middle;">
 					<label for="wpmem_product_time_period" style="display:none;"><?php _e( 'Period', 'wp-members' ); ?></label>
 					<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_time_period', 'type'=>'select', 'value'=>$periods, 'compare'=>( ( isset( $period[1] ) ) ? $period[1] : '' ) ) ); ?>
+					<label><?php esc_html_e( 'Use "no gap" renewal', 'wp-members' ); ?></label>
+					<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_no_gap', 'type'=>'checkbox', 'value'=>'1', 'compare'=>( ( isset( $product_no_gap ) ) && 1 == $product_no_gap ) ? $product_no_gap : '' ) ); ?>
 				</span>
 			</p>
 		<script>
@@ -253,8 +251,16 @@ class WP_Members_Products_Admin {
 		if ( ! $expires ) {
 			update_post_meta( $post_id, 'wpmem_product_expires', false );
 		} else {
-			$expires_array = array( sanitize_text_field( wpmem_get( 'wpmem_product_number_of_periods' ) ) . "|" . sanitize_text_field( wpmem_get( 'wpmem_product_time_period' ) ) );
+			$number  = sanitize_text_field( wpmem_get( 'wpmem_product_number_of_periods' ) );
+			$period  = sanitize_text_field( wpmem_get( 'wpmem_product_time_period' ) );
+			$no_gap  = sanitize_text_field( wpmem_get( 'wpmem_product_no_gap' ) );
+			$expires_array = array( $number . "|" . $period );
 			update_post_meta( $post_id, 'wpmem_product_expires', $expires_array );
+			if ( $no_gap ) {
+				update_post_meta( $post_id, 'wpmem_product_no_gap', 1 );
+			} else {
+				delete_post_meta( $post_id, 'wpmem_product_no_gap' );
+			}
 		}
 	}
 
@@ -436,14 +442,22 @@ class WP_Members_Products_Admin {
 	 *
 	 * @since 3.2.0
 	 *
+	 * @global string $pagenow
 	 * @global object $wpmem
 	 * @param  string $key
 	 */
 	public function user_profile_tab_content( $key ) { 
 		// If product enabled
 		if ( 'memberships' == $key ) {
-			global $wpmem;
-			$user_id = sanitize_text_field( wpmem_get( 'user_id', false, 'get' ) );
+			global $pagenow, $wpmem;
+			/*
+			 * If an admin is editing their provile, we need their ID,
+			 * otherwise, it's the user_id param from the URL. It's a 
+			 * little more complicated than it sounds since you can't just
+			 * check if the user is logged in, because the admin is always
+			 * logged in when checking profiles.
+			 */
+			$user_id = ( 'profile' == $pagenow && current_user_can( 'edit_users' ) ) ? get_current_user_id() : sanitize_text_field( wpmem_get( 'user_id', false, 'get' ) );
 			$user_products = $wpmem->user->get_user_products( $user_id );
 			echo '<h3>' . __( 'Product Access', 'wp-members' ) . '</h3>';
 			echo '<table>

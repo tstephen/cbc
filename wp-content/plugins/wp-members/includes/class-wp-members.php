@@ -1018,13 +1018,13 @@ class WP_Members {
 			$hidden = $this->hidden_posts();
 		}
 		// @todo Possibly separate query here to check. If the user IS logged in, check what posts they DON'T have access to.
-		if ( ! is_admin() && is_user_logged_in() && 1 == $this->enable_products ) { 
+		if ( ! is_admin() && is_user_logged_in() && 1 == $this->enable_products ) {
 			// Get user product access.
 			// @todo This maybe should be a transient stored in the user object.
 			$hidden = $this->hidden_posts();
 			$hidden = ( is_array( $hidden ) ) ? $hidden : array();
 			foreach ( $this->membership->products as $key => $value ) {
-				if ( isset( $this->user->access[ $key ] ) && ( true === $this->user->access[ $key ] || $this->user->is_current( $this->user->access[ $key ] ) ) ) {
+				if ( isset( $this->user->access[ $key ] ) && ( true == $this->user->access[ $key ] || $this->user->is_current( $this->user->access[ $key ] ) ) ) {
 					foreach ( $hidden as $post_id ) {
 						if ( 1 == get_post_meta( $post_id, $this->membership->post_stem . $key, true ) ) {
 							$hidden_key = array_search( $post_id, $hidden );
@@ -1153,7 +1153,7 @@ class WP_Members {
 			$this->fields[ $meta_key ]['type']     = $val[3];
 			$this->fields[ $meta_key ]['register'] = ( 'y' == $val[4] ) ? true : false;
 			$this->fields[ $meta_key ]['required'] = ( 'y' == $val[5] ) ? true : false;
-			$this->fields[ $meta_key ]['profile']  = ( isset( $val['profile'] ) ) ? $val['profile'] : true ;
+			$this->fields[ $meta_key ]['profile']  = ( 'y' == $val[4] ) ? true : false;// ( isset( $val['profile'] ) ) ? $val['profile'] : true ; // // @todo Wait for profile fix
 			$this->fields[ $meta_key ]['native']   = ( 'y' == $val[6] ) ? true : false;
 			
 			// Certain field types have additional properties.
