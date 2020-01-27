@@ -57,7 +57,7 @@
 }
 
 th, td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 0px solid #ddd;
     padding-right: 8px;
     padding-left: 8px;
     font-weight: normal;
@@ -104,14 +104,15 @@ th {
     position: relative;
     background: #799d60;
     border-radius: 1em;
-    width: 660px;
+    width: 80%;
+    line-height: 13px;
 }
 
 .speech-bubble:after {
     content: '';
     position: absolute;
     right: 0;
-    top: 50%;
+    top: 27%;
     width: 0;
     height: 0;
     border: 12px solid transparent;
@@ -126,18 +127,28 @@ th {
     background: #4193aa;
     border-radius: 1em;
     width: 100%;
+    line-height: 13px;
+    top:20px;
 }
 
 .speech-bubble2:after {
     content: '';
     position: absolute;
     top: 0;
-    left: 88%;
+    left: 91%;
     width: 0;
     height: 0;
     border: 12px solid transparent;
     border-bottom-color: #4193aa;
     border-top: 0;
     margin-left: -12px;
-    margin-top: -12px;     
+    margin-top: -12px;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    background-color: #4385bf;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+    color: white;
 }

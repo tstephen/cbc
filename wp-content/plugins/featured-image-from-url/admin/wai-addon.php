@@ -2,7 +2,7 @@
 
 include 'rapid-addon.php';
 
-$fifu_wai_addon = new RapidAddon('<div style="color:#777"><img src="' . plugins_url() . '/featured-image-from-url/admin/images/favicon.png" style="filter: invert(50%);height:18px;padding-right:4px;position:relative;top:2px"> Featured Image from URL</div>', 'fifu_wai_addon');
+$fifu_wai_addon = new RapidAddon('<div style="color:#777"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> Featured Image from URL</div>', 'fifu_wai_addon');
 $fifu_wai_addon->add_field('fifu_image_url', '<div title="fifu_image_url">Featured Image URL</div>', 'text', null, null, false, null);
 $fifu_wai_addon->add_field('fifu_image_alt', '<div title="fifu_image_alt">Featured Image Alt/Title</div>', 'text', null, null, false, null);
 $fifu_wai_addon->set_import_function('fifu_wai_addon_save');
@@ -17,8 +17,10 @@ function fifu_wai_addon_save($post_id, $data, $import_options, $article) {
     if (!empty($data['fifu_image_alt']))
         array_push($fields, 'fifu_image_alt');
 
-    if (empty($fields))
-        return;
+    if (empty($fields)) {
+        if (fifu_is_off('fifu_enable_default_url'))
+            return;
+    }
 
     $update = false;
     foreach ($fields as $field) {
@@ -38,3 +40,4 @@ function fifu_wai_addon_save($post_id, $data, $import_options, $article) {
     /* metadata */
     add_action('pmxi_saved_post', 'fifu_update_fake_attach_id');
 }
+

@@ -408,7 +408,13 @@ class FifuDb {
         $this->wpdb->get_results("
             DELETE FROM " . $this->postmeta . " 
             WHERE meta_key IN ('_wp_attached_file','_wp_attachment_image_alt')
-            AND post_id IN (" . $ids . ")"
+            AND post_id IN (" . $ids . ")
+            AND EXISTS (
+                SELECT 1 
+                FROM " . $this->posts . " 
+                WHERE id = post_id 
+                AND post_author = " . $this->author . "
+            )"
         );
     }
 
@@ -675,6 +681,13 @@ class FifuDb {
                 if (fifu_get_default_url())
                     set_post_thumbnail($post_id, get_option('fifu_default_attach_id'));
             } else {
+                // when an external image is removed and an internal is added at the same time
+                $attachments = $this->get_attachments_without_post($post_id);
+                if ($attachments) {
+                    $this->delete_attachment_meta_url_and_alt($attachments);
+                    $this->delete_attachments($attachments);
+                }
+
                 if (fifu_get_default_url()) {
                     $post_thumbnail_id = get_post_thumbnail_id($post_id);
                     $hasInternal = $post_thumbnail_id && get_post_field('post_author', $post_thumbnail_id) != $this->author;
@@ -700,8 +713,8 @@ class FifuDb {
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $attachments = $this->get_attachments_without_post($post_id);
                 if ($attachments) {
-                    $this->delete_attachments($attachments);
                     $this->delete_attachment_meta_url_and_alt($attachments);
+                    $this->delete_attachments($attachments);
                 }
             }
             if (fifu_is_on('fifu_save_dimensions'))
@@ -742,8 +755,8 @@ class FifuDb {
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $attachments = $this->get_ctgr_attachments_without_post($term_id);
                 if ($attachments) {
-                    $this->delete_attachments($attachments);
                     $this->delete_attachment_meta_url_and_alt($attachments);
+                    $this->delete_attachments($attachments);
                 }
             }
         }
@@ -801,8 +814,8 @@ class FifuDb {
                     $value = ($value == null) ? $id : $value . ',' . $id;
             }
             if ($value) {
-                $this->delete_attachments($value);
                 $this->delete_attachment_meta_url_and_alt($value);
+                $this->delete_attachments($value);
             }
         }
     }

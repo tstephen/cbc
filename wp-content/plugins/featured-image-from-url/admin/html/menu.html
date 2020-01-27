@@ -1,7 +1,7 @@
 <div class="wrap" style="opacity:0">
 
     <div class="header-box" style="background-color:#23282d">
-        <h1 style="color:white"><img src="<?php echo plugins_url()?>/featured-image-from-url/admin/images/favicon.png" alt=""> featured image from url 2</h1>
+        <h1 style="color:white"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> featured image from url 2</h1>
     </div>
 
     <div id="tabs-top">        
@@ -19,58 +19,18 @@
             <li><a href="#tabs-e"><i class="fas fa-quote-left"></i> Text</a></li>
             <li><a href="#tabs-c"><i class="fas fa-play"></i> Video</a></li>
             <li><a href="#tabs-o"><i class="fas fa-shopping-cart"></i> WooCommerce</a></li>
-            <li><a href="#tabs-p"><i class="fas fa-file-import"></i> WP All Import</a></li>
+            <li><a href="#tabs-p"><i class="fas fa-redo"></i> WP All Import</a></li>
             <li><a href="#tabs-t"><i class="fas fa-info-circle"></i> Troubleshooting</a></li>
-            <li><a href="#tabs-a"><i class="fas fa-star"></i> Premium version <b style="border-radius:2px;padding:3px;background-color:#32373c;color:white">20%OFF</b></a></li>
+            <li><a href="#tabs-a"><i class="fas fa-credit-card"></i> Premium version <b style="border-radius:2px;padding:3px;background-color:#32373c;color:white">Stripe | PayPal</b></a></li>
             <br>
             <br>
             <div id="tabs-a">
                 <a name="top"></a>
 
                 <div class="box">
-                    <h2>About <a href="https://featuredimagefromurl.com/">Featured Image from URL Premium</a></h2>
+                    <h2>About <a href="https://fifu.app/">Featured Image from URL Premium</a></h2>
                     <div class="greybox">
-                        <h3>1) "How to get the Premium version?"</h3>
-                        <div style="display:inline-block;;position:relative;top:-30px">                        
-                            <table style="width:100%;border: 0px dotted #000">
-                                <tr>
-                                    <td><center></center></td><td><center>Money (PayPal)</center></td><td><center>Bitcoin</center></td>
-                                </tr>
-                                <tr>
-                                    <td style="width:60%"
-                                        <div>
-                                            Pay <strike>US$ 50,00</strike> <b>US$ 39,90</b> and receive your license key and the download link by email within 12 hours.
-                                            Moreover, <b>you will have lifetime automatic updates</b>.<br><br>
-                                        </div>
-                                    </td>
-                                    <td style="width:20%">
-                                <center>
-                                    <div style="display: inline-block;"><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                            <input type="hidden" name="cmd" value="_s-xclick">
-                                            <input type="hidden" name="hosted_button_id" value="46Y3TGDMXCJZW">
-                                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></div>
-                                </center>
-                                </td>
-                                <td style="width:20%">
-                                <center>
-                                    <div>
-                                        3C9SWyg2zEByn1RSQ6s5AVw1jKyFzdesUQ
-                                    </div>
-                                </center>
-                                </td>
-                                </tr>
-                            </table>
-                            <h3>2) "How to get support?"</h3>                            
-                            You can inform any problem related to the Premium version by email (support@featuredimagefromurl.com). It will be solved as soon as possible and without any cost.<br><br>
-                            <h3>3) "On how many sites can I install that?"</h3>
-                            Only one. Or maybe two, since one of them is a stage site. But both should be available on the Internet to receive automatic updates. Those restrictions are necessary to keep the support quality.<br><br>
-                            <h3>4) "Are my plugins compatible with Premium version?"</h3>
-                            FIFU is compatible with most popular plugins. If you intend to use the Premium version with a specific plugin, try to test with this free version first.<br><br>
-                            <h3>5) "Are there known incompatibility issues?"</h3>
-                            Some WooCommerce themes aren’t flexible enough to work with Videos, Sliders and Shortcodes. To know if your theme is compatible with those features, please take a look below.<br><br>
-                            <h3>6) "Can I get my money back later?"</h3>
-                            With the exception of rare situations, no. But don't worry about that. You will still have the best support and if, after your complete cooperation, I'm not able to solve your issue, I will offer you a refund.
-                        </div>
+                        <iframe style="width:100%;height:600px" src="https://fifu.app/"></iframe>
                     </div>
 
                     <div class="box" style="">
@@ -175,7 +135,7 @@
                 <div class="box">
                     <h2>Database</h2>
                     <div class="greybox">
-                        Limit of rows to UPDATE, INSERT or DELETE by query. Higher this number, faster the features "URL from Post Content" (Apply to All) and "Metadata" (Fake Internal Featured Image and Clean). However, if you have limited resources, don't increase this value too much, otherwise your database can bring down.<br><br>
+                        Limit of rows to UPDATE, INSERT or DELETE by query. Higher this number, faster the features "URL from Post Content" (Apply to All) and "Metadata". However, if you have limited resources, don't increase this value too much, otherwise your database can bring down.<br><br>
                         <form 
                             id="fifu_form_db" 
                             action="javascript:void(0)" 
@@ -295,6 +255,22 @@
                             </tr>
                         </table>
                     </form>
+                </div>
+                <div class="box">
+                    <h2>Internal URL Parameters</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        This option adds some FIFU parameters to your image URLs. It only makes sense when you have a theme that calls the image URLs in a very nonstandard way, what could break some FIFU features, such as "Add Class" and "Same Height > Object Fit > Cover". 99.9% of users don't need that.
+                    </div>
+                    <br>
+                    <input 
+                        type="submit" 
+                        href="javascript:void(0)" 
+                        id="fifu_toggle_parameters" 
+                        name="fifu_toggle_parameters" 
+                        class="toggleoff" 
+                        value=""
+                        style="display:block;border:none">
                 </div>
             </div>
             <div id="tabs-b">
@@ -460,19 +436,20 @@
             </div>
             <div id="tabs-g">
                 <div class="box">
-                    <h2>Crop images to the same size</h2>
+                    <h2>Same Height</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to crop them to the same size.
+                        If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to show them in the same height.
                     </div>
                     <br>
 
                     <div id="tabsCrop">
 
                         <ul>
-                            <li><a href="#tabsCrop-a">Crop Images</a></li>
-                            <li><a href="#tabsCrop-b">Inform a Selector</a></li>
+                            <li><a href="#tabsCrop-a">Same Height</a></li>
+                            <li><a href="#tabsCrop-b">Selector</a></li>
                             <li><a href="#tabsCrop-c">Size Ratio</a></li>
+                            <li><a href="#tabsCrop-d">Object Fit</a></li>
                             <br>
                             <br>
                             <div id="tabsCrop-a">
@@ -487,7 +464,7 @@
                                                 style="display:block;border:none">
                                         </th>
                                         <th>
-                                            P.S.: if the crop doesn't work, use a Selector to inform where is the group of external images that you want to crop. 
+                                            if it doesn't work, use a Selector to inform where is the group of external images that you want at the same height. 
                                         </th>
                                     </tr>
                                 </table>                                    
@@ -547,12 +524,27 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div id="tabsCrop-d">
+                                - <b>cover</b>: crops the images (the options center, top and bottom will be available in the post editor);<br>
+                                - <b>contain</b>: shows full images (in smaller sizes);<br>
+                                - <b>fill</b>: deforms the images (same width too).<br>
+                                <br>
+                                <select id="select_fit" style="width:100px">
+                                    <option value="cover">cover</option>
+                                    <option value="contain">contain</option>
+                                    <option value="fill">fill</option>
+                                </select>                     
+                                <input type="submit" 
+                                       value="Submit" disabled>
+                                </form>
+                            </div> 
                         </ul>
                     </div>
                 </div>
 
                 <div class="box">
-                    <h2>Replace broken image</h2>
+                    <h2>Replace Broken Image</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
                         Here you can define the URL of an image to be shown in case of error (image not found).
@@ -783,7 +775,7 @@
                     <h2>Hover Effects</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        Choose one among 18 hover effects to be applied to the external featured images of your posts/products on your homepage. <a href="https://featuredimagefromurl.com/hover-effects/">Live preview</a><br>
+                        Choose one among 18 hover effects to be applied to the external featured images of your posts/products on your homepage.<br>
                     </div>
                     <br>
                     <select id="select_hover" style="width:30%">
@@ -1205,7 +1197,7 @@
             </div>
             <div id="tabs-j">
                 <div class="box">
-                    <h2>Fake Internal Featured Image (<b style="color:red">keep me enabled</b>)</h2>
+                    <h2>Image Metadata</h2>
                     <div class="greybox">
                         Most themes/plugins are not able to show the external featured image if there is no internal featured image associated to your post/page/product. Enabling the toggle below, a symbolic <b>empty</b> file will be added to your Media Library to overcome this limitation.
                     </div>
@@ -1234,11 +1226,11 @@
 
                 <div class="box">
 
-                    <h2>Clean metadata</h2>
+                    <h2>Clean Metadata</h2>
 
                     <div class="greybox">
 
-                        This option might be necessary if you intend to deactivate the plugin and use only internal featured images again. It will clean the fake internal featured images generated by FIFU, but not the URLs.
+                        This option might be necessary if you intend to deactivate the plugin and use only internal featured images again. It will clean the image metadata generated by FIFU, but not the URLs.
 
                     </div>
 
@@ -1279,7 +1271,7 @@
 
                         This experimental feature allows to use a shortcode as "featured image" of posts/pages/products. Using shortcodes you are not limited to images/videos/sliders anymore. You can use any content provided by the shortcode, what could be a music, a text, a whole site etc.<br/><br/>
                         However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortocde content, otherwise it will be shown featured image from url (<b>required field</b>).<br/><br/>
-                        Important: shortcodes can be not compatible with other FIFU features, such as CSS Style, Crop Image, Lazy Load etc.
+                        Important: shortcodes can be not compatible with other FIFU features, such as CSS Style, Same Height, Lazy Load etc.
 
                     </div>
 
@@ -1474,15 +1466,37 @@
                     <h2>Video Thumbnail</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        Enable the toggle below to show the video thumbnail instead of the video on home/shop.
+                        Enable the toggle below to show the video thumbnail instead of the video.
                     </div>
                     <br>
-                    <input 
-                        type="submit" 
-                        href="javascript:void(0)" 
-                        class="toggleoff" 
-                        value=""
-                        style="display:block;border:none">
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff" 
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>   
+                                on home/shop
+                            </th>
+                        </tr> 
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff" 
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>   
+                                on page
+                            </th>
+                        </tr>              
+                    </table>
                 </div>
 
                 <div class="box">
@@ -1763,7 +1777,8 @@
                 <div class="box">
                     <h2>Lazy Load</h2>
                     <div class="greybox">
-                        Enabling this feature the images/videos won't be loaded until user scrolls to them. So it will make your home/shop load faster.
+                        Enabling this feature the images/videos won't be loaded until user scrolls to them. So it will make your home/shop load faster.<br><br>
+                        <b>Important</b>: some themes and plugins (Jetpack for instance) have their own lazy load implementations, causing conflicts. Your images may not load if you have more than one lazy load running at the same time.
                     </div>
                     <br>
                     <form 
@@ -2115,42 +2130,42 @@
                             <div id="tabs-3">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product.txt"
-                                        width="800px" height="250px" ></iframe>
+                                        width="100%" height="250px" ></iframe>
 
                             </div>
 
                             <div id="tabs-4">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-variation.txt"
-                                        width="800px" height="450px" ></iframe>
+                                        width="100%" height="450px" ></iframe>
 
                             </div>
 
                             <div id="tabs-5">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/post.txt"
-                                        width="800px" height="150px" ></iframe>
+                                        width="100%" height="150px" ></iframe>
 
                             </div>
 
                             <div id="tabs-6">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-category.txt"
-                                        width="800px" height="225px" ></iframe>
+                                        width="100%" height="225px" ></iframe>
 
                             </div>
 
                             <div id="tabs-7">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/product-variable.txt"
-                                        width="800px" height="550px" ></iframe>
+                                        width="100%" height="565px" ></iframe>
 
                             </div>
 
                             <div id="tabs-8">
 
                                 <iframe src="<?php echo plugins_url()?>/featured-image-from-url/admin/html/txt/batch.txt"
-                                        width="800px" height="425px" ></iframe>
+                                        width="100%" height="535px" ></iframe>
 
                             </div>
 
@@ -2317,7 +2332,10 @@
                     <h2>Variable Product</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        Settings for product variations.
+                        Enable external image fields for product variations.
+                        <br>
+                        <br>
+                        Important: variation image gallery requires <a href="https://woocommerce.com/products/woocommerce-additional-variation-images/" target="_blank">WooCommerce Additional Variation Images</a> plugin. Unofficial solutions are not supported.
                     </div>
                     <br>
                     <table style="text-align:left">
@@ -2335,26 +2353,9 @@
                                 </form>
                             </th>
                             <th>   
-                                allows to use external images in product variations
+                                allows to use external images and galleries of external images in product variations
                             </th>
-                        </tr> 
-                        <tr>
-                            <th>
-                                <form 
-                                    action="javascript:void(0)" 
-                                    method="post">
-                                    <input 
-                                        type="submit" 
-                                        href="javascript:void(0)" 
-                                        class="toggleoff" 
-                                        value="" 
-                                        style="display:block;border:none" >
-                                </form>
-                            </th>
-                            <th>   
-                                allows to use a different image gallery for each product variation (only for WooCommerce Rest API users)
-                            </th>
-                        </tr>  
+                        </tr>
                     </table>
                 </div>
 
@@ -2611,38 +2612,87 @@
                     <h2>Fast Support</h2>
                     <div class="greybox">
                         If you need any help, you can refer to <a href="https://wordpress.org/plugins/featured-image-from-url/screenshots/" target="_blank">screenshots</a> or send an email to <b>marcel@featuredimagefromurl.com</b> (send me this <a href="admin.php?page=fifu-support-data"><button id="opener" onclick="jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});">data</button></a>, please).
+                        <br>
+                        <br>
+                        <table style="background-color: #fff; border-radius: 13px;">
+                            <tr>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i class="fas fa-exclamation-triangle" style="font-size:30px"></i>
+                                </td>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i class="fas fa-plug" style="font-size:30px"></i>
+                                </td>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i class="fas fa-laptop-code" style="font-size:30px"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i>All my images are missing</i>
+                                </td>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i>A famous plugin doesn't work with FIFU</i>
+                                </td>
+                                <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
+                                    <i>I'm a developer</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    You were probably using a deprecated feature. Just do it:
+                                    1) access Metadata tab;
+                                    2) enable Clean Metadata (it will be automatically disabled when finished);
+                                    3) enable Image Metadata.
+                                </td>
+                                <td style="vertical-align: top;">
+                                    Just send me an email. If you are available to discuss the details and the plugin is free and has more than 100,000 active installs, I should provide an integration very soon.
+                                </td>
+                                <td>
+                                    You can set external featured images using custom fields. The main one is <b>fifu_image_url</b>. However the REST API is only supported by FIFU Premium. For nonstandard automation, just enable Schedule Metadata Generation, at Admin Area tab (no additional code required).
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="box">
+                    <h2><a class="dbox-donation-button" style="background: #2d81c5;color: #fff;text-decoration: none;display: inline-block;font-size: 16px;padding: 2px 17px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;box-shadow: 0px 0px 0px 0px #1f5a89;text-shadow: 0 1px rgba(0, 0, 0, 0.3);" href="https://donorbox.org/fifu" target="_blank">Donate </a> $ 1 / year to take this project to the next level <span class="dashicons dashicons-info" style="font-size: 25px;" title="Donate with a Card, Apple Pay, Google Pay, Stripe, PayPal and more. No account required."></span></h2>
+                    <div class="greybox">                        
+                        <a href="https://www.linkedin.com/in/marceljm/" target="_blank"><img src="https://avatars0.githubusercontent.com/u/10578419?s=460&v=4" style="border-radius:100%;width:8.5%;float:left"></a>
+                        <div style="position:relative;left:10px">Hi, I'm Marcel, Software Engineer and Featured Image from URL author, a project 100% developed in my free time. During the last 4 years I did my best to develop all requested features, integrations, improvements and bug fixes. And thanks to FIFU you keep saving money on storage, processing and copyright. However, with so many users (100,000+ active installs in 2020), it's becoming increasingly difficult to help everyone. <b>Extraordinary performance and automation features aren't done yet</b> while frequent updates are required to keep this plugin working with the most current WordPress components. So please become a sponsor and help me to take FIFU to the next level!</div>
                     </div>
                 </div>
                 <div class="box">
                     <h2>Getting Started (external Featured Images)</h2>
-                    <div class="greybox" style="height:480px">                        
-                        <hgroup style="float:left;opacity:0.75;" class="speech-bubble">
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px;padding-top:10px;">Hi, I'm an EXTERNAL image!</div>
+                    <div class="greybox" style="min-height:375px">
+                        <div style="width:100%">
+                            <hgroup style="float:left;opacity:0.75;" class="speech-bubble">
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:25px;padding-top:10px;">Hi, I'm an EXTERNAL image!</div>
+                                <br>
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:25px">It means I'm NOT in your media library and I'm NOT an attached plugin file too.</div>
+                                <br>
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:25px">Don't you believe me? So why don't you check my Internet address (also known as URL)?</div>
+                                <br>
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">1) <b>right click</b> me now;</div>
+                                <br>
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">2) select "<b>Copy image address</b>";</div>
+                                <br>
+                                <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">3) <b>paste</b> it here: <input type="text" style="width:80%;background-color:#f3f3f3;font-style:italic;" placeholder="or just drag and drop me here"></div>                            
+                                <br>
+                            </hgroup>
+                            <img style="float:right;padding-left:1%;width:17%;position:relative;top:19px;filter:grayscale(25%);" src="https://ps.w.org/featured-image-from-url/assets/icon-256x256.png" title="Right click me!">
+                        </div>
+                        <hgroup style="float:right;opacity:0.75" class="speech-bubble2">
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:25px;padding-top:10px;">Since now you have my address (also known as URL), how about making me famous?</div>
                             <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px">It means I'm NOT in your media library and I'm NOT an attached plugin file too.</div>
-                            <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px">Don't you believe me? So why don't you check my Internet address (also known as URL)?</div>
-                            <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">1) <b>right click</b> me now;</div>
-                            <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">2) select "<b>Copy image address</b>";</div>
-                            <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">3) <b>paste</b> it here: <input type="text" style="width:480px;background-color:#f3f3f3;font-style:italic;" placeholder="or just drag and drop me here"></div>                            
-                            <br>
-                        </hgroup>
-                        <img style="float:right;padding-left:30px;padding-bottom:60px;width:200px;position:relative;top:25px;filter:grayscale(25%);" src="https://ps.w.org/featured-image-from-url/assets/icon-256x256.png" title="Right click me!">
-                        <hgroup style="float:right;opacity:0.75;" class="speech-bubble2">
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px;padding-top:10px;">Since now you have my address (also known as URL), how about making me famous?</div>
-                            <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px">You just need to create a post and use me as the Featured Image:</div>
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:25px">You just need to create a post and use me as the Featured Image:</div>
                             <br>                            
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">1) <b>add a new post</b>;</div>
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">1) <b>add a new post</b>;</div>
                             <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">2) find the "<b>Featured Image from URL</b>" box;</div>
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">2) find the <span class="dashicons dashicons-camera" style="font-size:18px;padding-right:3px"></span><b>Featured Image from URL</b> box;</div>
                             <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:40px">3) <b>paste</b> my address into "<b>Image URL</b>" field.</div>
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:40px">3) <b>paste</b> my address into "<b>Image URL</b>" field.</div>
                             <br>
-                            <div style="font-style:italic;font-size:14px;color:white;padding-left:25px">And don't worry about storage. I will remain EXTERNAL. I WON'T be uploaded to your media library.</div>
+                            <div style="font-style:italic;font-size:13px;color:white;padding-left:25px">And don't worry about storage. I will remain EXTERNAL. I WON'T be uploaded to your media library.</div>
                             <br>
                         </hgroup>
                     </div>
@@ -2653,6 +2703,103 @@
                     <h2>Troubleshooting</h2>
                     <div class="greybox">
                         From September 2019, always you guys report an issue between FIFU and another plugin or theme, the solution will be posted here.
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-01-19</td>
+                            <td style="border-bottom:none"><h3>WP All Import</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Importing Variable Products to WooCommerce:<br>
+                        1) you should choose one of these options during the import:<br>
+                        - "All my variable products have SKUs or some other unique identifier. Each variation is linked to its parent with its parent's SKU or other unique identifier.";<br>
+                        - "All variations for a particular product have the same title as the parent product."<br>
+                        Options where the parent is created automatically won't work well.
+                    </div>                                        
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Avoiding updates on unchanged image data:<br>
+                        1) access "WP All Import > Import Settings";<br>
+                        2) select "Update existing posts/products with changed data in your file > Choose which data to update";<br>
+                        3) uncheck "Images" (otherwise WP All Import will delete the image metadata and FIFU will need to create that again);<br>
+                        4) select "Custom Fields > Update only these Custom Fields, leave the rest alone".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-01-18</td>
+                            <td style="border-bottom:none"><h3>Ajax Load More</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Loading external featured videos:<br>
+                        1) check "Ajax Load More > Settings > Disable CSS".
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-01-17</td>
+                            <td style="border-bottom:none"><h3>Multisite Post Duplicator</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Duplicating post and external featured image:<br>
+                        1) enable "FIFU Settings > Admin Area > Schedule Metadata Generation";<br>
+                        2) access "Multisite Post Duplicator Settings";<br>
+                        3) disable "Copy featured image when duplicating";<br>
+                        4) disable "Copy post content images to destination media library";<br>
+                        5) set "_thumbnail_id" for "Post Meta to ignore".
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-01-11</td>
+                            <td style="border-bottom:none"><h3>Newspaper</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        The options "show top" and "show bottom", related to "Same Height > Object Fit > Cover", are not working:<br>
+                        1) enable "FIFU settings > Internal URL Parameters".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2019-12-22</td>
+                            <td style="border-bottom:none"><h3>Jetpack</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Featured Images missing after enabling Lazy Load:<br>
+                        1) disable "FIFU settings > Performance > Lazy Load" or "Jetpack settings > Performance > Enable Lazy Loading for images". You can't have both.<br>
+                    </div>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Showing external images on "Related Posts":<br>
+                        x) There is no local solution. Jetpack Related Posts documentation informs: "we do all the analysis, processing, and serving from our cloud". It means Jetpack would need to adapt its web service to work with the images provided by FIFU. So you may contact Jetpack support or install an alternative plugin for Related Posts, like <a href="https://wordpress.org/plugins/related-posts-thumbnails/">this</a>.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2019-12-21</td>
+                            <td style="border-bottom:none"><h3> thePLRstore | Bimber | Techwise</h3></td>
+                            <td style="border-bottom:none">themes</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Avoiding external featured images overlay:<br>
+                        1) enable "FIFU settings > Featured Image > Save Image Dimensions > save and use image dimensions";<br>
+                        2) enable "save the image dimensions of all external featured images now" (it will be automatically disabled when finished).<br>
                     </div>
                 </div>
                 <div class="box">
@@ -2677,20 +2824,6 @@
                 <div class="box">
                     <table>
                         <tr>
-                            <td style="border-bottom:none">2019-12-07</td>
-                            <td style="border-bottom:none"><h3>Bimber | Techwise</h3></td>
-                            <td style="border-bottom:none">themes</td>
-                        </tr>
-                    </table>                                            
-                    <div class="greybox" style="position: relative; top: -10px">
-                        Avoiding external featured images overlay:<br>
-                        1) enable "FIFU settings > Featured Image > Save Image Dimensions > save and use image dimensions";<br>
-                        2) enable "save the image dimensions of all external featured images now" (it will be automatically disabled when finished).<br>
-                    </div>
-                </div>
-                <div class="box">
-                    <table>
-                        <tr>
                             <td style="border-bottom:none">2019-12-01</td>
                             <td style="border-bottom:none"><h3>jQuery</h3></td>
                             <td style="border-bottom:none">JavaScript library</td>
@@ -2699,35 +2832,6 @@
                     <div class="greybox" style="position: relative; top: -10px">
                         Solving "Uncaught ReferenceError: jQuery is not defined"<br>
                         1) enable "FIFU settings > Admin Area > jQuery".<br>
-                    </div>
-                </div>
-                <div class="box">
-                    <table>
-                        <tr>
-                            <td style="border-bottom:none">2019-11-21</td>
-                            <td style="border-bottom:none"><h3>Jetpack</h3></td>
-                            <td style="border-bottom:none">plugin</td>
-                        </tr>
-                    </table>                                            
-                    <div class="greybox" style="position: relative; top: -10px">
-                        Showing external images on "Related Posts":<br>
-                        x) There is no local solution. Jetpack Related Posts documentation informs: "we do all the analysis, processing, and serving from our cloud". It means Jetpack would need to adapt its web service to work with the images provided by FIFU. So you may contact Jetpack support or install an alternative plugin for Related Posts, like <a href="https://wordpress.org/plugins/related-posts-thumbnails/">this</a>.<br>
-                    </div>
-                </div>
-                <div class="box">
-                    <table>
-                        <tr>
-                            <td style="border-bottom:none">2019-11-17</td>
-                            <td style="border-bottom:none"><h3>WP All Import</h3></td>
-                            <td style="border-bottom:none">plugin</td>
-                        </tr>
-                    </table>                                            
-                    <div class="greybox" style="position: relative; top: -10px">
-                        Avoiding updates on unchanged image data:<br>
-                        1) access "WP All Import > Import Settings";<br>
-                        2) select "Update existing posts/products with changed data in your file > Choose which data to update";<br>
-                        3) uncheck "Images" (otherwise WP All Import will delete the image metadata and FIFU will need to create that again);<br>
-                        4) select "Custom Fields > Update only these Custom Fields, leave the rest alone".<br>
                     </div>
                 </div>
                 <div class="box">
@@ -2755,8 +2859,8 @@
                     <div class="greybox" style="position: relative; top: -10px">
                         Replacing http URLs by https:<br>
                         1) run this SQL command: UPDATE wp_postmeta SET meta_value = REPLACE(meta_value, 'http://', 'https://') WHERE meta_key = 'fifu_image_url' AND  meta_value LIKE '%site.com%';<br>
-                        2) enable "FIFU settings > Metadata > Clean metadata" toggle (it will be automatically disabled after a few minutes);<br>
-                        3) enable "Fake Internal Featured Image".<br>
+                        2) enable "FIFU settings > Metadata > Clean Metadata" toggle (it will be automatically disabled after a few minutes);<br>
+                        3) enable "Image Metadata".<br>
                         * replace site.com by the domain of the URLs you want to update
                     </div>
                 </div>  
@@ -2803,8 +2907,8 @@
                         0) make a backup (you might want to revert the changes later);<br>
                         1) deactivate Nelio;<br>
                         2) run this SQL command: INSERT INTO wp_postmeta (post_id, meta_key, meta_value) SELECT * FROM (SELECT post_id, 'fifu_image_url' AS meta_key, SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, '"', 2), '"', -1) AS meta_value FROM wp_postmeta WHERE meta_key = '_nelioefi_first_image') pm WHERE meta_value <> '';<br>
-                        3) enable "FIFU settings > Metadata > Clean metadata" toggle (it will be automatically disabled after a few minutes);<br>
-                        4) enable "Fake Internal Featured Image".<br>
+                        3) enable "FIFU settings > Metadata > Clean Metadata" toggle (it will be automatically disabled after a few minutes);<br>
+                        4) enable "Image Metadata".<br>
                     </div>
                 </div>
                 <div class="box">
@@ -2882,4 +2986,5 @@
         </ul>
     </div>
 </div>
+
 

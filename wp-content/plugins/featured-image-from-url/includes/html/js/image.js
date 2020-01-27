@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
     // lazy load
-    if ('<?php echo fifu_is_on("fifu_lazy"); ?>') {
+    if (fifuImageVars.fifu_lazy == 'on') {
         jQuery.extend(jQuery.lazyLoadXT, {
             srcAttr: 'data-src',
             visibleOnly: false,
@@ -19,7 +19,7 @@ jQuery(document).ready(function ($) {
 });
 
 jQuery(window).on('ajaxComplete', function () {
-    if ('<?php echo fifu_is_on("fifu_lazy"); ?>') {
+    if (fifuImageVars.fifu_lazy == 'on') {
         setTimeout(function () {
             jQuery(window).lazyLoadXT();
         }, 300);
@@ -50,7 +50,7 @@ function resizeImg($) {
 }
 
 function disableClick($) {
-    if ('<?php echo !fifu_woo_lbox(); ?>') {
+    if (fifuImageVars.fifu_woo_lbox == 'off') {
         jQuery('.woocommerce-product-gallery__image').each(function (index) {
             jQuery(this).children().click(function () {
                 return false;

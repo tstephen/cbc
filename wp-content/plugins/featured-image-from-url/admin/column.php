@@ -13,7 +13,7 @@ function fifu_column() {
 }
 
 function fifu_column_head($default) {
-    $default['featured_image'] = 'FIFU';
+    $default['featured_image'] = '<span class="dashicons dashicons-camera" style="font-size:20px" title="Featured Image from URL"></span> FIFU';
     return $default;
 }
 

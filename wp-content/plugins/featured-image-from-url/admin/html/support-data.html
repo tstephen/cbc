@@ -1,11 +1,11 @@
 <div class="wrap">
 
     <div class="header-box" style="background-color:#23282d">
-        <h1 style="color:white"><img src="<?php echo plugins_url()?>/featured-image-from-url/admin/images/favicon.png" alt=""> featured image from url 2</h1>
+        <h1 style="color:white"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> featured image from url 2</h1>
     </div>
 
     <div id="tabs-top">
-        <textarea id="bar" style="width:1020px;height:800px;resize:none;background-color:white;" readonly>
+<textarea id="bar" style="width:1020px;height:800px;resize:none;background-color:white;" readonly>
 Version:<?php echo fifu_version() ?>;
 Site:<?php echo get_home_url() ?>;
 Theme:<?php echo wp_get_theme() ?><?php echo fifu_woo_theme() ? ' (WooCommerce)' : '' ?>;
@@ -67,6 +67,15 @@ fifu_social:<?php echo $enable_social ?>;
 fifu_spinner_db:<?php echo $max_db ?>;
 fifu_wc_lbox:<?php echo $enable_wc_lbox ?>;
 fifu_wc_zoom:<?php echo $enable_wc_zoom ?>;
-        </textarea>
+REST Routes:
+- <?php echo get_rest_url() ?>:PHP;
+</textarea>
     </div>
 </div>
+
+<script>
+    jQuery(document).ready(function () {
+        var box = jQuery("#bar");
+        box.val(box.val() + '- ' + fifu_get_rest_url().substring(0, 100) + ':JS');
+    });
+</script>

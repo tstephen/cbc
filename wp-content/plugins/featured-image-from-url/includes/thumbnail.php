@@ -19,7 +19,19 @@ function fifu_add_js() {
         wp_enqueue_script('lazyload-srcset', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.srcset.min.js');
         wp_enqueue_style('lazyload-spinner', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.spinner.min.css');
     }
-    include 'html/script.html';
+
+    // css
+    wp_register_style('fifu-woo-css', plugins_url('/html/css/woo.css', __FILE__));
+    wp_enqueue_style('fifu-woo-css');
+    wp_add_inline_style('fifu-woo-css', 'img.zoomImg {display:' . fifu_woo_zoom() . ' !important}');
+
+    // js
+    wp_enqueue_script('fifu-image-js', plugins_url('/html/js/image.js', __FILE__));
+    wp_localize_script('fifu-image-js', 'fifuImageVars', [
+        'fifu_lazy' => fifu_is_on("fifu_lazy") ? 'on' : 'off',
+        'fifu_woo_lbox' => fifu_woo_lbox() ? 'on' : 'off',
+        'fifu_woo_zoom' => fifu_woo_zoom(),
+    ]);
 }
 
 function fifu_add_social_tags() {
@@ -34,7 +46,7 @@ function fifu_add_social_tags() {
 
 function fifu_add_jquery() {
     if (fifu_is_on('fifu_jquery'))
-        include 'html/jquery.html';
+        wp_enqueue_script('fifu-jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js');
 }
 
 function fifu_apply_css() {

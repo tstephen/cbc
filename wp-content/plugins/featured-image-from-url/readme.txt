@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, 9gag, wcfm, add-on
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 2.7.5
+Stable tag: 2.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,7 +62,7 @@ Features:
 
 * replace broken URLs by a default one (**premium feature**);
 
-**<a href="https://featuredimagefromurl.com/">Official Site</a>**	
+**<a href="https://fifu.app/">Official Site</a>**	
 **<a href="https://blog.featuredimagefromurl.com/">Live Preview (Blog)</a>**
 **<a href="https://shop.featuredimagefromurl.com/">Live Preview (Shop)</a>**
 
@@ -158,6 +158,36 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 2.8.6 =
+* Bug fix: conflict with Multisite Post Duplicator plugin; Improvement: public front-end script should run a little faster now; Improvement: plugin version added to CSS to avoid cache style issues.
+
+= 2.8.5 =
+* Bug fix: conflict betweem internal and external featured image fields on post editor.
+
+= 2.8.4 =
+* New: Admin Area > Internal URL Parameters.
+
+= 2.8.3 =
+* New feature: Featured Image > Same Height > Object Fit > Cover (center/bottom/top), Contain and Fill; New feature: Video > Video Thumbnail > on page.
+
+= 2.8.2 =
+* Improvement: integration between the new WooCommerce variation image gallery and REST API; Deprecated: the old variation image gallery provided by FIFU; Bug Fix: Default External Featured Image wasn't working with WP All Import.
+
+= 2.8.1 =
+* New: WooCommerce product variations have Image Gallery from URL fields now, used with WooCommerce Additional Variation Images plugin (by WooCommerce).
+
+= 2.8.0 =
+* Improvement: WooCommerce product variations have a Featured Image from URL field now; icons added to FIFU fields.
+
+= 2.7.9 =
+* Improvement: integration with Aliplugin; New: campaign to raise funds for new features, Premium version integrated with new payment services and new site.
+
+= 2.7.8 =
+* Bug fix: menu settings style issues in sites hosted in WordPress.com; Improvement: better compatibility and security for rest routes, used in some menu settings; Bug fix: conflict with internal images that have the path files.wordpress.com.
+
+= 2.7.7 =
+* Bug fix: Clean Metadata, Fake Internal Featured Image, Default External Featured Image and Save Image Dimensions were not being called from menu settings in some sites due wrong rest routes.
 
 = 2.7.6 =
 * New: Getting Started; New FREE Feature: Admin Area > Database; Bug Fix: WooCommerce zoom; Deprecated: Fake Internal Featured Image (1 attachment for all); Improvement: faster menu settings.
@@ -656,6 +686,36 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 2.8.6 =
+* Bug fix: conflict with Multisite Post Duplicator plugin; Improvement: public front-end script should run a little faster now; Improvement: plugin version added to CSS to avoid cache style issues.
+
+= 2.8.5 =
+* Bug fix: conflict betweem internal and external featured image fields on post editor.
+
+= 2.8.4 =
+* New: Admin Area > Internal URL Parameters.
+
+= 2.8.3 =
+* New feature: Featured Image > Same Height > Object Fit > Cover (center/bottom/top), Contain and Fill; New feature: Video > Video Thumbnail > on page.
+
+= 2.8.2 =
+* Improvement: integration between the new WooCommerce variation image gallery and REST API; Deprecated: the old variation image gallery provided by FIFU; Bug Fix: Default External Featured Image wasn't working with WP All Import.
+
+= 2.8.1 =
+* New: WooCommerce product variations have Image Gallery from URL fields now, used with WooCommerce Additional Variation Images plugin (by WooCommerce).
+
+= 2.8.0 =
+* Improvement: WooCommerce product variations have a Featured Image from URL field now; icons added to FIFU fields.
+
+= 2.7.9 =
+* Improvement: integration with Aliplugin; New: campaign to raise funds for new features, Premium version integrated with new payment services and new site.
+
+= 2.7.8 =
+* Bug fix: menu settings style issues in sites hosted in WordPress.com; Improvement: better compatibility and security for rest routes, used in some menu settings; Bug fix: conflict with internal images that have the path files.wordpress.com.
+
+= 2.7.7 =
+* Bug fix: Clean Metadata, Fake Internal Featured Image, Default External Featured Image and Save Image Dimensions were not being called from menu settings in some sites due wrong rest routes.
 
 = 2.7.6 =
 * New: Getting Started; New FREE Feature: Admin Area > Database; Bug Fix: WooCommerce zoom; Deprecated: Fake Internal Featured Image (1 attachment for all); Improvement: faster menu settings.

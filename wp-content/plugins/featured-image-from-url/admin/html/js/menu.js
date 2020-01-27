@@ -3,12 +3,7 @@ jQuery(document).ready(function () {
     jQuery('.wrap').css('opacity', 1);
 });
 
-function homeUrl() {
-    var href = window.location.href;
-    var index = href.indexOf('/wp-admin');
-    var homeUrl = href.substring(0, index);
-    return homeUrl;
-}
+var restUrl = fifu_get_rest_url();
 
 function invert(id) {
     if (jQuery("#fifu_toggle_" + id).attr("class") == "toggleon") {
@@ -74,8 +69,11 @@ function fifu_default_js() {
     }
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/' + option + '/',
+        url: restUrl + 'featured-image-from-url/v2/' + option + '/',
         async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
         success: function (data) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -108,8 +106,11 @@ function fifu_fake_js() {
     }
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/' + option + '/',
+        url: restUrl + 'featured-image-from-url/v2/' + option + '/',
         async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
         success: function (data) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -134,8 +135,11 @@ function fifu_clean_js() {
 
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/data_clean_api/',
+        url: restUrl + 'featured-image-from-url/v2/data_clean_api/',
         async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
         success: function (data) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -165,8 +169,11 @@ function fifu_save_dimensions_all_js() {
 
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/save_dimensions_all_api/',
+        url: restUrl + 'featured-image-from-url/v2/save_dimensions_all_api/',
         async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
         success: function (data) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -193,8 +200,11 @@ function fifu_clean_dimensions_all_js() {
 
     jQuery.ajax({
         method: "POST",
-        url: homeUrl() + '?rest_route=/featured-image-from-url/v2/clean_dimensions_all_api/',
+        url: restUrl + 'featured-image-from-url/v2/clean_dimensions_all_api/',
         async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
         success: function (data) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
