@@ -5,6 +5,7 @@
 *.sql
 *.sql.gz
 ~*
+**/.DS_Store
 
 .htaccess
 .maintenance
