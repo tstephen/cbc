@@ -50,13 +50,17 @@
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="105"/>
       </node>
-      <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
+      <node CREATED="1551118522435" ID="directory-booklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory as booklet" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="175"/>
       </node>
-      <node CREATED="1562927318223" ID="mailshot" MODIFIED="1562927318223" POSITION="right" TEXT="Mailshot" LINK="/communications/mailshot/">
+      <node CREATED="1551118522435" ID="calendar" MODIFIED="1551118522435" POSITION="right" TEXT="Calendar" LINK="/calendar">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="245"/>
+      </node>
+      <node CREATED="1562927318223" ID="mailshot" MODIFIED="1562927318223" POSITION="right" TEXT="Mailshot" LINK="/communications/mailshot/">
+          <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="315"/>
       </node>
     </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
