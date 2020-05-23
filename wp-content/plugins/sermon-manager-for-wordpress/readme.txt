@@ -1,12 +1,12 @@
-# Sermon Manager #
-Contributors: wpforchurch, nikolam
-Donate link: http://wpforchurch.com/
-Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes
-Requires at least: 4.7.0
-Tested up to: 5.1
-Requires PHP: 5.3
-Stable tag: 2.15.15
-License: GPLv2
+# Sermon Manager #  
+Contributors: wpforchurch, jasonmwestbrook  
+Donate link: http://wpforchurch.com/  
+Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
+Requires at least: 4.7.0  
+Tested up to: 5.3.2  
+Requires PHP: 5.3  
+Stable tag: 2.15.17  
+License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Add audio and video sermons, manage speakers, series, and more to your church website.
@@ -122,11 +122,19 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+### 2.15.17 ###
+* Fix: Plyr audio download button 
+
+### 2.15.16 ###
+* Fix: "after" parameter not working in "[sermons]" shortcode
+* Fix: Improve [latest_series] shortcode
+* New: Add sidebar in dashboard compatibility for Pro version
+
 ### 2.15.15 ###
 * Fix: RSS feed not working
 
 ### 2.15.14 ###
-* New: Add compatibility for Pro theme
+* New: Add compatibility for "Pro" theme
 * New: Add a setting to change default sermon ordering (in "Display" tab)
 * Fix: Date filtering in shortcode
 * Fix: Improve [latest_series] shortcode

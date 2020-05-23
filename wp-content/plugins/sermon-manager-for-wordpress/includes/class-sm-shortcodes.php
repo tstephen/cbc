@@ -619,9 +619,12 @@ class SM_Shortcodes {
 	 * @return WP_Term|null|false Term if found, null if there are no terms, false if there is no term with image.
 	 */
 	public function get_latest_series_with_image() {
+		//Get Order from settings
 		$default_orderby = SermonManager::getOption( 'archive_orderby' );
 		$default_order   = SermonManager::getOption( 'archive_order' );
-
+		if(empty($default_order)){
+			$default_order = '';
+		}
 		$query_args = array(
 			'taxonomy'   => 'wpfc_sermon_series',
 			'hide_empty' => false,
@@ -962,7 +965,7 @@ class SM_Shortcodes {
 				$query_args['meta_query'][] = array(
 					'key'     => 'sermon_date',
 					'value'   => $after,
-					'compare' => '=>',
+					'compare' => '>=',
 				);
 			}
 		}
