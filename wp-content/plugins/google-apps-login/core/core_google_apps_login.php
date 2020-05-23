@@ -75,7 +75,7 @@ class core_google_apps_login {
 		
 		$scopes = array_unique(apply_filters('gal_gather_scopes', $this->get_default_scopes()));
 		$client->setScopes($scopes);
-		$client->setApprovalPrompt($options['ga_force_permissions'] ? 'force' : 'auto');
+		$client->setApprovalPrompt($options['ga_force_permissions'] ? 'consent' : '');
 		
 		$oauthservice = null;
 		if ($includeoauth) {

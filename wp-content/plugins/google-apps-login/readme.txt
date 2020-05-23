@@ -2,8 +2,8 @@
 Contributors: levertechadmin
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 4.0
-Tested up to: 5.3.1
-Stable tag: 3.3
+Tested up to: 5.4
+Stable tag: 3.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -196,6 +196,17 @@ Personalized instructions to configure the plugin by registering your site with 
 the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 3.4.1 =
+
+Bug fixing for PHP Notice: Undefined index: approval_prompt.
+Bug Fixing for PHP Deprecated: Array and string offset access syntax with curly braces is deprecated.
+
+= 3.4 =
+
+Bug fixing for Invalid parameter value for approval_prompt: 'auto'.
+Updated compatibility with the WordPress 5.4 release.
+
 
 = 3.3 =
 
