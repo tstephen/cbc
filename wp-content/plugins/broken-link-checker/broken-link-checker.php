@@ -1,12 +1,12 @@
 <?php
 
-/*
+/**
  * Plugin Name: Broken Link Checker
  * Plugin URI:  https://wordpress.org/plugins/broken-link-checker/
  * Description: Checks your blog for broken links and missing images and notifies you on the dashboard if any are found.
- * Version:     1.11.10
- * Author:      ManageWP
- * Author URI:  https://managewp.com
+ * Version:     1.11.12
+ * Author:      WPMU DEV
+ * Author URI:  https://premium.wpmudev.org/
  * Text Domain: broken-link-checker
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -28,13 +28,13 @@ along with Broken Link Checker. If not, see https://www.gnu.org/licenses/gpl-2.0
 */
 
 //Path to this file
-if ( !defined('BLC_PLUGIN_FILE') ){
-	define('BLC_PLUGIN_FILE', __FILE__);
+if ( ! defined( 'BLC_PLUGIN_FILE' ) ) {
+	define( 'BLC_PLUGIN_FILE', __FILE__ );
 }
 
 //Path to the plugin's directory
-if ( !defined('BLC_DIRECTORY') ){
-	define('BLC_DIRECTORY', dirname(__FILE__));
+if ( ! defined( 'BLC_DIRECTORY' ) ) {
+	define( 'BLC_DIRECTORY', dirname( __FILE__ ) );
 }
 
 //Load the actual plugin
