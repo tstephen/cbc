@@ -29,13 +29,13 @@ function bst_widgets_init() {
   ) );
 
   /*
-   * Sub-Footer (four widget areas)
+   * Sub-Footer (one widget area)
    */
   register_sidebar( array(
     'name'            => __( 'Sub-Footer', 'bst' ),
     'id'              => 'sub-footer-widget-area',
     'description'     => __( 'The sub-footer widget area', 'bst' ),
-    'before_widget'   => '<div class="%1$s %2$s col-sm-3">',
+    'before_widget'   => '<div class="%1$s %2$s">',
     'after_widget'    => '</div>',
     'before_title'    => '<h4>',
     'after_title'     => '</h4>',

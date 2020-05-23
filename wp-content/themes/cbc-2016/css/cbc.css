@@ -40,6 +40,9 @@ Main content
 #content em, #content .text-emphasis {
   font-style: italic;
 }
+#content .lead {
+  margin: 20px 0;
+}
 
 /*
 Sidebar
@@ -143,18 +146,39 @@ Site footer
 .site-footer li {
   margin: 10px 0
 }
+.site-footer .widget_nav_menu,
+.site-footer .widget_links,
+.site-footer p,
 .site-sub-footer p {
-  text-align: center
+  text-align: center !important
 }
-
-.site-footer p {
-  text-align: center
+.site-footer .widget_nav_menu,
+.site-footer .widget_links {
+  line-height: 1rem;
 }
 
 /*
  * Overrides
  */
 #pre-navbar {
+  display:none;
+}
+#menu-item-7361>a {
+  display: none !important;
+}
+@media (max-width: 768px) {
+/* login menu when collapsed */
+#menu-item-7361>a {
+  display: block;
+}
+}
+@media (min-width: 768px) {
+/* login menu when collapsed */
+#menu-item-7361>a {
+  display: none !important;
+}
+#pre-navbar {
+  display:block;
   width:100%;
 }
 #pre-navbar h1 {
@@ -162,6 +186,7 @@ Site footer
   color:#0066bf;
   text-align:center;
   text-transform: uppercase;
+}
 }
 .navbar {
   margin-bottom: 0px;
@@ -266,13 +291,6 @@ img.pull-right {
   }
 }
 
-footer .widget_nav_menu h4 {
-  border-bottom: none;
-  color: #333;
-  font-size: 16px;
-  font-weight: 700;
-  margin-top: 0;
-}
 footer img.logo {
   padding: 0 5em;
 }
@@ -307,8 +325,6 @@ footer text-3 {
 }
 .login {
   float: right;
-  margin-top: -25px;
-  margin-right: 5px;
 }
 .logout {
   margin-top: -55px;
@@ -330,7 +346,13 @@ footer text-3 {
   min-width: 115px;
   padding: 11px 20px !important;
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) {
+.login {
+  margin-top: -25px;
+  margin-right: 5px;
+}
+.logout a.logout {
+}
 }
 /**************************/
   LIST CATEGORY OVERRIDES

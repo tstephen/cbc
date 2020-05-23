@@ -36,7 +36,7 @@
 </div>
 
 <nav class="navbar navbar-default navbar-static-top">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-header visible-xs">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="sr-only">Toggle navigation</span>
@@ -79,4 +79,4 @@ See also the accompanying CSS example in css/bst.css .
 </div>
 -->
 
-<div class="container-fluid">
+<div class="container">

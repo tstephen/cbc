@@ -1,8 +1,6 @@
 <?php get_header(); ?>
 </div>
 
-<?php echo do_shortcode('[cycloneslider id="home-slider"]'); ?>
-
 <?php if ( has_post_thumbnail() ) { ?>
   <div class="featured-image">
     <?php the_post_thumbnail('full');?>
@@ -19,7 +17,5 @@
     
   </div><!-- /.row -->
 </div><!-- /.container -->
-
-<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('sub-footer-widget-area') ) : endif; ?>
 
 <?php get_footer(); ?>

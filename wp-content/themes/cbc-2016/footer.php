@@ -18,7 +18,7 @@
       </div>
       <div class="row" style="padding-top:1em">
         <div class="col-lg-12 site-sub-footer">
-          <p>Registered charity number 1148492. &copy; <?php echo date('Y'); ?> <a href="<?php echo home_url('/'); ?>"><?php bloginfo('name'); ?></a></p>
+<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('sub-footer-widget-area') ) : endif; ?>
         </div>
       </div>
     </footer>
