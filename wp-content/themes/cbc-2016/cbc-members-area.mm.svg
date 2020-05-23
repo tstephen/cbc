@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/wp-content/themes/cbc-2016/mm2svg.xslt" alternate="no" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/wp-content/themes/cbc-2016/mm2svg.xslt" alternate="no" ?>
 <map id="N65536" name="" version="1.0.1">
   <node CREATED="1532368068852" ID="5b35e6a230806e9747b7dbc2" MODIFIED="1532368078548" TEXT="CBC" IMG="https://coggle-images.s3.amazonaws.com/5aa10799d309b4f0035189b3-9f8603ea-6ecc-4e46-9946-ae733593da3d.png 150x75" SHAPE="ellipse">
     <edge COLOR="#b4b4b4"/>
@@ -25,19 +26,47 @@
     </node>
     <node CREATED="1532368068852" ID="0dedfcd4cfef131cd0b255c2e38cfc36" MODIFIED="1576843051087" POSITION="right" TEXT="Ministries">
       <edge COLOR="#ebd95f"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="50" y="-150"/>
-      <node CREATED="1532368068853" ID="ae0db48a4b7ab8ea14e5ee8b661c0afa" MODIFIED="1576843051087" TEXT="Mission">
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-30" y="-160"/>
+      <node CREATED="1590233648192" ID="teaching-ministry" MODIFIED="1590233648192" TEXT="Teaching" LINK="/ministries/sermon-intro/">
         <edge COLOR="#edda69"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="300" y="-150"/>
-        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1576843051087" TEXT="Policy" LINK="https://docs.google.com/document/d/1jieL-PTLG-mFLRtApeedF7opI7Gj63c_UPHU31l0md8/edit?usp=sharing">
-          <edge COLOR="#eed862"/>
-          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="550" y="-150"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-150" y="-220"/>
+        <node CREATED="1590235234820" ID="growth-resources" MODIFIED="1590235234820" POSITION="right" TEXT="Growing as a Christian" LINK="/articles/pastor-eddie/how-do-i-grow-as-a-christian/">
+          <edge COLOR="#edda69"/>
+          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-200" y="-290"/>
         </node>
       </node>
+      <node CREATED="1590233648192" ID="youth-ministry" MODIFIED="1590233648192" TEXT="Youth" LINK="/ministries/youth/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="100" y="-280"/>
+      </node>
+      <node CREATED="1590233648192" ID="childrens-ministry" MODIFIED="1590233648192" TEXT="Children" LINK="/children-2/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="200" y="-220"/>
+      </node>
+      <node CREATED="1532368068853" ID="ae0db48a4b7ab8ea14e5ee8b661c0afa" MODIFIED="1576843051087" TEXT="Mission" LINK="/mission/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="260" y="-160"/>
+        <node CREATED="1532368068853" FOLDED="true" ID="9b506674a06f5045fe4f1c6f088dce82" MODIFIED="1576843051087" TEXT="Policy" LINK="https://docs.google.com/document/d/1jieL-PTLG-mFLRtApeedF7opI7Gj63c_UPHU31l0md8/edit?usp=sharing">
+          <edge COLOR="#eed862"/>
+          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-160"/>
+        </node>
+      </node>
+      <node CREATED="1590233648192" ID="mens-ministry" MODIFIED="1590233648192" TEXT="Men">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="200" y="-100"/>
+      </node>
+      <node CREATED="1590233648192" ID="women-ministry" MODIFIED="1590233648192" TEXT="Women" LINK="https://cbcgraceplace.wordpress.com/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="175" y="-50"/>
+      </node>
+      <node CREATED="1590233648192" ID="lifegroups-ministry" MODIFIED="1590233648192" TEXT="LIFE groups" LINK="/adults/life-groups/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="150" y="0"/>
+      </node>
     </node>
-    <node CREATED="1576843051087" ID="ID_1420441482" MODIFIED="1576843051087" POSITION="right" TEXT="Operations" LINK="https://corshambaptists.org/operations/">
+    <node CREATED="1576843051087" ID="ID_1420441482" MODIFIED="1576843051087" POSITION="left" TEXT="Operations" LINK="/operations/">
       <edge COLOR="#666"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="-30"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-250" y="10"/>
     </node>
     <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1538744826983" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
       <edge COLOR="#93c47d"/>
@@ -60,7 +89,11 @@
       </node>
       <node CREATED="1562927318223" ID="mailshot" MODIFIED="1562927318223" POSITION="right" TEXT="Mailshot" LINK="/communications/mailshot/">
           <edge COLOR="#e69138"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="315"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="450" y="315"/>
+      </node>
+      <node CREATED="1590235234820" ID="communications" MODIFIED="1590235234820" POSITION="right" TEXT="Communications" LINK="/communications/">
+          <edge COLOR="#e69138"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="370" y="375"/>
       </node>
     </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
@@ -70,11 +103,11 @@
         <edge COLOR="#62d4bf"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="100"/>
       </node>
-      <node CREATED="1532368068853" ID="3e610cf09d72821881c0c0b313a1f14d" MODIFIED="1532368068853" TEXT="Privacy Notice" LINK="https://corshambaptists.org/privacy-notice/">
+      <node CREATED="1532368068853" ID="3e610cf09d72821881c0c0b313a1f14d" MODIFIED="1532368068853" TEXT="Privacy Notice" LINK="/privacy-notice/">
         <edge COLOR="#57d3ba"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="160"/>
       </node>
-      <node CREATED="1532368068854" ID="5faa65bd4d65cb81d47b3d57d7f378c7" MODIFIED="1532368068854" TEXT="Update consents" LINK="https://corshambaptists.org/privacy-notice/update-your-preferences/">
+      <node CREATED="1532368068854" ID="5faa65bd4d65cb81d47b3d57d7f378c7" MODIFIED="1532368068854" TEXT="Update consents" LINK="/privacy-notice/update-your-preferences/">
         <edge COLOR="#68d6c1"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="220"/>
       </node>
@@ -94,7 +127,7 @@
         <edge COLOR="#e29eeb"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="290"/>
       </node>
-      <node CREATED="1575905400000" ID="finance-standing-order" MODIFIED="1575905400000" TEXT="Standing Order form" LINK="https://corshambaptists.org/wp-content/uploads/2019/11/Standing-Order-Authority.pdf">
+      <node CREATED="1575905400000" ID="finance-standing-order" MODIFIED="1575905400000" TEXT="Standing Order form" LINK="/wp-content/uploads/2019/11/Standing-Order-Authority.pdf">
         <edge COLOR="#e29eeb"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="350"/>
       </node>
