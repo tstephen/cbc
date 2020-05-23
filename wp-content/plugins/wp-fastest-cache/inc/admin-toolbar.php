@@ -1,6 +1,10 @@
 <?php
 	class WpFastestCacheAdminToolbar{
-		public function __construct(){}
+		private $is_multi = false;
+
+		public function __construct($is_multi){
+			$this->is_multi = $is_multi;
+		}
 
 		public function add(){
 			if(is_admin()){
@@ -27,7 +31,10 @@
 
 		public function print_my_inline_script() {
 			?>
-			<script type="text/javascript">var wpfc_ajaxurl = "<?php echo admin_url( 'admin-ajax.php' );?>";</script>
+			<script type="text/javascript">
+				var wpfc_ajaxurl = "<?php echo admin_url( 'admin-ajax.php' ); ?>";
+				var wpfc_nonce = "<?php echo wp_create_nonce("wpfc"); ?>";
+			</script>
 			<?php
 		}
 
@@ -59,6 +66,15 @@
 				'parent'=> 'wpfc-toolbar-parent',
 				'meta' => array("class" => "wpfc-toolbar-child")
 			));
+
+			if($this->is_multi){
+				$wp_admin_bar->add_menu( array(
+					'id'    => 'wpfc-toolbar-parent-clear-cache-of-allsites',
+					'title' => __("Clear Cache of All Sites", "wp-fastest-cache"),
+					'parent'=> 'wpfc-toolbar-parent',
+					'meta' => array("class" => "wpfc-toolbar-child")
+				));
+			}
 		}
 
 		public function wpfc_tweaked_toolbar_on_admin_panel() {
@@ -82,6 +98,15 @@
 				'parent'=> 'wpfc-toolbar-parent',
 				'meta' => array("class" => "wpfc-toolbar-child")
 			));
+
+			if($this->is_multi){
+				$wp_admin_bar->add_menu( array(
+					'id'    => 'wpfc-toolbar-parent-clear-cache-of-allsites',
+					'title' => __("Clear Cache of All Sites", "wp-fastest-cache"),
+					'parent'=> 'wpfc-toolbar-parent',
+					'meta' => array("class" => "wpfc-toolbar-child")
+				));
+			}
 		}
 	}
 ?>

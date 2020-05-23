@@ -10,6 +10,7 @@
 		public $preload_user_agent = false;
 		public $current_page_type = false;
 		public $current_page_content_type = false;
+		public $exclude_current_page_text = false;
 
 		public function __construct(){
 			//to fix: PHP Notice: Undefined index: HTTP_USER_AGENT
@@ -78,30 +79,32 @@
 		}
 
 		public function set_cache_file_path(){
+			$type = "all";
 
 			if($this->isMobile() && isset($this->options->wpFastestCacheMobile)){
 				if(class_exists("WpFcMobileCache") && isset($this->options->wpFastestCacheMobileTheme)){
-					$wpfc_mobile = new WpFcMobileCache();
-					$this->cacheFilePath = $this->getWpContentDir("/cache/wpfc-mobile-cache").$_SERVER["REQUEST_URI"];
-				}
-			}else{
-				if($this->isPluginActive('gtranslate/gtranslate.php')){
-					if(isset($_SERVER["HTTP_X_GT_LANG"])){
-						$this->cacheFilePath = $this->getWpContentDir("/cache/all/").$_SERVER["HTTP_X_GT_LANG"].$_SERVER["REQUEST_URI"];
-					}else if(isset($_SERVER["REDIRECT_URL"]) && $_SERVER["REDIRECT_URL"] != "/index.php"){
-						$this->cacheFilePath = $this->getWpContentDir("/cache/all/").$_SERVER["REDIRECT_URL"];
-					}else if(isset($_SERVER["REQUEST_URI"])){
-						$this->cacheFilePath = $this->getWpContentDir("/cache/all/").$_SERVER["REQUEST_URI"];
-					}
-				}else{
-					$this->cacheFilePath = $this->getWpContentDir("/cache/all/").$_SERVER["REQUEST_URI"];
+					$type = "wpfc-mobile-cache";
 				}
 			}
 
+			if($this->isPluginActive('gtranslate/gtranslate.php')){
+				if(isset($_SERVER["HTTP_X_GT_LANG"])){
+					$this->cacheFilePath = $this->getWpContentDir("/cache/".$type."/").$_SERVER["HTTP_X_GT_LANG"].$_SERVER["REQUEST_URI"];
+				}else if(isset($_SERVER["REDIRECT_URL"]) && $_SERVER["REDIRECT_URL"] != "/index.php"){
+					$this->cacheFilePath = $this->getWpContentDir("/cache/".$type."/").$_SERVER["REDIRECT_URL"];
+				}else if(isset($_SERVER["REQUEST_URI"])){
+					$this->cacheFilePath = $this->getWpContentDir("/cache/".$type."/").$_SERVER["REQUEST_URI"];
+				}
+			}else{
+				$this->cacheFilePath = $this->getWpContentDir("/cache/".$type."/").$_SERVER["REQUEST_URI"];
+
+				// for /?s=
+				$this->cacheFilePath = preg_replace("/(\/\?s\=)/", "$1/", $this->cacheFilePath);
+			}
 
 
 			$this->cacheFilePath = $this->cacheFilePath ? rtrim($this->cacheFilePath, "/")."/" : "";
-			$this->cacheFilePath = str_replace("/cache/all//", "/cache/all/", $this->cacheFilePath);
+			$this->cacheFilePath = preg_replace("/\/cache\/(all|wpfc-mobile-cache)\/\//", "/cache/$1/", $this->cacheFilePath);
 
 
 			if(strlen($_SERVER["REQUEST_URI"]) > 1){ // for the sub-pages
@@ -136,6 +139,18 @@
 			// for security
 			if(preg_match("/\.{2,}/", $this->cacheFilePath)){
 				$this->cacheFilePath = false;
+			}
+
+			if($this->isMobile()){
+				if(isset($this->options->wpFastestCacheMobile)){
+					if(!class_exists("WpFcMobileCache")){
+						$this->cacheFilePath = false;
+					}else{
+						if(!isset($this->options->wpFastestCacheMobileTheme)){
+							$this->cacheFilePath = false;
+						}
+					}
+				}
 			}
 		}
 
@@ -291,6 +306,13 @@
 					return 0;
 				}
 
+				// to check permalink if it does not end with slash
+				if(isset($_SERVER['REQUEST_URI']) && preg_match("/[^\/]+\/$/", $_SERVER['REQUEST_URI'])){
+					if(!preg_match("/\/$/", get_option('permalink_structure'))){
+						return 0;
+					}
+				}
+
 				if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST"){
 					return 0;
 				}
@@ -304,10 +326,12 @@
 					//must be normal connection
 					if(!$this->isPluginActive('really-simple-ssl/rlrsssl-really-simple-ssl.php')){
 						if(!$this->isPluginActive('really-simple-ssl-pro/really-simple-ssl-pro.php')){
-							if(!$this->isPluginActive('ssl-insecure-content-fixer/ssl-insecure-content-fixer.php')){
-								if(!$this->isPluginActive('https-redirection/https-redirection.php')){
-									if(!$this->isPluginActive('better-wp-security/better-wp-security.php')){
-										return 0;
+							if(!$this->isPluginActive('really-simple-ssl-on-specific-pages/really-simple-ssl-on-specific-pages.php')){
+								if(!$this->isPluginActive('ssl-insecure-content-fixer/ssl-insecure-content-fixer.php')){
+									if(!$this->isPluginActive('https-redirection/https-redirection.php')){
+										if(!$this->isPluginActive('better-wp-security/better-wp-security.php')){
+											return 0;
+										}
 									}
 								}
 							}
@@ -321,13 +345,6 @@
 
 				if(!preg_match("/www\./i", get_option("home")) && preg_match("/www\./i", $_SERVER['HTTP_HOST'])){
 					return 0;
-				}
-
-				//different domain names may be used for different languages
-				if($this->isPluginActive('polylang/polylang.php')){
-					if(!preg_match("/".preg_quote(str_replace("www.", "", $_SERVER["HTTP_HOST"]), "/")."/i", get_option("home"))){
-						return 0;
-					}
 				}
 
 				if($this->exclude_page()){
@@ -413,7 +430,33 @@
 						add_action('get_footer', array($this, "detect_current_page_type"));
 						add_action('get_footer', array($this, "wp_print_scripts_action"));
 
+						// to exclude current page hook
+						add_action("wpfc_exclude_current_page", array($this, 'exclude_current_page'), 10, 0);
+
 						ob_start(array($this, "callback"));
+					}
+				}
+			}
+		}
+
+		public function exclude_current_page($some = true){
+			$via = debug_backtrace();
+
+			if(isset($via) && is_array($via)){
+				foreach ($via as $key => $value){
+					if($value["function"] == "wpfc_exclude_current_page"){
+						
+						if(defined('WPFC_DEBUG') && (WPFC_DEBUG === true)){
+							if(preg_match("/wp-content\/themes/", $value["file"])){
+								$this->exclude_current_page_text = "<!-- This page has been excluded by ".basename($value["file"])." of the Theme -->";
+							}else if(preg_match("/wp-content\/plugins/", $value["file"])){
+								$this->exclude_current_page_text = "<!-- This page has been excluded by ".basename($value["file"])." of ".preg_replace("/([^\/]+)\/.+/", "$1", plugin_basename($value["file"]))." -->";
+							}
+						}else{
+							$this->exclude_current_page_text = "<!-- This page has been excluded -->";
+						}
+
+						break;
 					}
 				}
 			}
@@ -629,7 +672,9 @@
 
 			$buffer = preg_replace('/<\!--WPFC_PAGE_TYPE_[a-z]+-->/i', '', $buffer);
 
-			if($this->is_json() && (!defined('WPFC_CACHE_JSON') || (defined('WPFC_CACHE_JSON') && WPFC_CACHE_JSON !== true))){
+			if($this->exclude_current_page_text){
+				return $buffer.$this->exclude_current_page_text;
+			}else if($this->is_json() && (!defined('WPFC_CACHE_JSON') || (defined('WPFC_CACHE_JSON') && WPFC_CACHE_JSON !== true))){
 				return $buffer;
 			}else if(preg_match("/Mediapartners-Google|Google\sWireless\sTranscoder/i", $_SERVER['HTTP_USER_AGENT'])){
 				return $buffer;
@@ -746,7 +791,7 @@
 					$content = str_replace("<!--WPFC_FOOTER_START-->", "", $content);
 
 
-					if(isset($this->options->wpFastestCacheLazyLoad)){
+					if(isset($this->options->wpFastestCacheLazyLoad) && class_exists("WpFastestCachePowerfulHtml")){
 						$execute_lazy_load = true;
 						
 						// to disable Lazy Load if the page is amp
@@ -785,6 +830,12 @@
 							$this->createFolder($this->cacheFilePath, $content);
 							do_action('wpfc_is_cacheable_action');
 						}else if($this->is_xml()){
+							if(preg_match("/<link><\/link>/", $buffer)){
+								if(preg_match("/\/feed$/", $_SERVER["REQUEST_URI"])){
+									return $buffer.time();
+								}
+							}
+
 							$this->createFolder($this->cacheFilePath, $buffer, "xml");
 							do_action('wpfc_is_cacheable_action');
 
@@ -845,7 +896,8 @@
 				$content = preg_replace_callback("/(jsFileLocation)\s*\:[\"\']([^\"\']+)[\"\']/i", array($this, 'cdn_replace_urls'), $content);
 
 				// <form data-product_variations="[{&quot;src&quot;:&quot;//domain.com\/img.jpg&quot;}]">
-				$content = preg_replace_callback("/data-product_variations\=[\"\'][^\"\']+[\"\']/i", array($this, 'cdn_replace_urls'), $content);
+				// <div data-siteorigin-parallax="{&quot;backgroundUrl&quot;:&quot;https:\/\/domain.com\/wp-content\/TOR.jpg&quot;,&quot;backgroundSize&quot;:[830,467],&quot;}" data-stretch-type="full">
+				$content = preg_replace_callback("/(data-product_variations|data-siteorigin-parallax)\=[\"\'][^\"\']+[\"\']/i", array($this, 'cdn_replace_urls'), $content);
 
 				// <object data="https://site.com/source.swf" type="application/x-shockwave-flash"></object>
 				$content = preg_replace_callback("/<object[^\>]+(data)\s{0,2}\=[\'\"]([^\'\"]+)[\'\"][^\>]+>/i", array($this, 'cdn_replace_urls'), $content);
@@ -1052,6 +1104,16 @@
 					return true;
 				}
 			}
+
+		    if(isset($_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER']) && "true" === $_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER']){
+		        $is_mobile = true;
+		    }
+
+
+		    if(isset($_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER']) && "true" === $_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER']){
+		        $is_mobile = true;
+		    }
+
 		}
 
 		public function isWpLogin($buffer){
