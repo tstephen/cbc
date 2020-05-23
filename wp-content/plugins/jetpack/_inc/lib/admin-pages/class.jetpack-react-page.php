@@ -1,4 +1,5 @@
 <?php
+use Automattic\Jetpack\Constants;
 use Automattic\Jetpack\Status;
 use Automattic\Jetpack\Partner;
 
@@ -43,6 +44,16 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		if ( Jetpack::is_active() && ! Jetpack_Options::get_option( 'first_admin_view', false ) ) {
 			Jetpack_Options::update_option( 'first_admin_view', true );
 			add_filter( 'jetpack_just_in_time_msgs', '__return_false' );
+		}
+	}
+
+	/**
+	 * Add Jetpack Setup sub-link for eligible users
+	 */
+	function jetpack_add_set_up_sub_nav_item() {
+		if ( $this->show_setup_wizard() ) {
+			global $submenu;
+			$submenu['jetpack'][] = array( __( 'Set up', 'jetpack' ), 'jetpack_admin_page', 'admin.php?page=jetpack#/setup' );
 		}
 	}
 
@@ -170,7 +181,8 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		}
 
 		// Add objects to be passed to the initial state of the app.
-		wp_localize_script( 'react-plugin', 'Initial_State', $this->get_initial_state() );
+		// Use wp_add_inline_script instead of wp_localize_script, see https://core.trac.wordpress.org/ticket/25280.
+		wp_add_inline_script( 'react-plugin', 'var Initial_State=JSON.parse(decodeURIComponent("' . rawurlencode( wp_json_encode( $this->get_initial_state() ) ) . '"));', 'before' );
 	}
 
 	function get_initial_state() {
@@ -222,15 +234,17 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 
 		$current_user_data = jetpack_current_user_data();
 
+		$status = new Status();
+
 		return array(
 			'WP_API_root'                 => esc_url_raw( rest_url() ),
 			'WP_API_nonce'                => wp_create_nonce( 'wp_rest' ),
 			'pluginBaseUrl'               => plugins_url( '', JETPACK__PLUGIN_FILE ),
 			'connectionStatus'            => array(
 				'isActive'           => Jetpack::is_active(),
-				'isStaging'          => Jetpack::is_staging_site(),
+				'isStaging'          => $status->is_staging_site(),
 				'devMode'            => array(
-					'isActive' => ( new Status() )->is_development_mode(),
+					'isActive' => $status->is_development_mode(),
 					'constant' => defined( 'JETPACK_DEV_DEBUG' ) && JETPACK_DEV_DEBUG,
 					'url'      => site_url() && false === strpos( site_url(), '.' ),
 					'filter'   => apply_filters( 'jetpack_development_mode', false ),
@@ -249,6 +263,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 			'getModules'                  => $modules,
 			'rawUrl'                      => Jetpack::build_raw_urls( get_home_url() ),
 			'adminUrl'                    => esc_url( admin_url() ),
+			'siteTitle'                   => (string) htmlspecialchars_decode( get_option( 'blogname' ), ENT_QUOTES ),
 			'stats'                       => array(
 				// data is populated asynchronously on page load.
 				'data'  => array(
@@ -281,6 +296,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 				'isAtomicSite'               => jetpack_is_atomic_site(),
 				'plan'                       => Jetpack_Plan::get(),
 				'showBackups'                => Jetpack::show_backups_ui(),
+				'showSetupWizard'            => $this->show_setup_wizard(),
 				'isMultisite'                => is_multisite(),
 			),
 			'themeData'                   => array(
@@ -296,6 +312,7 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 				'messageCode'      => Jetpack::state( 'message' ),
 				'errorCode'        => Jetpack::state( 'error' ),
 				'errorDescription' => Jetpack::state( 'error_description' ),
+				'messageContent'   => Jetpack::state( 'message_content' ),
 			),
 			'tracksUserData'              => Jetpack_Tracks_Client::get_connected_user_tracks_identity(),
 			'currentIp'                   => function_exists( 'jetpack_protect_get_ip' ) ? jetpack_protect_get_ip() : false,
@@ -325,6 +342,23 @@ class Jetpack_React_Page extends Jetpack_Admin_Page {
 		$core_api_endpoint = new Jetpack_Core_API_Data();
 		$settings = $core_api_endpoint->get_all_options();
 		return $settings->data;
+	}
+
+
+	/**
+	 * Returns a boolean for whether the Setup Wizard should be displayed or not.
+	 *
+	 * @return bool True if the Setup Wizard should be displayed, false otherwise.
+	 */
+	public function show_setup_wizard() {
+		/**
+		 * Determines if the Setup Wizard is displayed or not.
+		 *
+		 * @since 8.5.0
+		 *
+		 * @param array $jetpack_show_setup_wizard If true, the Setup Wizard will be displayed. Otherwise it will not display.
+		 */
+		return apply_filters( 'jetpack_show_setup_wizard', false ) && Jetpack::is_active();
 	}
 }
 
