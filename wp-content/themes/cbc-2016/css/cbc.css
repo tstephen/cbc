@@ -160,6 +160,15 @@ Site footer
 /*
  * Overrides
  */
+a:active,
+a:focus,
+a:hover {
+  background-color: #fd0;
+  box-shadow: 0 -2px #fd0,0 4px #0066c3;
+  color: #0066c3;
+  text-decoration: none;
+}
+
 #pre-navbar {
   display:none;
 }
