@@ -1,56 +1,101 @@
-<script><?php include 'js/meta-box.js' ?></script>
-<script><?php include 'js/convert-url.js' ?></script>
+<div id="fifu_meta_box">
 
-<!-- show alt field, image and link if URL was already provided -->
+    <!-- show alt field, image and link if URL was already provided -->
 
-<div style="<?php echo $show_ignore ?>">
-    <input type="checkbox" name="fifu_ignore_auto_set" id="fifu_ignore_auto_set">
-    <label for="fifu_ignore_auto_set">ignore URL from Post Content</label>
-    <br>
+    <div style="<?php echo $show_ignore ?>">
+        <input type="checkbox" name="fifu_ignore_auto_set" id="fifu_ignore_auto_set">
+        <label for="fifu_ignore_auto_set">ignore URL from Post Content</label>
+        <br>
+    </div>
+
+    <input id="fifu_input_alt" 
+           type="text" 
+           name="fifu_input_alt" 
+           placeholder="alt/title attribute (optional)" 
+           value="<?php echo $alt; ?>" 
+           style="<?php echo $width, $margin, $show_alt ?>" />
+
+    <div id="fifu_image"
+         style="<?php echo $height, $margin, $show_image ?> 
+         background:url('<?php echo $url; ?>') no-repeat center center; 
+         background-size:cover;
+         cursor:zoom-in" >
+    </div>
+
+    <table id="fifu_table_url" style="width:100%;position:relative;left:-5px">
+        <tr>
+            <td style="width:100%">
+                <input id="fifu_input_url" 
+                       type="text" 
+                       name="fifu_input_url" 
+                       placeholder="Image URL or Keywords"
+                       value="<?php echo $url; ?>"
+                       style="<?php echo $width, $margin ?>" />
+            </td>
+            <td>
+                <span id="fifu_help" 
+                      title=
+                      "Example of
+                      - image URL: http...
+                      - keywords: sea,sun
+
+                      To get a random image leave this field empty.
+
+                      It's possible to define a size for the auto-generated images:
+                      - Settings > Featured Image > Unsplash Image Sizes"
+                      class="dashicons dashicons-editor-help" 
+                      style="<?php echo $show_button . ';font-size:25px' ?>">
+                </span>
+
+                <span 
+                    id="fifu_next" 
+                    title="Next"
+                    class="dashicons dashicons-arrow-right-alt" 
+                    style="font-size:25px;cursor:pointer;display:none">
+                </span> 
+            </td>
+        </tr>
+    </table>
+
+    <center>
+        <a id="fifu_link" 
+           href="#" 
+           onClick="removeImage();" 
+           style="<?php echo $show_link ?>" >remove external featured image</a>
+    </center>
+
+    <input 
+        type="hidden" 
+        id="fifu_input_image_width" 
+        name="fifu_input_image_width" 
+        value="" >
+
+    <input 
+        type="hidden" 
+        id="fifu_input_image_height" 
+        name="fifu_input_image_height" 
+        value="" >
+
+    <input 
+        type="hidden" 
+        id="fifu_keywords" 
+        name="fifu_keywords" 
+        value="" >   
+
+    <!-- show preview button if URL was not provided yet -->
+
+    <a id="fifu_button" 
+       class="button" 
+       onClick="previewImage();" 
+       style="<?php echo $align, $margin, $show_button ?>" >Preview</a>
+
+    <div id="fifu_sirv_button" style="<?php echo 'float:left;padding-right:8px;' . $align, $margin, fifu_is_sirv_active() ? $show_button : 'display:none' ?>">
+        <div class="sirv-modal"></div>
+        <a id="sirv-add-featured-image"
+           data-input-anchor="#fifu_input_url"
+           href="#"
+           class="button sirv-add-image-modal-click"
+           title="Add image from Sirv">Choose Sirv image</a>
+    </div>
+
 </div>
-
-<input id="fifu_input_alt" 
-       type="text" 
-       name="fifu_input_alt" 
-       placeholder="alt/title attribute (optional)" 
-       value="<?php echo $alt; ?>" 
-       style="<?php echo $width, $margin, $show_alt ?>" />
-
-<div id="fifu_image"
-     style="<?php echo $height, $margin, $show_image ?> 
-     background:url('<?php echo $url; ?>') no-repeat center center; 
-     background-size:cover;" >
-</div>
-
-<input id="fifu_input_url" 
-       type="text" 
-       name="fifu_input_url" 
-       placeholder="Image URL" 
-       value="<?php echo $url; ?>"
-       style="<?php echo $width, $margin ?>" />
-
-<center>
-    <a id="fifu_link" 
-       href="#" 
-       onClick="removeImage();" 
-       style="<?php echo $show_link ?>" >remove external featured image</a>
-</center>
-
-<input 
-    type="hidden" 
-    id="fifu_input_image_width" 
-    name="fifu_input_image_width" 
-    value="" >
-
-<input 
-    type="hidden" 
-    id="fifu_input_image_height" 
-    name="fifu_input_image_height" 
-    value="" >
-
-<!-- show preview button if URL was not provided yet -->
-
-<a id="fifu_button" 
-   class="button" 
-   onClick="previewImage();" 
-   style="<?php echo $align, $margin, $show_button ?>" >Preview</a>

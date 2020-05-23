@@ -1,17 +1,17 @@
 <div class="wrap">
 
-    <div class="header-box" style="background-color:#23282d">
-        <h1 style="color:white"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> featured image from url 2</h1>
+    <div class="header-box">
+        <h1 style="color:white;padding-left:20px"><span class="dashicons dashicons-camera" style="font-size:30px"></span><span style="padding-left:20px">featured image from url 3</span></h1>
     </div>
 
-    <div id="tabs-top">
+    <div id="tabs-top" style="float:left">
 <textarea id="bar" style="width:1020px;height:800px;resize:none;background-color:white;" readonly>
-Version:<?php echo fifu_version() ?>;
+<?php echo fifu_version() ?>;
+WordPress:<?php bloginfo('version') ?>;
 Site:<?php echo get_home_url() ?>;
 Theme:<?php echo wp_get_theme() ?><?php echo fifu_woo_theme() ? ' (WooCommerce)' : '' ?>;
 PHP:<?php echo phpversion() ?>;
 WooCommerce:<?php echo class_exists('WooCommerce') ? WC()->version : '' ?>;
-WordPress:<?php echo get_bloginfo('version') ?>;
 Pages:<?php echo wp_count_posts('page')->publish ?>;
 Posts:<?php echo wp_count_posts('post')->publish ?>;
 Products:<?php echo class_exists('WooCommerce') ? wp_count_posts('product')->publish : null ?>;
@@ -25,6 +25,8 @@ fifu_auto_alt:<?php echo $enable_auto_alt ?>;
 fifu_class:<?php echo $enable_class ?>;
 fifu_clean_dimensions_all:<?php echo $enable_clean_dimensions_all ?>;
 fifu_column_height:<?php echo $column_height ?>;
+fifu_confirm_delete_all:<?php echo $enable_confirm_delete_all ?>;
+fifu_confirm_delete_all_time:<?php echo $enable_confirm_delete_all_time ?>;
 fifu_content:<?php echo $enable_content ?>;
 fifu_content_page:<?php echo $enable_content_page ?>;
 fifu_css:<?php echo $css_style ?>;
@@ -35,6 +37,7 @@ fifu_enable_default_url:<?php echo $enable_default_url ?>;
 fifu_fake:<?php echo $enable_fake ?>;
 fifu_get_first:<?php echo $enable_get_first ?>;
 fifu_grid_category:<?php echo $enable_grid_category ?>;
+fifu_hide_cpt:<?php echo $enable_hide_cpt ?>;
 fifu_hide_page:<?php echo $enable_hide_page ?>;
 fifu_hide_post:<?php echo $enable_hide_post ?>;
 fifu_image_height_arch:<?php echo $max_image_height_arch ?>;
@@ -60,13 +63,21 @@ fifu_original:<?php echo $enable_original ?>;
 fifu_ovw_first:<?php echo $enable_ovw_first ?>;
 fifu_pop_first:<?php echo $enable_pop_first ?>;
 fifu_query_strings:<?php echo $enable_query_strings ?>;
+fifu_run_delete_all:<?php echo $enable_run_delete_all ?>;
+fifu_run_delete_all_time:<?php echo $enable_run_delete_all_time ?>;
 fifu_save_dimensions:<?php echo $enable_save_dimensions ?>;
 fifu_save_dimensions_all:<?php echo $enable_save_dimensions_all ?>;
 fifu_save_dimensions_redirect:<?php echo $enable_save_dimensions_redirect ?>;
 fifu_social:<?php echo $enable_social ?>;
+fifu_social_image_only:<?php echo $enable_social_image_only ?>;
 fifu_spinner_db:<?php echo $max_db ?>;
+fifu_spinner_nth:<?php echo $nth_image ?>;
 fifu_wc_lbox:<?php echo $enable_wc_lbox ?>;
 fifu_wc_zoom:<?php echo $enable_wc_zoom ?>;
+Image:<?php echo fifu_get_last('fifu_image_url') ?>;
+Video:<?php echo fifu_get_last('fifu_video_url') ?>;
+Slider:<?php echo fifu_get_last('fifu_slider_image_url_0') ?>;
+Shortcode:<?php echo fifu_get_last('fifu_shortcode') ?>;
 REST Routes:
 - <?php echo get_rest_url() ?>:PHP;
 </textarea>
@@ -78,4 +89,9 @@ REST Routes:
         var box = jQuery("#bar");
         box.val(box.val() + '- ' + fifu_get_rest_url().substring(0, 100) + ':JS');
     });
+
+    // remove notices from other plugins
+    setTimeout(function () {
+        jQuery('div.header-box > div').remove();
+    }, 250);
 </script>

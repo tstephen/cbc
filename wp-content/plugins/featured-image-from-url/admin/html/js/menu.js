@@ -1,4 +1,8 @@
 jQuery(document).ready(function () {
+    jQuery('link[href*="jquery-ui.css"]').attr("disabled", "true");
+    jQuery('div.wrap div.header-box div.notice').hide();
+    jQuery('div.wrap div.header-box div#message').hide();
+    jQuery('div.wrap div.header-box div.updated').remove();
     window.scrollTo(0, 0);
     jQuery('.wrap').css('opacity', 1);
 });
@@ -31,6 +35,7 @@ jQuery(function () {
     jQuery("#tabs-top").tabs();
     jQuery("#fifu_input_spinner_cron_metadata").spinner({min: 1, step: 1});
     jQuery("#fifu_input_spinner_db").spinner({min: 100, step: 100});
+    jQuery("#fifu_input_spinner_nth").spinner({min: 1});
     jQuery("#fifu_input_spinner_image").spinner({min: 0});
     jQuery("#fifu_input_spinner_video").spinner({min: 0});
     jQuery("#fifu_input_spinner_slider").spinner({min: 0});
@@ -56,7 +61,7 @@ function save(formName, url) {
 }
 
 function fifu_default_js() {
-    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     toggle = jQuery("#fifu_toggle_enable_default_url").attr('class');
     switch (toggle) {
@@ -83,7 +88,7 @@ function fifu_default_js() {
         },
         complete: function () {
             setTimeout(function () {
-                jQuery('.wrap').unblock();
+                jQuery('#tabs-top').unblock();
             }, 1000);
         },
         timeout: 0
@@ -91,7 +96,7 @@ function fifu_default_js() {
 }
 
 function fifu_fake_js() {
-    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     toggle = jQuery("#fifu_toggle_fake").attr('class');
     switch (toggle) {
@@ -120,7 +125,7 @@ function fifu_fake_js() {
         },
         complete: function () {
             setTimeout(function () {
-                jQuery('.wrap').unblock();
+                jQuery('#tabs-top').unblock();
             }, 1000);
         },
         timeout: 0
@@ -131,7 +136,11 @@ function fifu_clean_js() {
     if (jQuery("#fifu_toggle_data_clean").attr('class') != 'toggleon')
         return;
 
-    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    fifu_run_clean_js();
+}
+
+function fifu_run_clean_js() {
+    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     jQuery.ajax({
         method: "POST",
@@ -151,7 +160,39 @@ function fifu_clean_js() {
             setTimeout(function () {
                 jQuery("#fifu_toggle_data_clean").attr('class', 'toggleoff');
                 jQuery("#fifu_toggle_fake").attr('class', 'toggleoff');
-                jQuery('.wrap').unblock();
+                jQuery('#tabs-top').unblock();
+            }, 1000);
+        }
+    });
+}
+
+function fifu_run_delete_all_js() {
+    if (jQuery("#fifu_toggle_run_delete_all").attr('class') != 'toggleon' || jQuery("#fifu_toggle_confirm_delete_all").attr('class') != 'toggleon')
+        return;
+
+    fifu_run_clean_js();
+    fifu_run_clean_dimensions_all_js();
+
+    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+
+    jQuery.ajax({
+        method: "POST",
+        url: restUrl + 'fifu-premium/v2/run_delete_all_api/',
+        async: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
+        success: function (data) {
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        complete: function () {
+            setTimeout(function () {
+                jQuery("#fifu_toggle_run_delete_all").attr('class', 'toggleoff');
+                jQuery('#tabs-top').unblock();
             }, 1000);
         }
     });
@@ -161,7 +202,7 @@ function fifu_save_dimensions_all_js() {
     if (jQuery("#fifu_toggle_save_dimensions_all").attr('class') != 'toggleon')
         return;
 
-    jQuery('.wrap').block({message: 'Please wait. It can take several minutes...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: 'Please wait. It can take several minutes...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     interval = setInterval(function () {
         jQuery("#countdown").load(location.href + " #countdown");
@@ -184,7 +225,7 @@ function fifu_save_dimensions_all_js() {
         complete: function () {
             setTimeout(function () {
                 jQuery("#fifu_toggle_save_dimensions_all").attr('class', 'toggleoff');
-                jQuery('.wrap').unblock();
+                jQuery('#tabs-top').unblock();
             }, 1000);
             jQuery("#countdown").load(location.href + " #countdown");
             clearInterval(interval);
@@ -196,7 +237,11 @@ function fifu_clean_dimensions_all_js() {
     if (jQuery("#fifu_toggle_clean_dimensions_all").attr('class') != 'toggleon')
         return;
 
-    jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    fifu_run_clean_dimensions_all_js();
+}
+
+function fifu_run_clean_dimensions_all_js() {
+    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     jQuery.ajax({
         method: "POST",
@@ -215,7 +260,7 @@ function fifu_clean_dimensions_all_js() {
         complete: function () {
             setTimeout(function () {
                 jQuery("#fifu_toggle_clean_dimensions_all").attr('class', 'toggleoff');
-                jQuery('.wrap').unblock();
+                jQuery('#tabs-top').unblock();
             }, 1000);
             jQuery("#countdown").load(location.href + " #countdown");
         }

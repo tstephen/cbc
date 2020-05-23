@@ -9,7 +9,8 @@ function fifu_get_attribute($attribute, $html) {
     if ($aux)
         $aux = $aux[1];
 
-    $aux = explode('"', $aux);
+    $quote = $aux[0];
+    $aux = explode($quote, $aux);
     if ($aux)
         return $aux[1];
 
@@ -77,5 +78,17 @@ function fifu_get_dimension_backend($url) {
     $width = imagesx($img);
     $height = imagesy($img);
     return ($width && $height) ? $width . ";" . $height : null;
+}
+
+// active plugins
+
+function fifu_is_elementor_active() {
+    return is_plugin_active('elementor/elementor.php') || is_plugin_active('elementor-pro/elementor-pro.php');
+}
+
+function fifu_is_elementor_editor() {
+    if (!fifu_is_elementor_active())
+        return false;
+    return \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode();
 }
 

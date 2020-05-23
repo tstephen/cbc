@@ -41,7 +41,7 @@ function fifu_save_properties_ext($post_id) {
 function fifu_first_img_in_content($content) {
     $matches = array();
     preg_match_all('/<img[^>]*>/', $content, $matches);
-    return $matches && $matches[0] ? $matches[0][0] : null;
+    return $matches && $matches[0] ? $matches[0][get_option('fifu_spinner_nth') - 1] : null;
 }
 
 function fifu_show_all_images($content) {
@@ -72,9 +72,12 @@ function fifu_first_url_in_content($post_id) {
     if (!$matches[0])
         return;
 
+    $i = 0;
+    $nth = get_option('fifu_spinner_nth');
     $tag = null;
     foreach ($matches[0] as $tag) {
-        if ($tag && strpos($tag, 'data:image/jpeg') !== false)
+        $i++;
+        if (($tag && strpos($tag, 'data:image/jpeg') !== false) || ($i != $nth))
             continue;
         break;
     }

@@ -20,6 +20,24 @@ function fifu_insert_meta_box() {
             add_meta_box('shortCodeMetaBox', '<span class="dashicons dashicons-editor-code" style="font-size:20px"></span> Featured Shortcode', 'fifu_shortcode_show_elements', $post_type, 'side', 'low');
         }
     }
+    fifu_register_meta_box_script();
+}
+
+function fifu_register_meta_box_script() {
+    wp_enqueue_script('jquery-block-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js');
+    wp_enqueue_style('fancy-box-css', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css');
+    wp_enqueue_script('fancy-box-js', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js');
+
+    wp_enqueue_script('fifu-meta-box-js', plugins_url('/html/js/meta-box.js', __FILE__));
+    wp_enqueue_script('fifu-convert-url-js', plugins_url('/html/js/convert-url.js', __FILE__));
+
+    if (fifu_is_sirv_active())
+        wp_enqueue_script('fifu-sirv-js', 'https://scripts.sirv.com/sirv.js');
+
+    wp_localize_script('fifu-meta-box-js', 'fifuMetaBoxVars', [
+        'get_the_ID' => get_the_ID(),
+        'is_sirv_active' => fifu_is_sirv_active(),
+    ]);
 }
 
 add_action('add_meta_boxes', 'fifu_add_css');
@@ -34,13 +52,12 @@ function fifu_show_elements($post) {
     $width = 'width:100%;';
     $height = 'height:200px;';
     $align = 'text-align:left;';
-    $show_news = 'display:inline';
 
     $url = get_post_meta($post->ID, 'fifu_image_url', true);
     $alt = get_post_meta($post->ID, 'fifu_image_alt', true);
 
     if ($url) {
-        $show_button = $show_news = 'display:none;';
+        $show_button = 'display:none;';
         $show_alt = $show_image = $show_link = '';
     } else {
         $show_alt = $show_image = $show_link = 'display:none;';
@@ -228,6 +245,12 @@ function fifu_is_aliplugin_active() {
     return is_plugin_active('aliplugin/aliplugin.php');
 }
 
+/* plugin: sirv */
+
+function fifu_is_sirv_active() {
+    return is_plugin_active('sirv/sirv.php');
+}
+
 /* woocommerce variation elements */
 
 add_action('woocommerce_product_after_variable_attributes', 'fifu_variation_settings_fields', 10, 3);
@@ -261,5 +284,15 @@ function fifu_variation_settings_fields($loop, $variation_data, $variation) {
                 )
         );
     }
+}
+
+/* plugin: wordpress importer */
+
+add_action('import_end', 'fifu_import_end', 10, 0);
+
+function fifu_import_end() {
+    fifu_db_delete_thumbnail_id_without_attachment();
+    fifu_db_insert_attachment();
+    fifu_db_insert_attachment_category();
 }
 

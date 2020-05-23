@@ -1,21 +1,23 @@
 .wrap { 
     max-width: 1020px; 
-    margin: 20px 20px 20px 15px;
+    margin: 0px;
 }
 
 .header-box { 
     margin: 25px 0 0; 
     background: #fff; 
-    border: 1px solid #dbdbdb; 
-    padding: 20px; 
     padding-top: 0px;
     border-radius: 100px 45px 0px 0px;
-    height: 25px !important;
+    height: 48px !important;
     background: repeating-linear-gradient(-55deg,#23282d,#23282d 2px,#32373c 2px,#32373c 5px);
+    background-color:#23282d;
+    float:left;
+    width:100%;
+    max-width: 1020px;    
 }
 
 .box { 
-    margin: 25px 0 0; 
+    margin: 17px 0 0; 
     background: #ffffff85; 
     border: 1px solid #dbdbdb; 
     padding: 20px; 
@@ -151,4 +153,13 @@ th {
 
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
     color: white;
+}
+
+.fifu-chrome {
+    height: 24px;
+    position: relative;
+    float:right;
+    right:6px;
+    top:-36px;
+    padding: 7px;
 }

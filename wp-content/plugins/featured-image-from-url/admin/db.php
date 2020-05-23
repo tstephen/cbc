@@ -252,6 +252,18 @@ class FifuDb {
         );
     }
 
+    // get last (images/videos/sliders/shortcodes)
+    function get_last($meta_key) {
+        return $this->wpdb->get_results("
+            SELECT p.guid, pm.meta_value
+            FROM " . $this->posts . " p
+            INNER JOIN " . $this->postmeta . " pm ON p.id = pm.post_id
+            WHERE pm.meta_key = '" . $meta_key . "'
+            ORDER BY p.post_date DESC
+            LIMIT 3"
+        );
+    }
+
     // get attachments without post
     function get_attachments_without_post($post_id) {
         $result = $this->wpdb->get_results("
@@ -832,6 +844,21 @@ class FifuDb {
         update_option('fifu_fake_created', false, 'no');
     }
 
+    /* delete all urls */
+
+    function delete_all() {
+        if (fifu_is_on('fifu_confirm_delete_all') &&
+                fifu_is_on('fifu_run_delete_all') &&
+                get_option('fifu_confirm_delete_all_time') &&
+                get_option('fifu_run_delete_all_time') &&
+                FIFU_DELETE_ALL_URLS) {
+            $this->wpdb->get_results("
+                DELETE FROM " . $this->postmeta . " 
+                WHERE meta_key LIKE 'fifu_%'"
+            );
+        }
+    }
+
 }
 
 /* fake internal featured image */
@@ -909,6 +936,13 @@ function fifu_db_enable_clean() {
     $db->enable_clean();
 }
 
+/* delete all urls */
+
+function fifu_db_delete_all() {
+    $db = new FifuDb();
+    return $db->delete_all();
+}
+
 /* save post */
 
 function fifu_db_update_fake_attach_id($post_id) {
@@ -957,5 +991,19 @@ function fifu_db_before_delete_post($post_id) {
 function fifu_db_number_of_posts() {
     $db = new FifuDb();
     return $db->get_number_of_posts();
+}
+
+/* get last urls */
+
+function fifu_db_get_last($meta_key) {
+    $db = new FifuDb();
+    return $db->get_last($meta_key);
+}
+
+/* wordpress importer */
+
+function fifu_db_delete_thumbnail_id_without_attachment() {
+    $db = new FifuDb();
+    return $db->delete_thumbnail_id_without_attachment();
 }
 

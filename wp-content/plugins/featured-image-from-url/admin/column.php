@@ -18,22 +18,30 @@ function fifu_column_head($default) {
 }
 
 function fifu_ctgr_column_content($internal_image, $column, $term_id) {
+    $border = '';
     $height = get_option('fifu_column_height');
     if ($column == 'featured_image') {
         $url = get_term_meta($term_id, 'fifu_image_url', true);
-        if ($url != '')
-            echo sprintf('<div style="height:%spx; width:%spx; background:url(\'%s\') no-repeat center center; background-size:cover;"/>', $height, $height * 1.5, $url);
+        if ($url == '') {
+            $thumb_id = get_term_meta($term_id, 'thumbnail_id', true);
+            $url = wp_get_attachment_url($thumb_id);
+            $border = 'border-color: #ca4a1f !important; border: 1px; border-style: solid;';
+        }
+        echo sprintf('<div style="height:%spx; width:%spx; background:url(\'%s\') no-repeat center center; background-size:cover; %s"/>', $height, $height * 1.5, $url, $border);
     } else
         echo $internal_image;
 }
 
 function fifu_column_content($column, $post_id) {
+    $border = '';
     $height = get_option('fifu_column_height');
     if ($column == 'featured_image') {
         $url = fifu_main_image_url($post_id);
-        if ($url == '')
+        if ($url == '') {
             $url = wp_get_attachment_url(get_post_thumbnail_id());
-        echo sprintf('<div style="height:%spx; width:%spx; background:url(\'%s\') no-repeat center center; background-size:cover;"/>', $height, $height * 1.5, $url);
+            $border = 'border-color: #ca4a1f !important; border: 1px; border-style: solid;';
+        }
+        echo sprintf('<div style="height:%spx; width:%spx; background:url(\'%s\') no-repeat center center; background-size:cover; %s"/>', $height, $height * 1.5, $url, $border);
     }
 }
 

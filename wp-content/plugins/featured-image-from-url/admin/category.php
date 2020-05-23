@@ -1,14 +1,21 @@
 <?php
 
+function fifu_category_scripts() {
+    wp_enqueue_style('fifu-category-css', plugins_url('/html/css/category.css', __FILE__));
+
+    fifu_register_meta_box_script();
+}
+
 add_action('product_cat_edit_form_fields', 'fifu_ctgr_edit_box');
 add_action('product_cat_add_form_fields', 'fifu_ctgr_add_box');
 
 function fifu_ctgr_edit_box($term) {
+    fifu_category_scripts();
+
     $margin = 'margin-top:10px;';
     $width = 'width:100%;';
     $height = 'height:200px;';
     $align = 'text-align:left;';
-    $show_news = 'display:none';
     $url = $alt = null;
 
     if (is_object($term)) {
@@ -29,11 +36,12 @@ function fifu_ctgr_edit_box($term) {
 }
 
 function fifu_ctgr_add_box() {
+    fifu_category_scripts();
+
     $margin = 'margin-top:10px;';
     $width = 'width:100%;';
     $height = 'height:200px;';
     $align = 'text-align:left;';
-    $show_news = 'display:none';
 
     $show_button = $url = $alt = '';
     $show_alt = $show_image = $show_link = 'display:none;';

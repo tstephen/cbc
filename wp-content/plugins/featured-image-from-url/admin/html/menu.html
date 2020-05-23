@@ -1,13 +1,14 @@
 <div class="wrap" style="opacity:0">
 
-    <div class="header-box" style="background-color:#23282d">
-        <h1 style="color:white"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> featured image from url 2</h1>
+    <div class="header-box">
+        <h1 style="color:white;padding-left:20px"><span class="dashicons dashicons-camera" style="font-size:30px"></span><span style="padding-left:20px">featured image from url 3</span></h1>
+        <a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola" target="_blank"><img class="fifu-chrome" src="https://storage.googleapis.com/featuredimagefromurl/chrome-web-store2.png" title="Chrome Extension Available"/></a>
     </div>
 
-    <div id="tabs-top">        
+    <div id="tabs-top" style="float:left">        
         <ul>
             <li><a href="#tabs-d"><i class="fas fa-envelope"></i> Help</a></li>
-            <li><a href="#tabs-k"><i class="fas fa-user-cog"></i> Admin Area</a></li>
+            <li><a href="#tabs-k"><i class="fas fa-user-cog"></i> Admin</a></li>
             <li><a href="#tabs-g"><i class="fas fa-image"></i> Featured Image</a></li>
             <li><a href="#tabs-b"><i class="fas fa-flag-checkered"></i> URL from Post Content</a></li>
             <li><a href="#tabs-j"><i class="fas fa-database"></i> Metadata</a></li>
@@ -21,59 +22,40 @@
             <li><a href="#tabs-o"><i class="fas fa-shopping-cart"></i> WooCommerce</a></li>
             <li><a href="#tabs-p"><i class="fas fa-redo"></i> WP All Import</a></li>
             <li><a href="#tabs-t"><i class="fas fa-info-circle"></i> Troubleshooting</a></li>
-            <li><a href="#tabs-a"><i class="fas fa-credit-card"></i> Premium version <b style="border-radius:2px;padding:3px;background-color:#32373c;color:white">Stripe | PayPal</b></a></li>
+            <li><a href="#tabs-a"><i class="fas fa-star"></i> Premium <b style="border-radius:2px;padding:3px;background-color:#32373c;color:white">$ 39.90</b></a></li>
             <br>
             <br>
             <div id="tabs-a">
                 <a name="top"></a>
-
                 <div class="box">
-                    <h2>About <a href="https://fifu.app/">Featured Image from URL Premium</a></h2>
-                    <div class="greybox">
-                        <iframe style="width:100%;height:600px" src="https://fifu.app/"></iframe>
+                    <h2>Feature of the month</h2>
+                    <div class="greybox">                        
+                        <table>
+                            <tr>
+                                <td style="border-bottom:none;text-align:right;">April</td>
+                                <td style="border-bottom:none">embedded video can be replaced by its image thumbnail + play button (drastically decreases the loading time)</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:none;text-align:right;">March</td>
+                                <td style="border-bottom:none">Google Chrome Extension for Featured Image from URL</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:none;text-align:right;">February</td>
+                                <td style="border-bottom:none">support to private videos from Vimeo</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:none;text-align:right;">January</td>
+                                <td style="border-bottom:none">integration with WooCoomerce Additional Variation Images plugin</td>
+                            </tr>
+                        </table>
                     </div>
-
-                    <div class="box" style="">
-                        <h2><a name="top">Checking compatibility between your theme (<?php echo wp_get_theme()?>) and FIFU Premium...</a></h2>
-                        <div class="greybox">
-                            <div id="tabsPremium">
-                                <ul>
-                                    <li><a href="#tabs-1">Features Compatibility</a></li>
-                                    <li style="<?php echo fifu_woo_theme() ? '' : 'display:none' ?>"><a href="#tabs-3">Official FIFU WooCommerce Theme</a></li>
-                                </ul>
-                                <div id="tabs-1">
-                                    <table>
-                                        <tr>
-                                            <th>as <b>Blog</b> (<a href="https://blog.featuredimagefromurl.com/" target="_blank">live preview</a>)</th>
-                                            <th>as <b>Shop</b> (<a href="https://shop.featuredimagefromurl.com/" target="_blank">live preview</a>)</th>
-                                        </tr>
-                                        <tr>
-                                            <td>featured image: yes</td>
-                                            <td>product image: yes</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>product gallery: yes</td>
-                                        </tr>
-                                        <tr>
-                                            <td>featured video: yes</td>
-                                            <td>product video: <?php echo fifu_woo_theme()?'no':'yes'?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>featured slider: yes</td>
-                                            <td>product slider: <?php echo fifu_woo_theme()?'no':'yes'?></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div id="tabs-3">
-                                    FIFU is developed using <b><a href="https://wordpress.org/themes/storefront/">Storefront</a></b>, the official WooCommerce theme. So all the plugin features are compatible with that without any additional steps.<br><br>
-                                    If your theme isn't flexible enough to work with external images, please consider to move to Storefront. Check the <a href="https://shop.featuredimagefromurl.com"><b>Live Preview</b></a>.
-                                </div>
-                            </div>			
-                        </div>
-                    </div>
-                </div>           
+                </div>
+                <div class="box">
+                    <h2><a href="https://fifu.app/">Featured Image from URL (Premium)</a></h2>
+                    <iframe style="width:100%;height:600px" src="https://fifu.app/"></iframe>                       
+                </div>
             </div>
+
             <div id="tabs-k">
                 <div class="box">
                     <h2>Featured Image Column</h2>
@@ -260,7 +242,7 @@
                     <h2>Internal URL Parameters</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        This option adds some FIFU parameters to your image URLs. It only makes sense when you have a theme that calls the image URLs in a very nonstandard way, what could break some FIFU features, such as "Add Class" and "Same Height > Object Fit > Cover". 99.9% of users don't need that.
+                        This option adds some FIFU parameters to your image URLs. It only makes sense when you have a theme/plugin that calls the image URLs in a nonstandard way, what could break some FIFU features, such as "Featured Video", "Featured Slider", "Add Class", "Lazy Load" and "Same Height > Object Fit".
                     </div>
                     <br>
                     <input 
@@ -278,13 +260,32 @@
 
                     <h2>Configuration</h2>
                     <div class="greybox">
-                        This option makes FIFU read the HTML of your internal post/page/product content and use the first image/video URL found as "featured image". It will happen when you click on Publish/Update button.<br/><br/>
+                        This option makes FIFU read the HTML of your internal post/page/product content and use the 1st (or nth) image/video URL found as "featured image". It will happen when you click on Publish/Update button.<br/><br/>
                         <b>Important</b>: the images need to be in an "img" HTML tag and videos (Premium feature) in an "iframe" tag. So contents provided by [shortcodes] can't be read.
                     </div>
 
                     <br>
 
                     <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_spinner_nth" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+                                    <input id="fifu_input_spinner_nth" 
+                                           name="fifu_input_spinner_nth" 
+                                           value="<?php echo $nth_image; ?>" 
+                                           size="3"
+                                           style="width:40px">
+                                    <br>
+                                    <input type="submit" value="OK" style="width:72px">
+                                </form>
+                            </th>     
+                            <th>   
+                                image/video position
+                            </th> 
+                        </tr>
                         <tr>
                             <th>
                                 <form 
@@ -308,7 +309,7 @@
                                 </form>
                             </th>
                             <th>   
-                                use the first image/video as featured image
+                                use the 1st (or nth) image/video as featured image
                             </th>
                         </tr> 
                         <tr>
@@ -334,7 +335,7 @@
                                 </form>
                             </th>
                             <th>   
-                                hide the first image/video from content
+                                hide the 1st (or nth) image/video from content
                             </th>
                         </tr>
                         <tr>
@@ -397,7 +398,7 @@
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
                         Enable that to update all your posts/pages/products applying the configuration above.
-                        Very useful if you have hundreds of them and want to set the first image as featured image for all.
+                        Very useful if you have hundreds of them and want to set the 1st (or nth) image/video as featured image for all. 
                         It can take some minutes and can't be undone, so make a backup.
                         To repeat the process enable the toggle again.
                         <br><br>
@@ -541,6 +542,22 @@
                             </div> 
                         </ul>
                     </div>
+                </div>
+
+                <div class="box">
+                    <h2>Unsplash Image Size (for Keyword Search and Random Image)</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        Here you can define the size of the Unsplash images loaded (randomly or via keywords search) on post editor. Examples of valid sizes: 500x500, 300x400, 1920x1080... Or leave this field empty to get the original size.
+                    </div>
+                    <br>
+                    <input id="fifu_input_unsplash_size" 
+                           type="text" 
+                           name="fifu_input_unsplash_size"
+                           value=""
+                           size="8">
+                    <input type="submit" 
+                           value="Submit" disabled>
                 </div>
 
                 <div class="box">
@@ -766,6 +783,33 @@
                             </th>
                             <th>   
                                 on post
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_hide_cpt" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_hide_cpt" 
+                                        onclick="invert('hide_cpt')" 
+                                        name="fifu_toggle_hide_cpt" 
+                                        class="<?php echo $enable_hide_cpt; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input 
+                                        type="hidden"
+                                        id="fifu_input_hide_cpt" 
+                                        name="fifu_input_hide_cpt" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>   
+                                on custom post type
                             </th>
                         </tr>            
                     </table>
@@ -1073,7 +1117,7 @@
                     <h2>Save Image Dimensions</h2>
 
                     <div class="greybox">
-                        Enable that to save the image dimensions. A few themes may need the image width and height to avoid style issues.
+                        Enable that to save the image dimensions. Some themes and WooCommerce lightbox (PhotoSwipe) may need the image width and height to avoid style issues.
                     </div>
 
                     <br>
@@ -1236,29 +1280,106 @@
 
                     <br>
 
-                    <div>
-                        <form 
-                            id="fifu_form_data_clean" 
-                            action="javascript:void(0)" 
-                            method="post">
-                            <input 
-                                type="submit" 
-                                href="javascript:void(0)" 
-                                id="fifu_toggle_data_clean" 
-                                onclick="invert('data_clean');
-                                        fifu_clean_js();";
-                                name="fifu_toggle_data_clean" 
-                                class="<?php echo $enable_data_clean; ?>" 
-                                value=""
-                                style="display:block;border:none">
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_data_clean" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_data_clean" 
+                                        onclick="invert('data_clean');
+                                                fifu_clean_js();";
+                                        name="fifu_toggle_data_clean" 
+                                        class="<?php echo $enable_data_clean; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
 
-                            <input 
-                                type="hidden" 
-                                id="fifu_input_data_clean" 
-                                name="fifu_input_data_clean" 
-                                value="" >
-                        </form>
+                                    <input 
+                                        type="hidden" 
+                                        id="fifu_input_data_clean" 
+                                        name="fifu_input_data_clean" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>
+                                it will be automatically disabled when finished
+                            </th>
+                        </tr>                                        
+                    </table>
+                </div>
+
+                <div class="box">
+
+                    <h2>Delete All URLs <span class="dashicons dashicons-welcome-comments" style="font-size: 25px;" title="Requirement: access Plugins -> Plugin Editor -> Select plugin to edit -> Featured Image from URL -> Select. Then change the value of FIFU_DELETE_ALL_URLS from false to true."></span></h2>
+
+                    <div class="greybox">
+
+                        <b>Important</b>: this plugin doesn't save images in the media library. It means that enabling the two toggles below all post types that have an external featured image will no longer have any featured image. And you can't undo this action later.
+
                     </div>
+
+                    <br>
+
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_confirm_delete_all" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_confirm_delete_all" 
+                                        onclick="invert('confirm_delete_all')" 
+                                        name="fifu_toggle_confirm_delete_all" 
+                                        class="<?php echo $enable_confirm_delete_all; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input 
+                                        type="hidden"
+                                        id="fifu_input_confirm_delete_all" 
+                                        name="fifu_input_confirm_delete_all" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>   
+                                enable this toggle to confirm that you are ready to lose your featured images
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_run_delete_all" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_run_delete_all" 
+                                        onclick="invert('run_delete_all');fifu_run_delete_all_js();" 
+                                        name="fifu_toggle_run_delete_all" 
+                                        class="<?php echo $enable_run_delete_all; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input 
+                                        type="hidden"
+                                        id="fifu_input_run_delete_all" 
+                                        name="fifu_input_run_delete_all" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>   
+                                enable this toggle to delete all your URLs now
+                            </th>
+                        </tr>             
+                    </table>
                 </div>
             </div>
             <div id="tabs-l">
@@ -1432,7 +1553,7 @@
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
 
-                        FIFU supports <b>public</b> videos from YouTube, Vimeo, Facebook, Instagram, Imgur, 9GAG, Cloudinary and Tumblr. You can enable the video meta box here.
+                        FIFU supports videos from YouTube, Vimeo, Facebook, Instagram, Imgur, 9GAG, Cloudinary, Tumblr and Publitio. You can enable the video meta box here.
 
                     </div>
 
@@ -1463,10 +1584,10 @@
                 </div>
 
                 <div class="box">
-                    <h2>Video Thumbnail</h2>
+                    <h2>Video Image Thumbnail</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        Enable the toggle below to show the video thumbnail instead of the video.
+                        Enable the toggle below to show the video image thumbnail instead of the video. Thumbnails are loaded much faster than embedded videos.
                     </div>
                     <br>
                     <table style="text-align:left">
@@ -1495,8 +1616,127 @@
                             <th>   
                                 on page
                             </th>
-                        </tr>              
+                        </tr>
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff" 
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>   
+                                on post
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff" 
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>   
+                                on custom post type
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>        
+                                <input 
+                                    id="fifu_input_video_crop" 
+                                    type="text" 
+                                    name="fifu_input_video_crop"  
+                                    value="" 
+                                    placeholder="e.g.: 25"
+                                    style="width:73px">
+                                <br>
+                                <input type="submit" value="OK" style="width:73px" disabled>
+                            </th>
+                            <th>
+                                crop top and bottom (%)
+                            </th>
+                        </tr>
                     </table>
+                </div>
+
+                <div class="box">
+                    <h2>Play Button</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        A play button can be added on the video image thumbnail. Clicking on that, the video starts inline or in a lightbox.
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>                                
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff"                                     
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                color
+                                <br>
+                                <input 
+                                    id="fifu_input_video_color" 
+                                    type="text" 
+                                    name="fifu_input_video_color"  
+                                    value="" 
+                                    style="width:85px">
+                                <br>
+                                <input type="submit" value="OK" style="width:85px" disabled>
+                            </th>
+                            <th>
+                                mode
+                                <br>
+                                <select id="select_play_type" style="width:85px">
+                                    <option value="lightbox">lightbox</option>
+                                    <option value="inline">inline</option>
+                                </select>
+
+                                <br>
+                                <input type="submit" value="OK" style="width:85px" disabled>
+                            </th>
+                            <th>
+                                z-index
+                                <br>
+                                <input 
+                                    id="fifu_form_video_zindex" 
+                                    type="text" 
+                                    name="fifu_input_video_zindex"  
+                                    value="" 
+                                    style="width:85px">
+                                <br>
+                                <input type="submit" value="OK" style="width:85px" disabled>
+                            </th>
+                            <th>
+                                <br>
+                                <input
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                                hide from grid
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="box">
+                    <h2>Minimum Video Width</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        Minimum width that an available area should have to show a video. Otherwise the thumbnail will be shown.
+                    </div>
+                    <br>
+                    <input id="fifu_input_video_min_width" type="text" name="fifu_input_video_min_width"  value="" size="4" style="width:75px">
+                    <input type="submit" value="Submit" disabled>
                 </div>
 
                 <div class="box">
@@ -1512,17 +1752,6 @@
                         class="toggleoff" 
                         value=""
                         style="display:block;border:none">
-                </div>
-
-                <div class="box">
-                    <h2>Minimum Width</h2>
-                    <div class="greybox" id="grad2">
-                        <b>Premium feature</b><br><br>
-                        Minimum width that an available area should have to show a video. Otherwise the thumbnail will be shown.
-                    </div>
-                    <br>
-                    <input id="fifu_input_video_min_width" type="text" name="fifu_input_video_min_width"  value="" size="4">
-                    <input type="submit" value="Submit" disabled>
                 </div>
 
                 <div class="box">
@@ -1630,7 +1859,7 @@
                     <h2>Slider Settings</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        Once you have added the first external image on a post/page/product, the slider meta box will show up. Adding more external images, you have a slider and you can define its settings here.<br><br>
+                        You can define the featured slider settings here.<br><br>
                         <table style="text-align:left">
                             <tr>
                                 <th>
@@ -1752,25 +1981,84 @@
                         Featured Image from URL provides social tags to share the external images on the social networks. Here you can enable/disable this feature.
                     </div>
                     <br>
-                    <form 
-                        id="fifu_form_social" 
-                        action="javascript:void(0)" 
-                        method="post">
-                        <input 
-                            type="submit" 
-                            href="javascript:void(0)" 
-                            id="fifu_toggle_social" 
-                            onclick="invert('social')" 
-                            name="fifu_toggle_social" 
-                            class="<?php echo $enable_social; ?>" 
-                            value=""
-                            style="display:block;border:none">
-                        <input 
-                            type="hidden" 
-                            id="fifu_input_social" 
-                            name="fifu_input_social" 
-                            value="" >
-                    </form>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_social" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_social" 
+                                        onclick="invert('social')" 
+                                        name="fifu_toggle_social" 
+                                        class="<?php echo $enable_social; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input 
+                                        type="hidden" 
+                                        id="fifu_input_social" 
+                                        name="fifu_input_social" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>
+                                add social tags
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <form 
+                                    id="fifu_form_social_image_only" 
+                                    action="javascript:void(0)" 
+                                    method="post">
+
+                                    <input 
+                                        type="submit" 
+                                        href="javascript:void(0)" 
+                                        id="fifu_toggle_social_image_only" 
+                                        onclick="invert('social_image_only')" 
+                                        name="fifu_toggle_social_image_only" 
+                                        class="<?php echo $enable_social_image_only; ?>" 
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input 
+                                        type="hidden" 
+                                        id="fifu_input_social_image_only" 
+                                        name="fifu_input_social_image_only" 
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>
+                                only image tags
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="box">
+                    <h2>Media RSS Tags</h2>
+                    <div class="greybox" id="grad2">
+                        <b>Premium feature</b><br><br>
+                        Inserts Media RSS tags in the RSS feed. This way, services that make use of RSS, such as Google News, can show the external featured images.
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)" 
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div id="tabs-i">
@@ -2121,7 +2409,7 @@
                                             Slider
                                         </th>
                                         <th>
-                                            fifu_slider_image_url_0, fifu_slider_image_url_1 ...
+                                            fifu_slider_list_url
                                         </th>
                                     </tr>
                                 </table>
@@ -2611,7 +2899,7 @@
                 <div class="box">
                     <h2>Fast Support</h2>
                     <div class="greybox">
-                        If you need any help, you can refer to <a href="https://wordpress.org/plugins/featured-image-from-url/screenshots/" target="_blank">screenshots</a> or send an email to <b>marcel@featuredimagefromurl.com</b> (send me this <a href="admin.php?page=fifu-support-data"><button id="opener" onclick="jQuery('.wrap').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});">data</button></a>, please).
+                        If you need help, you can refer to <a href="https://wordpress.org/plugins/featured-image-from-url/screenshots/" target="_blank">screenshots</a>, <a href="admin.php?page=featured-image-from-url#tabs-t" target="_blank">troubleshooting</a> or send an email to <b>marcel@featuredimagefromurl.com</b> (send me this <a href="admin.php?page=fifu-support-data"><button id="opener" onclick="jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});">data</button></a>).
                         <br>
                         <br>
                         <table style="background-color: #fff; border-radius: 13px;">
@@ -2645,25 +2933,25 @@
                                     3) enable Image Metadata.
                                 </td>
                                 <td style="vertical-align: top;">
-                                    Just send me an email. If you are available to discuss the details and the plugin is free and has more than 100,000 active installs, I should provide an integration very soon.
+                                    Just send me an email. If you are available to discuss the details and the plugin is free and has more than 50,000 active installs, I should provide an integration very soon.
                                 </td>
                                 <td>
-                                    You can set external featured images using custom fields. The main one is <b>fifu_image_url</b>. However the REST API is only supported by FIFU Premium. For nonstandard automation, just enable Schedule Metadata Generation, at Admin Area tab (no additional code required).
+                                    You can set external featured images using custom fields. The main one is <b>fifu_image_url</b>. However the REST API is only supported by FIFU Premium. For nonstandard automation, just enable Schedule Metadata Generation, at Admin tab (no additional code required).
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="box">
-                    <h2><a class="dbox-donation-button" style="background: #2d81c5;color: #fff;text-decoration: none;display: inline-block;font-size: 16px;padding: 2px 17px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;box-shadow: 0px 0px 0px 0px #1f5a89;text-shadow: 0 1px rgba(0, 0, 0, 0.3);" href="https://donorbox.org/fifu" target="_blank">Donate </a> $ 1 / year to take this project to the next level <span class="dashicons dashicons-info" style="font-size: 25px;" title="Donate with a Card, Apple Pay, Google Pay, Stripe, PayPal and more. No account required."></span></h2>
+                    <h2><a class="dbox-donation-button" style="background: #2d81c5;color: #fff;text-decoration: none;display: inline-block;font-size: 16px;padding: 2px 17px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;box-shadow: 0px 0px 0px 0px #1f5a89;text-shadow: 0 1px rgba(0, 0, 0, 0.3);" href="https://fifu.app/#price" target="_blank">Buy Premium</a> and help me to take this project to the next level <span class="dashicons dashicons-info" style="font-size: 25px;" title="Pay with a Card, Apple Pay, Google Pay, Stripe, PayPal and more. No account required."></span></h2>
                     <div class="greybox">                        
                         <a href="https://www.linkedin.com/in/marceljm/" target="_blank"><img src="https://avatars0.githubusercontent.com/u/10578419?s=460&v=4" style="border-radius:100%;width:8.5%;float:left"></a>
-                        <div style="position:relative;left:10px">Hi, I'm Marcel, Software Engineer and Featured Image from URL author, a project 100% developed in my free time. During the last 4 years I did my best to develop all requested features, integrations, improvements and bug fixes. And thanks to FIFU you keep saving money on storage, processing and copyright. However, with so many users (100,000+ active installs in 2020), it's becoming increasingly difficult to help everyone. <b>Extraordinary performance and automation features aren't done yet</b> while frequent updates are required to keep this plugin working with the most current WordPress components. So please become a sponsor and help me to take FIFU to the next level!</div>
+                        <div style="position:relative;left:10px">Hi, I'm Marcel, Software Engineer and Featured Image from URL author. <br>During the last 4 years I did my best to develop all requested features, integrations, improvements and bug fixes. And thanks to FIFU you keep saving money on storage, processing and copyright. However, with so many users (100,000+ active installs), it's becoming increasingly difficult to help everyone. <b>Extraordinary performance and automation features aren't done yet</b> while updates are required to keep this plugin working with the most current WordPress components. So please become a Premium user and help me to take FIFU to the next level!</div>
                     </div>
                 </div>
                 <div class="box">
-                    <h2>Getting Started (external Featured Images)</h2>
-                    <div class="greybox" style="min-height:375px">
+                    <h2>Getting Started</h2>
+                    <div class="greybox" style="min-height:375px;padding:0 !important">
                         <div style="width:100%">
                             <hgroup style="float:left;opacity:0.75;" class="speech-bubble">
                                 <div style="font-style:italic;font-size:13px;color:white;padding-left:25px;padding-top:10px;">Hi, I'm an EXTERNAL image!</div>
@@ -2705,6 +2993,204 @@
                         From September 2019, always you guys report an issue between FIFU and another plugin or theme, the solution will be posted here.
                     </div>
                 </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-12</td>
+                            <td style="border-bottom:none"><h3> WooCommerce</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Avoiding changes in the featured image of a product when the featured image of its copy changes:<br>
+                        1) open the duplicated product on editor;<br>
+                        2) click on "Product image > Remove product image";<br>
+                        3) click on "Product Image from URL > remove external featured image";<br>
+                        4) add the new image URL into "Product Image from URL" field;<br>
+                        5) publish.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-10</td>
+                            <td style="border-bottom:none"><h3> Avada</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        The video controls don't work on WooCommerce product gallery:<br>
+                        1) access "Appearance > Avada > Customize > Additional CSS";<br>
+                        2) add ".avada-product-gallery .avada-product-gallery-lightbox-trigger {position:unset;}";<br>
+                        3) publish.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-09</td>
+                            <td style="border-bottom:none"><h3> Post Sliders & Post Grids</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        The post grid doesn't show external featured images:<br>
+                        x) there is no solution for now. "Post Sliders & Post Grids" only shows a featured image if that is stored in the media library. You may contact the author or install an alternative plugin, like <a href="https://wordpress.org/plugins/content-views-query-and-display-post-page/">this</a>.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-01</td>
+                            <td style="border-bottom:none"><h3> WooCommerce</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Product gallery thumbnails have different heights:<br>
+                        1) enable "FIFU Settings > Featured Image >  Same Height";<br>
+                        2) access "Selector" tab and add "ol.flex-control-thumbs".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-04-20</td>
+                            <td style="border-bottom:none"><h3> Elementor</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Video controls not accessible for "Posts" element, when configured as "Layout > Skin > Cards":<br>
+                        1) access "Style > Card > Hover Effect";<br>
+                        2) select "None".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none;">2020-04-19</td>
+                            <td style="border-bottom:none"><h3>Divi</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Lazy Load isn't working:<br>
+                        1) enable "FIFU Settings > Admin > Internal URL Parameters".<br>
+                    </div>                    
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-04-03</td>
+                            <td style="border-bottom:none"><h3> Elementor</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Showing an external featured image/video:<br>
+                        1) open the default WordPress editor;<br>
+                        2) add the image URL into "Featured Image from URL" field (or the video URL into "Featured Video from URL");<br>
+                        3) click on "Edit with Elementor" button;<br>
+                        4) search for the "Featured Image" widget;<br>
+                        5) just drag the widget (no edition required).<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-04-02</td>
+                            <td style="border-bottom:none"><h3> WordPress</h3></td>
+                            <td style="border-bottom:none"></td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Removing the references to the internal featured images for all posts that have an external featured image as well:<br>
+                        1) run this SQL command: DELETE FROM wp_postmeta WHERE meta_key = '_thumbnail_id' AND post_id IN (SELECT post_id FROM (SELECT post_id FROM wp_postmeta WHERE meta_key = 'fifu_image_url') AS x);<br>
+                        2) enable "FIFU settings > Metadata > Clean Metadata";<br>
+                        3) enable "Image Metadata".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-03-10</td>
+                            <td style="border-bottom:none"><h3> Orienko</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        External videos are not being shown:<br>
+                        1) enable "FIFU Settings > Admin > Internal URL Parameters".<br>
+                    </div>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Video lightbox isn't shown ("n.fancybox.getInstance is not a function" error):<br>
+                        1) access "orienko/includes/head-media.php";<br>
+                        2) remove the line that contains "wp_enqueue_script( 'fancybox".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-03-09</td>
+                            <td style="border-bottom:none"><h3> Google Chrome | Firefox</h3></td>
+                            <td style="border-bottom:none">web browsers</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Avoiding "Connection not secure" message:<br>
+                        1) use only https image URLs.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-03-04</td>
+                            <td style="border-bottom:none"><h3> Essential Grid</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Showing external videos:<br>
+                        1) access "Ess. Grid > Editor / Preview";<br>
+                        2) for each video access "Edit Post Meta > Choose Specific Skin", select "YoutubeStream" or "VimeoStream" and click on "Save Post Meta".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-02-26</td>
+                            <td style="border-bottom:none"><h3> Bimber</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                            
+                    <div class="greybox" style="position: relative; top: -10px">
+                        External images are not being shown:<br>
+                        1) access "Appearance > Bimber > Customize > Additional CSS";<br>
+                        2) add ".g1-frame-inner{height:auto}";<br>
+                        3) publish.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2019-01-30</td>
+                            <td style="border-bottom:none"><h3>WooCommerce</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>       
+                    <div class="greybox" style="position: relative; top: -10px">
+                        External image is not being shown on lightbox:<br>
+                        1) enable "FIFU Settings > Featured Image > Save Image Dimensions > save and use image dimensions";<br>  
+                        2) enable "save the image dimensions of all external featured images now" (it will be automatically disabled when finished).<br>  
+                    </div>                                     
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Adding external "Product Image" and "Product Gallery" via SQL:<br>
+                        1) enable "FIFU Settings > Admin > Schedule Metadata Generation";<br>  
+                        2) run the SQL. Example: "insert into wp_postmeta (post_id, meta_key, meta_value) values (12345, 'fifu_list_url', 'URL1|URL2|URL3|URL4')"<br>
+                        * the first URL is for the featured image and the others for the gallery<br>
+                    </div>
+                </div>                
                 <div class="box">
                     <table>
                         <tr>
@@ -2751,7 +3237,7 @@
                     </table>                                            
                     <div class="greybox" style="position: relative; top: -10px">
                         Duplicating post and external featured image:<br>
-                        1) enable "FIFU Settings > Admin Area > Schedule Metadata Generation";<br>
+                        1) enable "FIFU Settings > Admin > Schedule Metadata Generation";<br>
                         2) access "Multisite Post Duplicator Settings";<br>
                         3) disable "Copy featured image when duplicating";<br>
                         4) disable "Copy post content images to destination media library";<br>
@@ -2831,7 +3317,7 @@
                     </table>                                            
                     <div class="greybox" style="position: relative; top: -10px">
                         Solving "Uncaught ReferenceError: jQuery is not defined"<br>
-                        1) enable "FIFU settings > Admin Area > jQuery".<br>
+                        1) enable "FIFU settings > Admin > jQuery".<br>
                     </div>
                 </div>
                 <div class="box">
@@ -2890,7 +3376,7 @@
                         Copying the external featured image to the translation:<br>
                         1) access "WPML > Settings > Custom Fields Translation";<br>
                         2) search for "fifu_image_url", choose "Copy" and save;<br>
-                        3) if you use FIFU Premium, enable "Admin Area > Schedule Metadata Generation". That's all;<br>
+                        3) if you use FIFU Premium, enable "Admin > Schedule Metadata Generation". That's all;<br>
                         4) but if you use the free version, after the translation post is created, access the post editor and click on "Update" button.<br>
                     </div>
                 </div>
@@ -2924,21 +3410,6 @@
                         1) just enable "Featured Image" toggle on  WP Telegram.<br>
                     </div>
                 </div>
-                <div class="box">
-                    <table>
-                        <tr>
-                            <td style="border-bottom:none">2019-09-18</td>
-                            <td style="border-bottom:none"><h3>WooCommerce</h3></td>
-                            <td style="border-bottom:none">plugin</td>
-                        </tr>
-                    </table>                                            
-                    <div class="greybox" style="position: relative; top: -10px">
-                        Adding external "Product Image" and "Product Gallery" via SQL:<br>
-                        1) enable "FIFU Settings > Admin Area > Schedule Metadata Generation";<br>  
-                        2) run the SQL. Example: "insert into wp_postmeta (post_id, meta_key, meta_value) values (12345, 'fifu_list_url', 'URL1|URL2|URL3|URL4')"<br>
-                        * the first URL is for the featured image and the others for the gallery<br>
-                    </div>
-                </div> 
                 <div class="box">
                     <table>
                         <tr>
@@ -2986,5 +3457,3 @@
         </ul>
     </div>
 </div>
-
-

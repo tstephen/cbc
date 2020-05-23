@@ -19,10 +19,13 @@ function fifu_replace_attachment_url($att_url, $att_id) {
         if (sizeof($url) > 1)
             return fifu_has_internal_image_path($url[1]) ? get_post($att_id)->guid : $url[1];
         else {
-            if (get_post($att_id)) {
-                $url = get_post($att_id)->guid;
-                if ($url && strpos($url, 'http') === 0 && !fifu_is_mpd_active())
-                    return $url;
+            $post = get_post($att_id);
+            if ($post) {
+                if ($att_url && strpos($att_url, 'http') === 0 && $post->post_author != "77777")
+                    return $att_url;
+
+                if (!fifu_reject_guid())
+                    return get_post($att_id)->guid;
             }
         }
     }
@@ -50,13 +53,19 @@ add_filter('posts_where', function ( $where, \WP_Query $q ) {
 add_filter('wp_get_attachment_image_src', 'fifu_replace_attachment_image_src', 10, 3);
 
 function fifu_replace_attachment_image_src($image, $att_id, $size) {
-    if (fifu_is_internal_image($image))
+    if (!$image)
         return $image;
+
+    if (strpos($image[0], ';http') !== false)
+        $image[0] = 'http' . explode(";http", $image[0])[1];
 
     if (!$att_id)
         return $image;
 
     $post = get_post($att_id);
+
+    if (fifu_has_internal_image_path($image[0]) && $post->post_author != "77777")
+        return $image;
 
     if (fifu_should_hide())
         return null;
@@ -69,18 +78,29 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
             null,
         );
     }
-    $dimension = $post ? get_post_meta($post, 'fifu_image_dimension') : null;
+    $dimension = $post ? get_post_meta($post->ID, 'fifu_image_dimension') : null;
     $arrFIFU = fifu_get_width_height($dimension);
+
+    $width = $arrFIFU['width'];
+    if (isset($image_size['width'])) {
+        $is = $image_size['width'];
+        if (!$width || (!$dimension && $is < $width))
+            $width = $is;
+    }
+
+    $height = $arrFIFU['height'];
+    if (isset($image_size['height'])) {
+        $is = $image_size['height'];
+        if (!$height || (!$dimension && $is < $height))
+            $height = $is;
+    }
+
     return array(
         fifu_has_internal_image_path($image[0]) ? get_post($att_id)->guid : $image[0],
-        !$dimension && isset($image_size['width']) && $image_size['width'] < $arrFIFU['width'] ? $image_size['width'] : $arrFIFU['width'],
-        !$dimension && isset($image_size['height']) && $image_size['height'] < $arrFIFU['height'] ? $image_size['height'] : $arrFIFU['height'],
+        $width,
+        $height,
         isset($image_size['crop']) ? $image_size['crop'] : '',
     );
-}
-
-function fifu_is_internal_image($image) {
-    return $image && $image[1] > 1 && $image[2] > 1;
 }
 
 function fifu_get_internal_image_path() {
@@ -95,8 +115,13 @@ function fifu_get_internal_image_path3() {
     return explode('.', explode("//", get_home_url())[1])[0] . ".files.wordpress.com";
 }
 
+// for WPML Multilingual CMS
+function fifu_get_internal_image_path4() {
+    return explode("/", explode("//", get_home_url())[1])[0] . "/wp-content/uploads/";
+}
+
 function fifu_has_internal_image_path($url) {
-    return strpos($url, fifu_get_internal_image_path()) !== false || strpos($url, fifu_get_internal_image_path2()) !== false || strpos($url, fifu_get_internal_image_path3()) !== false;
+    return strpos($url, fifu_get_internal_image_path()) !== false || strpos($url, fifu_get_internal_image_path2()) !== false || strpos($url, fifu_get_internal_image_path3()) !== false || strpos($url, fifu_get_internal_image_path4()) !== false;
 }
 
 add_filter('wp_get_attachment_metadata', 'fifu_filter_wp_get_attachment_metadata', 10, 2);
@@ -120,7 +145,7 @@ function fifu_get_width_height($dimension) {
         $height = fifu_maximum('height');
 
         // a value is required, otherwise the zoom doesn't work
-        if (!$width)
+        if (!$width && is_singular('product'))
             $width = 1000;
     }
     return array('width' => $width, 'height' => $height);
@@ -138,9 +163,19 @@ function fifu_amp_url($url, $width, $height) {
     return array(0 => $url, 1 => $width, 2 => $height);
 }
 
+function fifu_reject_guid() {
+    return fifu_is_mpd_active() || fifu_is_classified_listing_active();
+}
+
 // plugin: multisite-post-duplicator
 
 function fifu_is_mpd_active() {
     return is_plugin_active('multisite-post-duplicator/mpd.php');
+}
+
+// plugin: classified-listing
+
+function fifu_is_classified_listing_active() {
+    return is_plugin_active('classified-listing/classified-listing.php') || is_plugin_active('classified-listing-pro/classified-listing-pro.php');
 }
 

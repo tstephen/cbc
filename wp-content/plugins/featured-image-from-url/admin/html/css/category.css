@@ -17,3 +17,7 @@
     font-style: italic; 
     color: #999;
 }
+
+#fifu_table_url tr td{
+    padding: 0;
+}

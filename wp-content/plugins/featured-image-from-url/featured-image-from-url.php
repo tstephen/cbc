@@ -3,15 +3,18 @@
 /*
  * Plugin Name: Featured Image from URL
  * Plugin URI: https://fifu.app/
- * Description: Use an external image as Featured Image of your post/page/custom post type (WooCommerce). Includes Auto Set (External Post), Product Gallery, Social Tags and more.
- * Version: 2.8.6
+ * Description: Use an external image as Featured Image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
+ * Version: 3.0.7
  * Author: Marcel Jacques Machado 
- * Author URI: https://www.linkedin.com/in/marceljm/
+ * Author URI: https://fifu.app/
+ * WC requires at least: 3.0
+ * WC tested up to: 4.1.0
  */
 
 define('FIFU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('FIFU_INCLUDES_DIR', FIFU_PLUGIN_DIR . 'includes');
 define('FIFU_ADMIN_DIR', FIFU_PLUGIN_DIR . 'admin');
+define('FIFU_DELETE_ALL_URLS', false);
 
 require_once (FIFU_INCLUDES_DIR . '/attachment.php');
 require_once (FIFU_INCLUDES_DIR . '/convert-url.php');

@@ -1,14 +1,14 @@
 === Plugin Name ===
 Contributors: marceljm
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8BLDLZ3HDBGQG
-Tags: featured image, external featured image, featured image from url, url featured image, featured, image, external, url, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, sirv, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, instagram, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, 9gag, wcfm, add-on
+Donate link: https://donorbox.org/fifu
+Tags: featured image, image, featured, url, external, external featured image, featured image from url, url featured image, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, publitio, 9gag, wcfm, add-on, scraper, 特色圖片, 图片, 网址, 外部, unsplash, keyword, random, acf, rss, media, tag
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 2.8.6
+Stable tag: 3.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Use an external image as Featured Image of your post/page/product (WooCommerce). Includes Auto Set (External Post), Product Gallery, Social Tags and more.
+Use an external image as Featured Image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
 
 == Description ==
 
@@ -16,7 +16,9 @@ Features:
 
 * Featured Image from URL plugin allows you to use an external image as Featured Image of your post, page and Custom Post Type, such as WooCommerce Product;
 
-* perfect for external posts, the plugin is able to use the first image/video as Featured Image;
+* integrated with Unsplash engine, allows to search images by keywords (or you can use random images);
+
+* perfect for external posts, the plugin is able to use the first (or nth) image/video as Featured Image;
 
 * when you access the table of posts/pages/products/categories in admin menu, the Featured Images are shown in a new column;
 
@@ -42,29 +44,34 @@ Features:
 
 * allows to schedule an cron event to set all first images as featured images. So it can run hourly, daily etc. (**premium feature**);
 
-* all features created for external images are available for external videos from YouTube, Vimeo, Cloudinary and Tumblr. For YouTube videos, it's possible to set player parameters. And you can define the video size for each screen type (**premium feature**);
+* all features created for external images are available for external videos from YouTube, Vimeo, Facebook, Instagram, Imgur, 9GAG, Cloudinary, Tumblr and Publitio. For YouTube videos, it's possible to set player parameters. And you can define the video size for each screen type (**premium feature**);
 
 * you can use a slider of images as "featured image" (**premium feature**);
 
-* you can use an external video thumbnail or an external video (from YouTube, Vimeo, Cloudinary or Tumblr) as "featured image" (**premium feature**);
+* you can use an external video thumbnail or an external video (from YouTube, Vimeo, Facebook, Instagram, Imgur, 9GAG, Cloudinary, Tumblr and Publitio) as "featured image" (**premium feature**);
 
-* you can use any content provided by a shortcode as "featured image" (**premium BETA feature**);
+* embedded video can be replaced by its image thumbnail + play button (with some customizations). It drastically decreases the loading time.  (**premium feature**);
+
+* you can use any content provided by a shortcode as "featured image" (**premium feature**);
 
 * auto set product category images, with each image being chosen among the external product images from that category (**premium feature**);
 
 * it's also possible to use external images in the WooCommerce Product Gallery, Product Category and Variable Product (**premium feature**);
 
-* you can use external thumbnails from Flickr to make your site uppon to 94% faster (**premium feature**);
+* you can use external thumbnails from Flickr to make your site faster (**premium feature**);
 
-* it's able to crop all the external featured images on home/shop to the same size (**premium feature**);
+* it's able to crop the external featured images to the same size (**premium feature**);
 
 * auto play/pause videos on mouse over/out (**premium feature**);
 
-* replace broken URLs by a default one (**premium feature**);
+* replaces broken URLs by a default one (**premium feature**);
+
+* defines Unsplash image sizes (**premium feature**);
+
+* adds media RSS tags (**premium feature**).
 
 **<a href="https://fifu.app/">Official Site</a>**	
-**<a href="https://blog.featuredimagefromurl.com/">Live Preview (Blog)</a>**
-**<a href="https://shop.featuredimagefromurl.com/">Live Preview (Shop)</a>**
+**<a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola">Google Chrome Extension</a>**
 
 == Installation ==
 
@@ -158,6 +165,69 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 3.0.7 =
+* Bug fix: internal featured images might not being shown in the previous version.
+
+= 3.0.6 =
+* New feature (Premium): Media RSS Tags; Improvement (Premium): FIFU add-on for WP All Import has a List Delimiter field now; Bug fix: conflict with external images from WordPress sites; Bug fix: og:image social tag was not being added when Yoast SEO plugin is installed.
+
+= 3.0.5 =
+* Improvement (Premium): Video Thumbnail Height option was not responsive and was replaced by Crop Top and Bottom (%); Bug Fix: Twitter Social Tag was not being added when Yoast SEO plugin is installed; Bug fix: Hide Featured Media was unduly working for a page used as front page.
+
+= 3.0.4 =
+* Critical bug fix: conflict between Social Tags feature and the latest Yoast SEO plugin version on post editor (Updating failed error); New option (Premium): thumbnail height (crop the top and bottom margins from video image thumbnails); New option: only image tags (disable title and description social tags); Bug fix: rest routes (some features not working in sites with https problems); Bug fix: metadata features (problems due URLs with illegal characters).
+
+= 3.0.3 =
+* New options (Premium): Play Button > Color, Play Button > z-index, Video Image Thumbnail > on custom post type; Improvement (Premium): new option to replace the play button by a little top right video icon on grids; Bug fix: menu settings style issue due customized jquery-ui CSS from some themes.
+
+= 3.0.2 =
+* Improvement: integration with WordPress Importer plugin; Improvement (Premium): Play Button can start the video inline now (lightbox is optional); Improvement (Premium): Video Image Thumbnail can be used in single posts now; Bug fix: WooCommerce placeholder not loaded on product category editor; Bug fix: get_woocommerce_term_meta() function is deprecated; Bug fix: saved image dimensions were not being applied.
+
+= 3.0.1 =
+* New feature: Delete All URLs; Improvement: FIFU column differentiates internal and external images now; Bug fix: conflict with Classified Listing plugin; Bug fix: conflict between Admin->jQuery and Elementor editor.
+
+= 3.0.0 =
+* Improvement (Premium): supports videos from Publitio now; New: donation campaign removed ($142.90 raised); New: Premium version has now 5 different annual plans.
+
+= 2.9.9 =
+* Improvement (Premium): play button on video image thumbnail can be disabled/enabled now; Bug fix: conflict between WooCommerce lightbox toggle and some themes.
+
+= 2.9.8 =
+* Improvement (Premium): Featured Video and Featured Slider should work with ANY theme now.
+
+= 2.9.7 =
+* New (Premium): a play button can be added to video image thumbnails and clicking on that the video will be shown in a lightbox; Improvement: some code added to avoid cache issues with the image javascript; Bug fix: conflict with WPML Multilingual CMS plugin; Bug fix: ajax image problem when adding products to cart; Bug fix: style issue on menu settings due notices/messages from other themes/plugins.
+
+= 2.9.6 =
+* Improvement: last posts and URLs added to support data to make the support faster; Improvement: integration with Sirv plugin; Bug fix: some layout issues on image keyword search.
+
+= 2.9.5 =
+* Improvement: next button added to random featured images; Bug fix: style issues on Arabic language sites.
+
+= 2.9.4 =
+* Bug fix: 2.9.3 new features were not working for WooCommerce product categories.
+
+= 2.9.3 =
+* New feature: external images can be loaded from Unsplash (keywords search or randomly); New Premium feature: Unsplash Image Size; Improvement: lightbox on post editor; Bug fix: conflict with tagDiv Composer plugin.
+
+= 2.9.2 =
+* Bug fix: internal images were not being shown when used into Featured Image from URL field.
+
+= 2.9.1 =
+* Improvement: URL from Post Content feature can work with the nth image now; Improvement: Hide Featured Media feature can work with Custom Post Types now; Bug fix: image width was being limited to 1000px; Bug fix: conflict with internal images.
+
+= 2.9.0 =
+* New: the plugin has its own Chrome Extension now; Bug fix: block-ui was not working after recent update.
+
+= 2.8.9 =
+* Bug fixes: conflict with Media Cloud plugin and menu settings style issues on Google Chrome.
+
+= 2.8.8 =
+* Bug fix: menu settings layout was broken in sites with many plugins/themes notifications.
+
+= 2.8.7 =
+* New: supports PRIVATE videos from Vimeo now.
 
 = 2.8.6 =
 * Bug fix: conflict with Multisite Post Duplicator plugin; Improvement: public front-end script should run a little faster now; Improvement: plugin version added to CSS to avoid cache style issues.
@@ -686,6 +756,69 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 3.0.7 =
+* Bug fix: internal featured images might not being shown in the previous version.
+
+= 3.0.6 =
+* New feature (Premium): Media RSS Tags; Improvement (Premium): FIFU add-on for WP All Import has a List Delimiter field now; Bug fix: conflict with external images from WordPress sites; Bug fix: og:image social tag was not being added when Yoast SEO plugin is installed.
+
+= 3.0.5 =
+* Improvement (Premium): Video Thumbnail Height option was not responsive and was replaced by Crop Top and Bottom (%); Bug Fix: Twitter Social Tag was not being added when Yoast SEO plugin is installed; Bug fix: Hide Featured Media was unduly working for a page used as front page.
+
+= 3.0.4 =
+* Critical bug fix: conflict between Social Tags feature and the latest Yoast SEO plugin version on post editor (Updating failed error); New option (Premium): thumbnail height (crop the top and bottom margins from video image thumbnails); New option: only image tags (disable title and description social tags); Bug fix: rest routes (some features not working in sites with https problems); Bug fix: metadata features (problems due URLs with illegal characters).
+
+= 3.0.3 =
+* New options (Premium): Play Button > Color, Play Button > z-index, Video Image Thumbnail > on custom post type; Improvement (Premium): new option to replace the play button by a little top right video icon on grids; Bug fix: menu settings style issue due customized jquery-ui CSS from some themes.
+
+= 3.0.2 =
+* Improvement: integration with WordPress Importer plugin; Improvement (Premium): Play Button can start the video inline now (lightbox is optional); Improvement (Premium): Video Image Thumbnail can be used in single posts now; Bug fix: WooCommerce placeholder not loaded on product category editor; Bug fix: get_woocommerce_term_meta() function is deprecated; Bug fix: saved image dimensions were not being applied.
+
+= 3.0.1 =
+* New feature: Delete All URLs; Improvement: FIFU column differentiates internal and external images now; Bug fix: conflict with Classified Listing plugin; Bug fix: conflict between Admin->jQuery and Elementor editor.
+
+= 3.0.0 =
+* Improvement (Premium): supports videos from Publitio now; New: donation campaign removed ($ 142.90 raised); New: Premium version has now 5 different annual plans.
+
+= 2.9.9 =
+* Improvement (Premium): play button on video image thumbnail can be disabled/enabled now; Bug fix: conflict between WooCommerce lightbox toggle and some themes.
+
+= 2.9.8 =
+* Improvement (Premium): Featured Video and Featured Slider should work with ANY theme now.
+
+= 2.9.7 =
+* New (Premium): a play button can be added to video image thumbnails and clicking on that the video will be shown in a lightbox; Improvement: some code added to avoid cache issues with the image javascript; Bug fix: conflict with WPML Multilingual CMS plugin; Bug fix: ajax image problem when adding products to cart; Bug fix: style issue on menu settings due notices/messages from other themes/plugins.
+
+= 2.9.6 =
+* Improvement: last posts and URLs added to support data to make the support faster; Improvement: integration with Sirv plugin; Bug fix: some layout issues on image keyword search.
+
+= 2.9.5 =
+* Improvement: next button added to random featured images; Bug fix: style issues on Arabic language sites.
+
+= 2.9.4 =
+* Bug fix: 2.9.3 new features were not working for WooCommerce product categories.
+
+= 2.9.3 =
+* New feature: external images can be loaded from Unsplash (keywords search or randomly); New Premium feature: Unsplash Image Size; Improvement: lightbox on post editor; Bug fix: conflict with tagDiv Composer plugin.
+
+= 2.9.2 =
+* Bug fix: internal images were not being shown when used into Featured Image from URL field.
+
+= 2.9.1 =
+* Improvement: URL from Post Content feature can work with the nth image now; Improvement: Hide Featured Media feature can work with Custom Post Types now; Bug fix: image width was being limited to 1000px; Bug fix: conflict with internal images.
+
+= 2.9.0 =
+* New: the plugin has its own Chrome Extension now; Bug fix: block-ui was not working after recent update.
+
+= 2.8.9 =
+* Bug fixes: conflict with Media Cloud plugin and menu settings style issues on Google Chrome.
+
+= 2.8.8 =
+* Bug fix: menu settings layout was broken in sites with many plugins/themes notifications.
+
+= 2.8.7 =
+* New: supports PRIVATE videos from Vimeo now.
 
 = 2.8.6 =
 * Bug fix: conflict with Multisite Post Duplicator plugin; Improvement: public front-end script should run a little faster now; Improvement: plugin version added to CSS to avoid cache style issues.
