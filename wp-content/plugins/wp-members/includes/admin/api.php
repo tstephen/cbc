@@ -4,12 +4,12 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @author Chad Butler
- * @copyright 2006-2019
+ * @copyright 2006-2020
  *
  * Functions included:
  * - wpmem_add_custom_email
@@ -95,23 +95,4 @@ function wpmem_admin_form_post_url( $args = false ) {
 function wpmem_wp_reserved_terms() {
 	global $wpmem;
 	return $wpmem->admin->wp_reserved_terms();
-}
-
-/**
- * Export all or selected users
- *
- * @since 2.9.7
- * @since 3.2.0 Updated to use fputcsv.
- * @since 3.2.1 Added user data filters.
- * @since 3.3.0 Call object class static method.
- *
- * @global object $wpmem
- *
- * @param array $args
- * @param array $users
- */
-function wpmem_export_users( $args, $users = null ) {
-	global $wpmem;
-	include_once( $wpmem->path . 'includes/admin/class-wp-members-export.php' );
-	WP_Members_Export::export_users( $args, $users );
 }

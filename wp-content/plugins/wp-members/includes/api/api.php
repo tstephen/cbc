@@ -4,13 +4,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP-Members API Functions
  * @author Chad Butler 
- * @copyright 2006-2019
+ * @copyright 2006-2020
  *
  * Functions included:
  * - wpmem_redirect_to_login
@@ -63,11 +63,23 @@ function wpmem_redirect_to_login( $redirect_to = false ) {
  *
  * @global object $wpmem   The WP-Members object class.
  * @param  int    $post_id 
- * @return bool   $block   True if content is blocked, false otherwise.
+ * @return bool   $block   True if content is blocked, otherwise false.
  */
 function wpmem_is_blocked( $post_id = false ) {
 	global $wpmem;
 	return $wpmem->is_blocked( $post_id );
+}
+
+/**
+ * Checks if specific post is marked as hidden.
+ *
+ * @since 3.3.2
+ *
+ * @param  int    $post_id 
+ * @return bool   $block   True if content is hidden, otherwise false.
+ */
+function wpmem_is_hidden( $post_id = false ) {
+	return ( 2 == get_post_meta( $post_id ) ) ? true : false;
 }
 
 /** 
@@ -369,7 +381,7 @@ function wpmem_add_custom_dialog( $dialogs, $tag, $msg, $label ) {
 /**
  * Gets an array of hidden post IDs.
  *
- * @since 3.3.0.4
+ * @since 3.3.1
  *
  * @global stdClass $wpmem
  * @return array
@@ -377,6 +389,19 @@ function wpmem_add_custom_dialog( $dialogs, $tag, $msg, $label ) {
 function wpmem_get_hidden_posts() {
 	global $wpmem;
 	return $wpmem->get_hidden_posts();
+}
+
+/**
+ * Conditional if REST request.
+ *
+ * @since 3.3.2
+ *
+ * @global stdClass $wpmem
+ * @return boolean
+ */
+function wpmem_is_rest() {
+	global $wpmem;
+	return $wpmem->is_rest;
 }
 
 // End of file.

@@ -16,6 +16,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class WP_Members_Captcha {
+	
+	/**
+	 * Display a CAPTCHA.
+	 *
+	 * @since 3.3.4
+	 *
+	 * @param  string  $type  Type of captcha to display.
+	 * @param  array   $keys  Google reCAPTCHA keys (if used).
+	 */
+	static function show( $type, $keys = false ) {
+		if ( 'rs_captcha' == $type ) {
+			return self::rs_captcha();
+		} else {
+			return self::recaptcha( $keys );
+		}
+	}
 
 	/**
 	 * Create reCAPTCHA form.
@@ -130,45 +146,67 @@ class WP_Members_Captcha {
 						<img src="' . esc_url( $src ) . '" alt="captcha" width="' . esc_attr( $img_w ) . '" height="' . esc_attr( $img_h ) . '" />'
 			);
 		} else {
-			return;
+			return "Really Simple CAPTCHA is not enabled";
 		}
 	}
 	
 	/**
-	 * Process registration captcha.
+	 * Process a captcha.
 	 *
 	 * @since 3.1.6
 	 * @since 3.3.0 Ported from wpmem_register_handle_captcha() in register.php.
+	 * @since 3.3.4 Added argument to specify which captcha type to validate.
 	 *
 	 * @global $wpmem
 	 * @global $wpmem_themsg
+	 * @param  $which_captcha
 	 * @return $string
 	 */
-	static function validate() {
+	static function validate( $which_captcha = false ) {
 
 		global $wpmem, $wpmem_themsg;
+		
+		if ( ! $which_captcha ) {
 
-		// Get the captcha settings (api keys).
-		$wpmem_captcha = get_option( 'wpmembers_captcha' );
+			// Get the captcha settings (api keys).
+			$wpmem_captcha = get_option( 'wpmembers_captcha' );
 
-		/*
-		 * @todo reCAPTCHA v1 is deprecated by Google. It is also no longer allowed
-		 * to be set for new installs of WP-Members.  It is NOT compatible with
-		 * PHP 7.1 and is therefore fully obsolete.
-		 */
-		// If captcha is on, check the captcha.
-		if ( $wpmem->captcha == 1 && $wpmem_captcha['recaptcha'] ) { 
-			$wpmem->captcha = 3;
-		} 
+			/*
+			 * @todo reCAPTCHA v1 is deprecated by Google. It is also no longer allowed
+			 * to be set for new installs of WP-Members.  It is NOT compatible with
+			 * PHP 7.1 and is therefore fully obsolete.
+			 */
+			// If captcha is on, check the captcha.
+			if ( $wpmem->captcha == 1 && $wpmem_captcha['recaptcha'] ) { 
+				$wpmem->captcha = 3;
+			}
+			
+			switch ( $wpmem->captcha ) {
+				case 1:
+				case 3:
+					$captcha = "recaptcha_v2";
+					break;
+				case 4:
+					$captcha = "recaptcha_v3";
+					break;
+				case 2:
+				default:
+					$captcha = "rs_captcha";
+					break;
+			}
+			
+		} else {
+			$captcha = $which_captcha;
+		}
 
-		if ( 2 == $wpmem->captcha ) {
+		if ( 'rs_captcha' == $captcha ) {
 			if ( defined( 'REALLYSIMPLECAPTCHA_VERSION' ) ) {
 				// Validate Really Simple Captcha.
 				$wpmem_captcha = new ReallySimpleCaptcha();
 				// This variable holds the CAPTCHA image prefix, which corresponds to the correct answer.
-				$wpmem_captcha_prefix = ( isset( $_POST['captcha_prefix'] ) ) ? $_POST['captcha_prefix'] : '';
+				$wpmem_captcha_prefix = ( isset( $_POST['captcha_prefix'] ) ) ? sanitize_text_field( $_POST['captcha_prefix'] ) : '';
 				// This variable holds the CAPTCHA response, entered by the user.
-				$wpmem_captcha_code = ( isset( $_POST['captcha_code'] ) ) ? $_POST['captcha_code'] : '';
+				$wpmem_captcha_code = ( isset( $_POST['captcha_code'] ) ) ? sanitize_text_field( $_POST['captcha_code'] ) : '';
 				// Check CAPTCHA validity.
 				$wpmem_captcha_correct = ( $wpmem_captcha->check( $wpmem_captcha_prefix, $wpmem_captcha_code ) ) ? true : false;
 				// Clean up the tmp directory.
@@ -180,55 +218,72 @@ class WP_Members_Captcha {
 					return "empty";
 				}
 			}
-		} elseif ( 3 == $wpmem->captcha && $wpmem_captcha['recaptcha'] ) {
-			// Get the captcha response.
-			if ( isset( $_POST['g-recaptcha-response'] ) ) {
-				$captcha = $_POST['g-recaptcha-response'];
-			}
-
-			// If there is no captcha value, return error.
-			if ( ! $captcha ) {
-				$wpmem_themsg = $wpmem->get_text( 'reg_empty_captcha' );
-				return "empty";
-			}
-
-			// We need the private key for validation.
+		} else {
+			
+			// It is reCAPTCHA.
+			$recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify?';
+			
 			$privatekey = $wpmem_captcha['recaptcha']['private'];
+			
+			if ( 'recaptcha_v2' == $captcha && $wpmem_captcha['recaptcha'] ) {
+				
+				$captcha = wpmem_get( 'g-recaptcha-response', false );
 
-			// Validate the captcha.
-			$response = wp_remote_fopen( "https://www.google.com/recaptcha/api/siteverify?secret=" . $privatekey . "&response=" . $captcha . "&remoteip=" . wpmem_get_user_ip() );
-
-			// Decode the json response.
-			$response = json_decode( $response, true );
-
-			// If captcha validation was unsuccessful.
-			if ( false == $response['success'] ) {
-				$wpmem_themsg = $wpmem->get_text( 'reg_invalid_captcha' );
-				if ( WP_DEBUG && isset( $response['error-codes'] ) ) {
-					$wpmem_themsg.= '<br /><br />';
-					foreach( $response['error-codes'] as $code ) {
-						$wpmem_themsg.= "Error code: " . $code . "<br />";
-					}
-				}
-				return "empty";
-			}
-		} elseif ( 4 == $wpmem->captcha && $wpmem_captcha['recaptcha'] ) {
-			if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recaptcha_response'] ) ) {
-
-				// Make and decode POST request:
-				$recaptcha = file_get_contents( 'https://www.google.com/recaptcha/api/siteverify?secret=' . $wpmem_captcha['recaptcha']['private'] . '&response=' . $_POST['recaptcha_response'] );
-				$recaptcha = json_decode( $recaptcha );
-
-				// Take action based on the score returned:
-				if ( $recaptcha->score >= 0.5 ) {
-					// Verified - send email
-				} else {
-					$wpmem_themsg = $wpmem->get_text( 'reg_invalid_captcha' );
+				// If there is no captcha value, return error.
+				if ( ! $captcha ) {
+					$wpmem_themsg = $wpmem->get_text( 'reg_empty_captcha' );
 					return "empty";
 				}
-			}		
+
+				// Build URL for captcha evaluation.
+				$url = $recaptcha_verify_url . http_build_query([
+					'secret' => $privatekey,
+					'response' => $captcha,
+					'remoteip' => wpmem_get_user_ip(),
+				]);
+				
+				// Validate the captcha.
+				$response = wp_remote_fopen( $url );
+
+				// Decode the json response.
+				$response = json_decode( $response, true );
+
+				// If captcha validation was unsuccessful.
+				if ( false == $response['success'] ) {
+					$wpmem_themsg = $wpmem->get_text( 'reg_invalid_captcha' );
+					if ( WP_DEBUG && isset( $response['error-codes'] ) ) {
+						$wpmem_themsg.= '<br /><br />';
+						foreach( $response['error-codes'] as $code ) {
+							$wpmem_themsg.= "Error code: " . $code . "<br />";
+						}
+					}
+					return "empty";
+				}
+			} elseif ( 'recaptcha_v3' == $captcha && $wpmem_captcha['recaptcha'] ) {
+				$captcha = wpmem_get( 'recaptcha_response', false );
+				if ( $_SERVER['REQUEST_METHOD'] === 'POST' && false !== $captcha ) {
+
+					// Make and decode POST request:
+					$url = $recaptcha_verify_url . http_build_query([
+						'secret' => $privatekey,
+						'response' => $captcha,
+					]);
+					$recaptcha = file_get_contents( $url );
+					$recaptcha = json_decode( $recaptcha );
+
+					// Take action based on the score returned:
+					if ( $recaptcha->score >= 0.5 ) {
+						// Verified - send email
+					} else {
+						$wpmem_themsg = $wpmem->get_text( 'reg_invalid_captcha' );
+						return "empty";
+					}
+				} else {
+					return "empty";
+				}
+			}
 		}	
 
-		return "passed_captcha";
+		return true;
 	}
 }

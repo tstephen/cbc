@@ -2,8 +2,8 @@
 Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
-Tested up to: 5.3
-Stable tag: 3.3.1
+Tested up to: 5.4
+Stable tag: 3.3.4.2
 License: GPLv2
 
 == Description ==
@@ -100,7 +100,7 @@ The FAQs are maintained at https://rocketgeek.com/plugins/wp-members/docs/faqs/
 
 == Upgrade Notice ==
 
-WP-Members 3.3.0 is a major update. WP-Members 3.3.1 is a bug fix release. See changelog for important details. Minimum WP version is 4.0.
+WP-Members 3.3.0 is a major update. WP-Members 3.3.4 is an improvement release. See changelog for important details. Minimum WP version is 4.0.
 
 
 == Screenshots ==
@@ -123,6 +123,58 @@ WP-Members 3.3.0 is a major update. WP-Members 3.3.1 is a bug fix release. See c
 
 
 == Changelog ==
+
+= 3.3.4.2 =
+
+* Only run the woocommerce_form_field_{field_type} filter on fields in the WP-Members fields array (ignore all others).
+* Only run woocommerce_checkout_fields filter if user is not logged in (adds WP-Members fields to WC checkout, if user is logged in, data should be edited in profile).
+* Bug fix from 3.3.4 that caused register form heading to be empty when the register form shortcode is used.
+
+= 3.3.4.1 =
+
+* The 3.3.4 release contained some additional code used to debug the WooCommerce checkout. This causes an issue with the checkout process for general use. This update patches that by removing this code. You only need to update if you use WP-Members with WooCommerce.
+
+= 3.3.4 =
+
+* Updated pre_get_posts to merge post__not_in with any existing values. This will allow for better integration with other plugins (such as Search Exclude).
+* Updated pre_get_posts to fire later (20) in case another plugin is adding values to be excluded. This will prevent any hidden posts from being dropped by the other plugin's process.
+* Added wpmem_hidden_posts and wpmem_posts__not_in filters.
+* Fixed logic in upload input type (image or file) to correct undefined variable ($file_type).
+* Added function_exists check for wpmem_renew() (a PayPal extension function used in the core plugin).
+* Fixed function name typo for wpmem_a_extend_user() (a PayPal extension function used in the core plugin).
+* Updated product access shortcode error message to use the product_restricted message and changed the class to product_restricted_msg
+* Updated CAPTCHA class for more flexibility (can now be implemented into API for calling directly in the login or other forms).
+* Moved user export function from Admin API to User API.
+* Fixed adding WP-Members fields to WooCommerce checkout.
+
+
+= 3.3.3 =
+
+* If WooCommerce is active, any standard WC user meta fields are removed from the WP-Members additional fields in the User Profile Edit (since they already display in the WC field blocks).
+* When setting hidden posts, don't include posts from post types not set as handled by WP-Members. This prevents previously hidden posts from being included if the post type is no longer included for WP-Members.
+* Set a default product for publishing posts/pages.
+* Updated activation/deactivation processing so that a (admin) user cannot activate or deactivate themselves. Also, if a user has "edit_users" capability, they can log in without being activated.
+* Load email "from" address with main settings rather than when email is sent. This corrects issues with Advanced Options extension, and also keeps the value loaded for use outside of WP-Members email function.
+* WP 5.4 adds the wp_nav_menu_item_custom_fields action, so now WP-Members only loads its custom walker if WP is 5.3 or lower.
+* Image file field type now shows an immediate preview when the "choose file" button is clicked and an image selected (both profile update and new registration).
+* wpmem_login_failed_args updated to pass $args (similar to other _args filters in the plugin, now parses defaults).
+
+= 3.3.2 =
+
+* Added back shortcode menu item previously removed in 3.3.0.
+* Added new handling in wpmem_is_blocked() for validating rest api requests.
+* Added new wpmem_is_rest() function to the plugin's API, determines if the request is a rest request.
+* Fixed issue with dropdown, mutliple select, and radio field types that allowed white space in resulting value.
+* Fixed issue with register/profile update validation if email is removed via wpmem_fields filter hook.
+* Fixed issue with prev/next post links to not show hidden posts if user is logged in but does not have a membership.
+* Fixed issue with hidden posts when membership products are used. Hidden posts not assigned a membership remained hidden.
+* Fixed issue with menus where logged in/logged out settings were not applied unless membership products were enabled.
+* Moved wpmem_post_register_data action to fire hooked to user_register at priority 20. Changed email actions to fire at priority 25. See release announcement for more detail of implications.
+* Code improvement to reCAPTCHA.
+* Code improvement to excerpt generation.
+* Code improvement to expiration date generation.
+* Code improvement to hidden posts when using membership products.
+* Code improvement changed user_register hook priority for post_register_data() to "9" to allow for custom meta fields to be available to any user_register function using the default priority (10) or later.
 
 = 3.3.1 =
 
@@ -149,8 +201,6 @@ Including all 3.3.0.x patches:
 * Fixes undefined string variable when successful registration is executed. (3.3.0.1)
 
 = 3.3.0 =
-
-* @todo Need to resolve duplicate wpmem_login_form_defaults. (maybe took care of itself with backing out of _args deprecation)
 
 * REMOVED [wp-members] shortcode tag. THIS TAG IS OBSOLETE WILL NO LONGER FUNCTION. See: https://rocketgeek.com/shortcodes/list-of-replacement-shortcodes/
 * REMOVED tinymce button for shortcodes as no longer necessary with gutenberg.

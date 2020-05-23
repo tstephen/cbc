@@ -45,9 +45,10 @@ class WP_Members_User {
 	function __construct( $settings ) {
 		add_action( 'user_register', array( $this, 'set_reg_type'            ), 1 );
 		add_action( 'user_register', array( $this, 'register_finalize'       ), 5 ); // @todo This needs rigorous testing, especially front end processing such as WC.
-		add_action( 'user_register', array( $this, 'set_user_exp'            ), 6 );
-		add_action( 'user_register', array( $this, 'register_email_to_user'  ), 6 ); // @todo This needs rigorous testing for integration with WC or WP native.
-		add_action( 'user_register', array( $this, 'register_email_to_admin' ), 6 ); // @todo This needs rigorous testing for integration with WC or WP native.register_email_to_admin
+		add_action( 'user_register', array( $this, 'post_register_data'      ), 9 ); // Changed this to 9 so custom user meta is saved before the default (10) priority.
+		add_action( 'user_register', array( $this, 'set_user_exp'            ), 25 );
+		add_action( 'user_register', array( $this, 'register_email_to_user'  ), 25 ); // @todo This needs rigorous testing for integration with WC or WP native.
+		add_action( 'user_register', array( $this, 'register_email_to_admin' ), 25 ); // @todo This needs rigorous testing for integration with WC or WP native.register_email_to_admin
 		add_action( 'wpmem_register_redirect', array( $this, 'register_redirect' ) );
 		
 		add_filter( 'registration_errors',       array( $this, 'wp_register_validate' ), 10, 3 );  // native registration validation
@@ -171,8 +172,10 @@ class WP_Members_User {
 		$this->reg_type['is_native']  = ( __( 'Register' ) == wpmem_get( 'wp-submit' ) ) ? true : false;
 		// Is this a Users > Add New process? Checks the post action.
 		$this->reg_type['is_add_new'] = ( 'createuser' == wpmem_get( 'action' ) ) ? true : false;
-		// Is this a WooCommerce checkout registration? Checks for WC fields.
-		$this->reg_type['is_woo']     = ( wpmem_get( 'woocommerce_checkout_place_order' ) || wpmem_get( 'woocommerce-register-nonce' ) ) ? true : false;
+		// Is this a WooCommerce my account registration? Checks for WC fields.
+		$this->reg_type['is_woo']     = ( wpmem_get( 'woocommerce-register-nonce' ) ) ? true : false;
+		// Is this a WooCommerce checkout?
+		$this->reg_type['is_woo_checkout'] = ( wpmem_get( 'woocommerce_checkout_place_order' ) ) ? true : false;
 	}
 
 	/**
@@ -197,16 +200,18 @@ class WP_Members_User {
 			return;
 		}
 
+		// Make sure fields are loaded.
+		wpmem_fields( $tag );
+
 		// Is this a registration or a user profile update?
 		if ( 'register' == $tag ) { 
 			$this->post_data['username'] = sanitize_user( wpmem_get( 'username' ) );
 		}
 
 		// Add the user email to the $this->post_data array for _data hooks.
-		$this->post_data['user_email'] = sanitize_email( wpmem_get( 'user_email' ) );
-
-		// Make sure fields are loaded.
-		wpmem_fields();
+		if ( isset( $wpmem->fields['user_email'] ) ) {
+			$this->post_data['user_email'] = sanitize_email( wpmem_get( 'user_email' ) );
+		}
 		
 		// If this is an update, and tos is a field, and the user has the correct saved value, remove tos.
 		if ( 'update' == $tag && isset( $wpmem->fields['tos'] ) ) {
@@ -342,7 +347,7 @@ class WP_Members_User {
 			// Process CAPTCHA.
 			if ( 0 != $wpmem->captcha ) {
 				$check_captcha = WP_Members_Captcha::validate();
-				if ( 'passed_captcha' != $check_captcha ) {
+				if ( true != $check_captcha ) {
 					return $check_captcha;
 				}
 			}
@@ -476,6 +481,28 @@ class WP_Members_User {
 		$user_ip = ( $this->reg_type['is_wpmem'] ) ? $this->post_data['wpmem_reg_ip'] : wpmem_get_user_ip();
 		update_user_meta( $user_id, 'wpmem_reg_ip', $user_ip );
 
+	}
+	
+	/**
+	 * Fires wpmem_post_register_data action.
+	 *
+	 * @since 3.3.2
+	 *
+	 * @global stdClass $wpmem
+	 * @param  int      $user_id
+	 */
+	function post_register_data( $user_id ) {
+		global $wpmem;
+		$wpmem->user->post_data['ID'] = $user_id;
+		/**
+		 * Fires after user insertion but before email.
+		 *
+		 * @since 2.7.2
+		 * @since 3.3.2 Hooked to user_register.
+		 *
+		 * @param array $wpmem->user->post_data The user's submitted registration data.
+		 */
+		do_action( 'wpmem_post_register_data', $wpmem->user->post_data );
 	}
 	
 	/**
@@ -940,84 +967,68 @@ class WP_Members_User {
 		
 		$user_id = ( ! $user_id ) ? get_current_user_id() : $user_id;
 		
-		// Get legacy user product array @todo This will eventually be removed.
-		$user_products = get_user_meta( $user_id, '_wpmem_products', true );
-		$user_products = ( $user_products ) ? $user_products : array();
-		
 		// New single meta format. @todo This remains when legacy array is removed.
-		$user_product = get_user_meta( $user_id, '_wpmem_products_' . $product, true );
+		$prev_value = get_user_meta( $user_id, '_wpmem_products_' . $product, true );
 
 		// Convert date to add.
-		$expires = ( isset( $wpmem->membership->products[ $product ]['expires'] ) ) ? $wpmem->membership->products[ $product ]['expires'] : false;
+		$expiration_period = ( isset( $wpmem->membership->products[ $product ]['expires'] ) ) ? $wpmem->membership->products[ $product ]['expires'] : false;
+		
+		$renew = false;
 	
 		// If membership is an expiration product.
-		if ( is_array( $expires ) ) {
+		if ( is_array( $expiration_period ) ) {
 			// If this is setting a specific date.
 			if ( $set_date ) {
-				// @todo Legacy verion
-				$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $set_date ) );
-				// @todo New version
-				$user_product = strtotime( $set_date );
+				$new_value = strtotime( $set_date );
 			} else {
 				// Either setting initial expiration based on set time period, or adding to the existing date (renewal/extending).
 				$raw_add = explode( "|", $wpmem->membership->products[ $product ]['expires'][0] );
 				$add_period = ( 1 < $raw_add[0] ) ? $raw_add[0] . " " . $raw_add[1] . "s" : $raw_add[0] . " " . $raw_add[1];
-				
-				// Legacy first.
-				if ( isset( $user_products[ $product ] ) ) {
-					if ( isset( $wpmem->membership->products[ $product ]['no_gap'] ) && 1 == $wpmem->membership->products[ $product ]['no_gap'] ) {
-						// Add to the user's existing date (no gap).
-						//$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $add_period ) );
-						$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $add_period, strtotime( $user_products[ $product ] ) ) );
-					} else {
-						// Add to the user either from end or now (whichever is later; i.e. allow gaps (default)).
-						if ( $this->has_access( $product, $user_id ) ) {
-							// if not expired, set from when they expire.
-							$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $add_period, strtotime( $user_products[ $product ] ) ) );
-						} else {
-							// if expired, set from today.
-							$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $add_period ) );
-						}
-					}
-					
-				} else {
-					// User doesn't have this membershp. Go ahead and add it.
-					$user_products[ $product ] = date( 'Y-m-d H:i:s', strtotime( $add_period ) );
-				}
 					
 				// New single meta version.
-				if ( $user_product ) {
+				if ( $prev_value ) {
+					$renew = true;
 					if ( isset( $wpmem->membership->products[ $product ]['no_gap'] ) && 1 == $wpmem->membership->products[ $product ]['no_gap'] ) {
 						// Add to the user's existing date (no gap).
-						$user_product = strtotime( $add_period, $user_product );
+						$new_value = strtotime( $add_period, $prev_value );
 					} else {
 						// Add to the user either from end or now (whichever is later; i.e. allow gaps (default)).
 						if ( $this->has_access( $product, $user_id ) ) {
 							// if not expired, set from when they expire.
-							$user_product = strtotime( $add_period, $user_product );
+							$new_value = strtotime( $add_period, $prev_value );
 						} else {
 							// if expired, set from today.
-							$user_product = strtotime( $add_period );
+							$new_value = strtotime( $add_period );
 						}
 					}
 				} else {
 					// User doesn't have this membershp. Go ahead and add it.
-					$user_product = strtotime( $add_period );
+					$new_value = strtotime( $add_period );
 				}
-
 			}
 		} else {
-			// @todo Legacy verion
-			$user_products[ $product ] = true;
-			// @todo New version
-			$user_product = true;
+			$new_value = true;
 		}	
 		
+		/**
+		 * Filter the expiration date.
+		 *
+		 * @since 3.3.2
+		 *
+		 * @param int|boolean  $new_value  Unix timestamp of new expiration, true|false if not an expiry product.
+		 * @param int|boolean  $prev_value The user's current value (prior to updating).
+		 * @param boolean      $renew      Is this a renewal transaction?
+		 */
+		$new_value = apply_filters( 'wpmem_user_product_set_expiration', $new_value, $prev_value, $renew );
+		
 		// Update product setting.
-		// @todo Legacy version
+		update_user_meta( $user_id, '_wpmem_products_' . $product, $new_value );
+		
+		// Update the legacy setting.
+		$user_products = get_user_meta( $user_id, '_wpmem_products', true );
+		$user_products = ( $user_products ) ? $user_products : array();
+		$user_products[ $product ] = ( true === $new_value ) ? true : date( 'Y-m-d H:i:s', $new_value );
 		update_user_meta( $user_id, '_wpmem_products', $user_products );
-		// New, individual version.
-		update_user_meta( $user_id, '_wpmem_products_' . $product, $user_product );
 
 		/**
 		 * Fires when a user product has been set.
@@ -1027,7 +1038,7 @@ class WP_Members_User {
 		 * @param  int    $user_id
 		 * @param  string $product
 		 */
-		do_action( 'wpmem_user_product_set', $user_id, $product );
+		do_action( 'wpmem_user_product_set', $user_id, $product, $new_value, $prev_value, $renew );
  
 	}
 	

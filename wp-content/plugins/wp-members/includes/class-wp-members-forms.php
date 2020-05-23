@@ -72,7 +72,7 @@ class WP_Members_Forms {
 		$placeholder = ( isset( $args['placeholder'] ) ) ? $args['placeholder'] : false;
 		$pattern     = ( isset( $args['pattern']     ) ) ? $args['pattern']     : false;
 		$title       = ( isset( $args['title']       ) ) ? $args['title']       : false;
-		$file_types  = ( isset( $args['file_types']  ) ) ? $args['file_types']      : false;
+		$file_types  = ( isset( $args['file_types']  ) ) ? $args['file_types']  : false;
 	
 		// Handle field creation by type.
 		switch ( $type ) { 
@@ -129,7 +129,7 @@ class WP_Members_Forms {
 				$accept = '';
 			}
 			$class  = ( 'textbox' == $class ) ? "file" : $this->sanitize_class( $class );
-			$str = "<input name=\"$name\" type=\"file\" id=\"$id\" value=\"" . esc_attr( $value ) . "\" class=\"$class\"$accept" . ( ( $required ) ? " required " : "" ) . " />";
+			$str = "<input name=\"$name\" type=\"file\" id=\"$id\" value=\"" . esc_attr( $value ) . "\" class=\"$class\"$accept" . ( ( $required ) ? " required " : "" ) . ( ( 'image' == $type ) ? ' onchange="loadFile(event, this.id)"' : '' ) . ' />';
 			break;
 	
 		case "checkbox":
@@ -168,7 +168,7 @@ class WP_Members_Forms {
 				}
 			}
 			foreach ( $value as $option ) {
-				$pieces = explode( '|', $option );
+				$pieces = array_map( 'trim', explode( '|', $option ) );
 				if ( 'multiselect' == $type ) {
 					$chk = '';
 					$values = ( empty( $compare ) ) ? array() : ( is_array( $compare ) ? $compare : explode( $delimiter, $compare ) );
@@ -196,7 +196,7 @@ class WP_Members_Forms {
 				$chk = ( isset( $pieces[2] ) && '' == $compare ) ? $pieces[1] : '';
 				if ( isset( $pieces[1] ) && '' != $pieces[1] ) {
 					$id_value = esc_attr( $id . '[' . $pieces[1] . ']' );
-					$label = wpmem_form_label( array( 'meta_key'=>$id_value, 'label'=>esc_html( __( $pieces[0], 'wp-members' ) ), 'type'=>'radio', 'id'=>$id_value ) );
+					$label = wpmem_form_label( array( 'meta_key'=>$id_value, 'label'=>esc_html( __( $pieces[0], 'wp-members' ) ), 'type'=>'multicheckbox', 'id'=>$id_value ) );
 					$str = $str . $this->create_form_field( array(
 						'id'      => $id_value,
 						'name'    => $name . '[]',
@@ -803,6 +803,7 @@ class WP_Members_Forms {
 	 * @since 3.1.7 Moved to forms object class as register_form().
 	 * @since 3.2.5 use_nonce now obsolete (nonce is added automatically).
 	 * @since 3.3.0 $heading argument obsolete.
+	 * @since 3.3.3 Image field type now shows the preview image when "choose file" is clicked.
 	 *
 	 * @global object $wpmem        The WP_Members object.
 	 * @global string $wpmem_regchk Used to determine if the form is in an error state.
@@ -921,6 +922,7 @@ class WP_Members_Forms {
 		$wpmem_fields = apply_filters( 'wpmem_register_fields_arr', $wpmem_fields, $tag );
 
 		$hidden_rows = array();
+		$form_has_file = false;
 
 		// Loop through the remaining fields.
 		foreach ( $wpmem_fields as $meta_key => $field ) {
@@ -1081,16 +1083,24 @@ class WP_Members_Forms {
 						$valtochk = '';
 					}
 
-					if ( 'edit' == $tag && ( 'file' == $field['type'] || 'image' == $field['type'] ) ) {
-
+					if ( ( 'file' == $field['type'] || 'image' == $field['type'] ) ) {
+						
+						$form_has_file = true;
+						
 						$attachment_url = wp_get_attachment_url( $val );
 						$empty_file = '<span class="description">' . __( 'None' ) . '</span>';
-						if ( 'file' == $field['type'] ) {
-							$input = ( $attachment_url ) ? '<a href="' . esc_url( $attachment_url ) . '">' . get_the_title( $val ) . '</a>' : $empty_file;
+						if ( 'edit' == $tag ) {
+							if ( 'file' == $field['type'] ) {
+								$input = ( $attachment_url ) ? '<a href="' . esc_url( $attachment_url ) . '" id="' . $meta_key . '_file">' . get_the_title( $val ) . '</a>' : $empty_file;
+							} else {
+								$input = ( $attachment_url ) ? '<img src="' . esc_url( $attachment_url ) . '" id="' . $meta_key . '_img" />' : $empty_file;
+							}
+							$input.= '<br />' . $wpmem->get_text( 'profile_upload' ) . '<br />';
 						} else {
-							$input = ( $attachment_url ) ? '<img src="' . esc_url( $attachment_url ) . '">' : $empty_file;
+							if ( 'image' == $field['type'] ) {
+								$input = '<img src="" id="' . $meta_key . '_img" />';
+							}
 						}
-						$input.= '<br />' . $wpmem->get_text( 'profile_upload' ) . '<br />';
 						$input.= wpmem_form_field( array(
 							'name'       => $meta_key, 
 							'type'       => $field['type'], 
@@ -1356,7 +1366,7 @@ class WP_Members_Forms {
 			 *
 			 * @param string The default edit mode heading.
 			 */
-			$heading = ( isset( $heading ) ) ? $headhing : apply_filters( 'wpmem_user_edit_heading', $wpmem->get_text( 'profile_heading' ) );			
+			$heading = ( isset( $heading ) && '' != $heading ) ? $heading : apply_filters( 'wpmem_user_edit_heading', $wpmem->get_text( 'profile_heading' ) );
 		} else {
 			/**
 			 * Filter the registration form heading.
@@ -1366,7 +1376,7 @@ class WP_Members_Forms {
 			 * @param string $str
 			 * @param string $tag Toggle new registration or profile update. new|edit.
 			 */
-			$heading = ( isset( $heading ) ) ? $headhing : apply_filters( 'wpmem_register_heading', $wpmem->get_text( 'register_heading' ), $tag );
+			$heading = ( isset( $heading ) && '' != $heading ) ? $heading : apply_filters( 'wpmem_register_heading', $wpmem->get_text( 'register_heading' ), $tag );
 		}
 		$form = $args['heading_before'] . $heading . $args['heading_after'] . $args['n'] . $form;
 
@@ -1396,6 +1406,20 @@ class WP_Members_Forms {
 		// Remove line breaks if enabled for easier filtering later.
 		$form = ( $args['strip_breaks'] ) ? $this->strip_breaks( $form, $rows ) : $form; //str_replace( array( "\n", "\r", "\t" ), array( '','','' ), $form ) : $form;
 
+		// If there is an image input type, include the following script.
+		$form = ( $form_has_file ) ? $form . '
+<script>
+	var loadFile = function(event, clicked_id) {
+		var reader = new FileReader();
+		var the_id = clicked_id + "_img";
+		reader.onload = function() {
+			var output = document.getElementById(the_id);
+			output.src = reader.result;
+		};
+		reader.readAsDataURL(event.target.files[0]);
+	};
+</script>' : $form;
+		
 		/**
 		 * Filter the generated HTML of the entire form.
 		 *
@@ -1940,7 +1964,7 @@ class WP_Members_Forms {
 					'name'   => $wpmem->get_text( 'pwdreset_email' ), 
 					'type'   => 'text', 
 					'tag'    => 'email', 
-					'class'  => 'text',
+					'class'  => 'textbox',
 					'div'    => 'div_text',
 				),
 			),
@@ -2057,4 +2081,13 @@ class WP_Members_Forms {
 		return $str;
 	}
 	
+	/**
+	 * Wrapper for handing the default WP login form.
+	 *
+	 * @since 3.3.2
+	 */
+	function wp_login_form( $args ) {
+		
+		return wp_login_form( $args );
+	}
 } // End of WP_Members_Forms class.

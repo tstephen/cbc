@@ -131,6 +131,7 @@ class WP_Members_Products_Admin {
 	 * Handles meta boxes for CPT editor.
 	 *
 	 * @since 3.2.0
+	 * @since 3.3.4 Added message meta box.
 	 */
 	function meta_boxes() {
 		remove_meta_box( 'slugdiv', 'wpmem_product', 'normal' );
@@ -142,8 +143,36 @@ class WP_Members_Products_Admin {
 			'normal',
 			'high'
 		);
+		add_meta_box(
+			'membership_product_message',
+			__( 'Membership Product Message (optional)', 'wp-members' ),
+			array( $this, 'message_meta_box_detail' ),
+			'wpmem_product'
+		);
 	}
 
+	/**
+	 * Gets an array of post types.
+	 *
+	 * @since 3.3.3
+	 *
+	 * @return array $post_types
+	 */
+	function get_post_types() {
+		global $wpmem;
+		// @todo This comes from option tab. Should consider it being an api function.
+		$post_arr = array(
+			'post' => __( 'Posts' ),
+			'page' => __( 'Pages' ),
+		);
+		if ( ! empty( $wpmem->post_types ) ) {
+			foreach ( $wpmem->post_types as $key => $post_type ) {
+				$post_arr[ $key ] = $post_type;
+			}
+		}
+		return $post_arr;
+	}
+	
 	/**
 	 * Outputs HTML for CPT editor.
 	 *
@@ -157,19 +186,36 @@ class WP_Members_Products_Admin {
 		$product_expires = $this->get_meta( 'wpmem_product_expires' );
 		$product_role    = $this->get_meta( 'wpmem_product_role'    );
 		$product_no_gap  = $this->get_meta( 'wpmem_product_no_gap'  );
+		$product_fixed_period = $this->get_meta( 'wpmem_product_fixed_period' );
 
 		$product_expires = ( false !== $product_expires ) ? $product_expires[0] : $product_expires;
 		
 		$periods = array( __( 'Period', 'wp-members' ) . '|', __( 'Day', 'wp-members' ) . '|day', __( 'Week', 'wp-members' ) . '|week', __( 'Month', 'wp-members' ) . '|month', __( 'Year', 'wp-members' ) . '|year' ); 
 		$show_role_detail = ( false !== $product_role    ) ? 'show' : 'hide';
-		$show_exp_detail  = ( false !== $product_expires ) ? 'show' : 'hide'; ?>
+		$show_exp_detail  = ( false !== $product_expires ) ? 'show' : 'hide';
+		$show_exp_fixed   = ( false !== $product_fixed_period ) ? 'show' : 'hide'; ?>
 
 			<?php wp_nonce_field( '_wpmem_product_nonce', 'wpmem_product_nonce' ); ?>
-			<p><?php _e( 'Name (slug)', 'wp-members' ); ?>: <?php echo esc_attr( $post->post_name ); ?></p>
+			<h3><?php _e( 'Name (slug)', 'wp-members' ); ?></h3>
+			<p><strong><?php echo esc_attr( $post->post_name ); ?></strong></p>
+			<h3><?php esc_html_e( 'Optional Defaults', 'wp-members' ); ?></h3>
 			<p>
-				<input type="checkbox" name="wpmem_product_default" id="wpmem_product_default" value="1" <?php echo ( 1 == $product_default ) ? 'checked' : ''; ?> />
+				<input type="checkbox" name="wpmem_product_default" id="wpmem_product_default" value="1" <?php echo ( 1 == $product_default  ) ? 'checked' : ''; ?> />
 				<label for="wpmem_product_default"><?php _e( 'Assign as default at registration? (optional)', 'wp-members' ); ?></label>
 			</p>
+			<p>
+			<?php
+		
+			foreach( $this->get_post_types() as $key => $post_type ) {
+				echo '<div>';
+				echo '<input type="checkbox" name="wpmem_product_set_default_' . $key . '" id="wpmem_product_set_default_' . $key . '" value ="1" '; echo ( 1 == $this->get_meta( "wpmem_product_set_default_" . $key ) ) ? 'checked' : ''; echo ' />';
+				echo '<label for="wpmem_product_set_default_' . $key . '">' . sprintf( esc_html__( 'Pre-selected by default for new %s', 'wp-members' ), $post_type ) . '</label>';
+				echo '</div>';
+			}
+		
+			?>
+			</p>
+			<h3><?php esc_html_e( 'Optional Properties', 'wp-members' ); ?></h3>
 			<p>
 				<input type="checkbox" name="wpmem_product_role_required" id="wpmem_product_role_required" value="role-required" <?php echo ( false !== $product_role ) ? 'checked' : ''; ?> />
 				<label for="wpmem_product_role_required"><?php _e( 'Role Required? (optional)', 'wp-members' ); ?></label>
@@ -185,11 +231,57 @@ class WP_Members_Products_Admin {
 				<span id="wpmem_product_expires_wrap">
 					<label for="wpmem_product_number_of_periods" style="display:none;"><?php _e( 'Number', 'wp-members' ); ?></label>
 					<?php $period = explode( '|', $product_expires ); ?>
-					<input type="text" name="wpmem_product_number_of_periods" id="wpmem_product_number_of_periods" value="<?php echo esc_attr( $period[0] ); ?>" class="small-text" placeholder="<?php _e( 'Number', 'membership_product' ); ?>" style="width:66px;height:28px;vertical-align:middle;">
+					<input type="text" name="wpmem_product_number_of_periods" id="wpmem_product_number_of_periods" value="<?php echo esc_attr( $period[0] ); ?>" class="small-text" placeholder="<?php _e( 'Number', 'wp-members' ); ?>" style="width:66px;height:28px;vertical-align:middle;">
 					<label for="wpmem_product_time_period" style="display:none;"><?php _e( 'Period', 'wp-members' ); ?></label>
 					<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_time_period', 'type'=>'select', 'value'=>$periods, 'compare'=>( ( isset( $period[1] ) ) ? $period[1] : '' ) ) ); ?>
-					<label><?php esc_html_e( 'Use "no gap" renewal', 'wp-members' ); ?></label>
-					<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_no_gap', 'type'=>'checkbox', 'value'=>'1', 'compare'=>( ( isset( $product_no_gap ) ) && 1 == $product_no_gap ) ? $product_no_gap : '' ) ); ?>
+					<br />
+
+						<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_no_gap', 'type'=>'checkbox', 'value'=>'1', 'compare'=>( ( isset( $product_no_gap ) ) && 1 == $product_no_gap ) ? $product_no_gap : '' ) ); ?>
+						<label for="wpmem_product_no_gap"><?php esc_html_e( 'Use "no gap" renewal', 'wp-members' ); ?></label>
+
+					<br />
+						<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_fixed_period', 'type'=>'checkbox', 'value'=>'1', 'compare'=>( false != $product_fixed_period ) ? 1 : '' ) ); ?>
+						<label for="wpmem_product_fixed_period"><?php esc_html_e( 'Use a fixed period (such as Jan 1 - Dec 31, or Sept 1 - Aug 31)', 'wp-members' ); ?></label>
+					<br />
+					<span id="wpmem_product_fixed_period_select">
+						<style>.ui-datepicker-year {
+						  display: none;
+						}</style>
+						<?php
+						if ( isset( $product_fixed_period ) ) {
+							$period_parts = ( isset( $product_fixed_period ) ) ? explode( "-", $product_fixed_period ) : false;
+							$period_start = ( $period_parts ) ? $period_parts[0] . '-' . $period_parts[1] : '';
+							$period_end   = ( $period_parts ) ? $period_parts[2] . '-' . $period_parts[3] : '';
+							$period_grace_num = ( $period_parts && isset( $period_parts[4] ) ) ? $period_parts[4] : '';
+							$period_grace_per = ( $period_parts && isset( $period_parts[5] ) ) ? $period_parts[5] : '';
+						} else {
+							$period_start = $period_end = $period_grace_num = $period_grace_per = '';
+						}
+						?>
+						<input type="text" class="datepicker" name="wpmem_product_fixed_period_start" value="<?php echo $period_start; ?>" placeholder="<?php esc_html_e( 'Period Start (dd-mm)', 'wp-members' ); ?>" />
+						<input type="text" class="datepicker" name="wpmem_product_fixed_period_end" value="<?php echo $period_end; ?>" placeholder="<?php esc_html_e( 'Period End (dd-mm)', 'wp-members' ); ?>" />
+						<script>
+						jQuery(function() {
+							jQuery( ".datepicker" ).datepicker({
+								minDate: new Date((new Date()).getFullYear(), 0, 1),
+								maxDate: new Date((new Date()).getFullYear(), 11, 31),
+								hideIfNoPrevNext: true,
+								dateFormat: 'dd-mm'
+							});
+						});
+						</script>
+						<br />
+						<label style="margin-left: 24px;"><?php esc_html_e( "Fixed period grace period", 'wp-members' ); ?></label>
+
+						<label for="wpmem_product_fixed_period_grace_number" style="display:none;"><?php esc_html_e( 'Number', 'wp-members' ); ?></label>
+						<?php $period = explode( '|', $product_expires ); ?>
+						<input type="text" name="wpmem_product_fixed_period_grace_number" id="wpmem_product_fixed_period_grace_number" value="<?php echo esc_attr( $period_grace_num ); ?>" class="small-text" placeholder="<?php _e( 'Number', 'wp-members' ); ?>" style="width:66px;margin-left:3px;">
+						<label for="wpmem_product_fixed_period_grace_period" style="display:none;"><?php _e( 'Period', 'wp-members' ); ?></label>
+						<?php echo wpmem_form_field( array( 'name'=>'wpmem_product_fixed_period_grace_period', 'type'=>'select', 'value'=>$periods, 'compare'=>( ( isset( $period_grace_per ) ) ? $period_grace_per : '' ) ) ); ?>
+						<br />
+
+						<span id="wpmem_product_fixed_period_explanation" style="margin-left: 24px;"><?php esc_html_e( "Point at which expiration date is for following time period. For example, if user who register August 1st would be part of the following year's Sept 1 - Aug 31 membership, set this at 1 Month. Leave blank for no grace period.", 'wp-members' ); ?></span>
+					</span>
 				</span>
 			</p>
 		<script>
@@ -197,6 +289,7 @@ class WP_Members_Products_Admin {
 				$(document).ready(function() {
 					$("#wpmem_product_role").<?php echo ( $show_role_detail ); ?>();
 					$("#wpmem_product_expires_wrap").<?php echo ( $show_exp_detail ); ?>();
+					$("#wpmem_product_fixed_period_select").<?php echo ( $show_exp_fixed ); ?>();
 				});
 				$(document).ready(function() {
 				  $('#wpmem_product_role_required').on('change', function (){
@@ -213,15 +306,37 @@ class WP_Members_Products_Admin {
 						$('#wpmem_product_expires_wrap').hide();
 						}
 				  });
+				 $('#wpmem_product_fixed_period').on('change', function (){
+					if ($(this).is(':checked')) {
+						$('#wpmem_product_fixed_period_select').show();
+						} else {
+						$('#wpmem_product_fixed_period_select').hide();
+						}
+				  });
 				});
 			})(jQuery);
 		</script><?php
 	}
 
 	/**
+	 * Outputs HTML for CPT editor.
+	 *
+	 * @since 3.3.4
+	 *
+	 * @param  object $post
+	 */
+	function message_meta_box_detail( $post ) {
+		$product_message = get_post_meta( $post->ID, 'wpmem_product_message', true );
+		$message = ( $product_message ) ? $product_message : '';
+		echo '<label for="product_message">' . __( 'Restricted Message (displays when a user does not have access to a membership)', 'wp-members' ) . '</label>';
+		echo '<textarea name="product_message" id="product_message" rows="3" cols="50" id="" class="large-text code">' . $message . '</textarea>';
+	}
+	
+	/**
 	 * Saves meta fields for CPT
 	 *
 	 * @since 3.2.0
+	 * @since 3.3.4 Added message meta.
 	 *
 	 * @param  int $post_id
 	 */
@@ -232,7 +347,7 @@ class WP_Members_Products_Admin {
 		if ( ! current_user_can( 'edit_posts', $post_id ) ) return;
 		
 		$post = get_post( $post_id );
-
+		
 		$product_name = wpmem_get( 'wpmem_product_name', false );
 		$product_name = ( $product_name ) ? $product_name : $post->post_name;
 		update_post_meta( $post_id, 'wpmem_product_name', sanitize_text_field( $product_name ) );
@@ -261,6 +376,38 @@ class WP_Members_Products_Admin {
 			} else {
 				delete_post_meta( $post_id, 'wpmem_product_no_gap' );
 			}
+			
+			$fixed_period = sanitize_text_field( wpmem_get( 'wpmem_product_fixed_period' ) );
+			if ( $fixed_period ) {
+				
+				// Start and end.
+				$period_start = wpmem_get( 'wpmem_product_fixed_period_start' );
+				$period_end   = wpmem_get( 'wpmem_product_fixed_period_end' );
+				
+				// Is there an entry grace period?
+				$grace_number = wpmem_get( 'wpmem_product_fixed_period_grace_number', false );
+				$grace_period = wpmem_get( 'wpmem_product_fixed_period_grace_period', false );
+				$save_fixed_period = $period_start . '-' . $period_end;
+				if ( $grace_number && $grace_period ) {
+					$save_fixed_period .= '-' . $grace_number . '-' . $grace_period;
+				}
+				update_post_meta( $post_id, 'wpmem_product_fixed_period', $save_fixed_period );
+			} else {
+				delete_post_meta( $post_id, 'wpmem_product_fixed_period' );
+			}
+		}
+		
+		foreach( $this->get_post_types() as $key => $post_type ) {
+			if ( false !== wpmem_get( 'wpmem_product_set_default_' . $key, false ) ) {
+				update_post_meta( $post_id, 'wpmem_product_set_default_' . $key, 1 );
+			} else {
+				delete_post_meta( $post_id, 'wpmem_product_set_default_' . $key );
+			}
+		}
+
+		$product_message = wpmem_get( 'product_message', false );
+		if ( false !== $product_message && '' != $product_message ) {
+			update_post_meta( $post_id, 'wpmem_product_message', $product_message );
 		}
 	}
 
@@ -268,19 +415,34 @@ class WP_Members_Products_Admin {
 	 * Add dropdown to post and page meta box for marking access by product..
 	 *
 	 * @since 3.2.0
+	 * @since 3.3.3 Added defaults.
 	 *
+	 * @global object $pagenow
 	 * @global object $wpmem
 	 * @param  object $post
 	 * @param  string $block
 	 */
 	function add_product_to_post( $post, $block ) {
-		global $wpmem;
+		global $pagenow, $wpmem;
+		
+		// For checking default memberships.
+		$is_new = ( 'post-new.php' == $pagenow ) ? true : false;
+		
 		$product  = $wpmem->membership->get_post_products( $post->ID ); //get_post_meta( $post->ID, $wpmem->membership->post_meta, true );
 		$product  = ( $product ) ? $product : array();
 		$values[] = __( 'None', 'wp-members' ) . '|';
+		
 		foreach ( $wpmem->membership->products as $key => $value ) {
+			
+			if ( $is_new ) {
+				if ( isset( $value[ 'set_default_' . $post->post_type ] ) && 1 == $value[ 'set_default_' . $post->post_type ] ) {
+					$product[] = $key;
+				}
+			}
+			
 			$values[] = $value['title'] . '|' . $key;
 		}
+		
 		echo wpmem_form_label( array( 
 			'meta_key'=>$wpmem->membership->post_meta,
 			'label'=>__( 'Limit access to:', 'wp-members' ),

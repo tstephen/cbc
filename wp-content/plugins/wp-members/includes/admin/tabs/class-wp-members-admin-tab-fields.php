@@ -6,12 +6,12 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @author Chad Butler
- * @copyright 2006-2019
+ * @copyright 2006-2020
  */
 
 // Exit if accessed directly.
@@ -344,15 +344,15 @@ class WP_Members_Admin_Tab_Fields {
 	} }
 					} else {
 						if (version_compare(PHP_VERSION, '5.3.0') >= 0) { ?>
-	---- Select One ----|,
-	Choice One|choice_one,
-	"1,000|one_thousand",
-	"1,000-10,000|1,000-10,000",
-	Last Row|last_row<?php } else { ?>
-	---- Select One ----|,
-	Choice One|choice_one,
-	Choice 2|choice_two,
-	Last Row|last_row<?php } } ?></textarea>
+---- Select One ----|,
+Choice One|choice_one,
+"1,000|one_thousand",
+"1,000-10,000|1,000-10,000",
+Last Row|last_row<?php } else { ?>
+---- Select One ----|,
+Choice One|choice_one,
+Choice 2|choice_two,
+Last Row|last_row<?php } } ?></textarea>
 				</li>
 				<li>
 					<label>&nbsp;</label>

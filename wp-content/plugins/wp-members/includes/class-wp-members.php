@@ -281,13 +281,22 @@ class WP_Members {
 	public $select_style;
 	
 	/**
-	 * Container for dropin folder location
+	 * Container for dropin folder location.
 	 *
 	 * @since  3.3.0
 	 * @access public
 	 * @var    string
 	 */
 	public $dropin_dir;
+	
+	/**
+	 * REST conditional.
+	 *
+	 * @since  3.3.2
+	 * @access public
+	 * @var    boolean
+	 */
+	public $is_rest = false;
 	
 	/**
 	 * Plugin initialization function.
@@ -349,6 +358,9 @@ class WP_Members {
 			$this->menus_clone = new WP_Members_Clone_Menus(); // Load clone menus.
 		}
 		
+		// @todo Is this a temporary fix?
+		$this->email->load_from();
+		
 		/**
 		 * Fires after main settings are loaded.
 		 *
@@ -397,36 +409,52 @@ class WP_Members {
 		do_action( 'wpmem_load_hooks' );
 
 		// Add actions.
-		add_action( 'template_redirect',     array( $this, 'get_action'  ) );
-		add_action( 'widgets_init',          array( $this, 'widget_init' ) );  // initializes the widget
+		
+		add_action( 'init',                  array( $this, 'load_textdomain' ) ); //add_action( 'plugins_loaded', 'wpmem_load_textdomain' );
+		add_action( 'init',                  array( $this->membership, 'add_cpt' ), 0 ); // Adds membership plans custom post type.
+		add_action( 'widgets_init',          array( $this, 'widget_init' ) ); // initializes the widget
 		add_action( 'admin_init',            array( $this, 'load_admin'  ) ); // check user role to load correct dashboard
-		add_action( 'admin_menu',            'wpmem_admin_options' );      // adds admin menu
+		add_action( 'rest_api_init',         array( $this, 'rest_init'   ) );
+		add_action( 'template_redirect',     array( $this, 'get_action'  ) );
 		add_action( 'login_enqueue_scripts', array( $this, 'enqueue_style_wp_login' ) ); // styles the native registration
 		add_action( 'wp_enqueue_scripts',    array( $this, 'enqueue_style' ) );  // Enqueues the stylesheet.
 		add_action( 'wp_enqueue_scripts',    array( $this, 'loginout_script' ) );
-		add_action( 'init',                  array( $this, 'load_textdomain' ) ); //add_action( 'plugins_loaded', 'wpmem_load_textdomain' );
-		add_action( 'init',                  array( $this->membership, 'add_cpt' ), 0 ); // Adds membership plans custom post type.
-		add_action( 'pre_get_posts',         array( $this, 'do_hide_posts' ) );
+		add_action( 'pre_get_posts',         array( $this, 'do_hide_posts' ), 20 );
 		add_action( 'customize_register',    array( $this, 'customizer_settings' ) );
-
+		add_action( 'admin_menu',            'wpmem_admin_options' ); // adds admin menu
+		
 		if ( is_user_logged_in() ) {
 			add_action( 'wpmem_pwd_change',  array( $this->user, 'set_password' ), 9, 2 );
 			add_action( 'wpmem_pwd_change',  array( $this->user, 'set_as_logged_in' ), 10 );
 		}
 		
-		add_filter( 'register_form',             'wpmem_wp_register_form' );                             // adds fields to the default wp registration
-		add_action( 'woocommerce_register_form', 'wpmem_woo_register_form' );
+		add_filter( 'register_form',               'wpmem_wp_register_form' ); // adds fields to the default wp registration
+		add_action( 'woocommerce_register_form',   'wpmem_woo_register_form' );
+		
+		add_action( 'woocommerce_checkout_update_order_meta', 'wpmem_woo_checkout_update_meta' );
+		add_action( 'woocommerce_form_field_multicheckbox',   'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_multiselect',     'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_radio',           'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		if ( ! is_user_logged_in() ) {
+			add_filter( 'woocommerce_checkout_fields', 'wpmem_woo_checkout_form' );
+		}
 		
 		// Add filters.
-		add_filter( 'the_content',               array( $this, 'do_securify' ), 99 );
-		add_filter( 'allow_password_reset',      array( $this->user, 'no_reset' ) );           // no password reset for non-activated users
-		add_filter( 'comments_open',             array( $this, 'do_securify_comments' ), 99 ); // securifies the comments
-		add_filter( 'wpmem_securify',            array( $this, 'reg_securify' ) );             // adds success message on login form if redirected
-		//add_filter( 'query_vars',                array( $this, 'add_query_vars' ), 10, 2 );           // adds custom query vars
-		add_filter( 'get_pages',                 array( $this, 'filter_get_pages' ) );
-		add_filter( 'wp_get_nav_menu_items',     array( $this, 'filter_nav_menu_items' ), null, 3 );
-		add_filter( 'get_previous_post_where',   array( $this, 'filter_get_adjacent_post_where' ) );
-		add_filter( 'get_next_post_where',       array( $this, 'filter_get_adjacent_post_where' ) );
+		add_filter( 'the_content',             array( $this, 'do_securify' ), 99 );
+		add_filter( 'comments_open',           array( $this, 'do_securify_comments' ), 99, 2 ); // securifies the comments
+		add_filter( 'wpmem_securify',          array( $this, 'reg_securify' ) );             // adds success message on login form if redirected
+		add_filter( 'rest_prepare_post',       array( $this, 'do_securify_rest' ), 10, 3 );
+		add_filter( 'rest_prepare_page',       array( $this, 'do_securify_rest' ), 10, 3 );
+		foreach( $this->post_types as $post_type ) {
+			add_filter( "rest_prepare_{$post_type}", array( $this, 'do_securify_rest' ), 10, 3 );
+		}
+				   
+		//add_filter( 'query_vars',                array( $this, 'add_query_vars' ), 10, 2 ); // adds custom query vars
+		add_filter( 'get_pages',               array( $this, 'filter_get_pages' ) );
+		add_filter( 'wp_get_nav_menu_items',   array( $this, 'filter_nav_menu_items' ), null, 3 );
+		add_filter( 'get_previous_post_where', array( $this, 'filter_get_adjacent_post_where' ) );
+		add_filter( 'get_next_post_where',     array( $this, 'filter_get_adjacent_post_where' ) );
+		add_filter( 'allow_password_reset',    array( $this->user, 'no_reset' ) );           // no password reset for non-activated users
 		
 		// If registration is moderated, check for activation (blocks backend login by non-activated users).
 		if ( $this->mod_reg == 1 ) { 
@@ -700,28 +728,26 @@ class WP_Members {
 		global $post;
 		
 		if ( $post || $post_id ) {
-			
-			if ( $post_id && ! $post ) {
-				$post = get_post( $post_id );
-			}
+		
+			$the_post = ( false === $post_id ) ? $post : get_post( $post_id );
 
-			$meta = wpmem_get_block_setting( $post->ID );
+			$meta = wpmem_get_block_setting( $the_post->ID );
 			
 			// Backward compatibility for old block/unblock meta.
 			if ( ! $meta ) {
 				// Check for old meta.
-				$old_block   = get_post_meta( $post->ID, 'block',   true );
-				$old_unblock = get_post_meta( $post->ID, 'unblock', true );
+				$old_block   = get_post_meta( $the_post->ID, 'block',   true );
+				$old_unblock = get_post_meta( $the_post->ID, 'unblock', true );
 				$meta = ( $old_block ) ? 1 : ( ( $old_unblock ) ? 0 : $meta );
 			}
 	
 			// Setup defaults.
 			$defaults = array(
-				'post_id'    => $post->ID,
-				'post_type'  => $post->post_type,
-				'block'      => ( isset( $this->block[ $post->post_type ] ) && $this->block[ $post->post_type ] == 1 ) ? true : false,
+				'post_id'    => $the_post->ID,
+				'post_type'  => $the_post->post_type,
+				'block'      => ( isset( $this->block[ $the_post->post_type ] ) && $this->block[ $the_post->post_type ] == 1 ) ? true : false,
 				'block_meta' => $meta,
-				'block_type' => ( isset( $this->block[ $post->post_type ] ) ) ? $this->block[ $post->post_type ] : 0,
+				'block_type' => ( isset( $this->block[ $the_post->post_type ] ) ) ? $this->block[ $the_post->post_type ] : 0,
 			);
 	
 			/**
@@ -739,7 +765,7 @@ class WP_Members {
 			// Merge $args with defaults.
 			$args = ( wp_parse_args( $args, $defaults ) );
 	
-			if ( is_single() || is_page() ) {
+			if ( is_single() || is_page() || wpmem_is_rest() ) {	
 				switch( $args['block_type'] ) {
 					case 1: // If content is blocked by default.
 						$args['block'] = ( $args['block_meta'] == '0' ) ? false : $args['block'];
@@ -845,10 +871,10 @@ class WP_Members {
 
 				} elseif ( isset( $this->show_excerpt[ $post->post_type ] ) && $this->show_excerpt[ $post->post_type ] == 1 ) {
 
-					if ( ! stristr( $content, '<span id="more' ) ) {
+					$len = strpos( $content, '<span id="more' );
+					if ( false === $len ) {
 						$content = wpmem_do_excerpt( $content );
 					} else {
-						$len = strpos( $content, '<span id="more' );
 						$content = substr( $content, 0, $len );
 					}
 
@@ -910,22 +936,26 @@ class WP_Members {
 	 *
 	 * @since 2.9.9
 	 * @since 3.2.0 Moved wpmem_securify_comments() to main class, renamed.
+	 * @since 3.3.2 Added $post_id.
 	 *
-	 * @return bool $open true if current post is open for comments, otherwise false.
+	 * @param  bool $open    Whether the current post is open for comments.
+     * @param  int  $post_id The post ID.
+	 * @return bool $open    True if current post is open for comments, otherwise false.
 	 */
-	function do_securify_comments( $open ) {
+	function do_securify_comments( $open, $post_id ) {
 
-		$open = ( ! is_user_logged_in() && wpmem_is_blocked() ) ? false : $open;
+		$open = ( ! is_user_logged_in() && wpmem_is_blocked( $post_id ) ) ? false : $open;
 
 		/**
 		 * Filters whether comments are open or not.
 		 *
 		 * @since 3.0.0
 		 * @since 3.2.0 Moved to main class.
+		 * @since 3.3.2 Added $post_id.
 		 *
 		 * @param bool $open true if current post is open for comments, otherwise false.
 		 */
-		$open = apply_filters( 'wpmem_securify_comments', $open );
+		$open = apply_filters( 'wpmem_securify_comments', $open, $post_id );
 
 		if ( ! $open ) {
 			/** This filter is documented in wp-includes/comment-template.php */
@@ -941,15 +971,61 @@ class WP_Members {
 	 * @since 3.0.1
 	 * @since 3.2.0 Moved wpmem_securify_comments_array() to main class, renamed.
 	 *
-	 * @global object $wpmem The WP-Members object class.
-	 *
+	 * @param  array $comments
+	 * @param  int   $post_id
 	 * @return array $comments The comments array.
 	 */
 	function do_securify_comments_array( $comments , $post_id ) {
-		$comments = ( ! is_user_logged_in() && wpmem_is_blocked() ) ? array() : $comments;
+		$comments = ( ! is_user_logged_in() && wpmem_is_blocked( $post_id ) ) ? array() : $comments;
 		return $comments;
 	}
 
+	/**
+	 * Handles REST request.
+	 *
+	 * @since 3.3.2
+	 *
+	 * @param WP_REST_Response $response The response object.
+	 * @param WP_Post          $post     Post object.
+	 * @param WP_REST_Request  $request  Request object.
+	 * @return
+	 */
+	function do_securify_rest( $response, $post, $request ) {
+		
+		if ( ! is_user_logged_in() ) { // @todo This needs to be changed to check for whether the user has access (for internal requests).
+			// Response for restricted content
+			$block_value = wpmem_is_blocked( $response->data['id'] );
+			if ( $block_value ) {
+				if ( isset( $response->data['content']['rendered'] ) ) {
+					/**
+					 * Filters restricted content message.
+					 *
+					 * @since 3.3.2
+					 *
+					 * @param string $message
+					 */
+					$response->data['content']['rendered'] = apply_filters( "wpmem_securify_rest_{$post->post_type}_content", __( "You must be logged in to view this content.", 'wp-members' ) );
+				}
+				if ( isset( $response->data['excerpt']['rendered'] ) ) {
+					/**
+					 * Filters restricted excerpt message.
+					 *
+					 * @since 3.3.2
+					 *
+					 * @param string $message
+					 */
+					$response->data['excerpt']['rendered'] = apply_filters( "wpmem_securify_rest_{$post->post_type}_excerpt", __( "You must be logged in to view this content.", 'wp-members' ) );
+				}
+			}
+
+			// Response for hidden content. @todo This needs to be changed to check for whether the user has access (for internal requests).
+			if ( ! is_admin() && in_array( $post->ID, $this->hidden_posts() ) ) {
+				return new WP_REST_Response( __( 'The page you are looking for does not exist', 'wp-members' ), 404 );
+			}
+		}
+		return $response;
+	}
+	
 	/**
 	 * Adds the successful registration message on the login page if reg_nonce validates.
 	 *
@@ -969,6 +1045,15 @@ class WP_Members {
 		return $content;
 	}
 
+	/**
+	 * Runs if the REST API is initialized.
+	 *
+	 * @since 3.3.2
+	 */
+	function rest_init() {
+		$this->is_rest = true;
+	}
+	
 	/**
 	 * Gets an array of hidden post IDs.
 	 *
@@ -990,6 +1075,7 @@ class WP_Members {
 	 * Updates the hidden post array transient.
 	 *
 	 * @since 3.2.0
+	 * @since 3.3.3 Don't include posts from post types not set as handled by WP-Members.
 	 *
 	 * @global object $wpdb
 	 * @return array  $hidden
@@ -997,9 +1083,22 @@ class WP_Members {
 	function update_hidden_posts() {
 		global $wpdb;
 		$hidden  = array();
-		$results = $wpdb->get_results( "SELECT post_id FROM " . $wpdb->prefix . "postmeta WHERE meta_key = '_wpmem_block' AND meta_value = 2" );
+		$default_post_types = array( 'post'=>'Posts', 'page'=>'Page' );
+		$post_types = array_merge( $this->post_types, $default_post_types );
+		// $results = $wpdb->get_results( "SELECT post_id FROM " . $wpdb->prefix . "postmeta WHERE meta_key = '_wpmem_block' AND meta_value = 2" );
+		$results = $wpdb->get_results( 
+			"SELECT
+				p1.id,
+				p1.post_type,
+				m1.meta_key AS _wpmem_block
+			FROM " . $wpdb->prefix . "posts p1
+			JOIN " . $wpdb->prefix . "postmeta m1 ON (m1.post_id = p1.id AND m1.meta_key = '_wpmem_block') 
+			WHERE m1.meta_value = '2';"
+		);
 		foreach( $results as $result ) {
-			$hidden[] = $result->post_id;
+			if ( array_key_exists( $result->post_type, $post_types ) ) {
+				$hidden[] = $result->id;
+			}
 		}
 		set_transient( '_wpmem_hidden_posts', $hidden, 60*5 );
 		return $hidden;
@@ -1010,33 +1109,59 @@ class WP_Members {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @return array  $hidden
+	 * @global stdClass $wpdb
+	 * @return array    $hidden
 	 */
 	function get_hidden_posts() {
 		$hidden = array();
-		if ( ! is_admin() && ( ! is_user_logged_in() ) ) {
-			$hidden = $this->hidden_posts();
+		
+		// Return empty array if this is the admin and user can edit posts.
+		if ( is_admin() && current_user_can( 'edit_posts' ) ) {
+			return $hidden;
 		}
-		// @todo Possibly separate query here to check. If the user IS logged in, check what posts they DON'T have access to.
-		if ( ! is_admin() && is_user_logged_in() && 1 == $this->enable_products ) {
-			// Get user product access.
-			// @todo This maybe should be a transient stored in the user object.
+	
+		// If the user is not logged in, return all hidden posts.
+		if ( ! is_user_logged_in() ) {
 			$hidden = $this->hidden_posts();
-			$hidden = ( is_array( $hidden ) ) ? $hidden : array();
-			foreach ( $this->membership->products as $key => $value ) {
-				if ( isset( $this->user->access[ $key ] ) && ( true == $this->user->access[ $key ] || $this->user->is_current( $this->user->access[ $key ] ) ) ) {
-					foreach ( $hidden as $post_id ) {
-						if ( 1 == get_post_meta( $post_id, $this->membership->post_stem . $key, true ) ) {
-							$hidden_key = array_search( $post_id, $hidden );
-							unset( $hidden[ $hidden_key ] );	
+		} else {
+			// If the user is logged in.
+			if ( 1 == $this->enable_products ) {
+				// Get user product access.
+				$hidden = $this->hidden_posts();
+				$hidden = ( is_array( $hidden ) ) ? $hidden : array();
+
+				// Remove posts with a product the user has access to.
+				foreach ( $this->membership->products as $key => $value ) {
+					if ( isset( $this->user->access[ $key ] ) && ( true == $this->user->access[ $key ] || $this->user->is_current( $this->user->access[ $key ] ) ) ) {
+						foreach ( $hidden as $post_id ) {
+							if ( 1 == get_post_meta( $post_id, $this->membership->post_stem . $key, true ) ) {
+								$hidden_key = array_search( $post_id, $hidden );
+								unset( $hidden[ $hidden_key ] );	
+							}
 						}
+					}
+				}
+
+				// Remove posts that don't have a product assignment (general login).
+				foreach( $hidden as $hidden_key ) {
+					$unattached = get_post_meta( $hidden_key, '_wpmem_products', true );												   
+					if ( false == $unattached ) {
+						$hidden_key = array_search( $hidden_key, $hidden );
+						unset( $hidden[ $hidden_key ] );
 					}
 				}
 			}
 		}
-		return $hidden;
+		/**
+		 * Filter the hidden posts array.
+		 *
+		 * @since 3.3.4
+		 *
+		 * @param array $hidden
+		 */
+		return apply_filters( 'wpmem_hidden_posts', $hidden );
 	}
-	
+
 	/**
 	 * Hides posts based on settings and meta.
 	 *
@@ -1048,7 +1173,17 @@ class WP_Members {
 	function do_hide_posts( $query ) {
 		$hidden_posts = $this->get_hidden_posts();
 		if ( ! empty( $hidden_posts ) ) {
-			$query->set( 'post__not_in', $hidden_posts );
+			// Add hidden posts to post__not_in while maintaining any existing exclusions.
+			$post__not_in = array_merge( $query->query_vars['post__not_in'], $hidden_posts );
+			/**
+			 * Filter post__not_in.
+			 *
+			 * @since 3.3.4
+			 *
+			 * @param array $post__not_in
+			 */
+			$post__not_in = apply_filters( 'wpmem_post__not_in', $post__not_in );
+			$query->set( 'post__not_in', $post__not_in );
 		}
 		return $query;
 	}
@@ -1109,10 +1244,12 @@ class WP_Members {
 	 */
 	function filter_get_adjacent_post_where( $where ) {
 		global $wpmem;
-		$hidden_posts = $this->get_hidden_posts();
-		if ( ! empty( $hidden_posts ) ) {
-			$hidden = implode( ",", $hidden_posts );	
-			$where  = $where . " AND p.ID NOT IN ( $hidden )";
+		if ( ! is_user_logged_in() ) {
+			$hidden_posts = $this->get_hidden_posts();
+			if ( ! empty( $hidden_posts ) ) {
+				$hidden = implode( ",", $hidden_posts );	
+				$where  = $where . " AND p.ID NOT IN ( $hidden )";
+			}
 		}
 		return $where;
 	}
@@ -1201,6 +1338,7 @@ class WP_Members {
 	 * Get excluded meta fields.
 	 *
 	 * @since 3.0.0
+	 * @since 3.3.3 Update $tag to match wpmem_fields() tags.
 	 *
 	 * @param  string $tag A tag so we know where the function is being used.
 	 * @return array       The excluded fields.
@@ -1216,13 +1354,40 @@ class WP_Members {
 
 		if ( 'admin-profile' == $tag || 'user-profile' == $tag ) {
 			array_push( $excluded_fields, 'first_name', 'last_name', 'nickname', 'display_name', 'user_email', 'description', 'user_url' );
+			
+			// If WooCommerce is used, remove these meta - WC already adds them in their own section.
+			if ( class_exists( 'woocommerce' ) ) {
+				array_push( $excluded_fields,
+					'billing_first_name',
+					'billing_last_name',
+					'billing_company',
+					'billing_address_1',
+					'billing_address_2',
+					'billing_city',
+					'billing_postcode',
+					'billing_country',
+					'billing_state',
+					'billing_email',
+					'billing_phone',
+					'shipping_first_name',
+					'shipping_last_name',
+					'shipping_company',
+					'shipping_address_1',
+					'shipping_address_2',
+					'shipping_city',
+					'shipping_postcode',
+					'shipping_country',
+					'shipping_state'
+				);
+			}
 		}
 
 		/**
-		 * Filter the fields to be excluded when user is created/updated.
+		 * Filter excluded meta fields.
 		 *
 		 * @since 2.9.3
 		 * @since 3.0.0 Moved to new method in WP_Members Class.
+		 * @since 3.3.3 Update $tag to match wpmem_fields() tags.
 		 *
 		 * @param array       An array of the field meta names to exclude.
 		 * @param string $tag A tag so we know where the function is being used.
@@ -1698,7 +1863,7 @@ class WP_Members {
 						$do_excerpt = true;
 					}
 
-					if ( $do_excerpt ) {
+					if ( true === $do_excerpt ) {
 						$content = wp_trim_words( $content, $args['length'], $args['more_link'] );
 						// Check if the more link was added (note: singular has no more_link):
 						if ( ! $is_singular && ! strpos( $content, $args['more_link'] ) ) {

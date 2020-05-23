@@ -4,13 +4,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP-Members API Functions
  * @author Chad Butler 
- * @copyright 2006-2019
+ * @copyright 2006-2020
  */
 
 /**
@@ -588,16 +588,7 @@ function wpmem_user_register( $tag ) {
 		}
 
 		// Inserts to wp_users table.
-		$wpmem->user->post_data['ID'] = wp_insert_user( $new_user_fields );
-
-		/**
-		 * Fires after user insertion but before email.
-		 *
-		 * @since 2.7.2
-		 *
-		 * @param array $wpmem->user->post_data The user's submitted registration data.
-		 */
-		do_action( 'wpmem_post_register_data', $wpmem->user->post_data );
+		wp_insert_user( $new_user_fields );
 
 		/**
 		 * Fires after registration is complete.
@@ -769,4 +760,27 @@ function wpmem_get_user_ip() {
 	 */
 	return apply_filters( 'wpmem_get_ip', $ip );
 }
+
+/**
+ * Export all or selected users
+ *
+ * @since 2.9.7
+ * @since 3.2.0 Updated to use fputcsv.
+ * @since 3.2.1 Added user data filters.
+ * @since 3.3.0 Call object class static method.
+ * @since 3.3.4 Moved into general API.
+ *
+ * @todo Move object class file to main /includes/
+ *
+ * @global object $wpmem
+ *
+ * @param array $args
+ * @param array $users
+ */
+function wpmem_export_users( $args, $users = null ) {
+	global $wpmem;
+	include_once( $wpmem->path . 'includes/admin/class-wp-members-export.php' );
+	WP_Members_Export::export_users( $args, $users );
+}
+
 // End of file.

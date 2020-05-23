@@ -6,12 +6,12 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @author Chad Butler
- * @copyright 2006-2019
+ * @copyright 2006-2020
  */
 
 // Exit if accessed directly.
@@ -290,6 +290,9 @@ class WP_Members_Admin_Tab_Options {
 									<tr>
 										<input type="hidden" name="wpmem_admin_a" value="update_cpts" />
 										<td colspan="2"><?php submit_button( __( 'Update Settings', 'wp-members' ) ); ?></td>
+									</tr>
+									<tr>
+										<td><?php _e( 'Please keep in mind that Custom Post Types are "custom" and therefore, not all of them will function exactly the same way. WP-Members will certainly work with any post type that operate like a post or a page; but you will need to review any custom post type added to determine that it functions the way you expect.', 'wp-members' ); ?></td>
 									</tr>
 								</table>
 							</form>

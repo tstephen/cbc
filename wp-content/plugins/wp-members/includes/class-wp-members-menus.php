@@ -62,12 +62,19 @@ class WP_Members_Menus {
 	 * @since 3.3.0
 	 */
 	public function load_hooks() {
-		add_filter( 'wp_edit_nav_menu_walker', array( $this, 'edit_nav_menu_walker' ) );
+		
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.4', '<' ) ) {
+			add_filter( 'wp_edit_nav_menu_walker', array( $this, 'edit_nav_menu_walker' ) ); // @todo No longer needed in WP 5.4?
+		}
+		
 		add_action( 'wp_update_nav_menu_item', array( $this, 'update_nav_menu_item' ), 10, 2 );
 		add_filter( 'wp_setup_nav_menu_item',  array( $this, 'setup_nav_menu_item'  ) );
 		add_action( 'admin_enqueue_scripts' ,  array( $this, 'enqueue_scripts'      ) );
 		
-		add_action( 'wp_nav_menu_item_custom_fields',    array( $this, 'nav_menu_item_fields' ), 5, 4 );
+		add_action( 'wp_nav_menu_item_custom_fields',                    array( $this, 'nav_menu_item_fields' ), 5, 4 );
+		// add_action( 'wp_nav_menu_item_custom_fields_customize_template', array( $this, 'nav_menu_item_fields' ), 5 ); // @todo Work this out.
+		
 		add_action( 'wpmem_nav_menu_logged_in_criteria', array( $this, 'add_product_criteria' ) );
 		
 		// Handles removing front end menu items.
@@ -75,6 +82,7 @@ class WP_Members_Menus {
 			add_filter( 'wp_get_nav_menu_items', array( $this, 'exclude_menu_items' ), 20 );
 		}
 	}
+	
 	/**
 	* Override the Admin Menu Walker
 	* 
@@ -283,7 +291,7 @@ class WP_Members_Menus {
 		global $wpmem;
 		$hide_children_of = array();
 
-		if ( 1 == $wpmem->enable_products && ! empty( $items ) ) {
+		if ( ! empty( $items ) ) {
 
 			// Iterate and remove set items.
 			foreach ( $items as $key => $item ) {
@@ -307,13 +315,17 @@ class WP_Members_Menus {
 							$visible = ( ! is_user_logged_in() ) ? true : false;
 							break;
 						default:
-							$visible = false;
-							if ( is_array( $item->restrictions ) && ! empty( $item->restrictions ) ) {
-								foreach ( $item->restrictions['products'] as $product ) {
-									if ( wpmem_user_has_access( $product ) ) {
-										$visible = true;
+							if ( 1 == $wpmem->enable_products ) {
+								$visible = false;
+								if ( is_array( $item->restrictions ) && ! empty( $item->restrictions ) ) {
+									foreach ( $item->restrictions['products'] as $product ) {
+										if ( wpmem_user_has_access( $product ) ) {
+											$visible = true;
+										}
 									}
 								}
+							} else {
+								$visible = true;
 							}
 							break;
 					}

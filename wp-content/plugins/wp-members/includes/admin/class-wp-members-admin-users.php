@@ -50,7 +50,7 @@ class WP_Members_Admin_Users {
 	 */
 	static function insert_activate_link( $actions, $user_object ) {
 		global $wpmem;
-		if ( 1 == $wpmem->mod_reg ) {
+		if ( 1 == $wpmem->mod_reg && $user_object->ID != get_current_user_id() ) {
 
 			$var = get_user_meta( $user_object->ID, 'active', true );
 
@@ -112,14 +112,16 @@ class WP_Members_Admin_Users {
 				$x = 0;
 				foreach ( $users as $user ) {
 					$user = filter_var( $user, FILTER_VALIDATE_INT );
-					// Check to see if the user is already activated, if not, activate.
-					if ( 'activate' == $action && 1 != get_user_meta( $user, 'active', true ) ) {
-						wpmem_activate_user( $user );
-					} elseif( 'deactivate' == $action ) {
-						wpmem_deactivate_user( $user );
+					// Current user cannot activate or deactivate themselves.
+					if ( $user != get_current_user_id() ) {
+						// Check to see if the user is already activated, if not, activate.
+						if ( 'activate' == $action && 1 != get_user_meta( $user, 'active', true ) ) {
+							wpmem_activate_user( $user );
+						} elseif( 'deactivate' == $action ) {
+							wpmem_deactivate_user( $user );
+						}
+						$x++;
 					}
-
-					$x++;
 				}
 				$msg = ( 'activate' == $action ) ? urlencode( sprintf( __( '%s users activated', 'wp-members' ), $x ) ) : urlencode( sprintf( __( '%s users deactivated', 'wp-members' ), $x ) );
 
@@ -141,15 +143,18 @@ class WP_Members_Admin_Users {
 			$users = filter_var( $_REQUEST['user'], FILTER_VALIDATE_INT );
 
 			// Check to see if the user is already activated, if not, activate.
-			if ( 'activate-single' == $action && 1 != get_user_meta( $users, 'active', true ) ) {
+			if ( $users == get_current_user_id() ) {
+				$msg = urlencode( sprintf( esc_html__( 'You cannot activate or deactivate yourself', 'wp-members' ) ) );
+				
+			} elseif ( 'activate-single' == $action && 1 != get_user_meta( $users, 'active', true ) ) {
 				wpmem_activate_user( $users );
 				$user_info = get_userdata( $users );
-				$msg = urlencode( sprintf( __( "%s activated", 'wp-members' ), $user_info->user_login ) );
+				$msg = urlencode( sprintf( esc_html__( "%s activated", 'wp-members' ), $user_info->user_login ) );
 
 			} elseif ( 'deactivate-single' == $action ) {
 				wpmem_deactivate_user( $users );
 				$user_info = get_userdata( $users );
-				$msg = urlencode( sprintf( __( "%s deactivated", 'wp-members' ), $user_info->user_login ) );
+				$msg = urlencode( sprintf( esc_html__( "%s deactivated", 'wp-members' ), $user_info->user_login ) );
 
 			} else {
 				// Set the return message.
@@ -317,8 +322,8 @@ class WP_Members_Admin_Users {
 		 *     @type string The HTML for the view.
 		 * }
 		 */
-		$views = apply_filters( 'wpmem_views_users', $views );
-
+		$views = apply_filters( 'wpmem_views_users', $views, $show );
+		
 		return $views;
 	}
 
@@ -459,7 +464,14 @@ class WP_Members_Admin_Users {
 		
 		$query_where = str_replace( 'WHERE 1=1', $replace_query, $user_search->query_where );
 		
-		$query_where = apply_filters( 'wpmem_query_where', $query_where );
+		/**
+		 * Filters the pre_user_query being applied.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param  string  $query_where
+		 */
+		$query_where = apply_filters( 'wpmem_query_where', $query_where, $show );
 
 		$user_search->query_where = $query_where;
 	}

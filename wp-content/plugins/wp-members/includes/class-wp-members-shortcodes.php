@@ -7,13 +7,13 @@
  * 
  * This file is part of the WP-Members plugin by Chad Butler
  * You can find out more about this plugin at https://rocketgeek.com
- * Copyright (c) 2006-2019  Chad Butler
+ * Copyright (c) 2006-2020  Chad Butler
  * WP-Members(tm) is a trademark of butlerblog.com
  *
  * @package WP-Members
  * @subpackage WP_Members_Shortcodes
  * @author Chad Butler 
- * @copyright 2006-2019
+ * @copyright 2006-2020
  */
 
 // Exit if accessed directly.
@@ -62,6 +62,7 @@ class WP_Members_Shortcodes {
 	 * @since 3.1.3 Added forgot_username shortcode.
 	 * @since 3.2.0 Moved to WP_Members_Shortcodes::forms().
 	 * @since 3.2.0 Added id, exclude_fields, include_fields, and product attributes.
+	 * @since 3.3.2 Added WP default login form.
 	 *
 	 * @todo Complete support for id, exlude_fields, include_fields, and product attributes
 	 *       May require updates to core functions.
@@ -108,6 +109,10 @@ class WP_Members_Shortcodes {
 			// If $atts is an array, get the tag from the array so we know what form to render.
 			switch ( $atts ) {
 
+				case in_array( 'wp_login', $atts ):
+					$content = wpmem_wp_login_form( $atts );
+					break;
+					
 				case in_array( 'login', $atts ):		
 					if ( is_user_logged_in() && '1' != $customizer ) {
 						/*
@@ -125,6 +130,13 @@ class WP_Members_Shortcodes {
 					break;
 
 				case in_array( 'register', $atts ):
+					
+					// Set up register form args.
+					$reg_form_args = array( 'tag' => 'new' );
+					if ( isset( $redirect_to ) ) {
+						$reg_form_args['redirect_to'] = $redirect_to;
+					}
+					
 					if ( is_user_logged_in()  && '1' != $customizer ) {
 						/*
 						 * If the user is logged in, return any nested content (if any)
@@ -134,7 +146,7 @@ class WP_Members_Shortcodes {
 					} elseif ( is_user_logged_in() && is_customize_preview() && get_theme_mod( 'wpmem_show_form_message_dialog', false ) ) {
 						$wpmem_themsg = __( "This is a generic message to display the form message dialog in the Customizer.", 'wp-members' );
 						$content  = wpmem_inc_regmessage( $wpmem->regchk, $wpmem_themsg );
-						$content .= wpmem_register_form( 'new', $redirect_to );
+						$content .= wpmem_register_form( $reg_form_args );
 					} else {
 						if ( $wpmem->regchk == 'loginfailed' ) {
 							$content = wpmem_inc_loginfailed() . wpmem_inc_login( 'login', $redirect_to );
@@ -146,7 +158,7 @@ class WP_Members_Shortcodes {
 							$wpmem_themsg = __( 'There was an error with the CAPTCHA form.' ) . '<br /><br />' . $wpmem_captcha_err;
 						}
 						$content  = ( $wpmem_themsg || $wpmem->regchk == 'success' ) ? wpmem_inc_regmessage( $wpmem->regchk, $wpmem_themsg ) : '';
-						$content .= ( $wpmem->regchk == 'success' ) ? wpmem_inc_login( 'login', $redirect_to ) : wpmem_register_form( 'new', $redirect_to );
+						$content .= ( $wpmem->regchk == 'success' ) ? wpmem_inc_login( 'login', $redirect_to ) : wpmem_register_form( $reg_form_args );
 					}
 					break;
 
@@ -269,7 +281,7 @@ class WP_Members_Shortcodes {
 					if ( defined( 'WPMEM_EXP_MODULE' ) && $wpmem->use_exp == 1 ) {	
 						if ( ! wpmem_chk_exp() ) {
 							$do_return = true;
-						} elseif ( $atts['msg'] == true ) {
+						} elseif ( $atts['msg'] == "true" ) {
 							$do_return = true;
 							$content = wpmem_sc_expmessage();
 						}
@@ -301,18 +313,19 @@ class WP_Members_Shortcodes {
 					} elseif ( true === $atts['msg'] || "true" === strtolower( $atts['msg'] ) ) {
 						$do_return = true;
 						$settings = array(
-							'wrapper_before' => '<div class="product_access_failed">',
-							'msg'            => sprintf( __( 'Sorry, your account does not currently have access to %s content', 'wp-members' ), $wpmem->membership->products[ $membership ]['title'] ),
+							'wrapper_before' => '<div class="product_restricted_msg">',
+							'msg'            => sprintf( $wpmem->get_text( 'product_restricted' ), $wpmem->membership->products[ $membership ]['title'] ),
 							'wrapper_after'  => '</div>',
 						);
 						/**
 						 * Filter the access failed message.
 						 *
 						 * @since 3.3.0
+						 * @since 3.3.3 Changed from 'wpmem_sc_product_access_denied'
 						 *
 						 * @param array $settings.
 						 */
-						$settings = apply_filters( 'wpmem_sc_product_access_denied', $settings );
+						$settings = apply_filters( 'wpmem_sc_product_restricted', $settings );
 						$content  = $settings['wrapper_before'] . $settings['msg'] . $settings['wrapper_after'];
 					}
 				}
@@ -452,7 +465,11 @@ class WP_Members_Shortcodes {
 				break;
 
 			case "renew":
-				$content = wpmem_renew();
+				if ( function_exists( 'wpmem_renew' ) ) {
+					$content = wpmem_renew();
+				} else {
+					$content = '';
+				}
 				break;
 
 			default:
