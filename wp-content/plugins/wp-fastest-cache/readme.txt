@@ -4,7 +4,7 @@ Donate link: http://profiles.wordpress.org/emrevona/
 Tags: cache, caching, performance, wp-cache, total cache, super cache, cdn
 Requires at least: 3.3
 Tested up to: 5.4
-Stable tag: 0.9.0.6
+Stable tag: 0.9.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,12 @@ The free version is enough to speed up your site but in the premium version ther
 18. Database Cleanup
 
 == Changelog ==
+
+= 0.9.0.7 =
+* <strong>[FEATURE]</strong> to add "exclude sources" feature for CDN
+* to remove the DNS prefetch of s.w.org when emoji is disabled
+* <strong>[FEATURE]</strong> to add wpfc_css_content filter [<a target="_blank" href="https://www.wpfastestcache.com/tutorial/modify-minified-css-by-calling-the-function-hook/">Details</a>]
+* to fix scandir(): (errno 2): No such file or directory on js-utilities.php line 238
 
 = 0.9.0.6 =
 * <strong>[FEATURE]</strong> to add WP-CLI command for clearing minified sources [<a target="_blank" href="https://www.wpfastestcache.com/features/wp-cli-commands/">Details</a>]

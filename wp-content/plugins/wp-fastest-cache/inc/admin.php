@@ -1448,7 +1448,7 @@
 							<?php settings_fields( 'wpfc-group' ); ?>
 				    		<input type="hidden" value="deleteCache" name="wpFastestCachePage">
 				    		<div class="questionCon qsubmit left">
-				    			<div class="submit"><input type="submit" value="<?php _e("Delete Cache", "wp-fastest-cache"); ?>" class="button-primary"></div>
+				    			<div class="submit"><input type="submit" value="<?php _e("Clear All Cache", "wp-fastest-cache"); ?>" class="button-primary"></div>
 				    		</div>
 				    		<div class="questionCon right">
 				    			<div style="padding-left:11px;">
@@ -1663,9 +1663,9 @@
 				    						$premium_buy_link = "https://www.wpfastestcache.com/#buy";
 				    						$premium_price = "$49.99";
 
-				    						if(in_array(get_bloginfo('language'), array("tr-TR", "tr"))){
-				    							$premium_price = "150TL";
-				    						}
+				    						// if(in_array(get_bloginfo('language'), array("tr-TR", "tr"))){
+				    						// 	$premium_price = "150TL";
+				    						// }
 				    					}
 
 				    				?>

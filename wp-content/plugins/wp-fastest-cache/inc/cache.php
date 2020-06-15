@@ -44,6 +44,8 @@
 			remove_action('wp_print_styles', 'print_emoji_styles');
 			remove_action('admin_print_styles', 'print_emoji_styles');
 			remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+			// remove the DNS prefetch
+			add_filter('emoji_svg_url', '__return_false');
 		}
 
 		public function detect_current_page_type(){
@@ -256,16 +258,6 @@
 					if(preg_match("/comment_author_/i", $cookie_key)){
 						ob_start(array($this, "cdn_rewrite"));
 
-						return 0;
-					}
-				}
-
-				// to check woocommerce_items_in_cart
-				foreach ((array)$_COOKIE as $cookie_key => $cookie_value){
-					//if(preg_match("/^wp\_woocommerce\_session/", $cookie_key)){
-					if(preg_match("/^woocommerce\_items\_in\_cart/", $cookie_key)){
-						ob_start(array($this, "cdn_rewrite"));
-						
 						return 0;
 					}
 				}
