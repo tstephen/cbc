@@ -91,19 +91,16 @@ FileETag None
 # END LBCWpFastestCache
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+## BEGIN TS 2020-06-15 protect directory
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>
+RewriteCond %{REQUEST_FILENAME} ^.*(cbc-directory.pdf)$ [OR]
+RewriteCond %{REQUEST_URI} members
+RewriteCond %{HTTP_COOKIE} !^.*wordpress_logged_in.*$ [NC]
+RewriteRule . ./login [R=302,NC]
+# END TS 2020-06-15 MEMBERS
 
 
 # BEGIN WordPress

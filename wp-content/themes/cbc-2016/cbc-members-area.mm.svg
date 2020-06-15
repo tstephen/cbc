@@ -75,11 +75,11 @@
     <node CREATED="1551116651901" ID="resources" MODIFIED="1551116651901" POSITION="right" TEXT="Resources">
       <edge COLOR="#e69138"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="175"/>
-      <node CREATED="1551118522435" ID="directory" MODIFIED="1551118522435" POSITION="right" TEXT="Directory" LINK="/wp-content/uploads/2019/02/cbc-directory.pdf">
+      <node CREATED="1551118522435" ID="directory" MODIFIED="1551118522435" POSITION="right" TEXT="Directory" LINK="/wp-content/members/cbc-directory.pdf">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="105"/>
       </node>
-      <node CREATED="1551118522435" ID="directory-booklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory as booklet" LINK="/wp-content/uploads/2019/02/cbc-directory-book.pdf">
+      <node CREATED="1551118522435" ID="directory-booklet" MODIFIED="1551118522435" POSITION="right" TEXT="Directory as booklet" LINK="/wp-content/members/cbc-directory-book.pdf">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="175"/>
       </node>
