@@ -51,12 +51,18 @@ class LcpParameters{
     endif;
 
     if($this->utils->lcp_not_empty('author_posts')):
-      if ($params['author_posts'] == 'current_user'){
+      $authors = $params['author_posts'];
+      if ($authors == 'current_user'){
         $args['author'] =  wp_get_current_user()->ID;
       } else {
-        $args['author_name'] = $params['author_posts'];
+        if(preg_match('/,/', $authors)){
+          $args['author__in'] = $authors;
+        } else {
+          $args['author_name'] = $authors;
+        }
       }
     endif;
+
     // Parameters which need to be checked simply, if they exist, add them to
     // final return array ($args)
     $args = $this->lcp_check_basic_params($args);
@@ -230,16 +236,21 @@ class LcpParameters{
   // Check posts to exclude
   private function lcp_check_excludes($args){
     if( $this->utils->lcp_not_empty('excludeposts') ){
-      $exclude = array(
-        'post__not_in' => explode(",", $this->params['excludeposts'])
-      );
-      if (strpos($this->params['excludeposts'], 'this') > -1){
-        $exclude = array_merge(
-          $exclude,
-          array('post__not_in' => array($this->lcp_get_current_post_id() ) )
+      $excludeposts = explode(',', $this->params['excludeposts']);
+
+      $this_index = array_search("this", $excludeposts);
+
+      if ($this_index > -1){
+        unset($excludeposts[$this_index]);
+        $excludeposts = array_merge(
+          $excludeposts,
+          array($this->lcp_get_current_post_id())
         );
       }
-      $args = array_merge($args, $exclude);
+      $excludeposts = array(
+        'post__not_in' => $excludeposts
+      );
+      $args = array_merge($args, $excludeposts);
     }
     return $args;
   }
