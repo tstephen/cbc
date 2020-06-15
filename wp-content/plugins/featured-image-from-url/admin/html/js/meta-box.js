@@ -10,6 +10,7 @@ function removeImage() {
 
     jQuery("#fifu_button").show();
     jQuery("#fifu_help").show();
+    jQuery("#fifu_giphy").show();
 
     if (fifuMetaBoxVars.is_sirv_active)
         jQuery("#fifu_sirv_button").show();

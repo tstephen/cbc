@@ -41,6 +41,7 @@ jQuery(function () {
     jQuery("#fifu_input_spinner_slider").spinner({min: 0});
     jQuery("#fifu_input_slider_speed").spinner({min: 0});
     jQuery("#fifu_input_slider_pause").spinner({min: 0});
+    jQuery("#fifu_input_crop_delay").spinner({min: 0, step: 50});
     jQuery("#tabsApi").tabs();
     jQuery("#tabsCrop").tabs();
     jQuery("#tabsPremium").tabs();

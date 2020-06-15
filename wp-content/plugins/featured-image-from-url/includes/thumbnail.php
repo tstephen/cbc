@@ -21,6 +21,7 @@ add_filter('wp_head', 'fifu_apply_css');
 function fifu_add_js() {
     if (fifu_is_on('fifu_lazy')) {
         wp_enqueue_script('lazyload', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.min.js');
+        wp_enqueue_script('lazyload-bg', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.bg.min.js');
         wp_enqueue_script('lazyload-srcset', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.srcset.min.js');
         wp_enqueue_style('lazyload-spinner', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.1.0/jquery.lazyloadxt.spinner.min.css');
     }
@@ -150,6 +151,8 @@ function fifu_main_image_url($post_id) {
 
     if (!$url && fifu_no_internal_image($post_id) && (get_option('fifu_default_url') && fifu_is_on('fifu_enable_default_url')))
         $url = get_option('fifu_default_url');
+
+    $url = htmlspecialchars_decode($url);
 
     return str_replace("'", "", $url);
 }

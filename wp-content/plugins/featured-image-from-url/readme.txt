@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://donorbox.org/fifu
-Tags: featured image, image, featured, url, external, external featured image, featured image from url, url featured image, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, publitio, 9gag, wcfm, add-on, scraper, 特色圖片, 图片, 网址, 外部, unsplash, keyword, random, acf, rss, media, tag
+Tags: featured image, image, featured, url, external, external featured image, featured image from url, url featured image, giphy, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, publitio, 9gag, wcfm, add-on, scraper, 特色圖片, 图片, 网址, 外部, unsplash, keyword, random, acf, rss, media, tag, gif
 Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: 3.0.7
+Tested up to: 5.4.2
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,8 @@ Features:
 * you can disable the product lightbox and zoom;
 
 * you can apply your own CSS style or 18 hover effects to the images;
+
+* you can search GIFs from Giphy by keywords and use it as featured image (**premium feature**);
 
 * supports WP REST API (**premium feature**);
 
@@ -165,6 +167,21 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 3.1.2 =
+* Deprecated (Premium): Maximum Height option for Featured Shortcode; Bug fix: conflict between Lazy Load and background-images.
+
+= 3.1.1 =
+* New option (Premium): Media RSS Tags > width; Improvement (Premium): each Featured Slider can have a different size ratio now; Bug fix: conflict with WooCommerce Product CSV Import Suite plugin; Bug fix: conflict between Lazy Load feature and URLs with parentheses.
+
+= 3.1.0 =
+* New Feature (Premium): Giphy search; New option (Premium): Same Height > Delay; Bug Fix: problems due with invalid characters in some fields.
+
+= 3.0.9 =
+* Bug fix: background images might not being shown after the last update.
+
+= 3.0.8 =
+* New Feature (Premium): Video > Product Gallery Icon; Improvement (Premium): FIFU gets YouTube video image thumbnails without top and bottom black stripes now; Improvement: Lazy Load can work with background images now; Notice: Internal URL Parameters is a FREE feature now.
 
 = 3.0.7 =
 * Bug fix: internal featured images might not being shown in the previous version.
@@ -756,6 +773,21 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 3.1.2 =
+* Deprecated (Premium): Maximum Height option for Featured Shortcode; Bug fix: conflict between Lazy Load and background-images.
+
+= 3.1.1 =
+* New option (Premium): Media RSS Tags > width; Improvement (Premium): each Featured Slider can have a different size ratio now; Bug fix: conflict with WooCommerce Product CSV Import Suite plugin; Bug fix: conflict between Lazy Load feature and URLs with parentheses.
+
+= 3.1.0 =
+* New Feature (Premium): Giphy search; New option (Premium): Same Height > Delay; Bug Fix: problems due with invalid characters in some fields.
+
+= 3.0.9 =
+* Bug fix: background images might not being shown after the last update.
+
+= 3.0.8 =
+* New Feature (Premium): Video > Product Gallery Icon; Improvement (Premium): FIFU gets YouTube video image thumbnails without top and bottom black stripes now; Improvement: Lazy Load can work with background images now; Notice: Internal URL Parameters is a FREE feature now.
 
 = 3.0.7 =
 * Bug fix: internal featured images might not being shown in the previous version.

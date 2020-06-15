@@ -48,7 +48,7 @@ function fifu_add_css() {
 }
 
 function fifu_show_elements($post) {
-    $margin = 'margin-top:10px;';
+    $margin = 'margin-top:5px;';
     $width = 'width:100%;';
     $height = 'height:200px;';
     $align = 'text-align:left;';
@@ -291,6 +291,8 @@ function fifu_variation_settings_fields($loop, $variation_data, $variation) {
 add_action('import_end', 'fifu_import_end', 10, 0);
 
 function fifu_import_end() {
+    if ($_POST['action'] == "woocommerce_csv_import_request" && !isset($_POST['mapping']))
+        return;
     fifu_db_delete_thumbnail_id_without_attachment();
     fifu_db_insert_attachment();
     fifu_db_insert_attachment_category();

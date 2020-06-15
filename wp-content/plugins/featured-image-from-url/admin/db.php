@@ -511,7 +511,7 @@ class FifuDb {
     function insert_attachment_by($value) {
         $this->wpdb->get_results("
             INSERT INTO " . $this->posts . " (post_author, guid, post_title, post_mime_type, post_type, post_status, post_parent, post_date, post_date_gmt, post_modified, post_modified_gmt, post_content, post_excerpt, to_ping, pinged, post_content_filtered) 
-            VALUES " . $value);
+            VALUES " . str_replace('\\', '', $value));
     }
 
     function get_formatted_value($url, $alt, $post_parent) {
@@ -544,6 +544,7 @@ class FifuDb {
                 $result = $this->get_category_image_url($res->term_id);
                 $url = $result[0]->meta_value;
             }
+            $url = htmlspecialchars_decode($url);
             $value = $this->get_formatted_value($url, get_term_meta($res->term_id, 'fifu_image_alt', true), $res->term_id);
             $this->insert_attachment_by($value);
             $att_id = $this->wpdb->insert_id;
@@ -564,7 +565,8 @@ class FifuDb {
         $result = $this->get_posts_without_meta();
         foreach ($result as $res) {
             $ids = ($i == 1) ? $res->post_id : ($ids . "," . $res->post_id);
-            $aux = $this->get_formatted_value(fifu_main_image_url($res->post_id), get_post_meta($res->post_id, 'fifu_image_alt', true), $res->post_id);
+            $url = fifu_main_image_url($res->post_id);
+            $aux = $this->get_formatted_value($url, get_post_meta($res->post_id, 'fifu_image_alt', true), $res->post_id);
             $value = ($i == 1) ? $aux : ($value . "," . $aux);
             if ($value && (($i % $this->MAX_INSERT == 0) || ($i % $this->MAX_INSERT != 0 && count($result) == $count))) {
                 wp_cache_flush();

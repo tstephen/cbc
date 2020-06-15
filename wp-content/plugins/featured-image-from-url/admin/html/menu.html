@@ -32,6 +32,14 @@
                     <div class="greybox">                        
                         <table>
                             <tr>
+                                <td style="border-bottom:none;text-align:right;">June</td>
+                                <td style="border-bottom:none">Giphy search</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom:none;text-align:right;">May</td>
+                                <td style="border-bottom:none">Media RSS Tags</td>
+                            </tr>
+                            <tr>
                                 <td style="border-bottom:none;text-align:right;">April</td>
                                 <td style="border-bottom:none">embedded video can be replaced by its image thumbnail + play button (drastically decreases the loading time)</td>
                             </tr>
@@ -240,19 +248,29 @@
                 </div>
                 <div class="box">
                     <h2>Internal URL Parameters</h2>
-                    <div class="greybox" id="grad2">
-                        <b>Premium feature</b><br><br>
+                    <div class="greybox">
                         This option adds some FIFU parameters to your image URLs. It only makes sense when you have a theme/plugin that calls the image URLs in a nonstandard way, what could break some FIFU features, such as "Featured Video", "Featured Slider", "Add Class", "Lazy Load" and "Same Height > Object Fit".
                     </div>
                     <br>
-                    <input 
-                        type="submit" 
-                        href="javascript:void(0)" 
-                        id="fifu_toggle_parameters" 
-                        name="fifu_toggle_parameters" 
-                        class="toggleoff" 
-                        value=""
-                        style="display:block;border:none">
+                    <form 
+                        id="fifu_form_parameters" 
+                        action="javascript:void(0)" 
+                        method="post">
+                        <input 
+                            type="submit" 
+                            href="javascript:void(0)" 
+                            id="fifu_toggle_parameters" 
+                            onclick="invert('parameters')" 
+                            name="fifu_toggle_parameters" 
+                            class="<?php echo $enable_parameters; ?>" 
+                            value=""
+                            style="display:block;border:none">
+                        <input 
+                            type="hidden" 
+                            id="fifu_input_parameters" 
+                            name="fifu_input_parameters" 
+                            value="" >
+                    </form>
                 </div>
             </div>
             <div id="tabs-b">
@@ -440,7 +458,7 @@
                     <h2>Same Height</h2>
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
-                        If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to show them in the same height.
+                        If you are not happy with the different sizes of external featured images on your home/shop, enable the toggle below to show them in the same height. Depending on your theme, it will be necessary to use a Selector to inform where is the group of external images that you want at the same height.
                     </div>
                     <br>
 
@@ -451,6 +469,7 @@
                             <li><a href="#tabsCrop-b">Selector</a></li>
                             <li><a href="#tabsCrop-c">Size Ratio</a></li>
                             <li><a href="#tabsCrop-d">Object Fit</a></li>
+                            <li><a href="#tabsCrop-e">Delay</a></li>
                             <br>
                             <br>
                             <div id="tabsCrop-a">
@@ -463,9 +482,6 @@
                                                 class="toggleoff" 
                                                 value=""
                                                 style="display:block;border:none">
-                                        </th>
-                                        <th>
-                                            if it doesn't work, use a Selector to inform where is the group of external images that you want at the same height. 
                                         </th>
                                     </tr>
                                 </table>                                    
@@ -539,7 +555,23 @@
                                 <input type="submit" 
                                        value="Submit" disabled>
                                 </form>
-                            </div> 
+                            </div>
+
+                            <div id="tabsCrop-e">
+                                <table>
+                                    <tr>
+                                        <th>
+                                            <input id="fifu_input_crop_delay" 
+                                                   name="fifu_input_crop_delay" 
+                                                   step="50"
+                                                   size="5">
+                                        </th>
+                                        <th>   
+                                            time (in ms)
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -1390,9 +1422,8 @@
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
 
-                        This experimental feature allows to use a shortcode as "featured image" of posts/pages/products. Using shortcodes you are not limited to images/videos/sliders anymore. You can use any content provided by the shortcode, what could be a music, a text, a whole site etc.<br/><br/>
-                        However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortocde content, otherwise it will be shown featured image from url (<b>required field</b>).<br/><br/>
-                        Important: shortcodes can be not compatible with other FIFU features, such as CSS Style, Same Height, Lazy Load etc.
+                        This experimental feature allows to use a shortcode as "featured image". You may use any content provided by the shortcode, what could be a music, a text, a map etc. However, some contents will need a large area of your site to be shown properly. So you should define a minimum width that an area of your site should have to be able to show the shortcode content.<br/><br/>
+                        <b>Important</b>: shortcodes can be not compatible with other FIFU features, such as CSS Style, Same Height, Lazy Load etc.
 
                     </div>
 
@@ -1424,11 +1455,7 @@
                                 </form>
                             </th>
                             <th>
-                                shortcode
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
+                                minimum width (px)
 
                                 <form 
                                     id="fifu_form_shortcode_min_width" 
@@ -1436,37 +1463,14 @@
                                     method="post">
 
                                     <input id="fifu_input_shortcode_min_width" 
-                                           size=1
+                                           size=3
                                            type="text" 
                                            name="fifu_input_shortcode_min_width" 
-                                           value="">
-
-                                    <input type="submit" value="OK" >      
+                                           value=""
+                                           style="width:85px">
+                                    <br>
+                                    <input type="submit" value="OK" style="width:85px">      
                                 </form>
-                            </th>
-                            <th>
-                                minimum width required (px)
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-
-                                <form 
-                                    id="fifu_form_shortcode_max_height" 
-                                    action="javascript:void(0)" 
-                                    method="post">
-
-                                    <input id="fifu_input_shortcode_max_height" 
-                                           size=1
-                                           type="text" 
-                                           name="fifu_input_shortcode_max_height" 
-                                           value="">
-
-                                    <input type="submit" value="OK" >      
-                                </form>
-                            </th>
-                            <th>
-                                maximum height (px)
                             </th>
                         </tr>
                     </table>
@@ -1553,7 +1557,7 @@
                     <div class="greybox" id="grad2">
                         <b>Premium feature</b><br><br>
 
-                        FIFU supports videos from YouTube, Vimeo, Facebook, Instagram, Imgur, 9GAG, Cloudinary, Tumblr and Publitio. You can enable the video meta box here.
+                        FIFU supports videos from YouTube, Vimeo, Facebook, Imgur, 9GAG, Cloudinary, Tumblr and Publitio (videos hosted elsewhere are not supported). Enable the video meta box here.
 
                     </div>
 
@@ -1643,22 +1647,6 @@
                                 on custom post type
                             </th>
                         </tr>
-                        <tr>
-                            <th>        
-                                <input 
-                                    id="fifu_input_video_crop" 
-                                    type="text" 
-                                    name="fifu_input_video_crop"  
-                                    value="" 
-                                    placeholder="e.g.: 25"
-                                    style="width:73px">
-                                <br>
-                                <input type="submit" value="OK" style="width:73px" disabled>
-                            </th>
-                            <th>
-                                crop top and bottom (%)
-                            </th>
-                        </tr>
                     </table>
                 </div>
 
@@ -1695,8 +1683,8 @@
                                 mode
                                 <br>
                                 <select id="select_play_type" style="width:85px">
-                                    <option value="lightbox">lightbox</option>
                                     <option value="inline">inline</option>
+                                    <option value="lightbox">lightbox</option>
                                 </select>
 
                                 <br>
@@ -1851,6 +1839,39 @@
                                     style="display:block;border:none">
                             </th>
                         </tr>             
+                    </table>
+                </div>
+
+                <div class="box">
+                    <h2>Product Gallery Icon</h2>
+                    <div class="greybox" id="grad2">
+                        This option adds video icons on the video image thumbnails from the WooCommerce product gallery.
+                        <br>
+                        <br>
+                        <input id="fifu_input_gallery_selector" 
+                               type="text" 
+                               name="fifu_input_gallery_selector" 
+                               placeholder="CSS selector" 
+                               title="CSS selector"
+                               value=""
+                               style="width:50%;min-height:24px;line-height:0;">
+
+                        <input type="submit" value="Submit" disabled>
+
+                        <span class="dashicons dashicons-editor-help" style="font-size: 25px;" title="In order to FIFU identify your product gallery, it's necessary to inform its CSS selector here. The default value is ol.flex-control-thumbs, but you may need a different selector if your theme overwrites the original WooCommerce layout."></span>
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input 
+                                    type="submit" 
+                                    href="javascript:void(0)"
+                                    class="toggleoff" 
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -2056,6 +2077,19 @@
                                     class="toggleoff"
                                     value=""
                                     style="display:block;border:none">
+                            </th>
+                            <th>
+                                width
+                                <br>
+                                <input 
+                                    id="fifu_input_rss_width" 
+                                    type="text" 
+                                    name="fifu_input_rss_width"  
+                                    value="" 
+                                    placeholder="e.g.: 600"
+                                    style="width:85px">
+                                <br>
+                                <input type="submit" value="OK" style="width:85px" disabled>
                             </th>
                         </tr>
                     </table>
@@ -2991,6 +3025,113 @@
                     <h2>Troubleshooting</h2>
                     <div class="greybox">
                         From September 2019, always you guys report an issue between FIFU and another plugin or theme, the solution will be posted here.
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-06-03</td>
+                            <td style="border-bottom:none"><h3> Klb Shortcode</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Featured image not shown on carousel:<br>
+                        1) open "klb-shortcode/inc/klb-shortcode.php";<br>
+                        2) search for "$imageresize = dealsdot_resize( $image_src";<br>
+                        3) add "$imageresize = $imageresize ? $imageresize : $image_src;" immediately below that.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-06-02</td>
+                            <td style="border-bottom:none"><h3> Zapier [Instagram]</h3></td>
+                            <td style="border-bottom:none">service</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Setting featured image automatically:<br>
+                        1) access "FIFU Settings > URL from Post Content";<br>
+                        2) enable "use the 1st (or nth) image/video as featured image";<br>
+                        3) enable "hide the 1st (or nth) image/video from content";<br>
+                        4) access "Zapier > Make a Zap", select Instagram as the first app and configure as you want;<br>
+                        5) select WordPress as the second app;<br>
+                        6) click on "Choose Action Event", select "Create Post" and "Continue";<br>
+                        7) select your "WordPress account" and "Continue";<br>
+                        8) on "Customize Post", click on "Content" and select "Permalink";<br>
+                        9) put the "Permalink" in an img tag: &lt;img src="Permalink"&gt;<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-06-01</td>
+                            <td style="border-bottom:none"><h3> Zapier [YouTube]</h3></td>
+                            <td style="border-bottom:none">service</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Setting featured video automatically:<br>
+                        1) access "FIFU Settings > URL from Post Content";<br>
+                        2) enable "use the 1st (or nth) image/video as featured image";<br>
+                        3) enable "hide the 1st (or nth) image/video from content";<br>
+                        4) access "Zapier > Make a Zap", select YouTube as the first app and configure as you want;<br>
+                        5) select WordPress as the second app;<br>
+                        6) click on "Choose Action Event", select "Create Post" and "Continue";<br>
+                        7) select your "WordPress account" and "Continue";<br>
+                        8) on "Customize Post", click on "Content" and select "Embed URL";<br>
+                        9) put the "Embed URL" in an iframe tag: &lt;iframe src="Embed URL"&gt;&lt;/iframe&gt;<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-31</td>
+                            <td style="border-bottom:none"><h3> Publisher</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        The theme lightbox doesn't work:<br>
+                        x) there is no solution for now. It seems the lightbox only works with image addresses (internal or external) that contains "/wp-content/uploads/". You may contact the theme developer and ask him to remove the restriction.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-20</td>
+                            <td style="border-bottom:none"><h3> Bimber</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Home page images have different heights:<br>
+                        1) enable "FIFU Settings > Featured Image >  Same Height";<br>
+                        2) access "Selector" tab and add two selectors: "ul.g1-featured-items" and "ul.g1-collection-items";<br>
+                        3) access "Size Ratio" tab and set "16:9".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-05-17</td>
+                            <td style="border-bottom:none"><h3> BuddyForms</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Adding "Featured Image from URL" field to the form:<br>
+                        1) open the form editor;<br>
+                        2) select "Form Builder > Select Field Type > Url";<br>
+                        3) click on "+ Add Field" button;<br>
+                        4) a new field "Url" will be shown. Click on "Edit";<br>
+                        5) set "Featured Image from URL" for "Label";<br>
+                        6) set "Image URL" for "Description";<br>
+                        7) click on "Advanced";<br>
+                        8) set "fifu_image_url" for "Slug";<br>
+                        9) update.<br>
+                        * for a "Featured Video from URL" field, use the same steps above, but replacing "image" by "video".
                     </div>
                 </div>
                 <div class="box">
