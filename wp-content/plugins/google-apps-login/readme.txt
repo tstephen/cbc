@@ -2,10 +2,10 @@
 Contributors: levertechadmin
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: 3.4.1
+Tested up to: 5.4.1
+Stable tag: 3.4.2
 License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Simple secure login and user management for Wordpress through your G Suite / Google Apps domain
 (uses secure OAuth2, and MFA if enabled)
@@ -28,7 +28,7 @@ Full support and premium features are also available for purchase:
 Eliminate the need for G Suite (Google Apps) domain admins to separately manage WordPress user accounts, and get peace
 of mind that only authorized employees have access to your organizations's websites and intranet.
 
-**See [our website at wp-glogin.com](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium) for more details.**
+**See [our website at wp-glogin.com](https://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium) for more details.**
 
 The Premium version allows everyone in your G Suite (Google Apps) domain to login to WordPress - an account will be automatically created in WordPress if one doesn't already exist.
 
@@ -42,13 +42,13 @@ Google Apps Login allows you to centralize your site's Google functionality and 
 
 Using our platform, your website appears to Google accounts as one unified 'web application', making it more secure and easier to manage.
 
-[Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is an extension plugin allowing
+[Google Drive Embedder](https://wp-glogin.com/wpgoogledriveembedder) is an extension plugin allowing
 users to browse for Google Drive documents to embed directly in their posts or pages.
 
-[Google Apps Directory](http://wp-glogin.com/wpgoogleappsdirectory) is an extension plugin allowing
+[Google Apps Directory](https://wp-glogin.com/wpgoogleappsdirectory) is an extension plugin allowing
 logged-in users to search your Google Apps employee directory from a widget on your intranet or client site.
 
-[Google Profile Avatars](http://wp-glogin.com/avatars/?utm_source=Login%20Readme%20Avatars&utm_medium=freemium&utm_campaign=Freemium) 
+[Google Profile Avatars](https://wp-glogin.com/avatars/?utm_source=Login%20Readme%20Avatars&utm_medium=freemium&utm_campaign=Freemium) 
 is available on our website. It displays users' Google profile photos in place of their avatars throughout your site.
 
 Google Apps Login works on single or multisite WordPress websites or private intranets.
@@ -64,7 +64,7 @@ One-click login will work for the following domains and user accounts:
 *  G Suite for Government (Google Apps for Government)
 *  Personal gmail.com and googlemail.com emails
 
-Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins may allow you to use your Google username and password to login, but they do not do this securely unless they also use OAuth2. This is discussed further in the [FAQ](http://wordpress.org/plugins/google-apps-login/faq/).
+Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins may allow you to use your Google username and password to login, but they do not do this securely unless they also use OAuth2. This is discussed further in the [FAQ](https://wordpress.org/plugins/google-apps-login/#faq).
 
 = Translations =
 
@@ -88,24 +88,24 @@ We welcome volunteers to translate into their own language. If you would like to
 
 = Website and Upgrades =
 
-Please see our website [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin and extra features available in our Premium and Enterprise upgrades, plus support details, other plugins, and useful guides for admins of WordPress sites and Google Apps.
+Please see our website [https://wp-glogin.com/](https://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin and extra features available in our Premium and Enterprise upgrades, plus support details, other plugins, and useful guides for admins of WordPress sites and Google Apps.
 
-The [Premium and Enterprise versions](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20PremEnt&utm_medium=freemium&utm_campaign=Freemium) eliminate the need to manage user accounts in your WordPress site - everything is synced from Google Apps instead.
+The [Premium and Enterprise versions](https://wp-glogin.com/glogin/?utm_source=Login%20Readme%20PremEnt&utm_medium=freemium&utm_campaign=Freemium) eliminate the need to manage user accounts in your WordPress site - everything is synced from Google Apps instead.
 
-If you are building your organization's intranet on WordPress, try out our [All-In-One Intranet plugin](http://wp-glogin.com/intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
+If you are building your organization's intranet on WordPress, try out our [All-In-One Intranet plugin](https://wp-glogin.com/intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
 
 == Screenshots ==
 
-1. User login screen can work as normal or via Google's authentication system
-2. Login to Google account - only if not already logged in to Google within the browser
-3. First time only grant permissions for Google to connect to the WordPress site
+1. User will get different styles options for login with google button
+2. User login screen can work as normal or via Google's authentication system
+3. Login to Google account - only if not already logged in to Google within the browser
 4. Admin obtains two simple codes from Google to set up - easy instructions to follow 
 
 == Frequently Asked Questions ==
 
 = How can I obtain support for this product? =
 
-Full support is available if you purchase the appropriate license from the author via: [http://wp-glogin.com/glogin/](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
+Full support is available if you purchase the appropriate license from the author via: [https://wp-glogin.com/glogin/](https://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
 
 Please feel free to email [contact@wp-glogin.com](mailto:contact@wp-glogin.com) with any questions, as we may be able to help, but you may be required to purchase a support license if the problem is specific to your installation or requirements.
 
@@ -115,7 +115,7 @@ We may occasionally be able to respond to support queries posted on the 'Support
 
 No, once you set up the plugin, any WordPress accounts whose email address corresponds to *any* Google account, whether on a different G Suite domain or even a personal gmail.com account, will be able to use 'Login with Google' to easily connect to your WordPress site.
 
-However, our [premium plugin](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify your WordPress user management if your WordPress users are mostly on the same G Suite domain(s).
+However, our [premium plugin](https://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify your WordPress user management if your WordPress users are mostly on the same G Suite domain(s).
 
 = Does the plugin work with HTTP or HTTPS login pages? =
 
@@ -193,9 +193,15 @@ If you cannot install from the WordPress plugins directory for any reason, and n
 1. Follow the instructions from step 4 above
 
 Personalized instructions to configure the plugin by registering your site with Google Apps are linked from 
-the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
+the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](https://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 3.4.2 =
+
+Added missing alt attribute in image tag.
+Set httponly flag in cookie.
+Added custom text support for login with google button.
 
 = 3.4.1 =
 
