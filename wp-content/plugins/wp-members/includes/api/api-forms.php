@@ -430,20 +430,19 @@ function wpmem_woo_checkout_fields( $checkout_fields = false ) {
  * @param array $checkout_fields
  */
 function wpmem_woo_checkout_form( $checkout_fields ) {
-	
+	global $wpmem;
 	$fields = wpmem_woo_checkout_fields( $checkout_fields );
 
 	foreach ( $fields as $meta_key => $field ) {
 		$checkout_fields['order'][ $meta_key ] = array(
 			'type'     => $fields[ $meta_key ]['type'],
-			'label'    => $fields[ $meta_key ]['label'],
+			'label'    => ( 'tos' == $meta_key ) ? $wpmem->forms->get_tos_link( $field, 'woo' ) : $fields[ $meta_key ]['label'],
 			'required' => $fields[ $meta_key ]['required'],
 		);
 		if ( isset( $fields[ $meta_key ]['placeholder'] ) ) {
 			$checkout_fields['order'][ $meta_key ]['placeholder'] = $fields[ $meta_key ]['placeholder'];
 		}
 	}
-	
 	return $checkout_fields;
 }
 
@@ -476,7 +475,11 @@ function wpmem_woo_checkout_update_meta( $order_id ) {
 					update_user_meta( $user_id, $meta_key, wpmem_sanitize_array( $_POST[ $meta_key ] ) );
 					break;
 				default:
-					update_user_meta( $user_id, $meta_key, sanitize_text_field( $_POST[ $meta_key ] ) );
+					if ( 'user_url' == $meta_key ) {
+						wp_update_user( array( 'ID' => $user_id, 'user_url' => sanitize_text_field( $_POST[ $meta_key ] ) ) );
+					} else {
+						update_user_meta( $user_id, $meta_key, sanitize_text_field( $_POST[ $meta_key ] ) );
+					}
 					break;
 			}
 		}
@@ -517,7 +520,7 @@ function wpmem_form_field_wc_custom_field_types( $field, $key, $args, $value ) {
 		$field_html = wpmem_form_field( $field_args );
 		$field_html = str_replace( 'class="' . $wpmem_fields[ $key ]['type'] . '"', 'class="' . $wpmem_fields[ $key ]['type'] . '" style="display:initial;"', $field_html );
 		$field = '<p class="form-row ' . implode( ' ', $args['class'] ) .'" id="' . $key . '_field">
-			<label for="' . $key . '" class="' . implode( ' ', $args['label_class'] ) .'">' . $args['label']. $wpmem_fields[ $key ]['required'] . '</label>';
+			<label for="' . $key . '" class="' . implode( ' ', $args['label_class'] ) .'">' . $args['label'] . ( ( 1 == $wpmem_fields[ $key ]['required'] ) ? '&nbsp;<abbr class="required" title="required">*</abbr>' : '' ) . '</label>';
 		$field .= $field_html;
 		$field .= '</p>';
 		

@@ -3,7 +3,7 @@ Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 3.3.4.2
+Stable tag: 3.3.4.3
 License: GPLv2
 
 == Description ==
@@ -123,6 +123,13 @@ WP-Members 3.3.0 is a major update. WP-Members 3.3.4 is an improvement release. 
 
 
 == Changelog ==
+
+= 3.3.4.3 =
+
+* Fixes bug where URL field is not filled when registering via WooCommerce checkout (field was handled as user meta).
+* Fixes bug where TOS field did not include link to terms page when registering via WooCommerce checkout.
+* Fixes bug where required field indicator did not properly display for custom fields type in WooCommerce checkout (multiple select, multiple checkbox, radio).
+* Fixed an issue that caused the "membership" field selector/type to display as a text input in Users > Add New instead of a dropdown/select.
 
 = 3.3.4.2 =
 
