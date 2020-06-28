@@ -489,9 +489,23 @@
 
                             <div id="tabsCrop-b">
                                 <div>
-                                    Examples of valid selectors: <b>#</b><i>products</i> (if the element <b>id</b>="<i>products</i>"), <b>.</b><i>my-post-area</i> (if the element <b>class</b>="<i>my-post-area</i>")
+                                    Examples of selectors...<br><br>
+                                    <table style="text-align: left;">
+                                        <tr>
+                                            <th><b>#</b><i>products</i></th>
+                                            <th>(if the element <b>id</b>="<i>products</i>")</th>
+                                        </tr>
+                                        <tr>
+                                            <th><b>.</b><i>my-post-area</i></th>
+                                            <th>(if the element <b>class</b>="<i>my-post-area</i>")</th>
+                                        </tr>
+                                        <tr>
+                                            <th><b>#</b><i>products|4:3</i></th>
+                                            <th>(if the element <b>id</b>="<i>products</i>" and you want a 4:3 size ratio)</th>
+                                        </tr>
+                                    </table>
                                     <br>
-                                    <br>
+
                                     <input id="fifu_input_crop0" 
                                            type="text" 
                                            placeholder="selector 1"
@@ -949,200 +963,6 @@
                             value="" >
                     </form>
                 </div>
-
-                <div class="box">
-                    <h2>Maximum Sizes</h2>
-                    <div class="greybox">
-                        When you are working with external images, there is no way to know the image dimensions before loading the page. 
-                        As consequence, some themes may show the images in their real (sometimes huge) sizes. Here you can define the max size (px) of the featured images at different layouts.<br><br>
-                        <form 
-                            id="fifu_form_image_size" 
-                            action="javascript:void(0)" 
-                            method="post">
-
-                            <table style="text-align:left">                            
-                                <tr>
-                                    <th>   
-                                        Archive:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_arch" 
-                                               name="fifu_input_image_width_arch" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_arch; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_arch" 
-                                               name="fifu_input_image_height_arch" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_arch; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Cart:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_cart" 
-                                               name="fifu_input_image_width_cart" 
-                                               placeholder="max-width" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_cart" 
-                                               name="fifu_input_image_height_arch" 
-                                               placeholder="max-height" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Category:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_ctgr" 
-                                               name="fifu_input_image_width_ctgr" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_ctgr; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_ctgr" 
-                                               name="fifu_input_image_height_ctgr" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_ctgr; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Home:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_home" 
-                                               name="fifu_input_image_width_home" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_home; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_home" 
-                                               name="fifu_input_image_height_home" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_home; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>   
-                                        Page:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_page" 
-                                               name="fifu_input_image_width_page" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_page; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_page" 
-                                               name="fifu_input_image_height_page" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_page; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Post:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_post" 
-                                               name="fifu_input_image_width_post" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_post; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_post" 
-                                               name="fifu_input_image_height_post" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_post; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Product:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_prod" 
-                                               name="fifu_input_image_width_prod" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_prod; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_prod" 
-                                               name="fifu_input_image_height_prod" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_prod; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                                <tr>
-                                    <th>   
-                                        Shop:
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_width_shop" 
-                                               name="fifu_input_image_width_shop" 
-                                               placeholder="max-width" 
-                                               value="<?php echo $max_image_width_shop; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <input id="fifu_input_image_height_shop" 
-                                               name="fifu_input_image_height_shop" 
-                                               placeholder="max-height" 
-                                               value="<?php echo $max_image_height_shop; ?>" 
-                                               size="7">
-                                    </th>
-                                    <th>
-                                        <div style="font-style: italic;font-weight:normal;">e.g.: 128, 256, 1024...</div>
-                                    </th>
-                                </tr> 
-                            </table>
-
-                            <br>
-
-                            <input type="submit" value="Submit" >
-                        </form>
-                    </div>
-                </div> 
 
                 <div class="box">
 
@@ -3025,6 +2845,21 @@
                     <h2>Troubleshooting</h2>
                     <div class="greybox">
                         From September 2019, always you guys report an issue between FIFU and another plugin or theme, the solution will be posted here.
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-06-18</td>
+                            <td style="border-bottom:none"><h3> Unyson</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>                                           
+                    <div class="greybox" style="position: relative; top: -10px">
+                        "There has been a critical error on your website" message:<br>
+                        1) open "unyson/framework/helpers/class-fw-resize.php";<br>
+                        2) search for the line that contains "$saved['file']";<br>
+                        3) add "if(!is_array($saved))return;" immediately above that.<br>
                     </div>
                 </div>
                 <div class="box">

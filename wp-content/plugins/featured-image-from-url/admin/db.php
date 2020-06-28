@@ -53,9 +53,8 @@ class FifuDb {
                 AND p.post_author = " . $this->author . " 
                 AND NOT EXISTS (
                     SELECT 1 
-                    FROM " . $this->postmeta . " 
-                    WHERE post_id = id
-                    AND meta_key = '_wp_attached_file'
+                    FROM (SELECT post_id FROM " . $this->postmeta . " WHERE meta_key = '_wp_attached_file') AS b
+                    WHERE p.id = b.post_id
                 )
             )"
         );
@@ -88,9 +87,8 @@ class FifuDb {
                 AND p.post_author = " . $this->author . " 
                 AND NOT EXISTS (
                     SELECT 1 
-                    FROM " . $this->postmeta . " 
-                    WHERE post_id = id
-                    AND meta_key = '_wp_attachment_image_alt'
+                    FROM (SELECT post_id FROM " . $this->postmeta . " WHERE meta_key = '_wp_attachment_image_alt') AS b
+                    WHERE p.id = b.post_id
                 )
             )"
         );
@@ -107,9 +105,8 @@ class FifuDb {
                 AND p.post_author = " . $this->author . " 
                 AND NOT EXISTS (
                     SELECT 1 
-                    FROM " . $this->postmeta . " 
-                    WHERE post_id = p.post_parent 
-                    AND meta_key = '_thumbnail_id'
+                    FROM (SELECT post_id FROM " . $this->postmeta . " WHERE meta_key = '_thumbnail_id') AS b
+                    WHERE p.post_parent = b.post_id
                 )
             )"
         );
@@ -153,9 +150,8 @@ class FifuDb {
             AND a.meta_value <> ''
             AND NOT EXISTS (
                 SELECT 1 
-                FROM " . $this->postmeta . " b 
+                FROM (SELECT post_id FROM " . $this->postmeta . " WHERE meta_key = '_thumbnail_id') AS b
                 WHERE a.post_id = b.post_id 
-                AND b.meta_key = '_thumbnail_id'
             )"
         );
     }

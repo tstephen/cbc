@@ -6,6 +6,11 @@ jQuery(document).ready(function ($) {
             visibleOnly: false,
             updateEvent: 'load orientationchange resize scroll touchmove focus hover'
         });
+
+        // storefront theme
+        jQuery("ul#site-header-cart").on('hover', function (evt) {
+            jQuery(window).lazyLoadXT();
+        });
     }
 
     // woocommerce lightbox/zoom

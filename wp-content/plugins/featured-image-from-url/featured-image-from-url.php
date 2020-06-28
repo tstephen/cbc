@@ -4,7 +4,7 @@
  * Plugin Name: Featured Image from URL
  * Plugin URI: https://fifu.app/
  * Description: Use an external image as Featured Image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
- * Version: 3.1.2
+ * Version: 3.1.3
  * Author: Marcel Jacques Machado 
  * Author URI: https://fifu.app/
  * WC requires at least: 3.0

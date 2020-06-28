@@ -4,7 +4,7 @@ Donate link: https://donorbox.org/fifu
 Tags: featured image, image, featured, url, external, external featured image, featured image from url, url featured image, giphy, flickr, s3, picasa, woocommerce, product image, product gallery, product, gallery, column, list, page, post, all, content, custom, type, custom post type, category, video, external video, youtube, vimeo, featured video, hover, effects, hover effects, wp all import, css, style, slider, thumbnail, social, network,  auto, publish, hide, first image, content, lightbox, size, grid, auto post thumbnail, link, uri, affiliate, wp, rest, api, wp rest api, lazy, load, google, drive, validation, jetpack, visual composer, play, pause, crop, resize, zoom, enable, disable, default, automatic, auto set, cloudinary, schedule, event, cron, seo, variable, tumblr, variation, product variation, shortcode, facebook, instagram, imgur, publitio, 9gag, wcfm, add-on, scraper, 特色圖片, 图片, 网址, 外部, unsplash, keyword, random, acf, rss, media, tag, gif
 Requires at least: 4.0
 Tested up to: 5.4.2
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -167,6 +167,9 @@ Features:
 20. Lightbox zoom.
 
 == Changelog ==
+
+= 3.1.3 =
+* Improvement (Premium): Same Height (each selector can have a different size ratio); Improvement: Image Metadata (query optimization); Deprecated: Maximum Sizes; Bug fix: conflict between Lazy Load and Storefront; Bug fix: conflict between Lazy Load and background-images.
 
 = 3.1.2 =
 * Deprecated (Premium): Maximum Height option for Featured Shortcode; Bug fix: conflict between Lazy Load and background-images.
@@ -773,6 +776,9 @@ was removed. To finish, a Premium version is now been presented.
 * It's the first and only version so far.
 
 == Upgrade Notice ==
+
+= 3.1.3 =
+* Improvement (Premium): Same Height (each selector can have a different size ratio); Improvement: Image Metadata (query optimization); Deprecated: Maximum Sizes; Bug fix: conflict between Lazy Load and Storefront; Bug fix: conflict between Lazy Load and background-images.
 
 = 3.1.2 =
 * Deprecated (Premium): Maximum Height option for Featured Shortcode; Bug fix: conflict between Lazy Load and background-images.

@@ -184,10 +184,10 @@ function fifu_save_properties($post_id) {
         fifu_update_or_delete_value($post_id, 'fifu_image_alt', $alt);
     }
 
-    fifu_save($post_id);
+    fifu_save($post_id, $ignore);
 }
 
-function fifu_save($post_id) {
+function fifu_save($post_id, $ignore) {
     fifu_update_fake_attach_id($post_id);
 }
 

@@ -168,7 +168,10 @@ function fifu_callback($buffer) {
         preg_match_all('/<[^>]*background-image[^>]*>/', $buffer, $imgList);
         foreach ($imgList[0] as $imgItem) {
             $mainDelimiter = substr(explode('style=', $imgItem)[1], 0, 1);
-            $url = preg_split('/[\'\" ]{0,1}\)/', preg_split('/url\([\'\" ]{0,1}/', $imgItem, -1)[1], -1)[0];
+            if ($mainDelimiter)
+                $url = preg_split('/[\'\"]/', preg_split('/url\([\'\"]/', $imgItem, -1)[1], -1)[0];
+            else
+                $url = preg_split('/[ ]{0,1}\)\;/', preg_split('/url\([ ]{0,1}/', $imgItem, -1)[1], -1)[0];
             $newImgItem = preg_replace("/background-image[^:]*:[^\)]*url[^\)]*[\)]/", "", $imgItem);
             $attr = 'data-bg=' . $mainDelimiter . $url . $mainDelimiter;
             $newImgItem = str_replace('>', ' ' . $attr . '>', $newImgItem);
