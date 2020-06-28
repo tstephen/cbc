@@ -71,6 +71,10 @@
     <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1538744826983" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
       <edge COLOR="#93c47d"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="70"/>
+      <node CREATED="1593360112043" ID="private-prayer-procedure" MODIFIED="1593360112043" POSITION="right" TEXT="Private prayer procedure" LINK="https://corshambaptists.org/wp-content/uploads/2020/06/2020-06-28-Procedure-for-Private-Prayer.pdf">
+        <edge COLOR="#93c47d"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="20"/>
+      </node>
     </node>
     <node CREATED="1551116651901" ID="resources" MODIFIED="1551116651901" POSITION="right" TEXT="Resources">
       <edge COLOR="#e69138"/>
