@@ -20,11 +20,11 @@ function previewImage() {
     var $url = jQuery("#fifu_input_url").val();
 
     if (jQuery("#fifu_input_url").val() && jQuery("#fifu_keywords").val())
-        $message = 'Please wait some seconds...';
+        $message = fifuMetaBoxVars.wait;
     else
         $message = '';
 
-    if (!$url.startsWith("http")) {
+    if (!$url.startsWith("http") && !$url.startsWith("//")) {
         jQuery("#fifu_keywords").val($url);
         jQuery('#fifu_button').parent().parent().block({message: $message, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
         var xhr = new XMLHttpRequest();

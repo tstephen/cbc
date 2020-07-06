@@ -51,6 +51,7 @@ function fifu_add_social_tag_yoast_list($object) {
 function fifu_add_social_tags() {
     $post_id = get_the_ID();
     $url = fifu_main_image_url($post_id);
+    $url = $url ? $url : get_the_post_thumbnail_url($post_id);
     $title = str_replace("'", "&#39;", get_the_title($post_id));
     $description = str_replace("'", "&#39;", wp_strip_all_tags(get_post_field('post_excerpt', $post_id)));
 

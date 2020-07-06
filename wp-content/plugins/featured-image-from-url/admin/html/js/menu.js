@@ -62,7 +62,7 @@ function save(formName, url) {
 }
 
 function fifu_default_js() {
-    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: fifuScriptVars.wait, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     toggle = jQuery("#fifu_toggle_enable_default_url").attr('class');
     switch (toggle) {
@@ -97,7 +97,7 @@ function fifu_default_js() {
 }
 
 function fifu_fake_js() {
-    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: fifuScriptVars.wait, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     toggle = jQuery("#fifu_toggle_fake").attr('class');
     switch (toggle) {
@@ -141,7 +141,7 @@ function fifu_clean_js() {
 }
 
 function fifu_run_clean_js() {
-    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: fifuScriptVars.wait, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     jQuery.ajax({
         method: "POST",
@@ -174,11 +174,11 @@ function fifu_run_delete_all_js() {
     fifu_run_clean_js();
     fifu_run_clean_dimensions_all_js();
 
-    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: fifuScriptVars.wait, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     jQuery.ajax({
         method: "POST",
-        url: restUrl + 'fifu-premium/v2/run_delete_all_api/',
+        url: restUrl + 'featured-image-from-url/v2/run_delete_all_api/',
         async: true,
         beforeSend: function (xhr) {
             xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
@@ -242,7 +242,7 @@ function fifu_clean_dimensions_all_js() {
 }
 
 function fifu_run_clean_dimensions_all_js() {
-    jQuery('#tabs-top').block({message: 'Please wait some seconds...', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+    jQuery('#tabs-top').block({message: fifuScriptVars.wait, css: {backgroundColor: 'none', border: 'none', color: 'white'}});
 
     jQuery.ajax({
         method: "POST",

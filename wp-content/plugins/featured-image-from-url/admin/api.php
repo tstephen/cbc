@@ -81,7 +81,7 @@ add_action('rest_api_init', function () {
         'callback' => 'fifu_data_clean_api',
         'permission_callback' => 'fifu_get_private_data_permissions_check',
     ));
-    register_rest_route('fifu-premium/v2', '/run_delete_all_api/', array(
+    register_rest_route('featured-image-from-url/v2', '/run_delete_all_api/', array(
         'methods' => 'POST',
         'callback' => 'fifu_run_delete_all_api',
         'permission_callback' => 'fifu_get_private_data_permissions_check',
@@ -114,7 +114,7 @@ add_action('rest_api_init', function () {
 
 function fifu_get_private_data_permissions_check() {
     if (!current_user_can('edit_posts')) {
-        return new WP_Error('rest_forbidden', esc_html__('You can not access private data.', 'featured-image-from-url'), array('status' => 401));
+        return new WP_Error('rest_forbidden', esc_html__('You cannot access private data.', 'featured-image-from-url'), array('status' => 401));
     }
     return true;
 }

@@ -8,7 +8,7 @@
                 <input type="checkbox" name="fifu_ignore_auto_set" id="fifu_ignore_auto_set">
             </th>
             <th>
-                <label for="fifu_ignore_auto_set" style="font-weight:normal">ignore URL from Post Content</label>
+                <label for="fifu_ignore_auto_set" style="font-weight:normal"><?php esc_html_e('ignore URL from Post Content', 'featured-image-from-url'); ?></label>
             </th>
         </tr>
     </table>
@@ -19,7 +19,7 @@
                 <input type="checkbox" name="fifu_giphy_checkbox" id="fifu_giphy_checkbox" disabled>
             </th>
             <th>
-                <label for="fifu_giphy_checkbox" style="font-weight:normal;color:#cccccc">Giphy search (Premium)</label>
+                <label for="fifu_giphy_checkbox" style="font-weight:normal;color:#cccccc"><?php esc_html_e('Giphy search', 'featured-image-from-url'); ?> (Premium)</label>
             </th>
         </tr>
     </table>
@@ -27,9 +27,9 @@
     <input id="fifu_input_alt" 
            type="text" 
            name="fifu_input_alt" 
-           placeholder="alt/title attribute (optional)" 
+           placeholder="<?php esc_html_e('alt/title attribute (optional)', 'featured-image-from-url'); ?>"
            value="<?php echo $alt; ?>" 
-           style="<?php echo $width, $show_alt ?>" />
+           style="<?php echo $width, $show_alt ?>;font-size:13px;" />
 
     <div id="fifu_image"
          style="<?php echo $height, $show_image ?> 
@@ -44,24 +44,20 @@
                 <input id="fifu_input_url" 
                        type="text" 
                        name="fifu_input_url" 
-                       placeholder="Image URL or Keywords"
+                       placeholder="<?php esc_html_e('Image URL or Keywords', 'featured-image-from-url'); ?>"
                        value="<?php echo $url; ?>"
-                       style="<?php echo $width ?>" />
+                       style="<?php echo $width ?>;font-size:13px;" />
             </td>
             <td>
                 <span id="fifu_help" 
-                      title="
-                      -Example of image URL: http...
-                      -Example of keywords: sea,sun
-                      To get a random image leave this field empty.
-                      "
+                      title="<?php esc_html_e('Examples: image URL: https://domain.com/image.jpg; keywords: sea,sun. To get a random image leave this field empty.', 'featured-image-from-url'); ?>"
                       class="dashicons dashicons-editor-help" 
                       style="<?php echo $show_button . ';font-size:20px' ?>">
                 </span>
 
                 <span 
                     id="fifu_next" 
-                    title="Next"
+                    title="<?php esc_html_e('Next'); ?>"
                     class="dashicons dashicons-arrow-right-alt" 
                     style="font-size:25px;cursor:pointer;display:none">
                 </span> 
@@ -73,7 +69,7 @@
         <a id="fifu_link" 
            href="#" 
            onClick="removeImage();" 
-           style="<?php echo $show_link ?>" >remove external featured image</a>
+           style="<?php echo $show_link ?>" ><?php esc_html_e('remove external featured image', 'featured-image-from-url'); ?></a>
     </center>
 
     <input 
@@ -99,7 +95,7 @@
     <a id="fifu_button" 
        class="button" 
        onClick="previewImage();" 
-       style="<?php echo $align, $margin, $show_button ?>" >Preview</a>
+       style="<?php echo $align, $margin, $show_button ?>" ><?php esc_html_e('Preview') ?></a>
 
     <div id="fifu_sirv_button" style="<?php echo 'float:left;padding-right:8px;' . $align, $margin, fifu_is_sirv_active() ? $show_button : 'display:none' ?>">
         <div class="sirv-modal"></div>
@@ -107,7 +103,7 @@
            data-input-anchor="#fifu_input_url"
            href="#"
            class="button sirv-add-image-modal-click"
-           title="Add image from Sirv">Choose Sirv image</a>
+           title="<?php esc_html_e('Add image from Sirv', 'featured-image-from-url'); ?>"><?php esc_html_e('Choose Sirv image', 'featured-image-from-url'); ?></a>
     </div>
 
 </div>

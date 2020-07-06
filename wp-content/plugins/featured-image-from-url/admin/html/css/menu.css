@@ -76,7 +76,7 @@ th {
 }
 
 #grad2 {
-    border: 1px dashed red;
+    border: 1px dotted red;
     border-radius: 1px;
     border-radius: 15px 15px 15px 15px;
 }
@@ -162,4 +162,10 @@ th {
     right:6px;
     top:-36px;
     padding: 7px;
+}
+
+.fifu-pro {
+    color:grey;
+    padding:5px;
+    float:right;
 }

@@ -16,8 +16,8 @@ function fifu_insert_menu() {
     }
 
     add_menu_page('Featured Image from URL', 'Featured Image from URL', 'manage_options', 'featured-image-from-url', 'fifu_get_menu_html', 'dashicons-camera', 57);
-    add_submenu_page('featured-image-from-url', 'FIFU Settings', 'Settings', 'manage_options', 'featured-image-from-url');
-    add_submenu_page('featured-image-from-url', 'FIFU Support Data', 'Support Data', 'manage_options', 'fifu-support-data', 'fifu_support_data');
+    add_submenu_page('featured-image-from-url', 'FIFU Settings', __('Settings'), 'manage_options', 'featured-image-from-url');
+    add_submenu_page('featured-image-from-url', 'FIFU Status', __('Status'), 'manage_options', 'fifu-support-data', 'fifu_support_data');
 
     add_action('admin_init', 'fifu_get_menu_settings');
 }
@@ -88,6 +88,7 @@ function fifu_get_menu_html() {
         'restUrl' => esc_url_raw(rest_url()),
         'homeUrl' => esc_url_raw(home_url()),
         'nonce' => wp_create_nonce('wp_rest'),
+        'wait' => esc_html__('Please wait some seconds...', 'featured-image-from-url'),
     ]);
 
     $enable_social = get_option('fifu_social');
