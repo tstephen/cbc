@@ -11,11 +11,11 @@
         <edge COLOR="#e77d79"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-150"/>
       </node>
-      <node CREATED="1532368068852" ID="05cf9e41361371603583dc38b7bebba3" LINK="https://docs.google.com/document/d/1zi8kbal6GFYUgFWFtDriVVbyQtdBHZ_C6K_S-x9HkAI/edit?usp=sharing" MODIFIED="1532368190962" TEXT="Constitution">
+      <node CREATED="1532368068852" ID="05cf9e41361371603583dc38b7bebba3" LINK="https://docs.google.com/document/d/1UppXeQQvEQgC4EoBpjza5EwbGd30oENXgz0oeglMrug" MODIFIED="1594036235191" TEXT="Constitution">
         <edge COLOR="#e7837f"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-90"/>
       </node>
-      <node CREATED="1532368068852" ID="32fe64578e1e32736563fb473d63e20e" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/CharityWithoutPartB.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0" MODIFIED="1532368169214" TEXT="Charity commission">
+      <node CREATED="1532368068852" ID="32fe64578e1e32736563fb473d63e20e" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/CharityFramework.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0" MODIFIED="1532368169214" TEXT="Charity commission">
         <edge COLOR="#e68782"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="-30"/>
       </node>
@@ -71,7 +71,7 @@
     <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1538744826983" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
       <edge COLOR="#93c47d"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="70"/>
-      <node CREATED="1593360112043" ID="private-prayer-procedure" MODIFIED="1593360112043" POSITION="right" TEXT="Private prayer procedure" LINK="https://corshambaptists.org/wp-content/uploads/2020/06/2020-06-28-Procedure-for-Private-Prayer.pdf">
+      <node CREATED="1593360112043" ID="procedure-for-using-sanctury" MODIFIED="1593360112043" POSITION="right" TEXT="Post-Covid use of Priory St" LINK="https://docs.google.com/document/d/1sUec7EkGoQJFmYNbvitrtKv2dFEIz4YTPTvQ-OOUlHE">
         <edge COLOR="#93c47d"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="20"/>
       </node>
@@ -127,7 +127,7 @@
         <edge COLOR="#e29eeb"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="230"/>
       </node>
-      <node CREATED="1575905400000" ID="finance-gad" MODIFIED="1575905400000" TEXT="Gift Aid Declaration" LINK="/gift-aid-declaration">
+      <node CREATED="1575905400000" ID="finance-gad" MODIFIED="1575905400000" TEXT="Gift Aid Declaration" LINK="/members-area/gift-aid-declaration">
         <edge COLOR="#e29eeb"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="290"/>
       </node>
