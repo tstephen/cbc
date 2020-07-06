@@ -14,7 +14,6 @@ require_once ( LCP_PATH . 'lcp-paginator.php' );
 class CatList{
   private $params = array();
   private $lcp_category_id = 0;
-  private $exclude;
   private $page = 1;
   private $posts_count = 0;
   private $instance = 0;
@@ -42,7 +41,6 @@ class CatList{
    * Determine the categories of posts and execute the WP_query
    */
   public function get_posts() {
-    $this->get_lcp_category();
     $this->set_lcp_parameters();
   }
 
@@ -74,7 +72,12 @@ class CatList{
    * Order the parameters and query the DB for posts
    */
   private function set_lcp_parameters(){
-    $args = $this->lcp_categories();
+    $args = LcpCategory::get_instance()->get_lcp_category([
+      'id'               => $this->params['id'],
+      'name'             => $this->params['name'],
+      'categorypage'     => $this->params['categorypage'],
+      'child_categories' => $this->params['child_categories'],
+    ], $this->lcp_category_id);
     $processed_params = LcpParameters::get_instance()->get_query_params($this->params);
     $args = array_merge($args, $processed_params);
     $args = $this->check_pagination($args);
@@ -112,43 +115,6 @@ class CatList{
       }
     }
     return $args;
-  }
-
-  /**
-   * Check if there's one or more categories.
-   * Used in the beginning when setting up the parameters.
-   */
-  private function lcp_categories(){
-    if ( is_array($this->lcp_category_id) ){
-      return array('category__and' => $this->lcp_category_id);
-    } else {
-      if($this->utils->lcp_not_empty('child_categories') &&
-         (($this->params['child_categories'] === 'no' ) ||
-          ($this->params['child_categories'] === 'false') )){
-        return array('category__in'=> $this->lcp_category_id);
-      }
-      return array('cat'=> $this->lcp_category_id);
-    }
-  }
-
-  private function get_lcp_category(){
-    // In a category page:
-    if ( $this->utils->lcp_not_empty('categorypage') &&
-         in_array($this->params['categorypage'], ['yes', 'all', 'other']) ||
-         $this->params['id'] == -1){
-      // Use current category
-      $this->lcp_category_id = LcpCategory::get_instance()->current_category(
-        $this->params['categorypage']
-      );
-    } elseif ( $this->utils->lcp_not_empty('name') ){
-      // Using the category name:
-      $this->lcp_category_id = LcpCategory::get_instance()->with_name( $this->params['name'] );
-      $this->params['name'] = null;
-    } elseif ( isset($this->params['id']) && $this->params['id'] != '0' ){
-      // Using the id:
-      $this->lcp_category_id = LcpCategory::get_instance()->with_id( $this->params['id'] );
-    }
-
   }
 
   public function get_category_id(){
@@ -218,7 +184,17 @@ class CatList{
     endif;
   }
 
-
+  public function get_posts_morelink($single, $css_class) {
+    if(!empty($this->params['posts_morelink'])){
+      $href = 'href="' . get_permalink($single->ID) . '"';
+      $class = $css_class ?: "";
+      if ( $class ):
+        $class = 'class="' . $class . '" ';
+      endif;
+      $readmore = $this->params['posts_morelink'];
+      return ' <a ' . $href . ' ' . $class . ' >' . $readmore . '</a>';
+    }
+  }
 
   public function get_category_count(){
     if($this->utils->lcp_not_empty('category_count') && $this->params['category_count'] == 'yes'):
@@ -257,17 +233,26 @@ class CatList{
       $custom_fields = get_post_custom( $post_id );
 
       //Loop on custom fields and if there's a value, add it:
-      foreach ( $custom_array as $user_customfield ) :
+      foreach ( $custom_array as $user_customfield ) {
         // Check that the custom field is wanted:
-        if ( isset( $custom_fields[$user_customfield] ) ) :
+        if ( isset( $custom_fields[$user_customfield] )) {
           //Browse through the custom field values:
-          foreach ( $custom_fields[$user_customfield] as $key => $value ) :
-            if ( $this->params['customfield_display_name'] != 'no' )
+          foreach ( $custom_fields[$user_customfield] as $key => $value ) {
+            if ( $this->params['customfield_display_name'] != 'no' && $value !== '' ){
               $value = $user_customfield . $this->params['customfield_display_name_glue'] . $value;
-            $lcp_customs[] = $value;
-          endforeach;
-        endif;
-      endforeach;
+            }
+            if($value != ''){
+              $lcp_customs[] = $value;
+            }
+          }
+        }
+      }
+
+      // Return a string instead of array if custom fields
+      // are not displayed separately.
+      if ($this->params['customfield_display_separately'] === 'no') {
+        $lcp_customs = implode($this->params['customfield_display_glue'], $lcp_customs);
+      }
 
       return $lcp_customs;
     else:
@@ -307,6 +292,11 @@ class CatList{
     return $this->page;
   }
 
+  // Helper method for tests.
+  public function update_page($page) {
+    $this->page = $page;
+  }
+
   public function get_posts_count(){
     return $this->posts_count;
   }
@@ -322,7 +312,7 @@ class CatList{
   public function get_date_to_show($single){
     if ($this->params['date'] == 'yes'):
       //by Verex, great idea!
-      return get_the_time($this->params['dateformat'], $single);
+      return ' ' . get_the_time($this->params['dateformat'], $single);
     else:
       return null;
     endif;
@@ -330,10 +320,23 @@ class CatList{
 
   public function get_modified_date_to_show($single){
     if ($this->params['date_modified'] == 'yes'):
-      return get_the_modified_time($this->params['dateformat'], $single);
+      return " " . get_the_modified_time($this->params['dateformat'], $single);
     else:
       return null;
     endif;
+  }
+
+  public function get_display_id($single) {
+    if (!empty($this->params['display_id']) && $this->params['display_id'] == 'yes'){
+      $lcp_display_output .= $single->ID;
+    }
+  }
+
+  public function get_no_posts_text() {
+    if ( ($this->get_posts_count() == 0) &&
+         ($this->params["no_posts_text"] != '') ) {
+      return $this->params["no_posts_text"];
+    }
   }
 
   public function get_content($single){
@@ -426,6 +429,52 @@ class CatList{
       $this->params['thumbnail_size'],
       $force_thumbnail,
       $lcp_thumb_class);
+  }
+
+  public function get_outer_tag($tag, $css_class) {
+    $css_class = $this->params['class'] ?: $css_class;
+
+    $tag_string = '<' . $tag;
+    if ($tag == 'ol' && !empty($this->params['ol_offset'])) {
+      $tag_string .= ' start="' . $this->params['ol_offset'] . '"';
+    }
+
+    // Follow the number of posts in an ordered list with pagination.
+    if( 'ol' === $tag && $this->page > 1 ) {
+      $start = $this->get_number_posts() * ( $this->page - 1 ) + 1;
+      $tag_string .= ' start="' .  $start . '"';
+    }
+    //Give a class to wrapper tag
+    $tag_string .= ' class="' . $css_class . '"';
+
+    //Give id to wrapper tag
+    $tag_string .= ' id="lcp_instance_' . $this->instance . '"';
+
+    $tag_string .= '>';
+
+    return $tag_string;
+  }
+
+  public function get_inner_tag( $single, $parent, $tag, $css_class='' ) {
+    $class = $css_class;
+    $tag_css = '';
+    if ( is_object( $parent ) && is_object( $single ) &&
+        $parent->ID === $single->ID ) {
+      $class .= 'current';
+    }
+
+    if ( $this->params['tags_as_class'] === 'yes' ) {
+      $post_tags = wp_get_post_Tags( $single->ID );
+      if ( !empty( $post_tags ) ) {
+        foreach ( $post_tags as $post_tag ) {
+          $class .= " $post_tag->slug ";
+        }
+      }
+    }
+    if ( !empty($class) ) {
+      $tag_css = 'class="' . $class . '"';
+    }
+    return '<'. $tag . ' ' . $tag_css . '>';
   }
 
   public function get_pagination(){
