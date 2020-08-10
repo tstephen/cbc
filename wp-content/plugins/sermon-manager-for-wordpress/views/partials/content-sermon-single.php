@@ -39,7 +39,7 @@ global $post;
 				</div>
 				<?php if ( ! \SermonManager::getOption( 'theme_compatibility' ) ) : ?>
 					<h2 class="wpfc-sermon-single-title"><?php the_title(); ?></h2>
-				<?php endif; ?>
+				<?php  endif; ?>
 				<div class="wpfc-sermon-single-meta">
 					<?php if ( has_term( '', 'wpfc_preacher', $post->ID ) ) : ?>
 						<div class="wpfc-sermon-single-meta-item wpfc-sermon-single-meta-preacher <?php echo \SermonManager::getOption( 'preacher_label', '' ) ? 'custom-label' : ''; ?>">
@@ -104,8 +104,10 @@ global $post;
 					</div>
 				<?php endif; ?>
 			</div>
-
-			<div class="wpfc-sermon-single-description"><?php wpfc_sermon_description(); ?></div>
+			
+				<?php the_content(); ?>
+			
+			<div class="wpfc-sermon-single-description"><?php  wpfc_sermon_description(); ?></div>
 			<?php if ( get_wpfc_sermon_meta( 'sermon_notes' ) || get_wpfc_sermon_meta( 'sermon_bulletin' ) ) : ?>
 				<div class="wpfc-sermon-single-attachments"><?php echo wpfc_sermon_attachments(); ?></div>
 			<?php endif; ?>

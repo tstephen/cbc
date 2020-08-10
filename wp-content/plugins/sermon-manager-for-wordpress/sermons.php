@@ -3,11 +3,11 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.15.17
+ * Version: 2.16.0
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
- * Tested up to: 5.1
+ * Tested up to: 5.4
  *
  * Text Domain: sermon-manager-for-wordpress
  * Domain Path: /languages/
@@ -592,7 +592,7 @@ class SermonManager { // phpcs:ignore
 
 				$sermon_messages = array( $sermons_se, $sermons_sb );
 
-				foreach ( $sermon_messages as $offset0 => &$sermons_array ) {
+				foreach ( $sermon_messages as $offset0 => $sermons_array ) {
 					foreach ( $sermons_array as $offset1 => $value ) {
 						if ( $value['new_id'] == $id ) {
 							unset( $sermons_array[ $offset1 ] );
@@ -778,8 +778,8 @@ class SermonManager { // phpcs:ignore
 					return;
 				}
 
-				$audio_id  = &$_POST['sermon_audio_id'];
-				$audio_url = $_POST['sermon_audio'];
+				$audio_id  = &sanitize_text_field($_POST['sermon_audio_id']);
+				$audio_url = sanitize_text_field($_POST['sermon_audio']);
 
 				// Attempt to get remote file size.
 				if ( $audio_url && ! $audio_id ) {
@@ -871,7 +871,7 @@ class SermonManager { // phpcs:ignore
 		add_action(
 			'wp_ajax_sm_settings_get_select_data',
 			function () {
-				echo json_encode( apply_filters( 'sm_settings_get_select_data', array(), $_POST['category'], $_POST['podcast_id'], $_POST['option_id'] ) );
+				echo json_encode( apply_filters( 'sm_settings_get_select_data', array(), sanitize_text_field($_POST['category']), sanitize_text_field($_POST['podcast_id']), sanitize_text_field($_POST['option_id']) ) );
 
 				wp_die();
 			}

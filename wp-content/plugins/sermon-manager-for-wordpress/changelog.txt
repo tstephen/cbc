@@ -1,5 +1,15 @@
 Note: Newer changelog is in readme.txt
 
+### 2.16.0 ###
+Fix: Bug Fix With CMB2
+
+### 2.15.19 ###
+Fix: security issues
+Fix: backend error
+
+### 2.15.18 ###
+Fix: compatibility issue with PHP 7.4 in Elementor
+
 ### 2.13.4 ###
 * Change: Update Plyr to latest
 * Fix: Small bug in media seeking URL detection
