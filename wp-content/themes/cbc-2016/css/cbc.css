@@ -168,6 +168,14 @@ a:hover {
   color: #0066c3;
   text-decoration: none;
 }
+.has-alt-link-color>a:active,
+.has-alt-link-color>a:focus,
+.has-alt-link-color>a:hover {
+  background-color: #fff;
+  box-shadow: 0 -2px #fd0,0 4px #0066c3;
+  color: #0066c3;
+  text-decoration: none;
+}
 
 #pre-navbar {
   display:none;
