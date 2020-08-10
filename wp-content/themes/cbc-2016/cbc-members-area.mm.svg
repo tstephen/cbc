@@ -68,10 +68,18 @@
       <edge COLOR="#666"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-250" y="10"/>
     </node>
-    <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1538744826983" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
+    <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1594852090751" POSITION="right" TEXT="Safeguarding / H&amp;S">
       <edge COLOR="#93c47d"/>
       <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="250" y="70"/>
-      <node CREATED="1593360112043" ID="procedure-for-using-sanctury" MODIFIED="1593360112043" POSITION="right" TEXT="Post-Covid use of Priory St" LINK="https://docs.google.com/document/d/1sUec7EkGoQJFmYNbvitrtKv2dFEIz4YTPTvQ-OOUlHE">
+      <node CREATED="1594852090751" ID="safeguarding-children-and-vulnerable-adults" MODIFIED="1594852090751" POSITION="right" TEXT="Safeguarding policy" LINK="https://docs.google.com/document/d/19IFZRJVqjU2cnXZXyPRPG3g7xmHxYhKJg6ZVcilPZYE/edit?usp=sharing">
+        <edge COLOR="#93c47d"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-100"/>
+      </node>
+      <node CREATED="1594852090751" ID="covid-risk-assessment" MODIFIED="1594852090751" POSITION="right" TEXT="Covid risk assessment" LINK="https://drive.google.com/file/d/1yFLFC2P48rpaZYVBQSaAnSYngRHrxfMO/view?usp=sharing">
+        <edge COLOR="#93c47d"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-40"/>
+      </node>
+      <node CREATED="1593360112043" ID="procedure-for-using-sanctury" MODIFIED="1593360112043" POSITION="right" TEXT="Use of Priory St building" LINK="https://docs.google.com/document/d/1sUec7EkGoQJFmYNbvitrtKv2dFEIz4YTPTvQ-OOUlHE">
         <edge COLOR="#93c47d"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="20"/>
       </node>
