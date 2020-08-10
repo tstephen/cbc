@@ -227,6 +227,11 @@
 		public function createCache(){		
 			if(isset($this->options->wpFastestCacheStatus)){
 
+				// to exclude static pdf files
+				if(preg_match("/\.pdf$/i", $_SERVER["REQUEST_URI"])){
+					return 0;
+				}
+
 				// to check logged-in user
 				if(isset($this->options->wpFastestCacheLoggedInUser) && $this->options->wpFastestCacheLoggedInUser == "on"){
 					foreach ((array)$_COOKIE as $cookie_key => $cookie_value){

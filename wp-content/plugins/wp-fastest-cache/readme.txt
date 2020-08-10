@@ -4,7 +4,7 @@ Donate link: http://profiles.wordpress.org/emrevona/
 Tags: cache, caching, performance, wp-cache, total cache, super cache, cdn
 Requires at least: 3.3
 Tested up to: 5.4
-Stable tag: 0.9.0.7
+Stable tag: 0.9.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,16 @@ The free version is enough to speed up your site but in the premium version ther
 18. Database Cleanup
 
 == Changelog ==
+
+= 0.9.0.9 =
+* <strong>[FEATURE]</strong> to add wizard allows you to show the clear cache button which exists on the admin toolbar based on user roles [<a target="_blank" href="https://www.wpfastestcache.com/features/clear-cache-link-on-the-toolbar/">Details</a>]
+* to fix the replace problem when the cdn-url starts with a number
+* to fix the little issue on the cloudflare integration
+
+= 0.9.0.8 =
+* to exclude PDF files from caching
+* to add Modified Time into htaccess
+* to add "Clear Cache of All Sites" feature for Clear Cache via URL [<a target="_blank" href="https://www.wpfastestcache.com/features/clear-cache-via-url/">Details</a>]
 
 = 0.9.0.7 =
 * <strong>[FEATURE]</strong> to add "exclude sources" feature for CDN
