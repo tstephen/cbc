@@ -1,17 +1,7 @@
 jQuery(document).ready(function ($) {
     // lazy load
-    if (fifuImageVars.fifu_lazy) {
-        jQuery.extend(jQuery.lazyLoadXT, {
-            srcAttr: 'data-src',
-            visibleOnly: false,
-            updateEvent: 'load orientationchange resize scroll touchmove focus hover'
-        });
-
-        // storefront theme
-        jQuery("ul#site-header-cart").on('hover', function (evt) {
-            jQuery(window).lazyLoadXT();
-        });
-    }
+    if (fifuImageVars.fifu_lazy)
+        fifu_lazy();
 
     // woocommerce lightbox/zoom
     disableClick($);
@@ -30,16 +20,18 @@ jQuery(document).ready(function ($) {
 });
 
 jQuery(window).on('ajaxComplete', function () {
-    if (fifuImageVars.fifu_lazy) {
-        setTimeout(function () {
-            jQuery(window).lazyLoadXT();
-        }, 300);
-    }
+    if (fifuImageVars.fifu_lazy)
+        fifu_lazy();
 });
 
-jQuery(window).on('load', function () {
-    jQuery('.flex-viewport').css('height', '100%');
-});
+// fix space between product image and gallery caused by lazy load
+if (fifuImageVars.fifu_is_product) {
+    jQuery('img[fifu-featured="1"]').on('load', function () {
+        mainImage = jQuery('.flex-viewport').find('img[fifu-featured="1"]')[0];
+        if (mainImage)
+            jQuery('.flex-viewport').css('height', mainImage.clientHeight + 'px');
+    });
+}
 
 function resizeImg($) {
     var imgSelector = ".post img, .page img, .widget-content img, .product img, .wp-admin img, .tax-product_cat img, .fifu img";

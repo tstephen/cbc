@@ -108,7 +108,8 @@ add_action('rest_api_init', function () {
     ));
     register_rest_route('featured-image-from-url/v2', '/rest_url_api/', array(
         'methods' => ['GET', 'POST'],
-        'callback' => 'fifu_rest_url'
+        'callback' => 'fifu_rest_url',
+        'permission_callback' => 'fifu_public_permission',
     ));
 });
 
@@ -116,6 +117,10 @@ function fifu_get_private_data_permissions_check() {
     if (!current_user_can('edit_posts')) {
         return new WP_Error('rest_forbidden', esc_html__('You cannot access private data.', 'featured-image-from-url'), array('status' => 401));
     }
+    return true;
+}
+
+function fifu_public_permission() {
     return true;
 }
 

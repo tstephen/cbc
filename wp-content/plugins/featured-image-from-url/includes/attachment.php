@@ -1,36 +1,56 @@
 <?php
 
+define('FIFU_AUTHOR', 77777);
+
 add_filter('get_attached_file', 'fifu_replace_attached_file', 10, 2);
 
 function fifu_replace_attached_file($att_url, $att_id) {
-    if ($att_url) {
-        $url = explode(";", $att_url);
-        if (sizeof($url) > 1)
-            return fifu_has_internal_image_path($url[1]) ? get_post($att_id)->guid : $url[1];
-    }
-    return $att_url;
+    return fifu_process_url($att_url, $att_id);
+}
+
+function fifu_process_url($att_url, $att_id) {
+    if (!$att_id)
+        return $att_url;
+
+    $att_post = get_post($att_id);
+
+    if (!$att_post)
+        return $att_url;
+
+    // jetpack	
+    preg_match("/^http[s]*:\/\/[i][0-9][.]wp.com\//", $att_url, $matches);
+    if ($matches)
+        return fifu_process_external_url($att_url, $att_id);
+
+    // internal
+    if ($att_post->post_author != FIFU_AUTHOR)
+        return $att_url;
+
+    $url = $att_post->guid;
+
+    fifu_fix_legacy($url, $att_id);
+
+    return fifu_process_external_url($url, $att_id);
+}
+
+function fifu_process_external_url($url, $att_id) {
+    return fifu_add_url_parameters($url, $att_id);
+}
+
+function fifu_fix_legacy($url, $att_id) {
+    if (strpos($url, ';') === false)
+        return;
+    $att_url = get_post_meta($att_id, '_wp_attached_file');
+    $att_url = is_array($att_url) ? $att_url[0] : $att_url;
+    if (fifu_starts_with($att_url, ';http') || fifu_starts_with($att_url, ';/'))
+        update_post_meta($att_id, '_wp_attached_file', $url);
 }
 
 add_filter('wp_get_attachment_url', 'fifu_replace_attachment_url', 10, 2);
 
 function fifu_replace_attachment_url($att_url, $att_id) {
-    if ($att_url) {
-        $url = explode(";", $att_url);
-        if (sizeof($url) > 1) {
-            if (fifu_is_on('fifu_parameters'))
-                $url[1] = fifu_add_url_parameters($url[1], $att_id);
-            return fifu_has_internal_image_path($url[1]) ? get_post($att_id)->guid : $url[1];
-        } else {
-            $post = get_post($att_id);
-            if ($post) {
-                if ($att_url && strpos($att_url, 'http') === 0 && $post->post_author != "77777")
-                    return $att_url;
-
-                if (!fifu_reject_guid())
-                    return get_post($att_id)->guid;
-            }
-        }
-    }
+    if ($att_url && !get_option('fifu_get_internal'))
+        return fifu_process_url($att_url, $att_id);
     return $att_url;
 }
 
@@ -39,15 +59,15 @@ add_filter('posts_where', 'fifu_query_attachments');
 function fifu_query_attachments($where) {
     if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments') && fifu_is_off('fifu_media_library')) {
         global $wpdb;
-        $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> 77777 ';
+        $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
     }
     return $where;
 }
 
-add_filter('posts_where', function ( $where, \WP_Query $q ) {
+add_filter('posts_where', function ($where, \WP_Query $q) {
     if (is_admin() && $q->is_main_query() && fifu_is_off('fifu_media_library')) {
         global $wpdb;
-        $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> 77777 ';
+        $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
     }
     return $where;
 }, 10, 2);
@@ -55,32 +75,43 @@ add_filter('posts_where', function ( $where, \WP_Query $q ) {
 add_filter('wp_get_attachment_image_src', 'fifu_replace_attachment_image_src', 10, 3);
 
 function fifu_replace_attachment_image_src($image, $att_id, $size) {
-    if (!$image)
+    if (!$image || !$att_id)
         return $image;
 
-    if (strpos($image[0], ';http') !== false)
-        $image[0] = 'http' . explode(";http", $image[0])[1];
+    $att_post = get_post($att_id);
 
-    if (!$att_id)
+    if (!$att_post)
         return $image;
 
-    $post = get_post($att_id);
+    // jetpack	
+    preg_match("/^http[s]*:\/\/[i][0-9][.]wp.com\//", $image[0], $matches);
+    if ($matches) {
+        $image[0] = fifu_process_external_url($image[0], $att_id);
+        return $image;
+    }
 
-    if (fifu_has_internal_image_path($image[0]) && $post->post_author != "77777")
+    // internal
+    if ($att_post->post_author != FIFU_AUTHOR)
         return $image;
 
-    if (fifu_should_hide())
+    $image[0] = fifu_process_url($image[0], $att_id);
+
+    global $post;
+
+    if (fifu_should_hide() && fifu_main_image_url($post->ID) == $image[0])
         return null;
+
     $image_size = fifu_get_image_size($size);
     if (fifu_is_on('fifu_original')) {
         return array(
-            fifu_has_internal_image_path($image[0]) ? get_post($att_id)->guid : $image[0],
+            $image[0],
             null,
             null,
             null,
         );
     }
-    $dimension = $post ? get_post_meta($post->ID, 'fifu_image_dimension') : null;
+
+    $dimension = $att_post ? get_post_meta($att_post->ID, 'fifu_image_dimension') : null;
     $arrFIFU = fifu_get_width_height($dimension);
 
     $width = $arrFIFU['width'];
@@ -98,32 +129,11 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
     }
 
     return array(
-        fifu_has_internal_image_path($image[0]) ? get_post($att_id)->guid : $image[0],
+        $image[0],
         $width,
         $height,
         isset($image_size['crop']) ? $image_size['crop'] : '',
     );
-}
-
-function fifu_get_internal_image_path() {
-    return explode("//", get_home_url())[1] . "/wp-content/uploads/";
-}
-
-function fifu_get_internal_image_path2() {
-    return get_bloginfo() . ".files.wordpress.com";
-}
-
-function fifu_get_internal_image_path3() {
-    return explode('.', explode("//", get_home_url())[1])[0] . ".files.wordpress.com";
-}
-
-// for WPML Multilingual CMS
-function fifu_get_internal_image_path4() {
-    return explode("/", explode("//", get_home_url())[1])[0] . "/wp-content/uploads/";
-}
-
-function fifu_has_internal_image_path($url) {
-    return strpos($url, fifu_get_internal_image_path()) !== false || strpos($url, fifu_get_internal_image_path2()) !== false || strpos($url, fifu_get_internal_image_path3()) !== false || strpos($url, fifu_get_internal_image_path4()) !== false;
 }
 
 add_action('template_redirect', 'fifu_action', 10);
@@ -136,47 +146,82 @@ function fifu_callback($buffer) {
     if (empty($buffer))
         return;
 
-    if (is_singular('product') && fifu_is_off('fifu_lazy') && fifu_is_off('fifu_parameters'))
-        return $buffer;
+    /* img */
 
+    $srcType = "src";
     $imgList = array();
     preg_match_all('/<img[^>]*>/', $buffer, $imgList);
-    $srcArray = array(
-        "src" => "src",
-        "data-src" => "data-src"
-    );
+
     foreach ($imgList[0] as $imgItem) {
-        foreach ($srcArray as $srcItem) {
-            preg_match('/(' . $srcItem . ')([^\'\"]*[\'\"]){2}/', $imgItem, $src);
-            if (!$src)
-                continue;
-            $delimiter = substr($src[0], - 1);
-            $url = explode($delimiter, $src[0])[1];
-            if (strpos($url, 'fifu-post-id') === false)
-                continue;
-            $id = explode('&', explode('fifu-post-id=', $url)[1])[0];
-            $featured = explode('&', explode('fifu-featured=', $url)[1])[0];
-            if (!(int) $featured)
-                continue;
-            $buffer = str_replace($imgItem, fifu_replace($imgItem, $id, null, null), $buffer);
+        preg_match('/(' . $srcType . ')([^\'\"]*[\'\"]){2}/', $imgItem, $src);
+        if (!$src)
+            continue;
+        $del = substr($src[0], - 1);
+        $url = fifu_normalize(explode($del, $src[0])[1]);
+        $post_id = null;
+
+        // get parameters
+        if (isset($_POST[$url]))
+            $data = $_POST[$url];
+        else
+            continue;
+
+        if (strpos($imgItem, 'fifu-replaced') !== false)
+            continue;
+
+        $post_id = $data['post_id'];
+        $featured = $data['featured'];
+
+        if ($featured) {
+            // add featured
+            $newImgItem = str_replace('<img ', '<img fifu-featured="1" ', $imgItem);
+
+            $buffer = str_replace($imgItem, fifu_replace($newImgItem, $post_id, null, null), $buffer);
         }
     }
 
-    if (fifu_is_on('fifu_lazy')) {
-        // lazy load for background-image
-        $imgList = array();
-        preg_match_all('/<[^>]*background-image[^>]*>/', $buffer, $imgList);
-        foreach ($imgList[0] as $imgItem) {
-            $mainDelimiter = substr(explode('style=', $imgItem)[1], 0, 1);
-            if ($mainDelimiter)
-                $url = preg_split('/[\'\"]/', preg_split('/url\([\'\"]/', $imgItem, -1)[1], -1)[0];
-            else
-                $url = preg_split('/[ ]{0,1}\)\;/', preg_split('/url\([ ]{0,1}/', $imgItem, -1)[1], -1)[0];
-            $newImgItem = preg_replace("/background-image[^:]*:[^\)]*url[^\)]*[\)]/", "", $imgItem);
+    /* background-image */
+
+    $imgList = array();
+    preg_match_all('/<[^>]*background-image[^>]*>/', $buffer, $imgList);
+    foreach ($imgList[0] as $imgItem) {
+        $mainDelimiter = substr(explode('style=', $imgItem)[1], 0, 1);
+        $subDelimiter = substr(explode('url(', $imgItem)[1], 0, 1);
+        if (in_array($subDelimiter, array('"', "'", ' ')))
+            $url = preg_split('/[\'\" ]{1}\)/', preg_split('/url\([\'\" ]{1}/', $imgItem, -1)[1], -1)[0];
+        else
+            $url = preg_split('/\)/', preg_split('/url\(/', $imgItem, -1)[1], -1)[0];
+
+        $newImgItem = $imgItem;
+
+        $url = fifu_normalize($url);
+        if (isset($_POST[$url])) {
+            $data = $_POST[$url];
+
+            if (strpos($imgItem, 'fifu-replaced') !== false)
+                continue;
+        }
+
+        if (fifu_is_on('fifu_lazy')) {
+            // lazy load for background-image
+            $class = 'lazyload ';
+
+            // add class
+            $newImgItem = str_replace('class=' . $mainDelimiter, 'class=' . $mainDelimiter . $class, $imgItem);
+
+            // add status
+            $newImgItem = str_replace('<img ', '<img fifu-replaced="1" ', $newImgItem);
+
             $attr = 'data-bg=' . $mainDelimiter . $url . $mainDelimiter;
             $newImgItem = str_replace('>', ' ' . $attr . '>', $newImgItem);
-            $buffer = str_replace($imgItem, $newImgItem, $buffer);
+
+            // remove background-image
+            $pattern = '/background-image.*url\(' . $subDelimiter . '.*' . $subDelimiter . '\)/';
+            $newImgItem = preg_replace($pattern, '', $newImgItem);
         }
+
+        if ($newImgItem != $imgItem)
+            $buffer = str_replace($imgItem, $newImgItem, $buffer);
     }
 
     return $buffer;
@@ -213,44 +258,27 @@ function fifu_get_width_height($dimension) {
 
 function fifu_add_url_parameters($url, $att_id) {
     $post_id = get_post($att_id)->post_parent;
+
     if (!$post_id)
         return $url;
 
-    $symbol = strpos($url, '?') !== false ? '&' : '?';
     $post_thumbnail_id = get_post_thumbnail_id($post_id);
     $post_thumbnail_id = $post_thumbnail_id ? $post_thumbnail_id : get_term_meta($post_id, 'thumbnail_id', true);
     $featured = $post_thumbnail_id == $att_id ? 1 : 0;
 
-    $url .= $symbol . 'fifu-post-id=' . $post_id . '&fifu-featured=' . $featured;
+    if (!$featured)
+        return $url;
 
+    // avoid duplicated call
+    if (isset($_POST[$url]))
+        return $url;
+
+    $parameters = array();
+    $parameters['att_id'] = $att_id;
+    $parameters['post_id'] = $post_id;
+    $parameters['featured'] = $featured;
+
+    $_POST[$url] = $parameters;
     return $url;
-}
-
-// plugin: accelerated-mobile-pages
-
-function fifu_amp_url($url, $width, $height) {
-    $size = get_post_meta(get_the_ID(), 'fifu_image_dimension');
-    if (!empty($size)) {
-        $size = explode(';', $size[0]);
-        $width = $size[0];
-        $height = $size[1];
-    }
-    return array(0 => $url, 1 => $width, 2 => $height);
-}
-
-function fifu_reject_guid() {
-    return fifu_is_mpd_active() || fifu_is_classified_listing_active();
-}
-
-// plugin: multisite-post-duplicator
-
-function fifu_is_mpd_active() {
-    return is_plugin_active('multisite-post-duplicator/mpd.php');
-}
-
-// plugin: classified-listing
-
-function fifu_is_classified_listing_active() {
-    return is_plugin_active('classified-listing/classified-listing.php') || is_plugin_active('classified-listing-pro/classified-listing-pro.php');
 }
 

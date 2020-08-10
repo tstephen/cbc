@@ -4,7 +4,7 @@ add_filter('wp_insert_post_data', 'fifu_remove_first_image_ext', 10, 2);
 
 function fifu_remove_first_image_ext($data, $postarr) {
     /* invalid or internal or ignore */
-    if (!$_POST || isset($_POST['fifu_input_url']) || isset($_POST['fifu_ignore_auto_set']))
+    if (isset($_POST['fifu_input_url']) || isset($_POST['fifu_ignore_auto_set']))
         return $data;
 
     $content = $postarr['post_content'];
@@ -35,7 +35,11 @@ function fifu_save_properties_ext($post_id) {
     if ($url && fifu_is_on('fifu_get_first')) {
         update_post_meta($post_id, 'fifu_image_url', fifu_convert($url));
         fifu_update_fake_attach_id($post_id);
+        return;
     }
+
+    if (!$url && get_option('fifu_default_url') && fifu_is_on('fifu_enable_default_url'))
+        fifu_update_fake_attach_id($post_id);
 }
 
 function fifu_first_img_in_content($content) {

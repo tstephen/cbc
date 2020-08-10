@@ -46,7 +46,7 @@ class FifuDb {
     function insert_attachment_meta_url($ids) {
         $this->wpdb->get_results("
             INSERT INTO " . $this->postmeta . " (post_id, meta_key, meta_value) (
-                SELECT p.id, '_wp_attached_file', CONCAT(';', p.guid) 
+                SELECT p.id, '_wp_attached_file', p.guid
                 FROM " . $this->posts . " p 
                 WHERE p.post_parent IN (" . $ids . ") 
                 AND p.post_type = 'attachment' 
@@ -684,7 +684,7 @@ class FifuDb {
         $url = fifu_main_image_url($post_id);
         $has_fifu_attachment = $att_id ? ($this->is_fifu_attachment($att_id) && get_option('fifu_default_attach_id') != $att_id) : false;
         // delete
-        if (!$url) {
+        if (!$url || $url == get_option('fifu_default_url')) {
             if ($has_fifu_attachment) {
                 wp_delete_attachment($att_id);
                 delete_post_thumbnail($post_id);
@@ -709,7 +709,7 @@ class FifuDb {
             // update
             $alt = get_post_meta($post_id, 'fifu_image_alt', true);
             if ($has_fifu_attachment) {
-                update_post_meta($att_id, '_wp_attached_file', ';' . $url);
+                update_post_meta($att_id, '_wp_attached_file', $url);
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $this->wpdb->update($this->posts, $set = array('post_title' => $alt, 'guid' => $url), $where = array('id' => $att_id), null, null);
             }
@@ -719,7 +719,7 @@ class FifuDb {
                 $this->insert_attachment_by($value);
                 $att_id = $this->wpdb->insert_id;
                 update_post_meta($post_id, '_thumbnail_id', $att_id);
-                update_post_meta($att_id, '_wp_attached_file', ';' . $url);
+                update_post_meta($att_id, '_wp_attached_file', $url);
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $attachments = $this->get_attachments_without_post($post_id);
                 if ($attachments) {
@@ -751,7 +751,7 @@ class FifuDb {
             // update
             $alt = get_term_meta($term_id, 'fifu_image_alt', true);
             if ($has_fifu_attachment) {
-                update_post_meta($att_id, '_wp_attached_file', ';' . $url);
+                update_post_meta($att_id, '_wp_attached_file', $url);
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $this->wpdb->update($this->posts, $set = array('guid' => $url, 'post_title' => $alt), $where = array('id' => $att_id), null, null);
             }
@@ -761,7 +761,7 @@ class FifuDb {
                 $this->insert_attachment_by($value);
                 $att_id = $this->wpdb->insert_id;
                 update_term_meta($term_id, 'thumbnail_id', $att_id);
-                update_post_meta($att_id, '_wp_attached_file', ';' . $url);
+                update_post_meta($att_id, '_wp_attached_file', $url);
                 update_post_meta($att_id, '_wp_attachment_image_alt', $alt);
                 $attachments = $this->get_ctgr_attachments_without_post($term_id);
                 if ($attachments) {
@@ -791,7 +791,7 @@ class FifuDb {
         }
         if ($value) {
             $this->insert_default_thumbnail_id($value);
-            update_post_meta($att_id, '_wp_attached_file', ';' . get_option('fifu_default_url'));
+            update_post_meta($att_id, '_wp_attached_file', get_option('fifu_default_url'));
         }
     }
 
@@ -799,7 +799,7 @@ class FifuDb {
         $att_id = get_option('fifu_default_attach_id');
         if ($url != wp_get_attachment_url($att_id)) {
             $this->wpdb->update($this->posts, $set = array('guid' => $url), $where = array('id' => $att_id), null, null);
-            update_post_meta($att_id, '_wp_attached_file', ';' . $url);
+            update_post_meta($att_id, '_wp_attached_file', $url);
         }
     }
 

@@ -30,7 +30,6 @@ jQuery(function () {
         });
     });
 
-    jQuery("#tabs-flickr").tabs();
     jQuery("#tabs").tabs();
     jQuery("#tabs-top").tabs();
     jQuery("#fifu_input_spinner_cron_metadata").spinner({min: 1, step: 1});

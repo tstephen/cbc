@@ -1,7 +1,7 @@
 <?php
 
 function fifu_category_scripts() {
-    wp_enqueue_style('fifu-category-css', plugins_url('/html/css/category.css', __FILE__));
+    wp_enqueue_style('fifu-category-css', plugins_url('/html/css/category.css', __FILE__), array(), fifu_version_number());
 
     fifu_register_meta_box_script();
 }

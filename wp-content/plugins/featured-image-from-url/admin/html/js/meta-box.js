@@ -59,6 +59,7 @@ function runPreview($url) {
     if ($url) {
         jQuery("#fifu_button").hide();
         jQuery("#fifu_help").hide();
+        jQuery("#fifu_premium").hide();
 
         jQuery("#fifu_image").css('background-image', "url('" + $url + "')");
 
@@ -93,4 +94,14 @@ jQuery(document).ready(function () {
         evt.stopImmediatePropagation();
         jQuery.fancybox.open('<img src="' + jQuery("#fifu_input_url").val() + '" style="max-height:600px">');
     });
+
+    jQuery('.fifu-hover').on('mouseover', function (evt) {
+        jQuery(this).css('color', '#23282e');
+    });
+    jQuery('.fifu-hover').on('mouseout', function (evt) {
+        jQuery(this).css('color', 'white');
+    });
+
+    jQuery("div#imageUrlMetaBox").find('h2').replaceWith('<h3 style="top:7px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span> Featured image</h3>');
+    jQuery("div#urlMetaBox").find('h2').replaceWith('<h4 style="top:5px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span> Product image</h4>');
 });

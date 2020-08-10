@@ -1,101 +1,106 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://donorbox.org/fifu
-Tags: featured image, featured, image, url, external, woocommerce, product, gallery, video, slider, link, thumbnail
+Tags: featured image, featured, image, url, thumbnail
 Requires at least: 5.0
-Tested up to: 5.4
-Stable tag: 3.1.6
+Tested up to: 5.5
+Stable tag: 3.2.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Use an external image as Featured Image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
+Use an external image as featured image of a post or WooCommerce product. Includes image search, video, social tags, SEO, lazy load, gallery, automation etc.
 
 == Description ==
 
-### WordPress plugin for external Featured Image
+### WordPress plugin for external featured image
 
 Since 2015 FIFU has helped thousands of websites worldwide to save money on storage, processing and copyright.
 
 #### FEATURED IMAGE
-Use an external image as Featured Image of your post, page or custom post type.
+Use an external image as featured image of your post, page or custom post type.
 
-* External Featured Image
-* Unsplash Image Search
-* Lazy Load
-* Default Featured Image
-* Hide Featured Media
-* Featured Image in Content
-* CSS Style
-* Original Size
-* Add Class
-* Save Image Dimensions
-* Featured Image Column
-* **[Premium]** Giphy Image Search
-* **[Premium]** Unsplash Image Size
-* **[Premium]** Same Height
-* **[Premium]** Hover Effects
-* **[Premium]** Replace Not Found Image
-* **[Premium]** Image Validation
-* **[Premium]** Flickr Thumbnails
+* External featured image
+* Unsplash image search
+* Lazy load
+* Default featured image
+* Hide featured media
+* Featured image in content
+* CSS style
+* Original size
+* Add class
+* Save image dimensions
+* Featured image column
+* **[Premium]** Giphy image search
+* **[Premium]** Unsplash image size
+* **[Premium]** Same height
+* **[Premium]** Hover effects
+* **[Premium]** Replace not found image
+* **[Premium]** Image validation
+* **[Premium]** Flickr thumbnails
 
 #### SEO
 
-* Auto Set Image Title
-* Social Tags
-* **[Premium]** Media RSS Tags
+* Auto set image title
+* Social tags
+* **[Premium]** Media RSS tags
 
 #### AUTOMATION
 
-* WP All Import Add-On
-* WooCommerce Import
-* URL from Post Content
+* WP All Import add-on
+* WooCommerce import
+* URL from post content
 * **[Premium]** WP REST API
 * **[Premium]** WooCommerce REST API
-* **[Premium]** Schedule Metadata Generation
+* **[Premium]** Schedule metadata generation
 
 #### WOOCOMMERCE
 
-* External Product Image
-* Lightbox and Zoom
-* Category Image on Grid
-* **[Premium]** External Image Gallery
-* **[Premium]** External Video Gallery
-* **[Premium]** Auto Set Category Images
-* **[Premium]** Variable Product
-* **[Premium]** Variation Image
-* **[Premium]** Variation Image Gallery
+* External product image
+* Lightbox and zoom
+* Category image on grid
+* **[Premium]** External image gallery
+* **[Premium]** External video gallery
+* **[Premium]** Auto set category images
+* **[Premium]** Variable product
+* **[Premium]** Variation image
+* **[Premium]** Variation image gallery
 
 #### FEATURED VIDEO
 Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publitio.
 
-* **[Premium]** Featured Video
-* **[Premium]** Video Thumbnail
-* **[Premium]** Play Button
-* **[Premium]** Minimum Width
-* **[Premium]** Black Background
-* **[Premium]** Mouseover Autoplay
+* **[Premium]** Featured video
+* **[Premium]** Video thumbnail
+* **[Premium]** Play button
+* **[Premium]** Minimum width
+* **[Premium]** Black background
+* **[Premium]** Mouseover autoplay
 * **[Premium]** Autoplay
 * **[Premium]** Loop
 * **[Premium]** Mute
-* **[Premium]** Background Video
-* **[Premium]** Related Videos
-* **[Premium]** Gallery Icon
+* **[Premium]** Background video
+* **[Premium]** Related videos
+* **[Premium]** Gallery icon
 
 #### OTHERS
 
-* **[Premium]** Featured Slider 
-* **[Premium]** Featured Shortcode 
+* **[Premium]** Featured slider 
+* **[Premium]** Featured shortcode 
+
+#### INTEGRATION FUNCTION FOR DEVELOPERS
+
+* fifu_dev_set_image($post_id, $image_url)
 
 #### LANGUAGES
 
 * English (United States)
 * German
+* Greek
 * Portuguese (Brazil)
 
 #### LINKS
 
 * **<a href="https://fifu.app/">Featured Image from URL Premium</a>**	
-* **<a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola">Google Chrome Extension</a>**
+* **<a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola">Google Chrome extension</a>**
 
 
 == Installation ==
@@ -114,13 +119,13 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Frequently Asked Questions ==
 
-= Where is the external Featured Image box? =
+= Where is the external featured image box? =
 
-* Next to the regular Featured Image box, in the post editor.
+* Next to the regular featured image box, in the post editor.
 
-= Why isn't Preview button working? =
+= Why isn't preview button working? =
 
-* Your image URL is invalid. Take a look at FIFU Settings > Getting Started.
+* Your image URL is invalid. Take a look at FIFU Settings > Getting started.
 
 = Does FIFU save the images in the media library? =
 
@@ -128,7 +133,7 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 = Is any action necessary before removing FIFU?
 
-* Access Settings and run Clean Metadata.
+* Access settings and clean the metadata.
 
 = What's the metadata created by FIFU?
 
@@ -149,53 +154,53 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 2. If the image URL is correct, the image will be shown
 
-3. Featured Video
+3. Featured video
 
-4. Featured Slider
+4. Featured slider
 
-5. Featured Image Column
+5. Featured image column
 
-6. External Featured Media on home
+6. External featured media on home
 
-7. External Featured Image on post
+7. External featured image on post
 
-8. Featured Video on post
+8. Featured video on post
 
-9. Featured Slider on post
+9. Featured slider on post
 
 10. Many settings
 
-11. External Image Gallery
+11. External image gallery
 
-12. External Video Gallery
+12. External video gallery
 
-13. External Featured Media on WooCommerce shop
+13. External featured media on WooCommerce shop
 
-14. External Featured Media on cart
+14. External featured media on cart
 
-15. External Image Gallery
+15. External image gallery
 
-16. External Featured Image on lightbox
+16. External featured image on lightbox
 
 17. Zoom
 
-18. Video Gallery
+18. Video gallery
 
-19. Featured Video on lightbox
+19. Featured video on lightbox
 
 20. Fullscreen
 
 
 == Changelog ==
 
-= 3.1.6 =
-* Improvement: readme changes to comply with the WordPress.org plugin guidelines.
+= 3.2.4 =
+* Critical bug fix: conflict with URLs from Jetpack, Cloudinary and maybe others.
 
-= 3.1.5 =
-* New language: German; Improvement: short readme to make translations easier.
+= 3.2.3 =
+* Improvement: core changes for a better integration with themes, plugins and WordPress 5.5; bug fix: conflict between Hide Featured Media and Related Posts Thumbnails plugin.
 
-= 3.1.4 =
-* Notice: FIFU is ready to receive translations; New language: Portuguese (Brazil); New features: Mute and Background Video; Improvement: og:image tag for internal images.
+= 3.2.2 =
+* Adjustment: layout changes for WordPress 5.5; improvement: Flickr Thumbnails (less controls and more precision); bug fix: conflict between Lazy Load and Avada theme.
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -203,5 +208,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.1.6 =
-* Improvement: readme changes to comply with the WordPress.org plugin guidelines.
+= 3.2.4 =
+* Critical bug fix: conflict with URLs from Jetpack, Cloudinary and maybe others.

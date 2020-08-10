@@ -66,9 +66,6 @@ msgstr ""
 msgid "add social tags"
 msgstr ""
 
-msgid "Add some FIFU parameters to your image URLs. It only makes sense when you have a theme (or plugin) that calls the image URLs in a nonstandard way, what could break some FIFU features, such as Video, Slider, Shortcode, Add Class, Lazy Load and Same Height > Object Fit."
-msgstr ""
-
 msgid "Add the class "fifu-class" to the Featured Image tags."
 msgstr ""
 
@@ -282,13 +279,10 @@ msgstr ""
 msgid "Examples of valid size ratios: 3:2, 16:9, 1:1..."
 msgstr ""
 
-msgid "fade effect"
-msgstr ""
-
 msgid "FAQ"
 msgstr ""
 
-msgid "Fast Support"
+msgid "Fast support"
 msgstr ""
 
 msgid "Featured Image"
@@ -378,7 +372,7 @@ msgstr ""
 msgid "Getting Flickr URL"
 msgstr ""
 
-msgid "Getting Started"
+msgid "Getting started"
 msgstr ""
 
 msgid "Giphy search"
@@ -513,7 +507,7 @@ msgstr ""
 msgid "jQuery"
 msgstr ""
 
-msgid "Just send me an email. If you are available to discuss the details and the plugin is free and has more than 50,000 active installs, I should provide an integration very soon."
+msgid "Just send me an email. If you are available to discuss the details and the plugin is free and has more than 25,000 active installs, I should provide an integration very soon."
 msgstr ""
 
 msgid "Key"
@@ -897,9 +891,6 @@ msgstr ""
 msgid "URL from Post Content"
 msgstr ""
 
-msgid "URL Parameters"
-msgstr ""
-
 msgid "Use FIFU with WooCommerce import."
 msgstr ""
 
@@ -1056,5 +1047,350 @@ msgstr ""
 msgid "support to private videos from Vimeo"
 msgstr ""
 
-msgid "integration with WooCoomerce Additional Variation Images plugin"
+msgid "integration with WooCommerce Additional Variation Images plugin"
+msgstr ""
+
+msgid "Integrate your plugin with FIFU"
+msgstr ""
+
+msgid "Are you a WordPress developer? So now you can easily integrate your code with FIFU using the function below."
+msgstr ""
+
+msgid "All you need is to inform the post id and the image url. And FIFU will set the custom fields and create the metadata."
+msgstr ""
+
+msgid "fifu_dev_set_image($post_id, $image_url)"
+msgstr ""
+
+msgid "Use an external image as featured image of a post or WooCommerce product. Includes image search, video, social tags, SEO, lazy load, gallery, automati &hellip;"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Giphy animated image search"
+msgstr ""
+
+msgid "<p>Settings</p>"
+msgstr ""
+
+msgid "Access settings and clean the metadata."
+msgstr ""
+
+msgid "fifu_dev_set_image($post_id, $image_url)"
+msgstr ""
+
+msgid "INTEGRATION FUNCTION FOR DEVELOPERS"
+msgstr ""
+
+msgid "Upload the 'featured-image-from-url' folder to the /wp-content/plugins/ directory;"
+msgstr ""
+
+msgid "Activate FIFU from your Plugins page;"
+msgstr ""
+
+msgid "Search for 'Featured Image from URL';"
+msgstr ""
+
+msgid "Visit the plugins page within your dashboard and select 'Add New';"
+msgstr ""
+
+msgid "INSTALL FIFU MANUALLY"
+msgstr ""
+
+msgid "INSTALL FIFU FROM WITHIN WORDPRESS"
+msgstr ""
+
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+msgid "German"
+msgstr ""
+
+msgid "Greek"
+msgstr ""
+
+msgid "English (United States)"
+msgstr ""
+
+msgid "LANGUAGES"
+msgstr ""
+
+msgid "You save money on storage, processing and copyright."
+msgstr ""
+
+msgid "No image optimization or thumbnails. You may fix that with Jetpack (performance settings)."
+msgstr ""
+
+msgid "Database registers that help WordPress components to work with external images."
+msgstr ""
+
+msgid "Never."
+msgstr ""
+
+msgid "Your image URL is invalid. Take a look at Settings &gt; Getting started."
+msgstr ""
+
+msgid "Next to the regular featured image box, in the post editor."
+msgstr ""
+
+msgid "What are the advantages of external images?"
+msgstr ""
+
+msgid "What are the disadvantages of external images?"
+msgstr ""
+
+msgid "What's the metadata created by FIFU?"
+msgstr ""
+
+msgid "Is any action necessary before removing FIFU?"
+msgstr ""
+
+msgid "Does FIFU save the images in the media library?"
+msgstr ""
+
+msgid "Why isn't preview button working?"
+msgstr ""
+
+msgid "Where is the external featured image box?"
+msgstr ""
+
+msgid "Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publitio."
+msgstr ""
+
+msgid "Use an external image as featured image of your post, page or custom post type."
+msgstr ""
+
+msgid "Since 2015 FIFU has helped thousands of websites worldwide to save money on storage, processing and copyright."
+msgstr ""
+
+msgid "<strong><a href=\"https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola\">Google Chrome extension</a></strong>"
+msgstr ""
+
+msgid "<strong><a href=\"https://fifu.app/\">Featured Image from URL Premium</a></strong>   "
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Featured shortcode "
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Featured slider "
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Gallery icon"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Related videos"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Background video"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Mute"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Loop"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Autoplay"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Mouseover autoplay"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Black background"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Minimum width"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Play button"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Video thumbnail"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Featured video"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Variation image gallery"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Variation image"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Variable product"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Auto set category images"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> External video gallery"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> External image gallery"
+msgstr ""
+
+msgid "Category image on grid"
+msgstr ""
+
+msgid "Lightbox and zoom"
+msgstr ""
+
+msgid "External product image"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Schedule metadata generation"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> WooCommerce REST API"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> WP REST API"
+msgstr ""
+
+msgid "URL from post content"
+msgstr ""
+
+msgid "WooCommerce import"
+msgstr ""
+
+msgid "WP All Import add-on"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Media RSS tags"
+msgstr ""
+
+msgid "Social tags"
+msgstr ""
+
+msgid "Auto set image title"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Flickr thumbnails"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Image validation"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Replace not found image"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Hover effects"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Same height"
+msgstr ""
+
+msgid "<strong>[Premium]</strong> Unsplash image size"
+msgstr ""
+
+msgid "Featured image column"
+msgstr ""
+
+msgid "Save image dimensions"
+msgstr ""
+
+msgid "Add class"
+msgstr ""
+
+msgid "Original size"
+msgstr ""
+
+msgid "CSS style"
+msgstr ""
+
+msgid "Featured image in content"
+msgstr ""
+
+msgid "Hide featured media"
+msgstr ""
+
+msgid "Default featured image"
+msgstr ""
+
+msgid "Lazy load"
+msgstr ""
+
+msgid "Unsplash image search"
+msgstr ""
+
+msgid "External featured image"
+msgstr ""
+
+msgid "LINKS"
+msgstr ""
+
+msgid "OTHERS"
+msgstr ""
+
+msgid "FEATURED VIDEO"
+msgstr ""
+
+msgid "WOOCOMMERCE"
+msgstr ""
+
+msgid "AUTOMATION"
+msgstr ""
+
+msgid "SEO"
+msgstr ""
+
+msgid "FEATURED IMAGE"
+msgstr ""
+
+msgid "WordPress plugin for external featured image"
+msgstr ""
+
+msgid "<p>Fullscreen</p>"
+msgstr ""
+
+msgid "<p>Featured video on lightbox</p>"
+msgstr ""
+
+msgid "<p>Video gallery</p>"
+msgstr ""
+
+msgid "<p>Zoom</p>"
+msgstr ""
+
+msgid "<p>External video gallery</p>"
+msgstr ""
+
+msgid "<p>External image gallery</p>"
+msgstr ""
+
+msgid "<p>Featured slider on post</p>"
+msgstr ""
+
+msgid "<p>Featured video on post</p>"
+msgstr ""
+
+msgid "<p>External featured image on post</p>"
+msgstr ""
+
+msgid "<p>Featured slider</p>"
+msgstr ""
+
+msgid "<p>Featured video</p>"
+msgstr ""
+
+msgid "<p>Just insert the image address or some keywords and click on preview button</p>"
+msgstr ""
+
+msgid "Activate FIFU through the 'Plugins' menu in WordPress;"
+msgstr ""
+
+msgid "<p>External featured image on lightbox</p>"
+msgstr ""
+
+msgid "<p>External featured media on cart</p>"
+msgstr ""
+
+msgid "<p>External featured media on WooCommerce shop</p>"
+msgstr ""
+
+msgid "<p>External featured media on home</p>"
+msgstr ""
+
+msgid "<p>Featured image column</p>"
+msgstr ""
+
+msgid "<p>If the image URL is correct, the image will be shown</p>"
 msgstr ""

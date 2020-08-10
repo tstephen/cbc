@@ -8,17 +8,9 @@ function fifu_insert_meta_box() {
 
     foreach ($post_types as $post_type) {
         if ($post_type == 'product') {
-            add_meta_box('urlMetaBox', '<span class="dashicons dashicons-camera" style="font-size:20px"></span> ' . esc_html__('Product Image (URL)', 'featured-image-from-url'), 'fifu_show_elements', $post_type, 'side', 'low');
-            add_meta_box('wooCommerceGalleryMetaBox', '<span class="dashicons dashicons-format-gallery" style="font-size:20px"></span> ' . esc_html__('Image Gallery (URL)', 'featured-image-from-url'), 'fifu_wc_show_elements', $post_type, 'side', 'low');
-            add_meta_box('videoUrlMetaBox', '<span class="dashicons dashicons-video-alt3" style="font-size:20px"></span> ' . esc_html__('Featured Video (URL)', 'featured-image-from-url'), 'fifu_video_show_elements', $post_type, 'side', 'low');
-            add_meta_box('wooCommerceVideoGalleryMetaBox', '<span class="dashicons dashicons-format-video" style="font-size:20px"></span> ' . esc_html__('Video Gallery (URL)', 'featured-image-from-url'), 'fifu_video_wc_show_elements', $post_type, 'side', 'low');
-            add_meta_box('sliderImageUrlMetaBox', '<span class="dashicons dashicons-images-alt2" style="font-size:20px"></span> ' . esc_html__('Featured Slider (URL)', 'featured-image-from-url'), 'fifu_slider_show_elements', $post_type, 'side', 'low');
-            add_meta_box('shortCodeMetaBox', '<span class="dashicons dashicons-editor-code" style="font-size:20px"></span> ' . esc_html__('Featured Shortcode', 'featured-image-from-url'), 'fifu_shortcode_show_elements', $post_type, 'side', 'low');
+            add_meta_box('urlMetaBox', esc_html__('Product image', 'featured-image-from-url'), 'fifu_show_elements', $post_type, 'side', 'low');
         } else if ($post_type) {
-            add_meta_box('imageUrlMetaBox', '<span class="dashicons dashicons-camera" style="font-size:20px;padding-right:10px"></span> ' . esc_html__('Featured Image (URL)', 'featured-image-from-url'), 'fifu_show_elements', $post_type, 'side', 'low');
-            add_meta_box('videoUrlMetaBox', '<span class="dashicons dashicons-video-alt3" style="font-size:20px;padding-right:10px"></span> ' . esc_html__('Featured Video (URL)', 'featured-image-from-url'), $post_type, 'side', 'low');
-            add_meta_box('sliderImageUrlMetaBox', '<span class="dashicons dashicons-images-alt2" style="font-size:20px;padding-right:10px"></span> ' . esc_html__('Featured Slider (URL)', 'featured-image-from-url'), 'fifu_slider_show_elements', $post_type, 'side', 'low');
-            add_meta_box('shortCodeMetaBox', '<span class="dashicons dashicons-editor-code" style="font-size:20px;padding-right:10px"></span> ' . esc_html__('Featured Shortcode', 'featured-image-from-url'), 'fifu_shortcode_show_elements', $post_type, 'side', 'low');
+            add_meta_box('imageUrlMetaBox', esc_html__('Featured image', 'featured-image-from-url'), 'fifu_show_elements', $post_type, 'side', 'low');
         }
     }
     fifu_register_meta_box_script();
@@ -29,8 +21,8 @@ function fifu_register_meta_box_script() {
     wp_enqueue_style('fancy-box-css', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css');
     wp_enqueue_script('fancy-box-js', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js');
 
-    wp_enqueue_script('fifu-meta-box-js', plugins_url('/html/js/meta-box.js', __FILE__));
-    wp_enqueue_script('fifu-convert-url-js', plugins_url('/html/js/convert-url.js', __FILE__));
+    wp_enqueue_script('fifu-meta-box-js', plugins_url('/html/js/meta-box.js', __FILE__), array(), fifu_version_number());
+    wp_enqueue_script('fifu-convert-url-js', plugins_url('/html/js/convert-url.js', __FILE__), array(), fifu_version_number());
 
     if (fifu_is_sirv_active())
         wp_enqueue_script('fifu-sirv-js', 'https://scripts.sirv.com/sirv.js');
@@ -45,7 +37,7 @@ function fifu_register_meta_box_script() {
 add_action('add_meta_boxes', 'fifu_add_css');
 
 function fifu_add_css() {
-    wp_register_style('featured-image-from-url', plugins_url('/html/css/editor.css', __FILE__));
+    wp_register_style('featured-image-from-url', plugins_url('/html/css/editor.css', __FILE__), array(), fifu_version_number());
     wp_enqueue_style('featured-image-from-url');
 }
 
@@ -69,47 +61,6 @@ function fifu_show_elements($post) {
     $show_ignore = fifu_is_on('fifu_get_first') || fifu_is_on('fifu_pop_first') || fifu_is_on('fifu_ovw_first') ? '' : 'display:none;';
 
     include 'html/meta-box.html';
-}
-
-function fifu_shortcode_show_elements($post) {
-    $width = 'width:100%;';
-    $align = 'text-align:left;';
-    include 'html/meta-box-shortcode.html';
-}
-
-function fifu_video_show_elements($post) {
-    $margin = 'margin-top:10px;';
-    $width = 'width:100%;';
-    $height = 'height:150px;';
-    $align = 'text-align:left;';
-    include 'html/meta-box-video.html';
-}
-
-function fifu_wc_show_elements($post) {
-    $margin = 'margin-top:1px;';
-    $width = 'width:100%;';
-    $height = 'height:150px;';
-    $align = 'text-align:left;';
-    for ($i = 0; $i < 3; $i ++)
-        include 'html/woo-meta-box.html';
-}
-
-function fifu_video_wc_show_elements($post) {
-    $margin = 'margin-top:1px;';
-    $width = 'width:100%;';
-    $height = 'height:150px;';
-    $align = 'text-align:left;';
-    for ($i = 0; $i < 3; $i ++)
-        include 'html/woo-meta-box-video.html';
-}
-
-function fifu_slider_show_elements($post) {
-    $margin = 'margin-top:1px;';
-    $width = 'width:100%;';
-    $height = 'height:150px;';
-    $align = 'text-align:left;';
-    for ($i = 0; $i < 3; $i ++)
-        include 'html/meta-box-slider.html';
 }
 
 add_filter('wp_insert_post_data', 'fifu_remove_first_image', 10, 2);
@@ -272,7 +223,7 @@ function fifu_variation_settings_fields($loop, $variation_data, $variation) {
             )
     );
     // variation gallery
-    for ($i = 0; $i < 3; $i ++) {
+    for ($i = 0; $i < 3; $i++) {
         woocommerce_wp_text_input(
                 array(
                     'id' => "fifu_image_url_" . $i . "{$loop}",
