@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Automattic\\Jetpack\\A8c_Mc_Stats' => $vendorDir . '/automattic/jetpack-a8c-mc-stats/src/class-a8c-mc-stats.php',
     'Automattic\\Jetpack\\Abtest' => $vendorDir . '/automattic/jetpack-abtest/src/class-abtest.php',
     'Automattic\\Jetpack\\Assets' => $vendorDir . '/automattic/jetpack-assets/src/class-assets.php',
     'Automattic\\Jetpack\\Assets\\Logo' => $vendorDir . '/automattic/jetpack-logo/src/class-logo.php',
@@ -14,6 +15,8 @@ return array(
     'Automattic\\Jetpack\\Backup\\Helper_Script_Manager' => $vendorDir . '/automattic/jetpack-backup/src/class-helper-script-manager.php',
     'Automattic\\Jetpack\\Config' => $vendorDir . '/automattic/jetpack-config/src/class-config.php',
     'Automattic\\Jetpack\\Connection\\Client' => $vendorDir . '/automattic/jetpack-connection/src/class-client.php',
+    'Automattic\\Jetpack\\Connection\\Error_Handler' => $vendorDir . '/automattic/jetpack-connection/src/class-error-handler.php',
+    'Automattic\\Jetpack\\Connection\\Error_Handlers\\Invalid_Blog_Token' => $vendorDir . '/automattic/jetpack-connection/src/error-handlers/class-invalid-blog-token.php',
     'Automattic\\Jetpack\\Connection\\Manager' => $vendorDir . '/automattic/jetpack-connection/src/class-manager.php',
     'Automattic\\Jetpack\\Connection\\Manager_Interface' => $vendorDir . '/automattic/jetpack-connection/src/interface-manager.php',
     'Automattic\\Jetpack\\Connection\\Plugin' => $vendorDir . '/automattic/jetpack-connection/src/class-plugin.php',
@@ -22,6 +25,8 @@ return array(
     'Automattic\\Jetpack\\Connection\\Utils' => $vendorDir . '/automattic/jetpack-connection/src/class-utils.php',
     'Automattic\\Jetpack\\Connection\\XMLRPC_Connector' => $vendorDir . '/automattic/jetpack-connection/src/class-xmlrpc-connector.php',
     'Automattic\\Jetpack\\Constants' => $vendorDir . '/automattic/jetpack-constants/src/class-constants.php',
+    'Automattic\\Jetpack\\Device_Detection' => $vendorDir . '/automattic/jetpack-device-detection/src/class-device-detection.php',
+    'Automattic\\Jetpack\\Device_Detection\\User_Agent_Info' => $vendorDir . '/automattic/jetpack-device-detection/src/class-user-agent-info.php',
     'Automattic\\Jetpack\\Error' => $vendorDir . '/automattic/jetpack-error/src/class-error.php',
     'Automattic\\Jetpack\\JITMS\\JITM' => $vendorDir . '/automattic/jetpack-jitm/src/class-jitm.php',
     'Automattic\\Jetpack\\JITMS\\Post_Connection_JITM' => $vendorDir . '/automattic/jetpack-jitm/src/class-post-connection-jitm.php',

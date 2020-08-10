@@ -79,7 +79,7 @@ class Defaults {
 		'social_notifications_like',
 		'social_notifications_reblog',
 		'social_notifications_subscribe',
-		'comment_whitelist',
+		'comment_previously_approved',
 		'comment_max_links',
 		'moderation_keys',
 		'jetpack_wga',
@@ -130,7 +130,7 @@ class Defaults {
 		'advanced_seo_title_formats', // Jetpack_SEO_Titles::TITLE_FORMATS_OPTION.
 		'jetpack_api_cache_enabled',
 		'start_of_week',
-		'blacklist_keys',
+		'disallowed_keys',
 		'posts_per_page',
 		'posts_per_rss',
 		'show_on_front',
@@ -155,6 +155,9 @@ class Defaults {
 		'wordads_display_page',
 		'wordads_display_archive',
 		'wordads_custom_adstxt',
+		'wordads_custom_adstxt_enabled',
+		'wordads_ccpa_enabled',
+		'wordads_ccpa_privacy_policy_url',
 		'site_segment',
 		'site_user_type',
 		'site_vertical',
@@ -382,6 +385,9 @@ class Defaults {
 		'bwg_gallery',
 		'customize_changeset', // WP built-in post type for Customizer changesets.
 		'dn_wp_yt_log',
+		'flamingo_contact', // https://wordpress.org/plugins/flamingo/.
+		'flamingo_inbound',
+		'flamingo_outbound',
 		'http',
 		'idx_page',
 		'jetpack_migration',

@@ -292,9 +292,9 @@ class Jetpack_Calypsoify {
 	 */
 	public function insert_sidebar_html() {
 		$heading       = ( isset( $_GET['post_type'] ) && 'feedback' === $_GET['post_type'] ) ? __( 'Feedback', 'jetpack' ) : __( 'Plugins', 'jetpack' );
-		$stats_day_url = Redirect::get_url( 'calypso-stats-day' );
+		$home_url = Redirect::get_url( 'calypso-home' );
 		?>
-		<a href="<?php echo esc_url( $stats_day_url ); ?>" id="calypso-sidebar-header">
+		<a href="<?php echo esc_url( $home_url ); ?>" id="calypso-sidebar-header">
 			<svg class="gridicon gridicons-chevron-left" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M14 20l-8-8 8-8 1.414 1.414L8.828 12l6.586 6.586"></path></g></svg>
 
 			<ul>
@@ -310,7 +310,7 @@ class Jetpack_Calypsoify {
 
 		// Add proper links to masterbar top sections.
 		$my_sites_node       = (object) $wp_admin_bar->get_node( 'blog' );
-		$my_sites_node->href = Redirect::get_url( 'calypso-stats-day' );
+		$my_sites_node->href = Redirect::get_url( 'calypso-home' );
 		$wp_admin_bar->add_node( $my_sites_node );
 
 		$reader_node       = (object) $wp_admin_bar->get_node( 'newdash' );
@@ -335,14 +335,14 @@ class Jetpack_Calypsoify {
 	 */
 	private function get_calypso_origin() {
 		$origin    = ! empty( $_GET['origin'] ) ? $_GET['origin'] : 'https://wordpress.com';
-		$whitelist = array(
+		$allowed = array(
 			'http://calypso.localhost:3000',
 			'http://127.0.0.1:41050', // Desktop App
 			'https://wpcalypso.wordpress.com',
 			'https://horizon.wordpress.com',
 			'https://wordpress.com',
 		);
-		return in_array( $origin, $whitelist ) ? $origin : 'https://wordpress.com';
+		return in_array( $origin, $allowed, true ) ? $origin : 'https://wordpress.com';
 
 		function get_site_suffix() {
 			if ( class_exists( 'Jetpack' ) && method_exists( 'Jetpack', 'build_raw_urls' ) ) {
@@ -416,26 +416,11 @@ class Jetpack_Calypsoify {
 	}
 
 	/**
-	 * Returns the URL for switching the user's editor to the Classic editor.
+	 * Returns the URL for switching the user's editor to the Calypso (WordPress.com Classic) editor.
 	 *
 	 * @return string
 	 */
 	public function get_switch_to_classic_editor_url() {
-		// phpcs:ignore WordPress.Security.NonceVerification
-		if ( isset( $_GET['editor/after-deprecation'] ) ) {
-			$post_id    = get_the_ID();
-			$post_type  = get_current_screen()->post_type;
-			$path       = is_null( $post_id ) ? 'post-new.php' : 'post.php';
-			$query_args = array(
-				'post'       => $post_id,
-				'action'     => ( $post_id ) ? 'edit' : null,
-				'post_type'  => ( 'post' !== $post_type ) ? $post_type : null,
-				'set-editor' => 'classic',
-			);
-
-			return add_query_arg( $query_args, admin_url( $path ) );
-		}
-
 		return add_query_arg(
 			'set-editor',
 			'classic',

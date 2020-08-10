@@ -31,6 +31,7 @@ class Jetpack_Plan {
 			'supports' => array(
 				'opentable',
 				'calendly',
+				'send-a-message',
 			),
 		),
 		'personal' => array(
@@ -43,6 +44,7 @@ class Jetpack_Plan {
 			),
 			'supports' => array(
 				'akismet',
+				'donations',
 				'recurring-payments',
 			),
 		),
