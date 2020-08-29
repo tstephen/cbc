@@ -57,7 +57,7 @@ class WP_Members_Admin_Tab_Options {
 		$help_link   = sprintf( __( 'See the %sUsers Guide on plugin options%s.', 'wp-members' ), '<a href="https://rocketgeek.com/plugins/wp-members/users-guide/plugin-settings/options/" target="_blank">', '</a>' );	
 
 		// Build an array of post types
-		$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'names', 'and' );
+		$post_types = $wpmem->admin->post_types();
 		$post_arr = array(
 			'post' => __( 'Posts' ),
 			'page' => __( 'Pages' ),
@@ -159,26 +159,42 @@ class WP_Members_Admin_Tab_Options {
 								</ul>
 								<?php
 								if ( WPMEM_EXP_MODULE == true ) {
-									$arr = array( 
+									$rows = array( 
 										array(__('Time-based expiration','wp-members'),'wpmem_settings_time_exp',__('Allows for access to expire','wp-members'),'use_exp'),
 										array(__('Trial period','wp-members'),'wpmem_settings_trial',__('Allows for a trial period','wp-members'),'use_trial'),
 									); ?>
 								<h3><?php _e( 'Subscription Settings', 'wp-members' ); ?></h3>	
 								<ul><?php
-								for ( $row = 0; $row < count( $arr ); $row++ ) { ?>
+								foreach ( $rows as $row ) { ?>
 								  <li>
-									<label><?php echo $arr[ $row ][0]; ?></label>
-									<?php echo wpmem_create_formfield( $arr[ $row ][1], 'checkbox', '1', $wpmem->{$arr[ $row ][3]} ); ?>&nbsp;&nbsp;
-									<?php if ( $arr[ $row ][2] ) { ?><span class="description"><?php echo $arr[ $row ][2]; ?></span><?php } ?>
+									<label><?php echo $row[0]; ?></label>
+									<?php echo wpmem_create_formfield( $row[1], 'checkbox', '1', $wpmem->{$row[3]} ); ?>&nbsp;&nbsp;
+									<?php if ( $row[2] ) { ?><span class="description"><?php echo $row[2]; ?></span><?php } ?>
 								  </li>
 								<?php } 
 								}?></ul>
+								<h3><?php _e( 'Feature Settings', 'wp-members' ); ?></h3>
+								<?php
+								$rows = array(
+									array(__('Activation Link', 'wp-members'),'wpmem_settings_act_link',__('Send activation link on new registration. (Requires additional configuration)','wp-members'),'act_link'),
+									array(__('Password Reset Link', 'wp-members'),'wpmem_settings_pwd_link',__('Send password reset link instead of new password. (Requires additional configuration)','wp-members'),'pwd_link'),
+									array(__('Enable WP Login Error', 'wp-members' ),'wpmem_settings_login_error',__('Use WP login error object instead of WP-Members default login error','wp-members'),'login_error'),
+								);
+								?><ul><?php
+								foreach ( $rows as $row ) { ?>
+								  <li>
+									<label><?php echo $row[0]; ?></label>
+									<?php echo wpmem_create_formfield( $row[1], 'checkbox', '1', $wpmem->{$row[3]} ); ?>&nbsp;&nbsp;
+									<?php if ( $row[2] ) { ?><span class="description"><?php echo $row[2]; ?></span><?php } ?>
+								  </li>
+								<?php } ?>
+								</ul>
 								<h3><?php _e( 'Other Settings', 'wp-members' ); ?></h3>
 								<ul>
 								<?php 
 								/** This filter is defined in class-wp-members.php */
 								$dropin_dir = apply_filters( 'wpmem_dropin_dir', $wpmem->dropin_dir );
-								$arr = array(
+								$rows = array(
 									array(__('Enable Products', 'wp-members'),'wpmem_settings_products',__('Enables creation of different membership products','wp-members'),'enable_products'),
 									array(__('Clone menus','wp-members'),'wpmem_settings_menus',__('Enables logged in menus','wp-members'),'clone_menus'),
 									array(__('Notify admin','wp-members'),'wpmem_settings_notify',sprintf(__('Notify %s for each new registration? %s','wp-members'),$admin_email,$chg_email),'notify'),
@@ -186,11 +202,11 @@ class WP_Members_Admin_Tab_Options {
 									array(__('Ignore warning messages','wp-members'),'wpmem_settings_ignore_warnings',__('Ignores WP-Members warning messages in the admin panel','wp-members'),'warnings'),
 									//array(__('Enable dropins', 'wp-members'),'wpmem_settings_enable_dropins',sprintf(__('Enables dropins in %s', 'wp-members'), $dropin_dir),'dropins'),
 								);
-								for ( $row = 0; $row < count( $arr ); $row++ ) { ?>
+								foreach ( $rows as $row ) { ?>
 								  <li>
-									<label><?php echo $arr[ $row ][0]; ?></label>
-									<?php echo wpmem_create_formfield( $arr[ $row ][1], 'checkbox', '1', $wpmem->{$arr[$row][3]} ); ?>&nbsp;&nbsp;
-									<?php if ( $arr[$row][2] ) { ?><span class="description"><?php echo $arr[ $row ][2]; ?></span><?php } ?>
+									<label><?php echo $row[0]; ?></label>
+									<?php echo wpmem_create_formfield( $row[1], 'checkbox', '1', $wpmem->{$row[3]} ); ?>&nbsp;&nbsp;
+									<?php if ( $row[2] ) { ?><span class="description"><?php echo $row[2]; ?></span><?php } ?>
 								  </li>
 								<?php } ?>
 								  <li>
@@ -199,7 +215,7 @@ class WP_Members_Admin_Tab_Options {
 									<span class="description"><?php _e( 'Attribution is appreciated!  Display "powered by" link on register form?', 'wp-members' ); ?></span>
 								  </li>
 								  <li>
-									<label><?php _e( 'Enable CAPTCHA', 'wp-members' ); ?></label>
+									<label><?php _e( 'Enable CAPTCHA for Registration', 'wp-members' ); ?></label>
 									<?php $captcha = array( __( 'None', 'wp-members' ) . '|0' );
 									if ( 1 == $wpmem->captcha ) {
 										$wpmem->captcha = 3; // reCAPTCHA v1 is fully obsolete. Change it to v2.
@@ -207,6 +223,7 @@ class WP_Members_Admin_Tab_Options {
 									$captcha[] = __( 'reCAPTCHA v2', 'wp-members' ) . '|3';
 									$captcha[] = __( 'reCAPTCHA v3', 'wp-members' ) . '|4';
 									$captcha[] = __( 'Really Simple CAPTCHA', 'wp-members' ) . '|2';
+									$captcha[] = __( 'hCaptcha', 'wp-members' ) . '|5';
 									echo wpmem_create_formfield( 'wpmem_settings_captcha', 'select', $captcha, $wpmem->captcha ); ?>
 								  </li>
 								<h3><?php _e( 'Pages' ); ?></h3>
@@ -292,7 +309,7 @@ class WP_Members_Admin_Tab_Options {
 										<td colspan="2"><?php submit_button( __( 'Update Settings', 'wp-members' ) ); ?></td>
 									</tr>
 									<tr>
-										<td><?php _e( 'Please keep in mind that Custom Post Types are "custom" and therefore, not all of them will function exactly the same way. WP-Members will certainly work with any post type that operate like a post or a page; but you will need to review any custom post type added to determine that it functions the way you expect.', 'wp-members' ); ?></td>
+										<td colspan="2"><?php _e( 'Please keep in mind that Custom Post Types are "custom" and therefore, not all of them will function exactly the same way. WP-Members will certainly work with any post type that operate like a post or a page; but you will need to review any custom post type added to determine that it functions the way you expect.', 'wp-members' ); ?></td>
 									</tr>
 								</table>
 							</form>
@@ -479,6 +496,9 @@ class WP_Members_Admin_Tab_Options {
 			$wpmem_newsettings = array(
 				'version' => $wpmem->version,
 				'db_version' => $wpmem->db_version,
+				'act_link' => filter_var( wpmem_get( 'wpmem_settings_act_link', 0 ), FILTER_SANITIZE_NUMBER_INT ),
+				'pwd_link' => filter_var( wpmem_get( 'wpmem_settings_pwd_link', 0 ), FILTER_SANITIZE_NUMBER_INT ),
+				'login_error' => filter_var( wpmem_get( 'wpmem_settings_login_error', 0 ), FILTER_SANITIZE_NUMBER_INT ),
 				'enable_products' => filter_var( wpmem_get( 'wpmem_settings_products', 0 ), FILTER_SANITIZE_NUMBER_INT ),
 				'clone_menus' => filter_var( wpmem_get( 'wpmem_settings_menus', 0 ), FILTER_SANITIZE_NUMBER_INT ),
 				'notify'    => filter_var( wpmem_get( 'wpmem_settings_notify', 0 ), FILTER_SANITIZE_NUMBER_INT ),
@@ -505,6 +525,11 @@ class WP_Members_Admin_Tab_Options {
 				foreach ( $wpmem_newsettings['post_types'] as $key => $val ) { 
 					$post_arr[] = $key;
 				}
+			}
+			
+			// If activation link is being enabled, make sure current admin is marked as activated.
+			if ( 1 == $wpmem_newsettings['act_link'] && 0 == $wpmem->act_link ) {
+				update_user_meta( get_current_user_id(), '_wpmem_user_confirmed', time() );
 			}
 
 			// Leave form tag settings alone.
@@ -538,10 +563,11 @@ class WP_Members_Admin_Tab_Options {
 			 * out later.
 			 */
 			if ( isset( $_POST['wpmem_settings_moderate'] ) == 1 ) {
-				global $current_user;
-				wp_get_current_user();
-				$user_ID = $current_user->ID;
-				update_user_meta( $user_ID, 'active', 1 );
+				update_user_meta( get_current_user_id(), 'active', 1 );
+			}
+			
+			if ( isset( $_POST['wpmem_settings_act_link'] ) == 1 ) {
+				update_user_meta( get_current_user_id(), '_wpmem_activation_confirm', time() );
 			}
 
 			WP_Members_Admin_Tab_Options::save_settings( $wpmem_newsettings );

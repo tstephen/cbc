@@ -297,6 +297,38 @@ class WP_Members {
 	 * @var    boolean
 	 */
 	public $is_rest = false;
+
+	/**
+	 * Temporary setting for activation link.
+	 * Will default to 0 until 3.4.0, then 1 until 3.5.0
+	 * at which point we'll remove the old process.
+	 *
+	 * @since 3.3.5
+	 * @access public
+	 * @var string
+	 */
+	public $act_link = 0;
+	
+	/**
+	 * Temporary setting for password reset.
+	 * Will default to 0 until 3.4.0, then 1 until 3.5.0
+	 * at which point we'll remove the old process.
+	 *
+	 * @since 3.3.5
+	 * @access public
+	 * @var string
+	 */
+	public $pwd_link = 0;
+	
+	/**
+	 * Temporary settings for login errors.
+	 * Will default to 0 until 3.4.0.
+	 *
+	 * @since 3.3.5
+	 * @access public
+	 * @var string
+	 */
+	public $login_error = 0;
 	
 	/**
 	 * Plugin initialization function.
@@ -356,6 +388,12 @@ class WP_Members {
 		$this->menus       = new WP_Members_Menus();
 		if ( $this->clone_menus ) {
 			$this->menus_clone = new WP_Members_Clone_Menus(); // Load clone menus.
+		}
+		if ( 1 == $this->pwd_link ) {
+			$this->pwd_reset  = new WP_Members_Pwd_Reset;
+		}
+		if ( 1 == $this->act_link ) {
+			$this->act_newreg = new WP_Members_Validation_Link;
 		}
 		
 		// @todo Is this a temporary fix?
@@ -429,12 +467,15 @@ class WP_Members {
 		}
 		
 		add_filter( 'register_form',               'wpmem_wp_register_form' ); // adds fields to the default wp registration
-		add_action( 'woocommerce_register_form',   'wpmem_woo_register_form' );
 		
-		add_action( 'woocommerce_checkout_update_order_meta', 'wpmem_woo_checkout_update_meta' );
-		add_action( 'woocommerce_form_field_multicheckbox',   'wpmem_form_field_wc_custom_field_types', 10, 4 );
-		add_action( 'woocommerce_form_field_multiselect',     'wpmem_form_field_wc_custom_field_types', 10, 4 );
-		add_action( 'woocommerce_form_field_radio',           'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_register_form',               'wpmem_woo_register_form' );
+		add_action( 'woocommerce_register_post',               'wpmem_woo_reg_validate', 10, 3 );
+		//add_action( 'woocommerce_save_account_details_errors', 'wpmem_woo_reg_validate' );
+
+		add_action( 'woocommerce_checkout_update_order_meta',  'wpmem_woo_checkout_update_meta' );
+		add_action( 'woocommerce_form_field_multicheckbox',    'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_multiselect',      'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_radio',            'wpmem_form_field_wc_custom_field_types', 10, 4 );
 		if ( ! is_user_logged_in() ) {
 			add_filter( 'woocommerce_checkout_fields', 'wpmem_woo_checkout_form' );
 		}
@@ -461,6 +502,11 @@ class WP_Members {
 			add_filter( 'authenticate', array( $this->user, 'check_activated' ), 99, 3 ); 
 		}
 
+		// Replace login error object.
+		if ( 1 == $this->login_error ) {
+			add_filter( 'wpmem_login_failed_args', array( $this, 'login_error' ) );
+			add_filter( 'lostpassword_url',        array( $this, 'lost_pwd_url' ), 10, 2 );
+		}
 		/**
 		 * Fires after action and filter hooks load.
 		 *
@@ -559,9 +605,11 @@ class WP_Members {
 		require_once( $this->path . 'includes/class-wp-members-forms.php' );
 		require_once( $this->path . 'includes/class-wp-members-menus.php' );
 		require_once( $this->path . 'includes/class-wp-members-products.php' );
+		require_once( $this->path . 'includes/class-wp-members-pwd-reset.php' );
 		require_once( $this->path . 'includes/class-wp-members-shortcodes.php' );
 		require_once( $this->path . 'includes/class-wp-members-user.php' );
 		require_once( $this->path . 'includes/class-wp-members-user-profile.php' );
+		require_once( $this->path . 'includes/class-wp-members-validation-link.php' );
 		require_once( $this->path . 'includes/class-wp-members-widget.php' );	
 		require_once( $this->path . 'includes/api/api.php' );
 		require_once( $this->path . 'includes/api/api-email.php' );
@@ -571,6 +619,12 @@ class WP_Members {
 		require_once( $this->path . 'includes/api/api-utilities.php' );
 		require_once( $this->path . 'includes/legacy/dialogs.php' );
 		require_once( $this->path . 'includes/deprecated.php' );
+		
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require_once( $this->path . 'includes/cli/class-wp-members-cli.php' );
+			require_once( $this->path . 'includes/cli/class-wp-members-cli-user.php' );
+			require_once( $this->path . 'includes/cli/class-wp-members-cli-settings.php' );
+		}
 	}
 
 	/**
@@ -592,16 +646,13 @@ class WP_Members {
 		 */
 		do_action( 'wpmem_pre_admin_init' );
 
-		// Initilize the admin api.
-		if ( is_admin() ) {
-			/**
-			 * Load the admin api class.
-			 *
-			 * @since 3.1.0
-			 */	
-			include_once( $this->path . 'includes/admin/class-wp-members-admin-api.php' );
-			$this->admin = new WP_Members_Admin_API;
-		}
+		/**
+		 * Load the admin api class.
+		 *
+		 * @since 3.1.0
+		 */	
+		include_once( $this->path . 'includes/admin/class-wp-members-admin-api.php' );
+		$this->admin = new WP_Members_Admin_API;
 
 		/**
 		 * Fires after initialization of admin options.
@@ -1305,6 +1356,13 @@ class WP_Members {
 				case 'multiselect':
 				case 'multicheckbox':
 				case 'radio':
+				case 'membership':
+					if ( 'membership' == $val[3] ) {
+						$val[7] = array( __( 'Choose membership', 'wp-members' ) . '|' );
+						foreach( $this->membership->products as $membership_key => $membership_value ) {
+							$val[7][] = $membership_value['title'] . '|' . $membership_key;
+						}
+					}
 					// Correct a malformed value (if last value is empty due to a trailing comma).
 					if ( '' == end( $val[7] ) ) {
 						array_pop( $val[7] );
@@ -1583,7 +1641,8 @@ class WP_Members {
 			'pwdreseterr'          => __( "Either the username or email address do not exist in our records.", 'wp-members' ),
 			'pwdresetsuccess'      => __( "Password successfully reset!<br /><br />An email containing a new password has been sent to the email address on file for your account.", 'wp-members' ),
 			
-			'product_restricted'   => __( "Sorry, you do not have access to this content.", 'wp-members' ),
+			'product_restricted_single'    => __( "This content requires the following membership: ", 'wp-members' ),
+			'product_restricted_multiple'  => __( "This content requires one of the following memberships: ", 'wp-members' ),
 		
 		); // End of $defaults array.
 		
@@ -2001,4 +2060,65 @@ class WP_Members {
 		}
 	}
 
+	/**
+	 * Builds defaults for login/out links/buttons.
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param  array  $args
+	 * @return string $html
+	 */
+	function loginout_args( $args = array() ) {
+		$defaults = array(
+			'format'             => ( isset( $args['format']             ) ) ? $args['format']             : 'link',
+			'login_redirect_to'  => ( isset( $args['login_redirect_to']  ) ) ? $args['login_redirect_to']  : wpmem_current_url(),
+			'logout_redirect_to' => ( isset( $args['logout_redirect_to'] ) ) ? $args['logout_redirect_to'] : wpmem_current_url(), // @todo - This is not currently active.
+			'login_text'         => ( isset( $args['login_text']         ) ) ? $args['login_text']         : __( 'log in',  'wp-members' ),
+			'logout_text'        => ( isset( $args['logout_text']        ) ) ? $args['logout_text']        : __( 'log out', 'wp-members' ),
+			'class'              => ( isset( $args['class']              ) ) ? $args['class']              : 'wpmem_loginout_link',
+			'id'                 => ( isset( $args['id']                 ) ) ? $args['id']                 : 'wpmem_loginout_link',
+		);
+		$args     = wp_parse_args( $args, $defaults );
+		$redirect = ( is_user_logged_in() ) ? $args['logout_redirect_to'] : $args['login_redirect_to'];
+		$text     = ( is_user_logged_in() ) ? $args['logout_text']        : $args['login_text'];
+		if ( is_user_logged_in() ) {
+			/** This filter is defined in /inc/dialogs.php */
+			$link = apply_filters( 'wpmem_logout_link', add_query_arg( 'a', 'logout' ) );
+		} else {
+			$link = wpmem_login_url( $redirect );
+		}
+		
+		if ( 'button' == $args['format'] ) {
+			$html = '<form action="' . $link . '" id="' . $args['id'] . '" class="' . $args['class'] . '">';
+			$html.= ( is_user_logged_in() ) ? '<input type="hidden" name="a" value="logout" />' : '';
+			$html.= '<input type="submit" value="' . $text . '" /></form>';
+		} else {
+			$html = sprintf( '<a href="%s" id="%" class="%s">%s</a>', $link, $args['id'], $args['class'], $text );
+		}
+		return $html;
+	}
+
+	/**
+	 * Filters the password URL to point to the WP-Members process.
+	 *
+	 * @since 3.3.5
+	 */
+	function lost_pwd_url( $lostpwd_url, $redirect ) {
+		return wpmem_profile_url( 'pwdreset' );
+	}
+	
+	/** 
+	 * Filters the login error message to display the WP login error.
+	 *
+	 * @since 3.3.5
+	 */
+	function login_error( $args = array() ) {
+		if ( $this->error ) {
+			$args['heading_before'] = '';
+			$args['heading'] = '';
+			$args['heading_after'] = '';
+			$args['message'] = $this->error;
+		}
+		return $args;		
+	}
 } // End of WP_Members class.

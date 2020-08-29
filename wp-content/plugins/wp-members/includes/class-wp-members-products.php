@@ -118,8 +118,11 @@ class WP_Members_Products {
 			$post_meta = get_post_meta( $plan->ID );
 			foreach ( $post_meta as $key => $meta ) {
 				if ( false !== strpos( $key, 'wpmem_product' ) ) {
-					if ( $key == 'wpmem_product_expires' ) {
+					if ( 'wpmem_product_expires' == $key ) {
 						$meta[0] = unserialize( $meta[0] );
+					}
+					if ( 'wpmem_product_fixed_period' == $key ) {
+						$meta[0] = $this->explode_fixed_period( $meta[0] );
 					}
 					$this->products[ $plan->post_name ][ str_replace( 'wpmem_product_', '', $key ) ] = $meta[0];
 				}
@@ -141,6 +144,15 @@ class WP_Members_Products {
 	 */
 	function get_post_products( $post_id ) {
 		$products = get_post_meta( $post_id, $this->post_meta, true );
+		/**
+		 * Filter product access by post ID.
+		 *
+		 * @since 3.3.5
+		 *
+		 * @param array $post_products
+		 * @param int   $post_id
+		 */
+		$products = apply_filters( 'wpmem_post_products', $products, $post_id );
 		return $products;
 	}
 
@@ -185,69 +197,75 @@ class WP_Members_Products {
 		
 		global $post, $wpmem;
 		// Is the user logged in and is this blocked content?
-		if ( ! is_admin() && is_user_logged_in() && wpmem_is_blocked() ) {  // @todo Should is_admin() check be run on securify in general?
+		if ( ! is_admin() && is_user_logged_in() && wpmem_is_blocked() && 1 == $wpmem->enable_products ) {  // @todo Should is_admin() check be run on securify in general?
 
 			// Get the post access products.
 			$post_products = $this->get_post_products( $post->ID );
 			// If the post is restricted to a product.
-			if ( $post_products ) {
-				if ( wpmem_user_has_access( $post_products ) ) {
-					$access = true;
-				} else {
-					// The error message for invalid users.
-					$access = false;
-				}
+			if ( is_array( $post_products ) && ! empty( $post_products ) ) {
+				$access = ( wpmem_user_has_access( $post_products ) ) ? true : false;
 			} else {
-				// Content that has no product restriction.
 				$access = true;
 			}
+		
+			// Only produce the product restricted message if access is false.
+			if ( false === $access ) {
+
+				// Singular message if post only has one membership, otherwise multiple.
+				if ( 1 == count( $post_products ) ) {
+					$message = $wpmem->get_text( 'product_restricted_single' )
+						. "<br />" . $this->products[ $post_products[0] ]['title'];
+				} else {
+					$message = $wpmem->get_text( 'product_restricted_multiple' ) . "<br />";
+					foreach ( $post_products as $post_product ) {
+						$message .= $this->products[ $post_product ]['title'] . "<br />";
+					}
+				}
+				/**
+				 * Filter the product restricted message.
+				 *
+				 * @since 3.2.3
+				 *
+				 * @param string                The message.
+				 * @param array  $post_products {
+				 *     Membership product slugs the post is restricted to.
+				 *
+				 *     @type string $slug
+				 * }
+				 */
+				$message = apply_filters( 'wpmem_product_restricted_msg', $message, $post_products );
+
+				/**
+				 * Filter the product restricted message HTML.
+				 *
+				 * @since 3.3.3
+				 * @since 3.3.4 Added $post_products
+				 *
+				 * @param array  $product_restricted {
+				 *     $type string $wrapper_before
+				 *     $type string $message
+				 *     $type string $wrapper_after
+				 * }
+				 * @param array  $post_products {
+				 *     Membership product slugs the post is restricted to.
+				 *
+				 *     @type string $slug
+				 * }
+				 */
+				$product_restricted = apply_filters( 'wpmem_product_restricted_args', array(
+					'wrapper_before' => '<div class="wpmem_msg" align="center">',
+					'message'        => '<p>' . $message . '</p>',
+					'wrapper_after'  => '</div>',
+				), $post_products );
+				
+				$content = $product_restricted['wrapper_before'] . $product_restricted['message'] . $product_restricted['wrapper_after'];
 			
-			// Handle content.
-			/**
-			 * Filter the product restricted message.
-			 *
-			 * @since 3.2.3
-			 *
-			 * @param string                The message.
-			 * @param array  $post_products {
-			 *     Membership product slugs the post is restricted to.
-			 *
-			 *     @type string $slug
-			 * }
-			 */
-			$message = apply_filters( 'wpmem_product_restricted_msg', $wpmem->get_text( 'product_restricted' ), $post_products );
-			
-			/**
-			 * Filter the product restricted message HTML.
-			 *
-			 * @since 3.3.3
-			 * @since 3.3.4 Added $post_products
-			 *
-			 * @param array  $product_restricted {
-			 *     $type string $wrapper_before
-			 *     $type string $message
-			 *     $type string $wrapper_after
-			 * }
-			 * @param array  $post_products {
-			 *     Membership product slugs the post is restricted to.
-			 *
-			 *     @type string $slug
-			 * }
-			 */
-			$product_restricted = apply_filters( 'wpmem_product_restricted_args', array(
-				'wrapper_before' => '<div class="wpmem_msg" align="center">',
-				'message'        => '<p>' . $message . '</p>',
-				'wrapper_after'  => '</div>',
-			), $post_products );
-			
-			$content = ( $access ) ? $content : $product_restricted['wrapper_before'] . $product_restricted['message'] . $product_restricted['wrapper_after'];
-			
-			// Handle comments.
-			if ( ! $access ) {
+				// Handle comments.
 				add_filter( 'wpmem_securify_comments', '__return_false' );
 			}
+
 		}
-		// Return unfiltered content for all other cases.
+
 		return $content;
 	}
 
@@ -290,6 +308,16 @@ class WP_Members_Products {
 		
 		global $wpmem;
 		
+		$args = array( 'capabilities' => 'manage_options', );
+		/**
+		 * Filter customizable elements of the membership custom post type.
+		 *
+		 * @since 3.3.5
+		 *
+		 * @param array
+		 */
+		$args = apply_filters( 'wpmem_membership_cpt_args', $args );
+		
 		$singular = __( 'Product', 'wp-members' );
 		$plural   = __( 'Products', 'wp-members' );
 
@@ -331,6 +359,14 @@ class WP_Members_Products {
 			'query_var'             => 'membership_product',
 			'rewrite'               => false,
 			'capability_type'       => 'page',
+			'capabilities'          => array(
+				'publish_posts' => $args['capabilities'],
+				'edit_posts'    => $args['capabilities'],
+				'delete_posts'  => $args['capabilities'],
+				'edit_post'     => $args['capabilities'],
+				'delete_post'   => $args['capabilities'],
+				'read_post'     => $args['capabilities'],
+			),
 			'show_in_rest'          => false,
 			//'register_meta_box_cb'  => '', // callback for meta box
 		);
@@ -358,5 +394,134 @@ class WP_Members_Products {
 			$post_ids[] = $result[0];
 		}
 		return $post_ids;
+	}
+	
+	/**
+	 * Utility to explode fixed period.
+	 *
+	 * @since 3.3.5
+	 */
+	function explode_fixed_period( $array ) {
+		$period_parts = explode( "-", $array );
+		$period['start'] = ( $period_parts ) ? $period_parts[0] . '-' . $period_parts[1] : '';
+		$period['end']   = ( $period_parts ) ? $period_parts[2] . '-' . $period_parts[3] : '';
+		$period['grace']['num'] = ( $period_parts && isset( $period_parts[4] ) ) ? $period_parts[4] : '';
+		$period['grace']['per'] = ( $period_parts && isset( $period_parts[5] ) ) ? $period_parts[5] : '';
+		return $period;
+	}
+	
+	/**
+	 * Set an expiration date.
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param  string  $product
+	 * @param  int     $user_id
+	 * @param  mixed   $set_date
+	 * @param  mixed   $pre_value
+	 * @param  boolean $renew
+	 * @return mixed   $new_value
+	 */
+	function set_product_expiration( $product, $user_id, $set_date, $prev_value, $renew ) {
+		// If this is setting a specific date.
+		if ( $set_date ) {
+			$new_value = strtotime( $set_date );
+		} else {
+			// Either setting initial expiration based on set time period, or adding to the existing date (renewal/extending).
+			$raw_add = explode( "|", $this->products[ $product ]['expires'][0] );
+			$add_period = ( 1 < $raw_add[0] ) ? $raw_add[0] . " " . $raw_add[1] . "s" : $raw_add[0] . " " . $raw_add[1];
+
+			if ( $prev_value ) {
+				if ( isset( $this->products[ $product ]['no_gap'] ) && 1 == $this->products[ $product ]['no_gap'] ) {
+					// Add to the user's existing date (no gap).
+					$new_value = strtotime( $add_period, $prev_value );					
+				} else {
+					// Add to the user either from end or now (whichever is later; i.e. allow gaps (default)).
+					if ( $this->has_access( $product, $user_id ) ) {
+						// if not expired, set from when they expire.
+						$new_value = strtotime( $add_period, $prev_value );
+					} else {
+						// if expired, set from today.
+						$new_value = strtotime( $add_period );
+					}
+				}
+			} else {
+				// User doesn't have this membershp. Go ahead and add it.
+		
+				// If we are using fixed period expiration, calculate the expiration date
+				if ( isset( $this->products[ $product ] ) && isset( $this->products[ $product ]['fixed_period'] ) ) {
+					// Calculate the fixed period expiration.
+					$new_value = $this->calculate_fixed_period ( $product );
+				} else {
+					// Just add to the existing expiration.
+					$new_value = strtotime( $add_period );
+				}
+			}
+		}
+		
+		/**
+		 * Filter the expiration date.
+		 *
+		 * @since 3.3.2
+		 *
+		 * @param int|boolean  $new_value  Unix timestamp of new expiration, true|false if not an expiry product.
+		 * @param int|boolean  $prev_value The user's current value (prior to updating).
+		 * @param boolean      $renew      Is this a renewal transaction?
+		 */
+		$new_value = apply_filters( 'wpmem_user_product_set_expiration', $new_value, $prev_value, $renew );
+		
+		return $new_value;
+	}
+	
+	/**
+	 * Calculate a fixed period expiration.
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param string  $product
+	 * @return string $timestamp
+	 */
+	function calculate_fixed_period( $product ) {
+		// Use fixed period expiration.
+		$end = $this->products[ $product ]['fixed_period']['end'];
+
+		// Get the current year.
+		$current_year = date( 'Y' );
+
+		// Format period end date for current year.
+		$cur_date = DateTime::createFromFormat( 'd-m-Y', $end . '-' . $current_year ); //DateTime( $start_date );
+
+		// Where are we now?
+		$now  = new DateTime();
+
+		// If date is past, set next period.
+		if ( $cur_date < $now ) {
+			// Date is past.
+			$next_year = date( 'Y', strtotime( '+1 year' ) );
+			$next_date = DateTime::createFromFormat( 'd-m-Y', $end . '-' . $next_year );
+			$new_value = $next_date->format( 'U' );
+		} else {
+			// Date is not past.
+			// Are we using a grace period?
+			if ( isset( $this->products[ $product ]['fixed_period']['grace'] ) && $this->products[ $product ]['fixed_period']['grace']['num'] > 0 ) {
+				// Are we in the grace period?
+				$grace_period = "-" . $this->products[ $product ]['fixed_period']['grace']['num'] . " " . $this->products[ $product ]['fixed_period']['grace']['per'];
+				$grace_date   = DateTime::createFromFormat( 'U', strtotime( $grace_period, strtotime( $cur_date->format( 'd-m-Y' ) ) ) );
+				if ( $grace_date < $now ) {
+					// We are in grace period, set expiration as next year.
+					$next_year = date( 'Y', strtotime( '+1 year' ) );
+					$next_date = DateTime::createFromFormat( 'd-m-Y', $end . '-' . $next_year );
+					$new_value = $next_date->format( 'U' );
+				} else {
+					// Not in grace period, set the current year.
+					$new_value = $cur_date->format( 'U' );
+				}
+			} else {
+				// No grace period, and date is not past. Use current year.
+				$new_value = $cur_date->format( 'U' );
+			}
+		}
+		
+		return $new_value;
 	}
 }

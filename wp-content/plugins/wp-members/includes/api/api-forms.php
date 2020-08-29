@@ -474,6 +474,9 @@ function wpmem_woo_checkout_update_meta( $order_id ) {
 				case 'multiselect':
 					update_user_meta( $user_id, $meta_key, wpmem_sanitize_array( $_POST[ $meta_key ] ) );
 					break;
+				case 'membership':
+					wpmem_set_user_product( wpmem_sanitize_array( $_POST[ $meta_key ] ), $user_id );
+					break;
 				default:
 					if ( 'user_url' == $meta_key ) {
 						wp_update_user( array( 'ID' => $user_id, 'user_url' => sanitize_text_field( $_POST[ $meta_key ] ) ) );
@@ -526,5 +529,23 @@ function wpmem_form_field_wc_custom_field_types( $field, $key, $args, $value ) {
 		
 	}
 	
-	return $field;
+	return $field;  
+}
+
+function wpmem_woo_reg_validate( $username, $email, $errors ) {
+
+	$fields = wpmem_fields();
+	
+	unset( $fields['username'] );
+	unset( $fields['password'] );
+	unset( $fields['confirm_password'] );
+	unset( $fields['user_email'] );
+	
+	foreach ( $fields as $key => $field_args ) {
+		if ( 1 == $field_args['required'] && empty( $_POST[ $key ] ) ) {
+			$message = sprintf( __( '%s is a required field.', 'wp-members' ), '<strong>' . $field_args['label'] . '</strong>' );
+			$errors->add( $key, $message );
+		}
+	}
+	return $errors;
 }

@@ -387,6 +387,7 @@ class WP_Members_Forms {
 	
 		// Get WordPress file upload processing scripts.
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
 		
 		$file_return = wp_handle_upload( $file, array( 'test_form' => false ) );
 	
@@ -697,7 +698,7 @@ class WP_Members_Forms {
 				 * @since 3.2.5 Added $tag parameter.
 				 *
 				 * @param string The raw link.
-				 * @param string $tag forgot|reg|pwdreset.
+				 * @param string $tag forgot|reg|pwdreset|username.
 				 */
 				$link = apply_filters( "wpmem_{$tag}_link", $value['link'], $tag );
 				$str  = $wpmem->get_text( "{$key}_link_before" ) . '<a href="' . esc_url( $link ) . '">' . $wpmem->get_text( "{$key}_link" ) . '</a>';
@@ -1129,10 +1130,8 @@ class WP_Members_Forms {
 
 		// If captcha is Really Simple CAPTCHA.
 		if ( $wpmem->captcha == 2 && $tag != 'edit' ) {
-			// Include captcha functions.
-			require_once( $wpmem->path . 'includes/class-wp-members-captcha.php' );
 			// Build the captcha.
-			$row = WP_Members_Captcha::rs_captcha();
+			$row = WP_Members_Captcha::rs_captcha( 'array' );
 			$rows['captcha'] = array(
 				'meta'         => '', 
 				'type'         => 'text', 
@@ -1142,7 +1141,7 @@ class WP_Members_Forms {
 				'row_before'   => $args['row_before'],
 				'label'        => $row['label'],
 				'field_before' => ( $args['wrap_inputs'] ) ? '<div class="div_text">' : '',
-				'field'        => $row['field'],
+				'field'        => $row['img'] . $row['hidden'] . $row['field'],
 				'field_after'  => ( $args['wrap_inputs'] ) ? '</div>' : '',
 				'row_after'    => $args['row_after'],
 			);
@@ -1203,36 +1202,11 @@ class WP_Members_Forms {
 
 		// Do recaptcha if enabled.
 		if ( ( 1 == $wpmem->captcha || 3 == $wpmem->captcha || 4 == $wpmem->captcha ) && $tag != 'edit' ) { // don't show on edit page!
-
-			// Include captcha functions.
-			require_once( $wpmem->path . 'includes/class-wp-members-captcha.php' );
 			
-			// Get the captcha options.
-			$wpmem_captcha = get_option( 'wpmembers_captcha' );
+			$row = WP_Members_Captcha::recaptcha();
 			
-			if ( 4 == $wpmem->captcha ) {
-				
-				$row = '<script src="https://www.google.com/recaptcha/api.js?render=' . $wpmem_captcha['recaptcha']['public'] . '"></script>';
-				$row.= "<script>
-							grecaptcha.ready(function () {
-								grecaptcha.execute('" . $wpmem_captcha['recaptcha']['public'] . "', { action: 'contact' }).then(function (token) {
-									var recaptchaResponse = document.getElementById('recaptchaResponse');
-									recaptchaResponse.value = token;
-								});
-							});
-						</script>";
-				$row.= '<input type="hidden" name="recaptcha_response" id="recaptchaResponse">';
-				
-			} else {
-
-				// Start with a clean row.
-				$row = '';
-				$row = '<div class="clear"></div>';
-				$row.= '<div class="captcha">';
-
-				$row.= WP_Members_Captcha::recaptcha( $wpmem_captcha['recaptcha'] );
-
-				$row.= '</div>';
+			if ( 4 != $wpmem->captcha ) {
+				$row = '<div class="clear"></div><div class="captcha">' . $row . '</div>';
 			}
 
 			// Add the captcha row to the form.
@@ -1244,6 +1218,12 @@ class WP_Members_Forms {
 			 * @param string       The HTML for the entire row (includes HTML tags plus reCAPTCHA).
 			 * @param string $tag  Toggle new registration or profile update. new|edit.
 			 */
+			$form.= apply_filters( 'wpmem_register_captcha_row', $args['row_before'] . $row . $args['row_after'], $tag );
+		}
+		
+		if ( 5 == $wpmem->captcha && 'edit' != $tag ) {
+			$row = WP_Members_Captcha::hcaptcha();
+			/** This filter is documented in /includes/class-wp-members-forms.php */
 			$form.= apply_filters( 'wpmem_register_captcha_row', $args['row_before'] . $row . $args['row_after'], $tag );
 		}
 
@@ -1576,7 +1556,13 @@ class WP_Members_Forms {
 		if ( isset( $wpmem_fields ) && is_array( $wpmem_fields ) ) {
 
 			unset( $wpmem_fields['username'] );
-
+			
+			if ( $is_woo ) {
+				// Woo has its own setting for password fields.
+				unset( $wpmem_fields['password'] );
+				unset( $wpmem_fields['confirm_password'] );
+			}
+				
 			foreach ( $wpmem_fields as $meta_key => $field ) {
 
 				$req = ( $field['required'] ) ? ( ( $is_woo ) ? ' <span class="required">*</span>' : ' <span class="req">' . __( '(required)' ) . '</span>' ) : '';

@@ -416,10 +416,12 @@ function wpmem_create_membership_number( $args ) {
  * @since 3.1.6 Dependencies now loaded by object.
  * @since 3.2.4 Renamed from wpmem_a_activate_user().
  * @since 3.3.0 Moved to user API.
+ * @since 3.3.5 Added $notify argument.
  *
  * @param int   $user_id
+ * @param bool  $notify  Send notification to user (optional, default: true).
  */
-function wpmem_activate_user( $user_id ) {
+function wpmem_activate_user( $user_id, $notify = true ) {
 
 	global $wpmem;
 
@@ -441,7 +443,9 @@ function wpmem_activate_user( $user_id ) {
 	}
 
 	// Generate and send user approved email to user.
-	wpmem_email_to_user( $user_id, $new_pass, 2 );
+	if ( true === $notify ) {
+		wpmem_email_to_user( $user_id, $new_pass, 2 );
+	}
 
 	// Set the active flag in usermeta.
 	update_user_meta( $user_id, 'active', 1 );
@@ -783,4 +787,123 @@ function wpmem_export_users( $args, $users = null ) {
 	WP_Members_Export::export_users( $args, $users );
 }
 
+/**
+ * Gets user ID based on request.
+ *
+ * @since 3.3.5
+ *
+ * @param  mixed  $user
+ * @return mixed 
+ */
+function wpmem_get_user_id( $user ) {
+	$user_obj = wpmem_get_user_obj( $user );
+	return ( is_object( $user_obj ) ) ? $user_obj->ID : false;
+}
+
+/**
+ * Gets user object based on request.
+ *
+ * @since 3.3.5
+ *
+ * @param  mixed  $user
+ * @return mixed 
+ */
+function wpmem_get_user_obj( $user ) {
+	if ( is_numeric( $user ) ) {
+		$user_obj = get_userdata( $user );
+		if ( $user_obj ) {
+			return $user_obj;
+		}
+	}
+	if ( strpos( $user, '@' ) ) {
+		$user_obj = get_user_by( 'email', $user );
+		if ( $user_obj ) {
+			return $user_obj;
+		}
+	}
+	if ( is_string( $user ) ) {
+		$user_obj = get_user_by( 'login', $user );
+		if ( $user_obj ) {
+			return $user_obj;
+		}
+	}
+	return false;
+}
+
+/**
+ * Get all users by a meta value.
+ *
+ * @since 3.3.5
+ *
+ * @param   string  $meta   The meta key to search fo.
+ * @param   string  $value  The meta value to search for (defaul:false).
+ * @return  array   $users  An array of user IDs who have the requested meta.
+ */
+function wpmem_get_users_by_meta( $meta, $value = "EXISTS" ) {
+	$args  = array( 'fields' => array( 'ID' ), 'meta_key' => $meta );
+	if ( false === $value ) {
+		$args['meta_value'] = '';
+		$args['meta_compare'] = 'NOT EXISTS';
+	} elseif ( "EXISTS" === $value ) {
+		$args['meta_value'] = '';
+		$args['meta_compare'] = '>';
+	} else {
+		$args['meta_value'] = $value;
+	}
+	$results = get_users( $args );
+	if ( $results ) {
+		foreach( $results as $result ) {
+			$users[] = $result->ID;
+		}
+		return $users;
+	} else {
+		return array();
+	}
+}
+
+/**
+ * Gets a list of all pending users.
+ *
+ * @since 3.3.5
+ *
+ * @return array $users An array of user IDs where meta key "active" does not exist.
+ */
+function wpmem_get_pending_users() {
+	return wpmem_get_users_by_meta( 'active', false );
+}
+
+/**
+ * Gets a list of all activated users.
+ *
+ * @since 3.3.5
+ *
+ * @return array $users An array of user IDs who have the meta key active=1
+ */
+function wpmem_get_activated_users() {
+	return wpmem_get_users_by_meta( 'active', 1 );
+}
+
+/**
+ * Gets a list of all deactivated users.
+ *
+ * @since 3.3.5
+ *
+ * @return array $users An array of users IDs who have the meta key active=0
+ */
+function wpmem_get_deactivated_users() {
+	return wpmem_get_users_by_meta( 'active', 0 );
+}
+
+/**
+ * Sets a user as validated.
+ *
+ * @since 3.3.5
+ *
+ * @param  int     $user_id
+ * @return void
+ */
+function wpmem_set_user_as_confirmed( $user_id ) {
+	global $wpmem;
+	$wpmem->act_newreg->set_as_confirmed( $user_id );
+}
 // End of file.

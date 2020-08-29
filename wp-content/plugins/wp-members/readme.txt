@@ -2,8 +2,8 @@
 Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: 3.3.4.3
+Tested up to: 5.5
+Stable tag: 3.3.5.2
 License: GPLv2
 
 == Description ==
@@ -35,11 +35,20 @@ WP-Members allows you to restrict content as restricted or hidden, limiting acce
 
 A full Users Guide is [available here](https://rocketgeek.com/plugins/wp-members/docs/). The guide outlines the installation process, and also documents how to use all of the settings.
 
-Get support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rocketgeek.com/product/wp-members-pro-bundle/)
+= Support =
+
+There is (freely available documentation on the plugin's support site)[https://rocketgeek.com/plugins/wp-members/docs/]. Your question may be answered there. If you need assistance configuring the plugin or have questions on how to implement or customize features, [premium support is available](https://rocketgeek.com/product/wp-members-plugin-support/).
+
+You can get priority support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rocketgeek.com/product/wp-members-pro-bundle/)
 
 = Premium Support =
 
 Premium support subscribers have access to priority email support, examples, tutorials, and code snippets that will help you extend and customize the base plugin using the plugin's framework. [Visit the site for more info](https://rocketgeek.com/plugins/wp-members/support-options/).
+
+= Free Extensions =
+
+* [Stop Spam Registrations](https://rocketgeek.com/product/stop-spam-registrations/) - Uses stopforumspam.com's API to block spam registrations.
+* [Send Test Emails](https://rocketgeek.com/product/send-test-emails/) - A utility to send test versions of the plugin's emails.
 
 = Premium Extensions =
 
@@ -100,7 +109,7 @@ The FAQs are maintained at https://rocketgeek.com/plugins/wp-members/docs/faqs/
 
 == Upgrade Notice ==
 
-WP-Members 3.3.0 is a major update. WP-Members 3.3.4 is an improvement release. See changelog for important details. Minimum WP version is 4.0.
+WP-Members 3.3.0 is a major update. WP-Members 3.3.5.2 is a bug fix release. See changelog for important details. Minimum WP version is 4.0.
 
 
 == Screenshots ==
@@ -124,22 +133,39 @@ WP-Members 3.3.0 is a major update. WP-Members 3.3.4 is an improvement release. 
 
 == Changelog ==
 
-= 3.3.4.3 =
+= 3.3.5.2 =
 
-* Fixes bug where URL field is not filled when registering via WooCommerce checkout (field was handled as user meta).
-* Fixes bug where TOS field did not include link to terms page when registering via WooCommerce checkout.
-* Fixes bug where required field indicator did not properly display for custom fields type in WooCommerce checkout (multiple select, multiple checkbox, radio).
+* Fixes sending email notification when activating user from the user profile screen.
+* Fixes updating custom membership product restricted message when trying to set to empty (default).
+* Fixes setting membership expiration missing $prev_value and $renew.
+* Fixes a bug where the membership product restricted message was triggered with an empty products array.
+
+= 3.3.5.1 =
+
+* Fixes an issue with reCAPTCHA that caused the captcha not to load.
+* Fixes an issue with Really Simple Captcha that caused the captcha image not to load.
+
+= 3.3.5 =
+
+* Added optional new user validation link and password reset link (instead of sending password). This option will become the default setting in 3.4.0.
+* Added optional login error message to fully utilize the WP login error.  This option will become the default setting in 3.4.0.
+* Updated the default product restricted message to display required membership(s). This eliminates the custom message string "product_restricted" and replaces with two new ones: product_restricted_single and product_restricted_multiple. (Note this only affects the default message if no custom membership message is established in the membership properties).
+* Added login/logout button to login/logout link api function wpmem_loginout() and shortcode [wpmem_loginout]. It will continue to display a hyperlink by default, but accepts arguments to display as a button. Also added ID and class options for link or button.
+* Added [wpmem_login_button] to directly call the button format of [wpmem_loginout].
+* Captcha options now have a static function that can be used to directly call captcha and validation.
+* Fixed an issue where the Really Simple Captcha "not installed" error was returned as a string but evaluated as an array.
 * Fixed an issue that caused the "membership" field selector/type to display as a text input in Users > Add New instead of a dropdown/select.
-
-= 3.3.4.2 =
-
-* Only run the woocommerce_form_field_{field_type} filter on fields in the WP-Members fields array (ignore all others).
-* Only run woocommerce_checkout_fields filter if user is not logged in (adds WP-Members fields to WC checkout, if user is logged in, data should be edited in profile).
-* Bug fix from 3.3.4 that caused register form heading to be empty when the register form shortcode is used.
-
-= 3.3.4.1 =
-
-* The 3.3.4 release contained some additional code used to debug the WooCommerce checkout. This causes an issue with the checkout process for general use. This update patches that by removing this code. You only need to update if you use WP-Members with WooCommerce.
+* Added user api functions wpmem_get_user_id(), wpmem_get_user_obj(), wpmem_get_users_by_meta().
+* Added action hooks to membership product admin screen.
+* Added wpmem_post_product filter to allow for filtering required products by post ID.
+* Added wpmem_is_user_activated filter hook.
+* wpmem_activate_user() now accepts a "notify" argument (defaults to true, set to false to not send a notification email).
+* Added wpmem_get_users_by_meta(), wpmem_get_pending_users(), wpmem_get_activated_users(), and wpmem_get_deactivated_users().
+* Added manage_options capability requirement for membership products custom post type.
+* Updated WooCommerce registration handling.
+* Added wpmem_is_reg_type(). Can be used withing wpmem_post_register_data to determine which registration type is being triggered.
+* Added WP-CLI commands (see release announcement and documentation for more information on specific commands).
+* Added support for hCaptcha (https://www.hcaptcha.com/).
 
 = 3.3.4 =
 

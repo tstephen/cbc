@@ -79,7 +79,7 @@ function wpmem_is_blocked( $post_id = false ) {
  * @return bool   $block   True if content is hidden, otherwise false.
  */
 function wpmem_is_hidden( $post_id = false ) {
-	return ( 2 == get_post_meta( $post_id ) ) ? true : false;
+	return ( 2 == get_post_meta( $post_id, '_wpmem_block', true ) ) ? true : false;
 }
 
 /** 
@@ -322,23 +322,8 @@ function wpmem_is_reg_page( $check = false ) {
  * @return string  $link
  */
 function wpmem_loginout( $args = array(), $echo = false ) {
-	$defaults = array(
-		'login_redirect_to'  => ( isset( $args['login_redirect_to']  ) ) ? $args['login_redirect_to']  : wpmem_current_url(),
-		'logout_redirect_to' => ( isset( $args['logout_redirect_to'] ) ) ? $args['logout_redirect_to'] : wpmem_current_url(), // @todo - This is not currently active.
-		'login_text'         => ( isset( $args['login_text']         ) ) ? $args['login_text']         : __( 'log in',  'wp-members' ),
-		'logout_text'        => ( isset( $args['logout_text']        ) ) ? $args['logout_text']        : __( 'log out', 'wp-members' ),
-	);
-	$args     = wp_parse_args( $args, $defaults );
-	$redirect = ( is_user_logged_in() ) ? $args['logout_redirect_to'] : $args['login_redirect_to'];
-	$text     = ( is_user_logged_in() ) ? $args['logout_text']        : $args['login_text'];
-	if ( is_user_logged_in() ) {
-		/** This filter is defined in /inc/dialogs.php */
-		$link = apply_filters( 'wpmem_logout_link', add_query_arg( 'a', 'logout' ) );
-	} else {
-		$link = wpmem_login_url( $redirect );
-	}
-	$link = sprintf( '<a href="%s">%s</a>', $link, $text );
-	return $link;
+	global $wpmem;
+	return $wpmem->loginout_args( $args );
 }
 
 /**
@@ -392,6 +377,18 @@ function wpmem_get_hidden_posts() {
 }
 
 /**
+ * Updates the hiddent posts array.
+ *
+ * @since 3.3.5
+ *
+ * @global stdClass $wpmem
+ */
+function wpmem_update_hidden_posts() {
+	global $wpmem;
+	$wpmem->update_hidden_posts();
+}
+
+/**
  * Conditional if REST request.
  *
  * @since 3.3.2
@@ -402,6 +399,20 @@ function wpmem_get_hidden_posts() {
 function wpmem_is_rest() {
 	global $wpmem;
 	return $wpmem->is_rest;
+}
+
+/**
+ * Gets registration type.
+ *
+ * @since 3.3.5
+ *
+ * @global  stdClass  $wpmem
+ * @param   string    $type (wpmem|native|add_new|woo|woo_checkout)
+ * @return  boolean
+ */
+function wpmem_is_reg_type( $type ) {
+	global $wpmem;
+	return $wpmem->reg_type[ 'is_' . $type ];
 }
 
 // End of file.

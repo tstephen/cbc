@@ -236,8 +236,8 @@ function wpmem_inc_memberlinks( $page = 'member' ) {
 			'wrapper_before' => '<ul>',
 			'wrapper_after'  => '</ul>',
 			'rows'           => array(
-				'<li><a href="' . esc_url( add_query_arg( 'a', 'edit' ) )      . '">' . $wpmem->get_text( 'profile_edit' )     . '</a></li>',
-				'<li><a href="' . esc_url( add_query_arg( 'a', 'pwdchange' ) ) . '">' . $wpmem->get_text( 'profile_password' ) . '</a></li>',
+				'<li><a href="' . esc_url( add_query_arg( 'a', 'edit', remove_query_arg( 'key' ) ) )      . '">' . $wpmem->get_text( 'profile_edit' )     . '</a></li>',
+				'<li><a href="' . esc_url( add_query_arg( 'a', 'pwdchange', remove_query_arg( 'key' ) ) ) . '">' . $wpmem->get_text( 'profile_password' ) . '</a></li>',
 			),
 			'after_wrapper'  => '',
 		);
@@ -571,6 +571,18 @@ function wpmem_page_forgot_username( $wpmem_regchk, $content ) {
 
 	return $content;
 
+}
+
+/**
+ * Displays the post restricted message.
+ *
+ * @since 3.3.5
+ *
+ * @return string
+ */
+function wpmem_restricted_dialog() {
+	global $wpmem;
+	return $wpmem->forms->add_restricted_msg();
 }
 
 // End of file.
