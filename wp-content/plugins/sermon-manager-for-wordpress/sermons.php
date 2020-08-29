@@ -115,11 +115,11 @@ class SermonManager { // phpcs:ignore
 		/**
 		 * Admin only includes.
 		 */
-		if ( is_admin() ) {
+		//if ( is_admin() ) {
 			include SM_PATH . 'includes/admin/class-sm-admin.php'; // Admin init class.
 			include SM_PATH . 'includes/admin/sm-cmb-functions.php'; // CMB2 Meta Fields functions.
 			include SM_PATH . 'includes/vendor/CMB2/init.php'; // Metaboxes.
-		}
+		//}
 	}
 
 	/**
