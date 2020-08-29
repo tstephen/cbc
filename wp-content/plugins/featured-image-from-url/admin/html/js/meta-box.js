@@ -36,8 +36,11 @@ function previewImage() {
                     runPreview($url);
                 }
                 setTimeout(function () {
-                    jQuery("#fifu_next").show();
+                    jQuery("#fifu_next").hide();
                     jQuery('#fifu_button').parent().parent().unblock();
+                    setTimeout(function () {
+                        jQuery("#fifu_next").show();
+                    }, 2000);
                 }, 2000);
             }
         }
@@ -57,6 +60,8 @@ function runPreview($url) {
     jQuery("#fifu_lightbox").attr('href', $url);
 
     if ($url) {
+        fifu_get_sizes();
+
         jQuery("#fifu_button").hide();
         jQuery("#fifu_help").hide();
         jQuery("#fifu_premium").hide();
@@ -72,16 +77,6 @@ function runPreview($url) {
     }
 }
 
-function getMeta(url) {
-    jQuery("<img/>", {
-        load: function () {
-            jQuery("#fifu_input_image_width").val(this.width);
-            jQuery("#fifu_input_image_height").val(this.height);
-        },
-        src: url
-    });
-}
-
 jQuery(document).ready(function () {
     jQuery("#fifu_next").on('click', function (evt) {
         evt.stopImmediatePropagation();
@@ -95,6 +90,15 @@ jQuery(document).ready(function () {
         jQuery.fancybox.open('<img src="' + jQuery("#fifu_input_url").val() + '" style="max-height:600px">');
     });
 
+    // start
+    fifu_get_sizes();
+
+    // blur
+    jQuery("#fifu_input_url").on('input', function (evt) {
+        evt.stopImmediatePropagation();
+        fifu_get_sizes();
+    });
+
     jQuery('.fifu-hover').on('mouseover', function (evt) {
         jQuery(this).css('color', '#23282e');
     });
@@ -102,6 +106,23 @@ jQuery(document).ready(function () {
         jQuery(this).css('color', 'white');
     });
 
-    jQuery("div#imageUrlMetaBox").find('h2').replaceWith('<h3 style="top:7px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span> Featured image</h3>');
-    jQuery("div#urlMetaBox").find('h2').replaceWith('<h4 style="top:5px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span> Product image</h4>');
+    // title
+    jQuery("div#imageUrlMetaBox").find('h2').replaceWith('<h3 style="top:7px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span>' + jQuery("div#imageUrlMetaBox").find('h2').text() + '</h3>');
+    jQuery("div#urlMetaBox").find('h2').replaceWith('<h4 style="top:5px;position:relative;"><span class="dashicons dashicons-camera" style="font-size:15px"></span>' + jQuery("div#urlMetaBox").find('h2').text() + '</h4>');
 });
+
+function fifu_get_sizes() {
+    image_url = jQuery("#fifu_input_url").val();
+    fifu_get_image(image_url);
+}
+
+function fifu_get_image(url) {
+    var image = new Image();
+    jQuery(image).attr('onload', 'fifu_store_sizes(this);');
+    jQuery(image).attr('src', url);
+}
+
+function fifu_store_sizes($) {
+    jQuery("#fifu_input_image_width").val($.naturalWidth);
+    jQuery("#fifu_input_image_height").val($.naturalHeight);
+}

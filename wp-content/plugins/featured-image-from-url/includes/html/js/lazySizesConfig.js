@@ -17,6 +17,7 @@ function fifu_lazy() {
         if (!jQuery(this).hasClass('fifu'))
             fifu_add_lazyload(this);
     });
+    fifu_add_srcset();
 }
 
 function fifu_add_lazyload($) {
@@ -29,6 +30,28 @@ function fifu_add_placeholder($) {
     datasrc = jQuery($).attr('data-src');
     if (!src && datasrc)
         jQuery($).attr('src', FIFU_PLACEHOLDER);
+}
+
+function fifu_add_srcset() {
+    types = ['src', 'data-src'];
+    for (i = 0; i < types.length; i++) {
+        // jetpack
+        jQuery('img[' + types[i] + '*=".wp.com/"]').each(function (index) {
+            if (jQuery(this).attr('fifu-featured')) {
+                src = jQuery(this).attr(types[i])
+                srcset = jQuery(this).attr(types[i] + 'set');
+
+                if (!srcset) {
+                    srcset = '';
+                    sizes = [75, 100, 150, 240, 320, 500, 640, 800, 1024, 1280, 1600];
+                    for (j = 0; j < sizes.length; j++)
+                        srcset += ((j != 0) ? ', ' : '') + src.replace(src.split('?')[1], 'w=' + sizes[j] + '&resize=' + sizes[j] + '&ssl=1') + ' ' + sizes[j] + 'w';
+                    jQuery(this).attr(types[i] + 'set', srcset);
+                    jQuery(this).attr('data-sizes', 'auto');
+                }
+            }
+        });
+    }
 }
 
 document.addEventListener('lazybeforeunveil', function (e) {

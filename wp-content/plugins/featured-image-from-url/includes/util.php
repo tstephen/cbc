@@ -10,6 +10,13 @@ function fifu_get_attribute($attribute, $html) {
         $aux = $aux[1];
 
     $quote = $aux[0];
+
+    if ($quote == '&') {
+        preg_match('/^&[^;]+;/', $aux, $matches);
+        if ($matches)
+            $quote = $matches[0];
+    }
+
     $aux = explode($quote, $aux);
     if ($aux)
         return $aux[1];
@@ -34,29 +41,6 @@ function fifu_get_post_types() {
     return $arr;
 }
 
-function fifu_maximum($dimension) {
-    $dimension = 'fifu_image_' . $dimension . '_';
-    $size = null;
-
-    if (is_home()) {
-        $size = get_option($dimension . 'home');
-    } else if (class_exists('WooCommerce') && is_shop()) {
-        $size = get_option($dimension . 'shop');
-    } else if (class_exists('WooCommerce') && is_product_category()) {
-        $size = get_option($dimension . 'ctgr');
-    } else if (is_singular('post') || is_author() || is_search()) {
-        $size = get_option($dimension . 'post');
-    } else if (is_singular('page')) {
-        $size = class_exists('WooCommerce') && is_cart() ? get_option($dimension . 'cart') : get_option($dimension . 'page');
-    } else if (is_singular('product')) {
-        $size = get_option($dimension . 'prod');
-    } else if (is_archive()) {
-        $size = get_option($dimension . 'arch');
-    }
-
-    return $size ? $size : null;
-}
-
 function fifu_get_delimiter($property, $html) {
     $delimiter = explode($property . '=', $html);
     return $delimiter ? substr($delimiter[1], 0, 1) : null;
@@ -76,29 +60,6 @@ function fifu_starts_with($text, $substr) {
     return substr($text, 0, strlen($substr)) === $substr;
 }
 
-/* dimensions */
-
-function fifu_curl($url) {
-    $curl = curl_init($url);
-    if (fifu_is_off('fifu_save_dimensions_redirect')) {
-        $headers = array("Range: bytes=0-32768");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-    }
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    $data = curl_exec($curl);
-    curl_close($curl);
-    return $data;
-}
-
-function fifu_get_dimension_backend($url) {
-    $raw = fifu_curl($url);
-    $img = imagecreatefromstring($raw);
-    $width = imagesx($img);
-    $height = imagesy($img);
-    return ($width && $height) ? $width . ";" . $height : null;
-}
-
 function fifu_dashboard() {
     return !is_home() &&
             !is_singular('post') &&
@@ -113,7 +74,7 @@ function fifu_dashboard() {
 // developers
 
 function fifu_dev_set_image($post_id, $image_url) {
-    fifu_update_or_delete($post_id, 'fifu_image_url', esc_url_raw($image_url));
+    fifu_update_or_delete($post_id, 'fifu_image_url', esc_url_raw(rtrim($image_url)));
     fifu_update_fake_attach_id($post_id);
 }
 
@@ -129,9 +90,19 @@ function fifu_is_elementor_editor() {
     return \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode();
 }
 
+function fifu_is_jetpack_active() {
+    return function_exists('jetpack_photon_url') && class_exists('Jetpack') && method_exists('Jetpack', 'get_active_modules') && in_array('photon', Jetpack::get_active_modules());
+}
+
 // active themes
 
 function fifu_is_avada_active() {
     return 'avada' == strtolower(get_option('template'));
+}
+
+// plugin: accelerated-mobile-pages
+
+function fifu_amp_url($url, $width, $height) {
+    return array(0 => $url, 1 => $width, 2 => $height);
 }
 

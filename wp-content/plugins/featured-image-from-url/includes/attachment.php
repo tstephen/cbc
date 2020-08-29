@@ -17,11 +17,6 @@ function fifu_process_url($att_url, $att_id) {
     if (!$att_post)
         return $att_url;
 
-    // jetpack	
-    preg_match("/^http[s]*:\/\/[i][0-9][.]wp.com\//", $att_url, $matches);
-    if ($matches)
-        return fifu_process_external_url($att_url, $att_id);
-
     // internal
     if ($att_post->post_author != FIFU_AUTHOR)
         return $att_url;
@@ -57,18 +52,20 @@ function fifu_replace_attachment_url($att_url, $att_id) {
 add_filter('posts_where', 'fifu_query_attachments');
 
 function fifu_query_attachments($where) {
+    global $wpdb;
     if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments') && fifu_is_off('fifu_media_library')) {
-        global $wpdb;
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
-    }
+    } else
+        $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
     return $where;
 }
 
 add_filter('posts_where', function ($where, \WP_Query $q) {
-    if (is_admin() && $q->is_main_query() && fifu_is_off('fifu_media_library')) {
-        global $wpdb;
+    global $wpdb;
+    if (is_admin() && $q->is_main_query() && fifu_is_off('fifu_media_library'))
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
-    }
+    else
+        $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
     return $where;
 }, 10, 2);
 
@@ -83,13 +80,6 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
     if (!$att_post)
         return $image;
 
-    // jetpack	
-    preg_match("/^http[s]*:\/\/[i][0-9][.]wp.com\//", $image[0], $matches);
-    if ($matches) {
-        $image[0] = fifu_process_external_url($image[0], $att_id);
-        return $image;
-    }
-
     // internal
     if ($att_post->post_author != FIFU_AUTHOR)
         return $image;
@@ -101,39 +91,67 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
     if (fifu_should_hide() && fifu_main_image_url($post->ID) == $image[0])
         return null;
 
-    $image_size = fifu_get_image_size($size);
-    if (fifu_is_on('fifu_original')) {
-        return array(
-            $image[0],
-            null,
-            null,
-            null,
-        );
+    // photon
+    if (fifu_is_jetpack_active())
+        return fifu_get_photon_url($image, $size, $att_id);
+
+    // use saved dimensions
+    if ($image[1] > 1 && $image[2] > 1)
+        return $image;
+
+    return fifu_fix_dimensions($image, $size);
+}
+
+function fifu_fix_dimensions($image, $size) {
+    // default
+    $image = fifu_add_size($image, $size);
+
+    // fix zoom
+    if (class_exists('WooCommerce') && is_product() && $image[1] == 1 && $image[2] == 1)
+        $image[1] = 1920;
+
+    // fix unkown size
+    if ($image[1] == 0 && $image[2] == 0)
+        $image[1] = 1920;
+
+    return $image;
+}
+
+function fifu_add_size($image, $size) {
+    if (!is_array($size)) {
+        if (function_exists('wp_get_registered_image_subsizes')) {
+            if (isset(wp_get_registered_image_subsizes()[$size]['width']))
+                $image[1] = wp_get_registered_image_subsizes()[$size]['width'];
+
+            if (isset(wp_get_registered_image_subsizes()[$size]['height']))
+                $image[2] = wp_get_registered_image_subsizes()[$size]['height'];
+
+            if (isset(wp_get_registered_image_subsizes()[$size]['crop']))
+                $image[3] = wp_get_registered_image_subsizes()[$size]['crop'];
+        }
+    } else {
+        $image[1] = $size[0];
+        $image[2] = $size[1];
+    }
+    return $image;
+}
+
+function fifu_get_photon_url($image, $size, $att_id) {
+    $image = fifu_add_size($image, $size);
+    $w = $image[1];
+    $h = $image[2];
+
+    $args = array();
+
+    if ($w > 0) {
+        $args['w'] = $w;
+        $args['resize'] = array($w, null);
     }
 
-    $dimension = $att_post ? get_post_meta($att_post->ID, 'fifu_image_dimension') : null;
-    $arrFIFU = fifu_get_width_height($dimension);
+    $image[0] = jetpack_photon_url($image[0], $args, null);
+    $image[0] = fifu_process_external_url($image[0], $att_id);
 
-    $width = $arrFIFU['width'];
-    if (isset($image_size['width'])) {
-        $is = $image_size['width'];
-        if (!$width || (!$dimension && $is < $width))
-            $width = $is;
-    }
-
-    $height = $arrFIFU['height'];
-    if (isset($image_size['height'])) {
-        $is = $image_size['height'];
-        if (!$height || (!$dimension && $is < $height))
-            $height = $is;
-    }
-
-    return array(
-        $image[0],
-        $width,
-        $height,
-        isset($image_size['crop']) ? $image_size['crop'] : '',
-    );
+    return $image;
 }
 
 add_action('template_redirect', 'fifu_action', 10);
@@ -170,13 +188,14 @@ function fifu_callback($buffer) {
             continue;
 
         $post_id = $data['post_id'];
+        $att_id = $data['att_id'];
         $featured = $data['featured'];
 
         if ($featured) {
             // add featured
             $newImgItem = str_replace('<img ', '<img fifu-featured="1" ', $imgItem);
 
-            $buffer = str_replace($imgItem, fifu_replace($newImgItem, $post_id, null, null), $buffer);
+            $buffer = str_replace($imgItem, fifu_replace($newImgItem, $post_id, null, null, null), $buffer);
         }
     }
 
@@ -185,6 +204,9 @@ function fifu_callback($buffer) {
     $imgList = array();
     preg_match_all('/<[^>]*background-image[^>]*>/', $buffer, $imgList);
     foreach ($imgList[0] as $imgItem) {
+        if (strpos($imgItem, 'style=') === false)
+            continue;
+
         $mainDelimiter = substr(explode('style=', $imgItem)[1], 0, 1);
         $subDelimiter = substr(explode('url(', $imgItem)[1], 0, 1);
         if (in_array($subDelimiter, array('"', "'", ' ')))
@@ -200,6 +222,8 @@ function fifu_callback($buffer) {
 
             if (strpos($imgItem, 'fifu-replaced') !== false)
                 continue;
+
+            $att_id = $data['att_id'];
         }
 
         if (fifu_is_on('fifu_lazy')) {
@@ -207,7 +231,7 @@ function fifu_callback($buffer) {
             $class = 'lazyload ';
 
             // add class
-            $newImgItem = str_replace('class=' . $mainDelimiter, 'class=' . $mainDelimiter . $class, $imgItem);
+            $newImgItem = str_replace('class=' . $mainDelimiter, 'class=' . $mainDelimiter . $class, $newImgItem);
 
             // add status
             $newImgItem = str_replace('<img ', '<img fifu-replaced="1" ', $newImgItem);
@@ -229,32 +253,9 @@ function fifu_callback($buffer) {
 
 add_filter('wp_get_attachment_metadata', 'fifu_filter_wp_get_attachment_metadata', 10, 2);
 
-function fifu_filter_wp_get_attachment_metadata($data, $post_id) {
-    if (!$data || !is_array($data)) {
-        $dimension = get_post_meta($post_id, 'fifu_image_dimension');
-        return fifu_get_width_height($dimension);
-    }
+function fifu_filter_wp_get_attachment_metadata($data, $att_id) {
     return $data;
 }
-
-function fifu_get_width_height($dimension) {
-    if ($dimension && fifu_is_on('fifu_save_dimensions')) {
-        $dimension = $dimension[0];
-        $width = explode(';', $dimension)[0];
-        $height = explode(';', $dimension)[1];
-    } else {
-        $dimension = null;
-        $width = fifu_maximum('width');
-        $height = fifu_maximum('height');
-
-        // a value is required, otherwise the zoom doesn't work
-        if (!$width && is_singular('product'))
-            $width = 1000;
-    }
-    return array('width' => $width, 'height' => $height);
-}
-
-// for themes that dont call post_thumbnail_html
 
 function fifu_add_url_parameters($url, $att_id) {
     $post_id = get_post($att_id)->post_parent;

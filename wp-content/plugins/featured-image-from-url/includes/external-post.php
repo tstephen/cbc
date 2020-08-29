@@ -30,7 +30,7 @@ function fifu_save_properties_ext($post_id) {
     if (isset($_POST['fifu_input_url']))
         return;
 
-    $url = fifu_first_url_in_content($post_id);
+    $url = esc_url_raw(rtrim(fifu_first_url_in_content($post_id)));
 
     if ($url && fifu_is_on('fifu_get_first')) {
         update_post_meta($post_id, 'fifu_image_url', fifu_convert($url));
@@ -43,12 +43,18 @@ function fifu_save_properties_ext($post_id) {
 }
 
 function fifu_first_img_in_content($content) {
-    $matches = array();
+    $content = html_entity_decode($content);
+    $nth = get_option('fifu_spinner_nth') - 1;
+
     preg_match_all('/<img[^>]*>/', $content, $matches);
-    return $matches && $matches[0] ? $matches[0][get_option('fifu_spinner_nth') - 1] : null;
+    if ($matches && $matches[0])
+        return $matches[0][$nth];
+
+    return null;
 }
 
 function fifu_show_all_images($content) {
+    $content = html_entity_decode($content);
     $matches = array();
     preg_match_all('/<img[^>]*display:[ ]*none[^>]*>/', $content, $matches);
     foreach ($matches[0] as $img) {
@@ -58,57 +64,55 @@ function fifu_show_all_images($content) {
 }
 
 function fifu_hide_media($img) {
-    if (strpos($img, 'style="') !== false)
-        return preg_replace('/style=.[^"]*["]/', 'style="display:none"', $img);
+    $img = html_entity_decode($img);
+    if (strpos($img, 'style=') !== false)
+        return preg_replace('/style=[\'\"][^\'\"]*[\'\"]/', 'style="display:none"', $img);
     return preg_replace('/[\/]*>/', ' style="display:none">', $img);
 }
 
 function fifu_show_media($img) {
+    $img = html_entity_decode($img);
     return preg_replace('/style=[\\\]*.display:[ ]*none[\\\]*./', '', $img);
 }
 
 function fifu_first_url_in_content($post_id) {
     $content = get_post_field('post_content', $post_id);
+    $content = html_entity_decode($content);
     if (!$content)
         return;
+
     $matches = array();
+
     preg_match_all('/<img[^>]*>/', $content, $matches);
+
     if (!$matches[0])
         return;
 
-    $i = 0;
     $nth = get_option('fifu_spinner_nth');
+
+    // $matches
     $tag = null;
-    foreach ($matches[0] as $tag) {
-        $i++;
-        if (($tag && strpos($tag, 'data:image/jpeg') !== false) || ($i != $nth))
-            continue;
-        break;
+    if (sizeof($matches) != 0) {
+        $i = 0;
+        foreach ($matches[0] as $tag) {
+            $i++;
+            if (($tag && strpos($tag, 'data:image/jpeg') !== false) || ($i != $nth))
+                continue;
+            break;
+        }
     }
 
     if (!$tag)
-        return;
+        return null;
 
-    $aux2 = null;
-
-    //double quotes
-    $aux1 = explode('src="', $tag);
-    if ($aux1 && count($aux1) > 1) {
-        $aux2 = explode('"', $aux1[1]);
-    }
-
-    //single quotes
-    if (!$aux2 || !$aux2[0]) {
-        $aux1 = explode("src='", $tag);
-        if ($aux1 && count($aux1) > 1)
-            $aux2 = explode("'", $aux1[1]);
-    }
+    // src
+    $src = fifu_get_attribute('src', $tag);
 
     //query strings
     if (fifu_is_on('fifu_query_strings'))
-        return $tag ? preg_replace('/\?.*/', '', $aux2[0]) : null;
+        return preg_replace('/\?.*/', '', $src);
 
-    return $tag ? $aux2[0] : null;
+    return $src;
 }
 
 function fifu_update_fake_attach_id($post_id) {

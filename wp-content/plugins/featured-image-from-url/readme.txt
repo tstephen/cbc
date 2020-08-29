@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://donorbox.org/fifu
-Tags: featured image, featured, image, url, thumbnail
-Requires at least: 5.0
+Tags: featured, image, url, woocommerce, thumbnail
+Requires at least: 5.3
 Tested up to: 5.5
-Stable tag: 3.2.4
+Stable tag: 3.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,9 +25,6 @@ Use an external image as featured image of your post, page or custom post type.
 * Default featured image
 * Hide featured media
 * Featured image in content
-* CSS style
-* Original size
-* Add class
 * Save image dimensions
 * Featured image column
 * **[Premium]** Giphy image search
@@ -48,7 +45,7 @@ Use an external image as featured image of your post, page or custom post type.
 
 * WP All Import add-on
 * WooCommerce import
-* URL from post content
+* Content URL
 * **[Premium]** WP REST API
 * **[Premium]** WooCommerce REST API
 * **[Premium]** Schedule metadata generation
@@ -90,13 +87,6 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 * fifu_dev_set_image($post_id, $image_url)
 
-#### LANGUAGES
-
-* English (United States)
-* German
-* Greek
-* Portuguese (Brazil)
-
 #### LINKS
 
 * **<a href="https://fifu.app/">Featured Image from URL Premium</a>**	
@@ -137,15 +127,15 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 = What's the metadata created by FIFU?
 
-* Database registers that help WordPress components to work with the external images.
+* Database registers that help WordPress components to work with the external images. FIFU can generate the metadata of ~30,000 image URLs per minute.
 
 = What are the disadvantages of the external images?
 
-* No image optimization or thumbnails. You may fix that with Jetpack (performance settings).
+* No image optimization or thumbnails. You can fix that with Jetpack plugin (performance settings).
 
 = What are the advantages of the external images?
 
-* You save money on storage, processing and copyright.
+* You save money on storage, processing and copyright. And you can have extremely fast import processes.
 
 
 == Screenshots ==
@@ -193,14 +183,14 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Changelog ==
 
-= 3.2.4 =
-* Critical bug fix: conflict with URLs from Jetpack, Cloudinary and maybe others.
+= 3.3.0 =
+* Improvement: responsive external images with Jetpack; bug fix: cropped Jetpack images; deprecated: Add Class and jQuery options.
 
-= 3.2.3 =
-* Improvement: core changes for a better integration with themes, plugins and WordPress 5.5; bug fix: conflict between Hide Featured Media and Related Posts Thumbnails plugin.
+= 3.2.9 =
+* Improvement: FIFU automatically removes URL spaces on the right; deprecated: CSS Style; bug fix: images may not be shown due js error (jQuery not defined).
 
-= 3.2.2 =
-* Adjustment: layout changes for WordPress 5.5; improvement: Flickr Thumbnails (less controls and more precision); bug fix: conflict between Lazy Load and Avada theme.
+= 3.2.8 =
+* Improvement: the translation process is being integrated with WordPress.org (all the strings should be available to the community soon).
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -208,5 +198,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.2.4 =
-* Critical bug fix: conflict with URLs from Jetpack, Cloudinary and maybe others.
+= 3.3.0 =
+* Improvement: responsive external images with Jetpack; bug fix: cropped Jetpack images; deprecated: Add Class and jQuery options.

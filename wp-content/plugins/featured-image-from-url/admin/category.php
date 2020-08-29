@@ -32,6 +32,7 @@ function fifu_ctgr_edit_box($term) {
     }
     $show_ignore = 'display:none;';
 
+    $fifu = fifu_get_strings_meta_box();
     include 'html/category.html';
 }
 
@@ -47,6 +48,7 @@ function fifu_ctgr_add_box() {
     $show_alt = $show_image = $show_link = 'display:none;';
     $show_ignore = 'display:none;';
 
+    $fifu = fifu_get_strings_meta_box();
     include 'html/category.html';
 }
 
@@ -58,9 +60,15 @@ function fifu_ctgr_save_properties($term_id) {
         update_term_meta($term_id, 'fifu_image_alt', wp_strip_all_tags($_POST['fifu_input_alt']));
 
     if (isset($_POST['fifu_input_url'])) {
-        $url = esc_url_raw($_POST['fifu_input_url']);
+        $url = esc_url_raw(rtrim($_POST['fifu_input_url']));
         update_term_meta($term_id, 'fifu_image_url', fifu_convert($url));
         fifu_db_ctgr_update_fake_attach_id($term_id);
     }
+
+    /* dimensions */
+    $width = fifu_get_width_meta($_POST);
+    $height = fifu_get_height_meta($_POST);
+    $att_id = get_term_meta($term_id, 'thumbnail_id', true);
+    fifu_save_dimensions($att_id, $width, $height);
 }
 

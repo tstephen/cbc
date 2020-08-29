@@ -1,22 +1,24 @@
 jQuery(document).ready(function ($) {
     // lazy load
-    if (fifuImageVars.fifu_lazy)
-        fifu_lazy();
+    if (fifuImageVars.fifu_lazy) {
+        setTimeout(function () {
+            fifu_lazy();
+        }, 1);
+    }
 
     // woocommerce lightbox/zoom
     disableClick($);
     disableLink($);
 
-    // for all images at single product page
-    setTimeout(function () {
-        resizeImg($);
-        jQuery('a.woocommerce-product-gallery__trigger').css('visibility', 'visible');
-    }, 2500);
-
     // zoomImg
     setTimeout(function () {
         jQuery('img.zoomImg').css('z-index', '');
     }, 1000);
+
+    jQuery('img[height=1]').each(function (index) {
+        if (jQuery(this).attr('width') != 1)
+            jQuery(this).css('position', 'relative');
+    });
 });
 
 jQuery(window).on('ajaxComplete', function () {
@@ -31,23 +33,6 @@ if (fifuImageVars.fifu_is_product) {
         if (mainImage)
             jQuery('.flex-viewport').css('height', mainImage.clientHeight + 'px');
     });
-}
-
-function resizeImg($) {
-    var imgSelector = ".post img, .page img, .widget-content img, .product img, .wp-admin img, .tax-product_cat img, .fifu img";
-    var resizeImage = function (sSel) {
-        jQuery(sSel).each(function () {
-            //original size
-            var width = $(this)['0'].naturalWidth;
-            var height = $(this)['0'].naturalHeight;
-
-            //100%
-            var ratio = width / height;
-            jQuery(this).attr('data-large_image_width', jQuery(window).width() * ratio);
-            jQuery(this).attr('data-large_image_height', jQuery(window).width());
-        });
-    };
-    resizeImage(imgSelector);
 }
 
 function disableClick($) {

@@ -1,56 +1,91 @@
 <?php
 
 function fifu_enable_fake_api(WP_REST_Request $request) {
+    update_option('fifu_fake_stop', false, 'no');
     fifu_enable_fake();
+    update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+    return json_encode(array());
 }
 
 function fifu_disable_fake_api(WP_REST_Request $request) {
-    fifu_disable_fake();
-    delete_option('fifu_fake_attach_id');
-}
-
-function fifu_none_fake_api(WP_REST_Request $request) {
-    update_option('fifu_fake_created', null, 'no');
+    update_option('fifu_fake_created', false, 'no');
+    update_option('fifu_fake_stop', true, 'no');
+    update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+    return json_encode(array());
 }
 
 function fifu_data_clean_api(WP_REST_Request $request) {
     fifu_db_enable_clean();
     update_option('fifu_data_clean', 'toggleoff', 'no');
+    update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+    return json_encode(array());
 }
 
 function fifu_run_delete_all_api(WP_REST_Request $request) {
     fifu_db_delete_all();
     update_option('fifu_run_delete_all', 'toggleoff', 'no');
-}
-
-function fifu_save_dimensions_all_api(WP_REST_Request $request) {
-    update_option('fifu_save_dimensions_all', 'toggleoff', 'no');
-
-    if (fifu_is_off('fifu_save_dimensions'))
-        return;
-
-    fifu_db_save_dimensions_all();
-}
-
-function fifu_clean_dimensions_all_api(WP_REST_Request $request) {
-    update_option('fifu_clean_dimensions_all', 'toggleoff', 'no');
-
-    if (fifu_is_off('fifu_clean_dimensions'))
-        return;
-
-    fifu_db_clean_dimensions_all();
+    return json_encode(array());
 }
 
 function fifu_disable_default_api(WP_REST_Request $request) {
     fifu_db_delete_default_url();
+    return json_encode(array());
 }
 
 function fifu_none_default_api(WP_REST_Request $request) {
-    
+    return json_encode(array());
 }
 
 function fifu_rest_url(WP_REST_Request $request) {
     return get_rest_url();
+}
+
+function fifu_save_sizes_api(WP_REST_Request $request) {
+    $json = json_encode(array());
+
+    $att_id = $request['att_id'];
+    if (filter_var($att_id, FILTER_VALIDATE_INT) === false)
+        return $json;
+
+    $width = $request['width'];
+    if (filter_var($width, FILTER_VALIDATE_INT) === false)
+        return $json;
+
+    $height = $request['height'];
+    if (filter_var($height, FILTER_VALIDATE_INT) === false)
+        return $json;
+
+    $url = $request['url'];
+    if (filter_var($url, FILTER_SANITIZE_URL) === false)
+        return $json;
+
+    $att_id = filter_var($att_id, FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!$att_id || !$width || !$height || !$url)
+        return $json;
+
+    $guid = get_the_guid($att_id);
+
+    if ($url != $guid)
+        return $json;
+
+    if (get_post_field('post_author', $att_id) != FIFU_AUTHOR)
+        return;
+
+    // save
+    $metadata = get_post_meta($att_id, '_wp_attachment_metadata', true);
+    if (!$metadata || !$metadata['width'] || !$metadata['height']) {
+        $metadata = null;
+        $metadata['width'] = filter_var($width, FILTER_SANITIZE_SPECIAL_CHARS);
+        $metadata['height'] = filter_var($height, FILTER_SANITIZE_SPECIAL_CHARS);
+        wp_update_attachment_metadata($att_id, $metadata);
+    }
+
+    return $json;
+}
+
+function fifu_api_list_all_without_dimensions(WP_REST_Request $request) {
+    return fifu_db_get_all_without_dimensions();
 }
 
 function fifu_test_execution_time() {
@@ -58,6 +93,7 @@ function fifu_test_execution_time() {
         error_log($i);
         sleep(1);
     }
+    return json_encode(array());
 }
 
 add_action('rest_api_init', function () {
@@ -71,11 +107,6 @@ add_action('rest_api_init', function () {
         'callback' => 'fifu_disable_fake_api',
         'permission_callback' => 'fifu_get_private_data_permissions_check',
     ));
-    register_rest_route('featured-image-from-url/v2', '/none_fake_api/', array(
-        'methods' => 'POST',
-        'callback' => 'fifu_none_fake_api',
-        'permission_callback' => 'fifu_get_private_data_permissions_check',
-    ));
     register_rest_route('featured-image-from-url/v2', '/data_clean_api/', array(
         'methods' => 'POST',
         'callback' => 'fifu_data_clean_api',
@@ -84,16 +115,6 @@ add_action('rest_api_init', function () {
     register_rest_route('featured-image-from-url/v2', '/run_delete_all_api/', array(
         'methods' => 'POST',
         'callback' => 'fifu_run_delete_all_api',
-        'permission_callback' => 'fifu_get_private_data_permissions_check',
-    ));
-    register_rest_route('featured-image-from-url/v2', '/save_dimensions_all_api/', array(
-        'methods' => 'POST',
-        'callback' => 'fifu_save_dimensions_all_api',
-        'permission_callback' => 'fifu_get_private_data_permissions_check',
-    ));
-    register_rest_route('featured-image-from-url/v2', '/clean_dimensions_all_api/', array(
-        'methods' => 'POST',
-        'callback' => 'fifu_clean_dimensions_all_api',
         'permission_callback' => 'fifu_get_private_data_permissions_check',
     ));
     register_rest_route('featured-image-from-url/v2', '/disable_default_api/', array(
@@ -106,6 +127,16 @@ add_action('rest_api_init', function () {
         'callback' => 'fifu_none_default_api',
         'permission_callback' => 'fifu_get_private_data_permissions_check',
     ));
+    register_rest_route('featured-image-from-url/v2', '/save_sizes_api/', array(
+        'methods' => 'POST',
+        'callback' => 'fifu_save_sizes_api',
+        'permission_callback' => 'fifu_get_private_data_permissions_check',
+    ));
+    register_rest_route('featured-image-from-url/v2', '/list_all_without_dimensions/', array(
+        'methods' => 'POST',
+        'callback' => 'fifu_api_list_all_without_dimensions',
+        'permission_callback' => 'fifu_get_private_data_permissions_check',
+    ));
     register_rest_route('featured-image-from-url/v2', '/rest_url_api/', array(
         'methods' => ['GET', 'POST'],
         'callback' => 'fifu_rest_url',
@@ -115,7 +146,7 @@ add_action('rest_api_init', function () {
 
 function fifu_get_private_data_permissions_check() {
     if (!current_user_can('edit_posts')) {
-        return new WP_Error('rest_forbidden', esc_html__('You cannot access private data.', 'featured-image-from-url'), array('status' => 401));
+        return new WP_Error('rest_forbidden', __('Private'), array('status' => 401));
     }
     return true;
 }

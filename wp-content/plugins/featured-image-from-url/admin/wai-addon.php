@@ -1,10 +1,10 @@
 <?php
 
 include 'rapid-addon.php';
-fifu_languages();
+$fifu = fifu_get_strings_wai();
 $fifu_wai_addon = new RapidAddon('<div style="color:#777"><span class="dashicons dashicons-camera" style="font-size:30px;padding-right:10px"></span> Featured Image from URL</div>', 'fifu_wai_addon');
-$fifu_wai_addon->add_field('fifu_image_url', '<div title="fifu_image_url">' . __('Featured Image (URL)', 'featured-image-from-url') . '</div>', 'text', null, null, false, null);
-$fifu_wai_addon->add_field('fifu_image_alt', '<div title="fifu_image_alt">' . __('Featured Image Title', 'featured-image-from-url') . '</div>', 'text', null, null, false, null);
+$fifu_wai_addon->add_field('fifu_image_url', '<div title="fifu_image_url">' . $fifu['title']['image']() . '</div>', 'text', null, null, false, null);
+$fifu_wai_addon->add_field('fifu_image_alt', '<div title="fifu_image_alt">' . $fifu['title']['title']() . '</div>', 'text', null, null, false, null);
 $fifu_wai_addon->set_import_function('fifu_wai_addon_save');
 $fifu_wai_addon->run();
 
