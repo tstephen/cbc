@@ -1,26 +1,24 @@
 <?php
+defined( 'ABSPATH' ) or die; // exit if accessed directly
 /**
- * The initation loader for CMB2, and the main plugin file.
- *
  * @category     WordPress_Plugin
  * @package      CMB2
- * @author       CMB2 team
+ * @author       WebDevStudios
  * @license      GPL-2.0+
- * @link         https://cmb2.io
+ * @link         http://webdevstudios.com
  *
  * Plugin Name:  CMB2
- * Plugin URI:   https://github.com/CMB2/CMB2
+ * Plugin URI:   https://github.com/WebDevStudios/CMB2
  * Description:  CMB2 will create metaboxes and forms with custom fields that will blow your mind.
- * Author:       CMB2 team
- * Author URI:   https://cmb2.io
- * Contributors: Justin Sternberg (@jtsternberg / dsgnwrks.pro)
- *               WebDevStudios (@webdevstudios / webdevstudios.com)
- *               Human Made (@humanmadeltd / hmn.md)
+ * Author:       WebDevStudios
+ * Author URI:   http://webdevstudios.com
+ * Contributors: WebDevStudios (@webdevstudios / webdevstudios.com)
+ *               Justin Sternberg (@jtsternberg / dsgnwrks.pro)
  *               Jared Atchison (@jaredatch / jaredatchison.com)
  *               Bill Erickson (@billerickson / billerickson.net)
  *               Andrew Norcross (@norcross / andrewnorcross.com)
  *
- * Version:      2.7.0
+ * Version:      5.7.0
  *
  * Text Domain:  cmb2
  * Domain Path:  languages
@@ -30,7 +28,7 @@
  * http://www.opensource.org/licenses/gpl-license.php
  *
  * This is an add-on for WordPress
- * https://wordpress.org/
+ * http://wordpress.org/
  *
  * **********************************************************************
  * This program is free software; you can redistribute it and/or modify
@@ -45,26 +43,24 @@
  * **********************************************************************
  */
 
-/**
- * *********************************************************************
- *               You should not edit the code below
- *               (or any code in the included files)
- *               or things might explode!
- * ***********************************************************************
- */
+/************************************************************************
+ * You should not edit the code below
+ * (or any code in the included files)
+ * or things might explode!
+ *************************************************************************/
 
 if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 
 	/**
 	 * Handles checking for and loading the newest version of CMB2
 	 *
-	 * @since  2.0.0
+	 * @since     2.0.0
 	 *
 	 * @category  WordPress_Plugin
 	 * @package   CMB2
-	 * @author    CMB2 team
+	 * @author    WebDevStudios
 	 * @license   GPL-2.0+
-	 * @link      https://cmb2.io
+	 * @link      http://webdevstudios.com
 	 */
 	class CMB2_Bootstrap_270 {
 
@@ -74,7 +70,7 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 		 * @var   string
 		 * @since 1.0.0
 		 */
-		const VERSION = '2.7.0';
+		const VERSION = '5.7.0';
 
 		/**
 		 * Current version hook priority.
@@ -102,6 +98,7 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 			if ( null === self::$single_instance ) {
 				self::$single_instance = new self();
 			}
+
 			return self::$single_instance;
 		}
 
@@ -121,11 +118,6 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 			 */
 			if ( ! defined( 'CMB2_LOADED' ) ) {
 				define( 'CMB2_LOADED', self::PRIORITY );
-			}
-
-			if ( ! function_exists( 'add_action' ) ) {
-				// We are running outside of the context of WordPress.
-				return;
 			}
 
 			add_action( 'init', array( $this, 'include_cmb' ), self::PRIORITY );
@@ -152,17 +144,19 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 
 			$this->l10ni18n();
 
-			// Include helper functions.
-			require_once CMB2_DIR . 'includes/CMB2_Base.php';
-			require_once CMB2_DIR . 'includes/CMB2.php';
-			require_once CMB2_DIR . 'includes/helper-functions.php';
+			// Include helper functions
+			require_once __DIR__ . '/includes/CMB2_Base.php';
+			require_once __DIR__ . '/includes/CMB2.php';
+			require_once __DIR__ . '/includes/helper-functions.php';
 
-			// Now kick off the class autoloader.
+			// Now kick off the class autoloader
 			spl_autoload_register( 'cmb2_autoload_classes' );
 
-			// Kick the whole thing off.
-			require_once( cmb2_dir( 'bootstrap.php' ) );
-			cmb2_bootstrap();
+			// Kick the whole thing off
+			require_once __DIR__ . '/bootstrap.php';
+			if ( function_exists( 'cmb2_bootstrap' ) ) {
+				cmb2_bootstrap();
+			}
 		}
 
 		/**
@@ -183,7 +177,7 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 			}
 
 			if ( ! $loaded ) {
-				$locale = apply_filters( 'plugin_locale', function_exists( 'determine_locale' ) ? determine_locale() : get_locale(), 'cmb2' );
+				$locale = apply_filters( 'plugin_locale', get_locale(), 'cmb2' );
 				$mofile = dirname( __FILE__ ) . '/languages/cmb2-' . $locale . '.mo';
 				load_textdomain( 'cmb2', $mofile );
 			}
@@ -195,4 +189,4 @@ if ( ! class_exists( 'CMB2_Bootstrap_270', false ) ) {
 	// Make it so...
 	CMB2_Bootstrap_270::initiate();
 
-}// End if().
+}

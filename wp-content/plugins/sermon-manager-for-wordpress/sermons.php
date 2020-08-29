@@ -3,7 +3,7 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.16.0
+ * Version: 2.16.1
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
@@ -180,34 +180,34 @@ class SermonManager { // phpcs:ignore
 		}
 
 		$content       = '';
-		$bible_passage = get_post_meta( $post_ID, 'bible_passage', true );
-		$has_preachers = has_term( '', 'wpfc_preacher', $post );
-		$has_series    = has_term( '', 'wpfc_sermon_series', $post );
+		// $bible_passage = get_post_meta( $post_ID, 'bible_passage', true );
+		// $has_preachers = has_term( '', 'wpfc_preacher', $post );
+		// $has_series    = has_term( '', 'wpfc_sermon_series', $post );
 
-		if ( $bible_passage ) {
-			$content .= __( 'Bible Text:', 'sermon-manager-for-wordpress' ) . ' ' . $bible_passage;
-		}
+		// if ( $bible_passage ) {
+		// 	$content .= __( 'Bible Text:', 'sermon-manager-for-wordpress' ) . ' ' . $bible_passage;
+		// }
 
-		if ( $has_preachers ) {
-			if ( $bible_passage ) {
-				$content .= ' | ';
-			}
+		// if ( $has_preachers ) {
+		// 	if ( $bible_passage ) {
+		// 		$content .= ' | ';
+		// 	}
 
-			$content .= sm_get_taxonomy_field( 'wpfc_preacher', 'singular_name' ) . ': ';
-			$content .= strip_tags( get_the_term_list( $post->ID, 'wpfc_preacher', '', ', ', '' ) );
-		}
+		// 	$content .= sm_get_taxonomy_field( 'wpfc_preacher', 'singular_name' ) . ': ';
+		// 	$content .= strip_tags( get_the_term_list( $post->ID, 'wpfc_preacher', '', ', ', '' ) );
+		// }
 
-		if ( $has_series ) {
-			if ( $has_preachers ) {
-				$content .= ' | ';
-			}
-			$content .= strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_series', __( 'Series:', 'sermon-manager-for-wordpress' ) . ' ', ', ', '' ) );
-		}
+		// if ( $has_series ) {
+		// 	if ( $has_preachers ) {
+		// 		$content .= ' | ';
+		// 	}
+		// 	$content .= strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_series', __( 'Series:', 'sermon-manager-for-wordpress' ) . ' ', ', ', '' ) );
+		// }
 
 		$description = strip_tags( trim( get_post_meta( $post->ID, 'sermon_description', true ) ) );
 
 		if ( '' !== $description ) {
-			$content .= ' | ' . $description;
+			$content .=  $description;
 		}
 
 		/**
@@ -522,6 +522,7 @@ class SermonManager { // phpcs:ignore
 		if ( file_exists( get_stylesheet_directory() . '/sermon.css' ) ) {
 			wp_register_style( 'wpfc-sm-style-theme', get_stylesheet_directory_uri() . '/sermon.css', array( 'wpfc-sm-styles' ), SM_VERSION );
 		}
+		
 	}
 
 	/**
@@ -551,13 +552,13 @@ class SermonManager { // phpcs:ignore
 		add_action( 'wp_insert_post', array( $this, 'render_sermon_into_content' ), 10, 2 );
 		// Remove SB Help from SM pages, since it messes up the formatting.
 		add_action(
-			'contextual_help',
+			'current_screen',
 			function () {
 				$screen    = get_current_screen();
 				$screen_id = $screen ? $screen->id : '';
 
 				if ( in_array( $screen_id, sm_get_screen_ids() ) ) {
-					remove_action( 'contextual_help', 'sb_add_contextual_help' );
+					remove_action( 'current_screen', 'sb_add_contextual_help' );
 				}
 			},
 			0
@@ -593,14 +594,17 @@ class SermonManager { // phpcs:ignore
 				$sermon_messages = array( $sermons_se, $sermons_sb );
 
 				foreach ( $sermon_messages as $offset0 => $sermons_array ) {
-					foreach ( $sermons_array as $offset1 => $value ) {
-						if ( $value['new_id'] == $id ) {
-							unset( $sermons_array[ $offset1 ] );
-							update_option( 0 === $offset0 ? '_sm_import_se_messages' : '_sm_import_sb_messages', $sermons_array );
+					if(count($sermons_array)>0){
+						foreach ( $sermons_array as $offset1 => $value ) {
+							if ( $value['new_id'] == $id ) {
+								unset( $sermons_array[ $offset1 ] );
+								update_option( 0 === $offset0 ? '_sm_import_se_messages' : '_sm_import_sb_messages', $sermons_array );
 
-							return;
+								return;
+							}
 						}
 					}
+					
 				}
 			}
 		);
@@ -774,11 +778,14 @@ class SermonManager { // phpcs:ignore
 		add_action(
 			'save_post_wpfc_sermon',
 			function ( $post_ID, $post, $update ) {
+				error_log("1888");			
+				error_log(print_r($_POST,true));			
+				// error_log(print_r($_POST),true);
 				if ( ! isset( $_POST['sermon_audio_id'] ) && ! isset( $_POST['sermon_audio'] ) ) {
 					return;
 				}
 
-				$audio_id  = &sanitize_text_field($_POST['sermon_audio_id']);
+				$audio_id  = sanitize_text_field($_POST['sermon_audio_id']);
 				$audio_url = sanitize_text_field($_POST['sermon_audio']);
 
 				// Attempt to get remote file size.

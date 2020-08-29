@@ -103,11 +103,11 @@ global $post;
 						</a>
 					</div>
 				<?php endif; ?>
-			</div>
-			
-				<?php the_content(); ?>
-			
-			<div class="wpfc-sermon-single-description"><?php  wpfc_sermon_description(); ?></div>
+			</div>			
+				<?php the_content(); ?>			
+				<div class="wpfc-sermon-single-description">
+				<?php   (get_the_content()=='')?wpfc_sermon_description():''; ?>					
+				</div>
 			<?php if ( get_wpfc_sermon_meta( 'sermon_notes' ) || get_wpfc_sermon_meta( 'sermon_bulletin' ) ) : ?>
 				<div class="wpfc-sermon-single-attachments"><?php echo wpfc_sermon_attachments(); ?></div>
 			<?php endif; ?>

@@ -1,5 +1,8 @@
 Note: Newer changelog is in readme.txt
 
+### 2.16.1 ###
+Fix: Wordpress 5.5 Compability issue bug fix
+
 ### 2.16.0 ###
 Fix: Bug Fix With CMB2
 

@@ -3,9 +3,9 @@ Contributors: wpforchurch, Alex Gutierrez
 Donate link: http://wpforchurch.com/  
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
 Requires at least: 4.7.0  
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.0  
-Stable tag: 2.16.0  
+Stable tag: 2.16.1  
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,10 +13,10 @@ Add audio and video sermons, manage speakers, series, and more to your church we
 
 ## Description ##
 
-### Sermon Manager is the #1 WordPress Sermon Plugin ###
+## Sermon Manager is the #1 WordPress Sermon Plugin ###
 
-**Plugin is now under new management! 
-**Join our facebook community: https://www.facebook.com/groups/wpforchurch/
+***Plugin is now under new management! 
+***Join our facebook community: https://www.facebook.com/groups/wpforchurch/
 
 Sermon Manager is designed to help churches easily publish sermons online. Some of the features include:
 
@@ -125,6 +125,9 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+### 2.16.1 ###
+*Fix: Wordpress 5.5 Compability issue bug fix
+
 ### 2.16.0 ###
 *Fix: Bug Fix With CMB2
 
