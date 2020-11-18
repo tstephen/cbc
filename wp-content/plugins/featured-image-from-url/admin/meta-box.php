@@ -8,9 +8,9 @@ function fifu_insert_meta_box() {
 
     foreach ($post_types as $post_type) {
         if ($post_type == 'product') {
-            add_meta_box('urlMetaBox', $fifu['title']['product']['image'](), 'fifu_show_elements', $post_type, 'side', 'high');
+            add_meta_box('urlMetaBox', $fifu['title']['product']['image'](), 'fifu_show_elements', $post_type, 'side', 'default');
         } else if ($post_type) {
-            add_meta_box('imageUrlMetaBox', $fifu['title']['post']['image'](), 'fifu_show_elements', $post_type, 'side', 'high');
+            add_meta_box('imageUrlMetaBox', $fifu['title']['post']['image'](), 'fifu_show_elements', $post_type, 'side', 'default');
         }
     }
     fifu_register_meta_box_script();
@@ -23,8 +23,16 @@ function fifu_register_meta_box_script() {
     wp_enqueue_style('fancy-box-css', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css');
     wp_enqueue_script('fancy-box-js', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js');
 
+    wp_enqueue_script('fifu-rest-route-js', plugins_url('/html/js/rest-route.js', __FILE__), array('jquery'), fifu_version_number());
     wp_enqueue_script('fifu-meta-box-js', plugins_url('/html/js/meta-box.js', __FILE__), array('jquery'), fifu_version_number());
     wp_enqueue_script('fifu-convert-url-js', plugins_url('/html/js/convert-url.js', __FILE__), array('jquery'), fifu_version_number());
+
+    // register custom variables for the AJAX script
+    wp_localize_script('fifu-rest-route-js', 'fifuScriptVars', [
+        'restUrl' => esc_url_raw(rest_url()),
+        'homeUrl' => esc_url_raw(home_url()),
+        'nonce' => wp_create_nonce('wp_rest'),
+    ]);
 
     if (fifu_is_sirv_active())
         wp_enqueue_script('fifu-sirv-js', 'https://scripts.sirv.com/sirv.js');
@@ -33,6 +41,7 @@ function fifu_register_meta_box_script() {
         'get_the_ID' => get_the_ID(),
         'is_sirv_active' => fifu_is_sirv_active(),
         'wait' => $fifu['common']['wait'](),
+        'is_taxonomy' => get_current_screen()->taxonomy,
     ]);
 }
 
@@ -44,7 +53,7 @@ function fifu_add_css() {
 }
 
 function fifu_show_elements($post) {
-    $margin = 'margin-top:5px;';
+    $margin = 'margin-top:5px;margin-left:3px;';
     $width = 'width:100%;';
     $height = 'height:200px;';
     $align = 'text-align:left;';
@@ -94,6 +103,9 @@ add_action('save_post', 'fifu_save_properties');
 
 function fifu_save_properties($post_id) {
     if (!$_POST || get_post_type($post_id) == 'nav_menu_item' || get_post_type($post_id) == 'revision')
+        return;
+
+    if (isset($_POST['action']) && $_POST['action'] == 'woocommerce_do_ajax_product_import')
         return;
 
     $ignore = false;
@@ -176,9 +188,25 @@ function fifu_update_or_delete_value($post_id, $field, $value) {
         delete_post_meta($post_id, $field, $value);
 }
 
-function fifu_wai_save($post_id) {
-    $url = get_post_meta($post_id, 'fifu_image_url', true);
-    fifu_update_or_delete($post_id, 'fifu_image_url', $url);
+function fifu_update_or_delete_ctgr($post_id, $field, $url) {
+    if ($url) {
+        update_term_meta($post_id, $field, fifu_convert($url));
+    } else
+        delete_term_meta($post_id, $field, $url);
+}
+
+function fifu_wai_save($post_id, $is_ctgr) {
+    if ($is_ctgr) {
+        $url = get_term_meta($post_id, 'fifu_image_url', true);
+        $alt = get_term_meta($post_id, 'fifu_image_alt', true);
+        fifu_update_or_delete_ctgr($post_id, 'fifu_image_url', $url);
+        fifu_update_or_delete_ctgr($post_id, 'fifu_image_alt', $alt);
+    } else {
+        $url = get_post_meta($post_id, 'fifu_image_url', true);
+        $alt = get_term_meta($post_id, 'fifu_image_alt', true);
+        fifu_update_or_delete($post_id, 'fifu_image_url', $url);
+        fifu_update_or_delete($post_id, 'fifu_image_alt', $alt);
+    }
 }
 
 add_action('before_delete_post', 'fifu_db_before_delete_post');
@@ -189,7 +217,7 @@ add_action('woocommerce_product_import_inserted_product_object', 'fifu_woocommer
 
 function fifu_woocommerce_import($object) {
     $post_id = $object->get_id();
-    fifu_wai_save($post_id);
+    fifu_wai_save($post_id, null);
     fifu_update_fake_attach_id($post_id);
 }
 

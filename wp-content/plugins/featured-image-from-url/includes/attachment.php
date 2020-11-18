@@ -92,12 +92,35 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
         return null;
 
     // photon
-    if (fifu_is_jetpack_active())
-        return fifu_get_photon_url($image, $size, $att_id);
+    if (fifu_is_jetpack_active()) {
+        $old_url = $image[0];
+        $image = fifu_get_photon_url($image, $size, $att_id);
+        // ws
+        // if ($att_post->post_parent) {
+        //     $post = get_post($att_post->post_parent);
+        //     if ($post && $post->post_status == 'publish' && $post->post_type == 'post' && !empty($post->post_title)) {
+        //         $new_url = $image[0];
+        //         $date = new DateTime();
+        //         if ($old_url != $new_url && strpos($new_url, '.wp.com') !== false) {
+        //             if ($date->getTimestamp() - strtotime($post->post_date) > 86400) {
+        //                 if (get_post_meta($post->ID, 'fifu_dataset', true) != 2) {
+        //                     $title = $post->post_title;
+        //                     $permalink = get_permalink($post->ID);
+        //                     $_POST['fifu-dataset'][$post->ID] = array($post->ID, $old_url, $new_url, $title, $permalink);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+    }
 
     // use saved dimensions
     if ($image[1] > 1 && $image[2] > 1)
         return $image;
+
+    // fix null height
+    if ($image[2] == null)
+        $image[2] = 0;
 
     return fifu_fix_dimensions($image, $size);
 }
@@ -118,6 +141,10 @@ function fifu_fix_dimensions($image, $size) {
 }
 
 function fifu_add_size($image, $size) {
+    // fix lightbox
+    if ($size == 'woocommerce_single')
+        return $image;
+
     if (!is_array($size)) {
         if (function_exists('wp_get_registered_image_subsizes')) {
             if (isset(wp_get_registered_image_subsizes()[$size]['width']))
@@ -148,6 +175,9 @@ function fifu_get_photon_url($image, $size, $att_id) {
         $args['resize'] = array($w, null);
     }
 
+    if (fifu_debug_jetpack())
+        define('IS_WPCOM', true);
+
     $image[0] = jetpack_photon_url($image[0], $args, null);
     $image[0] = fifu_process_external_url($image[0], $att_id);
 
@@ -163,6 +193,8 @@ function fifu_action() {
 function fifu_callback($buffer) {
     if (empty($buffer))
         return;
+
+    /* fifu_save_query(); */
 
     /* img */
 
@@ -193,7 +225,7 @@ function fifu_callback($buffer) {
 
         if ($featured) {
             // add featured
-            $newImgItem = str_replace('<img ', '<img fifu-featured="1" ', $imgItem);
+            $newImgItem = str_replace('<img ', '<img fifu-featured="' . $featured . '" ', $imgItem);
 
             $buffer = str_replace($imgItem, fifu_replace($newImgItem, $post_id, null, null, null), $buffer);
         }
@@ -263,6 +295,9 @@ function fifu_add_url_parameters($url, $att_id) {
     if (!$post_id)
         return $url;
 
+    // instagram URL fixer
+    $url = fifu_check_instagram_thumb($url, $att_id, $post_id);
+
     $post_thumbnail_id = get_post_thumbnail_id($post_id);
     $post_thumbnail_id = $post_thumbnail_id ? $post_thumbnail_id : get_term_meta($post_id, 'thumbnail_id', true);
     $featured = $post_thumbnail_id == $att_id ? 1 : 0;
@@ -281,5 +316,12 @@ function fifu_add_url_parameters($url, $att_id) {
 
     $_POST[$url] = $parameters;
     return $url;
+}
+
+function fifu_save_query() {
+    if (!isset($_POST['fifu-dataset']))
+        return;
+    $dataset = $_POST['fifu-dataset'];
+    fifu_api_query($dataset);
 }
 

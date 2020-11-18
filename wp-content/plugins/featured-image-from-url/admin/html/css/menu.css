@@ -147,10 +147,6 @@ th {
     margin-top: -12px;
 }
 
-.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
-    background-color: #4385bf;
-}
-
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
     color: white;
 }
@@ -162,6 +158,12 @@ th {
     right:6px;
     top:-36px;
     padding: 7px;
+}
+
+div.polaroid {
+    width: 100%; 
+    background-color: white; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .fifu-pro {

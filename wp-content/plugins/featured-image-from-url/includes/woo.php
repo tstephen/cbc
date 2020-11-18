@@ -15,7 +15,7 @@ function fifu_woo_theme() {
 define('FIFU_FIX_IMAGES_WITHOUT_DIMENSIONS', "
     function fix_images_without_dimensions() {
         jQuery('img[data-large_image_height=0]').each(function () {
-            if (jQuery(this)[0].naturalWidth <= 1)
+            if (jQuery(this)[0].naturalWidth <= 2)
                 return;
 
             jQuery(this)
@@ -28,8 +28,10 @@ define('FIFU_FIX_IMAGES_WITHOUT_DIMENSIONS', "
 
 function fifu_woocommerce_gallery_image_html_attachment_image_params($params, $attachment_id, $image_size, $main_image) {
     // fix zoom
-    if ($params['data-large_image_width'] == 0)
+    if ($params['data-large_image_width'] == 0) {
         $params['data-large_image_width'] = 1920;
+        $params['data-large_image_height'] = 0;
+    }
 
     // fix lightbox
     if (is_product())
@@ -39,4 +41,19 @@ function fifu_woocommerce_gallery_image_html_attachment_image_params($params, $a
 }
 
 add_filter('woocommerce_gallery_image_html_attachment_image_params', 'fifu_woocommerce_gallery_image_html_attachment_image_params', 10, 4);
+
+add_action('woocommerce_product_duplicate', 'fifu_woocommerce_product_duplicate', 10, 1);
+
+function fifu_woocommerce_product_duplicate($array) {
+    if (!$array || !$array->get_meta_data())
+        return;
+
+    $post_id = $array->get_id();
+    foreach ($array->get_meta_data() as $meta_data) {
+        $data = $meta_data->get_data();
+        if (in_array($data['key'], array('fifu_image_url'))) {
+            delete_post_meta($post_id, '_thumbnail_id');
+        }
+    }
+}
 

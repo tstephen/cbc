@@ -39,3 +39,8 @@ function fifu_instagram_id($url) {
 function fifu_instagram_url($url) {
     return 'https://www.instagram.com/p/' . fifu_instagram_id($url) . '/media/?size=l';
 }
+
+function fifu_is_old_instagram_url($url) {
+    return strpos($url, 'https://www.instagram.com/p/') !== false;
+}
+

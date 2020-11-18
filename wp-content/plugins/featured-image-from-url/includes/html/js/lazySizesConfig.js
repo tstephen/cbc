@@ -7,7 +7,7 @@
     window.lazySizesConfig.throttleDelay = 0;
 })();
 
-const FIFU_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const FIFU_PLACEHOLDER = 'data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAQAAABeK7cBAAAAC0lEQVR42mNkAAIAAAoAAv/lxKUAAAAASUVORK5CYII=';
 
 function fifu_lazy() {
     jQuery('img').each(function (index) {
@@ -38,10 +38,11 @@ function fifu_add_srcset() {
         // jetpack
         jQuery('img[' + types[i] + '*=".wp.com/"]').each(function (index) {
             if (jQuery(this).attr('fifu-featured')) {
+                isMain = jQuery(this).parents('.woocommerce-product-gallery__image').length == 1;
                 src = jQuery(this).attr(types[i])
                 srcset = jQuery(this).attr(types[i] + 'set');
 
-                if (!srcset) {
+                if (!srcset && !isMain) {
                     srcset = '';
                     sizes = [75, 100, 150, 240, 320, 500, 640, 800, 1024, 1280, 1600];
                     for (j = 0; j < sizes.length; j++)

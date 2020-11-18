@@ -33,5 +33,29 @@ function fifu_instagram_id($url) {
 }
 
 function fifu_instagram_url($url) {
-    return 'https://www.instagram.com/p/' + fifu_instagram_id($url) + '/media/?size=l';
+    url = jQuery('#fifu_input_url').val();
+    jQuery.ajax({
+        method: "POST",
+        url: fifu_get_rest_url() + 'featured-image-from-url/v2/convert_instagram_url/',
+        data: {
+            "url": url,
+        },
+        async: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', fifuScriptVars.nonce);
+        },
+        success: function (data) {
+            url = data;
+            jQuery('#fifu_input_url').val(url);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        },
+        complete: function () {
+        },
+        timeout: 0
+    });
+    return url;
 }

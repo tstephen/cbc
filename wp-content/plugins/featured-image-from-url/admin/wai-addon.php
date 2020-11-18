@@ -22,12 +22,17 @@ function fifu_wai_addon_save($post_id, $data, $import_options, $article) {
             return;
     }
 
+    $is_ctgr = $article['post_type'] == 'taxonomies';
     $update = false;
     foreach ($fields as $field) {
         $current_value = get_post_meta($post_id, $field, true);
         if ($current_value != $data[$field]) {
             $update = true;
-            update_post_meta($post_id, $field, $data[$field]);
+            $value = $data[$field];
+            if ($is_ctgr)
+                update_term_meta($post_id, $field, $value);
+            else
+                update_post_meta($post_id, $field, $value);
         }
     }
 
@@ -35,9 +40,12 @@ function fifu_wai_addon_save($post_id, $data, $import_options, $article) {
     if (!$update && !$fifu_wai_addon->can_update_image($import_options))
         return;
 
-    fifu_wai_save($post_id);
+    fifu_wai_save($post_id, $is_ctgr);
 
     /* metadata */
-    add_action('pmxi_saved_post', 'fifu_update_fake_attach_id');
+    if ($is_ctgr)
+        add_action('pmxi_saved_post', 'fifu_db_ctgr_update_fake_attach_id');
+    else
+        add_action('pmxi_saved_post', 'fifu_update_fake_attach_id');
 }
 

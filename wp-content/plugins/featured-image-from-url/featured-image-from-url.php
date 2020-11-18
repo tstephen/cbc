@@ -1,14 +1,14 @@
 <?php
 
 /*
- * Plugin Name: Featured Image from URL
+ * Plugin Name: Featured Image from URL | FIFU
  * Plugin URI: https://fifu.app/
  * Description: Use an external image as featured image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
- * Version: 3.3.0
+ * Version: 3.4.2
  * Author: fifu.app
  * Author URI: https://fifu.app/
  * WC requires at least: 4.0
- * WC tested up to: 4.4.1
+ * WC tested up to: 4.7
  * Text Domain: featured-image-from-url
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -17,11 +17,14 @@
 define('FIFU_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('FIFU_INCLUDES_DIR', FIFU_PLUGIN_DIR . 'includes');
 define('FIFU_ADMIN_DIR', FIFU_PLUGIN_DIR . 'admin');
+define('FIFU_ELEMENTOR_DIR', FIFU_PLUGIN_DIR . 'elementor');
 define('FIFU_DELETE_ALL_URLS', false);
+define('FIFU_DEV_DEBUG', false);
 
 require_once (FIFU_INCLUDES_DIR . '/attachment.php');
 require_once (FIFU_INCLUDES_DIR . '/convert-url.php');
 require_once (FIFU_INCLUDES_DIR . '/external-post.php');
+require_once (FIFU_INCLUDES_DIR . '/jetpack.php');
 require_once (FIFU_INCLUDES_DIR . '/thumbnail.php');
 require_once (FIFU_INCLUDES_DIR . '/thumbnail-category.php');
 require_once (FIFU_INCLUDES_DIR . '/util.php');
@@ -35,6 +38,8 @@ require_once (FIFU_ADMIN_DIR . '/menu.php');
 require_once (FIFU_ADMIN_DIR . '/meta-box.php');
 require_once (FIFU_ADMIN_DIR . '/strings.php');
 require_once (FIFU_ADMIN_DIR . '/wai-addon.php');
+
+require_once (FIFU_ELEMENTOR_DIR . '/elementor-fifu-extension.php');
 
 register_activation_hook(__FILE__, 'fifu_activate');
 

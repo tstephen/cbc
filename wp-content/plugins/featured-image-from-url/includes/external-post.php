@@ -43,7 +43,7 @@ function fifu_save_properties_ext($post_id) {
 }
 
 function fifu_first_img_in_content($content) {
-    $content = html_entity_decode($content);
+    $content = fifu_is_on('fifu_decode') ? html_entity_decode($content) : $content;
     $nth = get_option('fifu_spinner_nth') - 1;
 
     preg_match_all('/<img[^>]*>/', $content, $matches);
@@ -54,7 +54,7 @@ function fifu_first_img_in_content($content) {
 }
 
 function fifu_show_all_images($content) {
-    $content = html_entity_decode($content);
+    $content = fifu_is_on('fifu_decode') ? html_entity_decode($content) : $content;
     $matches = array();
     preg_match_all('/<img[^>]*display:[ ]*none[^>]*>/', $content, $matches);
     foreach ($matches[0] as $img) {
@@ -64,20 +64,20 @@ function fifu_show_all_images($content) {
 }
 
 function fifu_hide_media($img) {
-    $img = html_entity_decode($img);
+    $img = fifu_is_on('fifu_decode') ? html_entity_decode($img) : $img;
     if (strpos($img, 'style=') !== false)
         return preg_replace('/style=[\'\"][^\'\"]*[\'\"]/', 'style="display:none"', $img);
     return preg_replace('/[\/]*>/', ' style="display:none">', $img);
 }
 
 function fifu_show_media($img) {
-    $img = html_entity_decode($img);
+    $img = fifu_is_on('fifu_decode') ? html_entity_decode($img) : $img;
     return preg_replace('/style=[\\\]*.display:[ ]*none[\\\]*./', '', $img);
 }
 
 function fifu_first_url_in_content($post_id) {
     $content = get_post_field('post_content', $post_id);
-    $content = html_entity_decode($content);
+    $content = fifu_is_on('fifu_decode') ? html_entity_decode($content) : $content;
     if (!$content)
         return;
 

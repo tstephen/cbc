@@ -60,6 +60,42 @@ function fifu_starts_with($text, $substr) {
     return substr($text, 0, strlen($substr)) === $substr;
 }
 
+function fifu_get_tags($post_id) {
+    $tags = get_the_tags($post_id);
+    if (!$tags)
+        return null;
+
+    $names = null;
+    foreach ($tags as $tag)
+        $names .= $tag->name . ' ';
+    return $names ? rtrim($names) : null;
+}
+
+function fifu_check_instagram_thumb($url, $att_id, $post_id) {
+    if (!fifu_is_old_instagram_url($url))
+        return $url;
+
+    if (!fifu_is_in_editor()) {
+        $db_url = get_post_meta($post_id, 'fifu_image_url', true);
+        if ($db_url == $url) {
+            $new_url = fifu_api_get_instagram_thumb($url);
+            if ($new_url) {
+                update_post_meta($post_id, 'fifu_image_url', $new_url);
+                update_post_meta($att_id, '_wp_attached_file', $new_url);
+                global $wpdb;
+                $wpdb->update($wpdb->posts, ['guid' => $new_url], ['ID' => $att_id]);
+                return $new_url;
+            }
+        } else
+            return $db_url;
+    }
+    return $url;
+}
+
+function fifu_get_home_url() {
+    return explode('//', get_home_url())[1];
+}
+
 function fifu_dashboard() {
     return !is_home() &&
             !is_singular('post') &&
@@ -91,10 +127,20 @@ function fifu_is_elementor_editor() {
 }
 
 function fifu_is_jetpack_active() {
+    if (!is_plugin_active('jetpack/jetpack.php'))
+        return false;
+
+    if (defined('FIFU_DEV_DEBUG') && FIFU_DEV_DEBUG)
+        return true;
+
     return function_exists('jetpack_photon_url') && class_exists('Jetpack') && method_exists('Jetpack', 'get_active_modules') && in_array('photon', Jetpack::get_active_modules());
 }
 
 // active themes
+
+function fifu_is_flatsome_active() {
+    return 'flatsome' == get_option('template');
+}
 
 function fifu_is_avada_active() {
     return 'avada' == strtolower(get_option('template'));

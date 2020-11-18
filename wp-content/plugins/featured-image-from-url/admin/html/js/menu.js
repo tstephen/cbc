@@ -38,12 +38,19 @@ jQuery(function () {
     jQuery("#fifu_input_spinner_slider").spinner({min: 0});
     jQuery("#fifu_input_slider_speed").spinner({min: 0});
     jQuery("#fifu_input_slider_pause").spinner({min: 0});
+    jQuery("#fifu_input_auto_set_width").spinner({min: 0});
+    jQuery("#fifu_input_auto_set_height").spinner({min: 0});
     jQuery("#fifu_input_crop_delay").spinner({min: 0, step: 50});
     jQuery("#tabsApi").tabs();
     jQuery("#tabsCrop").tabs();
     jQuery("#tabsPremium").tabs();
     jQuery("#tabsWooImport").tabs();
     jQuery("#tabsWpAllImport").tabs();
+    jQuery("#tabsShortcode").tabs();
+    jQuery("#tabsAutoSet").tabs();
+    jQuery("#tabsSlider").tabs();
+    jQuery("#tabsContent").tabs();
+    jQuery("#tabsContentAll").tabs();
 
     // show settings
     window.scrollTo(0, 0);
@@ -226,13 +233,17 @@ function fifu_save_dimensions_all_js() {
             var count = data.length;
 
             function dimensionsLoop(data, i) {
+                var attempts = 0;
                 var image = new Image();
                 jQuery(image).attr('src', data[i]['guid']);
+                is_svg = data[i]['guid'].includes('.svg');
 
                 var poll = setInterval(function () {
-                    if (image.naturalWidth) {
+                    if (image.naturalWidth || attempts > 100 || is_svg) {
+                        attempts = 0;
                         clearInterval(poll);
-                        fifu_get_sizes(image, data[i]['ID'], data[i]['guid']);
+                        if (!is_svg)
+                            fifu_get_sizes(image, data[i]['ID'], data[i]['guid']);
                         image = null;
                         i++;
                         if (i < data.length) {
@@ -243,8 +254,11 @@ function fifu_save_dimensions_all_js() {
                             invert('save_dimensions_all');
                             jQuery("#countdown").text('done');
                         }
+                    } else {
+                        console.log(data[i]['guid']);
+                        attempts++;
                     }
-                }, 10);
+                }, 25);
             }
 
             if (data.length > 0) {

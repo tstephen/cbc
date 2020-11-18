@@ -4,7 +4,7 @@ Donate link: https://donorbox.org/fifu
 Tags: featured, image, url, woocommerce, thumbnail
 Requires at least: 5.3
 Tested up to: 5.5
-Stable tag: 3.3.0
+Stable tag: 3.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,15 +16,18 @@ Use an external image as featured image of a post or WooCommerce product. Includ
 
 Since 2015 FIFU has helped thousands of websites worldwide to save money on storage, processing and copyright.
 
+If you are tired of wasting time and resources with thumbnail regeneration, image optimization and never-ending imports, this plugin is for you.
+
 #### FEATURED IMAGE
 Use an external image as featured image of your post, page or custom post type.
 
 * External featured image
 * Unsplash image search
-* Lazy load
 * Default featured image
 * Hide featured media
 * Featured image in content
+* Elementor widget
+* Auto set image title
 * Save image dimensions
 * Featured image column
 * **[Premium]** Giphy image search
@@ -33,11 +36,21 @@ Use an external image as featured image of your post, page or custom post type.
 * **[Premium]** Hover effects
 * **[Premium]** Replace not found image
 * **[Premium]** Image validation
+
+#### AUTOMATIC FEATURED MEDIA
+
+* Auto set featured image/video using img/iframe tag from post content
+* **[Premium]** Auto set featured image using post title and search engine
+* **[Premium]** Auto set featured image using ISBN and books API
+
+#### PERFORMANCE
+
+* CDN + optimized thumbnails
+* Lazy load
 * **[Premium]** Flickr thumbnails
 
-#### SEO
+#### SOCIAL
 
-* Auto set image title
 * Social tags
 * **[Premium]** Media RSS tags
 
@@ -45,7 +58,6 @@ Use an external image as featured image of your post, page or custom post type.
 
 * WP All Import add-on
 * WooCommerce import
-* Content URL
 * **[Premium]** WP REST API
 * **[Premium]** WooCommerce REST API
 * **[Premium]** Schedule metadata generation
@@ -183,14 +195,14 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Changelog ==
 
-= 3.3.0 =
-* Improvement: responsive external images with Jetpack; bug fix: cropped Jetpack images; deprecated: Add Class and jQuery options.
+= 3.4.2 =
+* Fix: conflict with Yoast SEO plugin (FIFU will not add social tags when Yoast have a Facebook/Twitter image on post editor); fix: conflict with Jetpack plugin (FIFU was getting CDN images even when Jetpack performance settings were disabled).
 
-= 3.2.9 =
-* Improvement: FIFU automatically removes URL spaces on the right; deprecated: CSS Style; bug fix: images may not be shown due js error (jQuery not defined).
+= 3.4.1 =
+* Fix: Instagram URLs.
 
-= 3.2.8 =
-* Improvement: the translation process is being integrated with WordPress.org (all the strings should be available to the community soon).
+= 3.4.0 =
+* Notice: for users with image URLs from Instagram (FIFU Settings > Troubleshooting).
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -198,5 +210,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.3.0 =
-* Improvement: responsive external images with Jetpack; bug fix: cropped Jetpack images; deprecated: Add Class and jQuery options.
+= 3.4.2 =
+* Fix: conflict with Yoast SEO plugin (FIFU will not add social tags when Yoast have a Facebook/Twitter image on post editor); fix: conflict with Jetpack plugin (FIFU was getting CDN images even when Jetpack performance settings were disabled).

@@ -353,7 +353,7 @@ class FifuDb {
 
     function get_posts_without_featured_image() {
         return $this->wpdb->get_results("
-            SELECT id
+            SELECT id, post_title
             FROM " . $this->posts . " 
             WHERE post_type IN ('$this->types')
             AND post_status = 'publish'
@@ -362,7 +362,8 @@ class FifuDb {
                 FROM " . $this->postmeta . " 
                 WHERE post_id = id
                 AND meta_key IN ('_thumbnail_id', 'fifu_image_url')
-            )"
+            )
+            ORDER BY id DESC"
         );
     }
 

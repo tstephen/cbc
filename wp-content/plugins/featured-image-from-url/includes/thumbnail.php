@@ -43,16 +43,21 @@ function fifu_add_js() {
         'fifu_woo_lbox_enabled' => fifu_woo_lbox(),
         'fifu_woo_zoom' => fifu_woo_zoom(),
         'fifu_is_product' => class_exists('WooCommerce') && is_product(),
+        'fifu_is_flatsome_active' => fifu_is_flatsome_active(),
         'fifu_rest_url' => esc_url_raw(rest_url()),
         'fifu_nonce' => wp_create_nonce('wp_rest'),
     ]);
 }
 
 function fifu_add_social_tag_yoast() {
+    if (get_post_meta(get_the_ID(), '_yoast_wpseo_opengraph-image', true) || get_post_meta(get_the_ID(), '_yoast_wpseo_twitter-image', true))
+        return;
     return fifu_main_image_url(get_the_ID());
 }
 
 function fifu_add_social_tag_yoast_list($object) {
+    if (get_post_meta(get_the_ID(), '_yoast_wpseo_opengraph-image', true) || get_post_meta(get_the_ID(), '_yoast_wpseo_twitter-image', true))
+        return;
     $object->add_image(fifu_main_image_url(get_the_ID()));
 }
 
@@ -108,8 +113,11 @@ function fifu_replace($html, $post_id, $post_thumbnail_id, $size, $attr) {
         $alt = get_the_title($post_id);
         $html = preg_replace('/alt=[\'\"][^[\'\"]*[\'\"]/', 'alt=' . $delimiter . $alt . $delimiter, $html);
     } else {
-        $alt = get_post_meta($post_id, 'fifu_image_alt', true);
-        $html = preg_replace('/alt=[\'\"][^[\'\"]*[\'\"]/', 'alt=' . $delimiter . $alt . $delimiter . ' title=' . $delimiter . $alt . $delimiter, $html);
+        if ($url) {
+            $alt = get_post_meta($post_id, 'fifu_image_alt', true);
+            $html = preg_replace('/alt=[\'\"][^[\'\"]*[\'\"]/', 'alt=' . $delimiter . $alt . $delimiter . ' title=' . $delimiter . $alt . $delimiter, $html);
+        } else
+            $alt = null;
     }
 
     if (fifu_is_on('fifu_lazy') && !is_admin()) {
@@ -189,7 +197,7 @@ function fifu_has_internal_image($post_id) {
 }
 
 function fifu_is_in_editor() {
-    return !is_admin() || get_current_screen() == null ? false : get_current_screen()->parent_base == 'edit';
+    return !is_admin() || get_current_screen() == null ? false : get_current_screen()->parent_base == 'edit' || get_current_screen()->is_block_editor;
 }
 
 function fifu_get_default_url() {
