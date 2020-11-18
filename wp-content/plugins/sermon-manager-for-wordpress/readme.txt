@@ -3,9 +3,9 @@ Contributors: wpforchurch, Alex Gutierrez
 Donate link: http://wpforchurch.com/  
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
 Requires at least: 4.7.0  
-Tested up to: 5.5
+Tested up to: 5.4
 Requires PHP: 7.0  
-Stable tag: 2.16.1  
+Stable tag: 2.16.3
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,10 +13,10 @@ Add audio and video sermons, manage speakers, series, and more to your church we
 
 ## Description ##
 
-## Sermon Manager is the #1 WordPress Sermon Plugin ###
+### Sermon Manager is the #1 WordPress Sermon Plugin ###
 
-***Plugin is now under new management! 
-***Join our facebook community: https://www.facebook.com/groups/wpforchurch/
+**Plugin is now under new management! 
+**Join our facebook community: https://www.facebook.com/groups/wpforchurch/
 
 Sermon Manager is designed to help churches easily publish sermons online. Some of the features include:
 
@@ -125,6 +125,15 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+
+### 2.163 ###
+*Fix: image size display issue in hortcode  [sermon_images  display="preachers" order="ASC" orderby="id" size="thumbnail"]
+*Fix: No follow attr for mp3 on single & archive
+
+### 2.16.2 ###
+*Fix: sm_get_screen_ids() Issue Fixed
+*Shortcode parameters control : [sermons title=no description=yes image=yes], Passing yes or no to show title, description and image. Backward compatible. Use only [sermons] if dont want any change. Both are working as backward compatible.
+
 ### 2.16.1 ###
 *Fix: Wordpress 5.5 Compability issue bug fix
 

@@ -94,7 +94,7 @@ global $post;
 						<a class="wpfc-sermon-single-audio-download"
 								href="<?php echo $sermon_audio_url; ?>"
 								download="<?php echo basename( $sermon_audio_url ); ?>"
-								title="<?php echo __( 'Download Audio File', 'sermon-manager-for-wordpress' ); ?>">
+								 rel = "nofollow" title="<?php echo __( 'Download Audio File', 'sermon-manager-for-wordpress' ); ?>">
 							<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24"
 									xmlns="http://www.w3.org/2000/svg">
 								<path d="M0 0h24v24H0z" fill="none"></path>

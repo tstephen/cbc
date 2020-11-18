@@ -1,7 +1,17 @@
 Note: Newer changelog is in readme.txt
 
+### 2.16.3 ###
+Fix: image size display issue in hortcode  [sermon_images  display="preachers" order="ASC" orderby="id" size="thumbnail"]
+Fix: No follow attr for mp3 on single & archive
+
+
+### 2.16.2 ###
+Fix: sm_get_screen_ids() Issue Fixed
+Shortcode parameters control : [sermons title=no description=yes image=yes], Passing yes or no to show title, description and image. Backward compatible. Use only [sermons] if dont want any change. Both are working as backward compatible.
+
 ### 2.16.1 ###
 Fix: Wordpress 5.5 Compability issue bug fix
+
 
 ### 2.16.0 ###
 Fix: Bug Fix With CMB2

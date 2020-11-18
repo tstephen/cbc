@@ -3,7 +3,7 @@
  * Plugin Name: Sermon Manager for WordPress
  * Plugin URI: https://www.wpforchurch.com/products/sermon-manager-for-wordpress/
  * Description: Add audio and video sermons, manage speakers, series, and more.
- * Version: 2.16.1
+ * Version: 2.16.3
  * Author: WP for Church
  * Author URI: https://www.wpforchurch.com/
  * Requires at least: 4.5
@@ -45,6 +45,28 @@ if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
 }
 
 /**
+ * Get all Sermon Manager screen ids.
+ *
+ * @return array Screen IDs
+ * @since 2.9
+ */
+function sm_get_screen_ids() {
+	$screen_ids = array(
+		'wpfc_sermon',
+		'edit-wpfc_sermon',
+		'edit-wpfc_preacher',
+		'edit-wpfc_sermon_series',
+		'edit-wpfc_sermon_topics',
+		'edit-wpfc_bible_book',
+		'edit-wpfc_service_type',
+		'wpfc_sermon_page_sm-settings',
+		'wpfc_sermon_page_sm-import-export',
+	);
+
+	return apply_filters( 'sm_screen_ids', $screen_ids );
+}
+
+/**
  * The class that is used to initialize Sermon Manager.
  *
  * @author  WP For Church
@@ -59,6 +81,9 @@ class SermonManager { // phpcs:ignore
 	 * @var $instance null|SermonManager The class instance.
 	 */
 	private static $instance = null;
+	public static $image;
+	public static $title;
+	public static $description;
 
 	/**
 	 * Construct.
@@ -84,6 +109,11 @@ class SermonManager { // phpcs:ignore
 
 		// Exec stuff after load.
 		do_action( 'sm_after_plugin_load' );
+	}
+
+
+	public function fetchOptionalValue($args){
+
 	}
 
 	/**
@@ -115,11 +145,11 @@ class SermonManager { // phpcs:ignore
 		/**
 		 * Admin only includes.
 		 */
-		//if ( is_admin() ) {
+		if ( is_admin() ) {
 			include SM_PATH . 'includes/admin/class-sm-admin.php'; // Admin init class.
 			include SM_PATH . 'includes/admin/sm-cmb-functions.php'; // CMB2 Meta Fields functions.
 			include SM_PATH . 'includes/vendor/CMB2/init.php'; // Metaboxes.
-		//}
+		}
 	}
 
 	/**
