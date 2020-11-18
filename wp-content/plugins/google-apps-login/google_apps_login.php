@@ -4,7 +4,7 @@
  * Plugin Name: Google Apps Login
  * Plugin URI: https://wp-glogin.com/
  * Description: Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)
- * Version: 3.4.2
+ * Version: 3.4.3
  * Author: Lever Technology LLC
  * Author URI: https://wp-glogin.com/
  * License: GPL3
@@ -23,7 +23,7 @@ else {
 
 class basic_google_apps_login extends core_google_apps_login {
 	
-	protected $PLUGIN_VERSION = '3.4.2';
+	protected $PLUGIN_VERSION = '3.4.3';
 	
 	// Singleton
 	private static $instance = null;
