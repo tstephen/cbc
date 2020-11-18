@@ -529,10 +529,15 @@ function wpmem_set_user_status( $user_id, $status ) {
 function wpmem_user_register( $tag ) {
 
 	// Get the globals.
-	global $user_ID, $wpmem, $wpmem_themsg, $userdata; 
+	global $user_ID, $wpmem, $wpmem_themsg, $userdata;
 	
 	$wpmem->user->register_validate( $tag );
-
+	
+	// @todo Added as a fix for legacy versions of security extension and any wpmem_pre_register_data action that might null $wpmem_themsg.
+	if ( $wpmem_themsg ) { 
+		return $wpmem_themsg;
+	}
+	
 	switch ( $tag ) {
 
 	case "register":
@@ -781,7 +786,7 @@ function wpmem_get_user_ip() {
  * @param array $args
  * @param array $users
  */
-function wpmem_export_users( $args, $users = null ) {
+function wpmem_export_users( $args, $users = array() ) {
 	global $wpmem;
 	include_once( $wpmem->path . 'includes/admin/class-wp-members-export.php' );
 	WP_Members_Export::export_users( $args, $users );

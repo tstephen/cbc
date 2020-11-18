@@ -102,8 +102,8 @@ class WP_Members_Forms {
 			}
 			$required    = ( $required    ) ? ' required' : '';
 			$placeholder = ( $placeholder ) ? ' placeholder="' . esc_attr( __( $placeholder, 'wp-members' ) ) . '"' : '';
-			$pattern     = ( $pattern     ) ? ' pattern="' . esc_attr( $pattern ) . '"' : '';
 			$title       = ( $title       ) ? ' title="' . esc_attr( __( $title, 'wp-members' ) ) . '"' : '';
+			$pattern     = ( $pattern && 'number' != $type ) ? ' pattern="' . esc_attr( $pattern ) . '"' : '';
 			$min         = ( isset( $args['min'] ) && $args['min'] != '' ) ? ' min="' . esc_attr( $args['min'] ) . '"' : '';
 			$max         = ( isset( $args['max'] ) && $args['max'] != '' ) ? ' max="' . esc_attr( $args['max'] ). '"' : '';
 			$str = "<input name=\"$name\" type=\"$type\" id=\"$id\" value=\"$value\" class=\"$class\"$placeholder$title$pattern$min$max" . ( ( $required ) ? " required " : "" ) . " />";
@@ -308,14 +308,16 @@ class WP_Members_Forms {
 	 * Sanitizes the text in an array.
 	 *
 	 * @since 3.2.9
+	 * @since 3.3.7 Added optional $type
 	 *
-	 * @param  array $data
-	 * @return array $data
+	 * @param  array  $data
+	 * @param  string $type The data type integer|int (default: false)
+	 * @return array  $data
 	 */
-	function sanitize_array( $data ) {
+	function sanitize_array( $data, $type = false ) {
 		if ( is_array( $data ) ) {
 			foreach( $data as $key => $val ) {
-				$data[ $key ] = sanitize_text_field( $val );
+				$data[ $key ] = ( 'integer' == $type || 'int' == $type ) ? intval( $val ) : sanitize_text_field( $val );
 			}
 		}
 		return $data;
@@ -358,6 +360,12 @@ class WP_Members_Forms {
 			case 'file':
 			case 'image':
 				$sanitized_data = sanitize_file_name( $data );
+				break;
+
+			case 'int':
+			case 'integer':
+			case 'number':
+				$sanitized_data = intval( $data );
 				break;
 
 			default:
@@ -1032,7 +1040,7 @@ class WP_Members_Forms {
 					}
 
 					// For dropdown select.
-					if ( $field['type'] == 'select' || $field['type'] == 'radio' || $field['type'] == 'multiselect' || $field['type'] == 'multicheckbox' ) {
+					if ( 'select' == $field['type'] || 'radio' == $field['type'] || 'multiselect' == $field['type'] || 'multicheckbox' == $field['type'] || 'membership' == $field['type'] ) {
 						$valtochk = $val;
 						$val = $field['values'];
 					}
@@ -1129,7 +1137,7 @@ class WP_Members_Forms {
 		}
 
 		// If captcha is Really Simple CAPTCHA.
-		if ( $wpmem->captcha == 2 && $tag != 'edit' ) {
+		if ( 2 == $wpmem->captcha && 'edit' != $tag ) {
 			// Build the captcha.
 			$row = WP_Members_Captcha::rs_captcha( 'array' );
 			$rows['captcha'] = array(
@@ -1437,6 +1445,7 @@ class WP_Members_Forms {
 	 * @since 1.8
 	 * @since 3.1.4 Global $wpmem_regchk no longer needed.
 	 * @since 3.2.0 Moved to forms class, renamed do_login_form().
+	 * @todo $show is deprecated, post restricted message ($msg) handled externally.
 	 *
 	 * @global object $post         The WordPress Post object.
 	 * @global object $wpmem        The WP_Members object.
@@ -1609,33 +1618,31 @@ class WP_Members_Forms {
 
 						switch ( $field['type'] ) {
 
-						case( 'select' ):
-							$val = ( isset( $_POST[ $meta_key ] ) ) ? sanitize_text_field( $_POST[ $meta_key ] ) : '';
-							$input = wpmem_create_formfield( $meta_key, $field['type'], $field['values'], $val );
-							break;
-
 						case( 'textarea' ):
 							$input = '<textarea name="' . $meta_key . '" id="' . $meta_key . '" class="textarea">';
 							$input.= ( isset( $_POST[ $meta_key ] ) ) ? esc_textarea( $_POST[ $meta_key ] ) : '';
 							$input.= '</textarea>';		
 							break;
 
+						case( 'select' ):
 						case( 'multiselect' ):
 						case( 'multicheckbox' ):
-						case( 'radio' ):	
-							$row_before = '<p class="' . $field['type'] . '">';
+						case( 'radio' ):
+						case( 'membership' ):
+							$row_before = ( $is_woo && ( 'select' == $field['type'] || 'multiselect' == $field['type'] || 'membership' == $field['type'] ) ) ? $row_before : '<p class="' . $field['type'] . '">';
 							$valtochk = ( isset( $_POST[ $meta_key ] ) ) ? sanitize_text_field( $_POST[ $meta_key ] ) : '';
 							$formfield_args = array( 
 								'name'     => $meta_key,
 								'type'     => $field['type'],
 								'value'    => $field['values'],
 								'compare'  => $valtochk,
-								'required' => ( $field['required'] ) ? true : false,
+								'required' => $field['required'],
+								'class'    => ( $is_woo && ( 'select' == $field['type'] || 'multiselect' == $field['type'] || 'membership' == $field['type'] ) ) ? 'woocommerce-Input woocommerce-Input--text input-text' : $field['type'],
 							);
 							if ( 'multicheckbox' == $field['type'] || 'multiselect' == $field['type'] ) {
 								$formfield_args['delimiter'] = $field['delimiter'];
 							}
-							$input = $this->create_form_field( $formfield_args );
+							$input = wpmem_form_field( $formfield_args );
 							break;
 
 						case( 'file' ):
@@ -1646,13 +1653,22 @@ class WP_Members_Forms {
 						default:
 							$class = ( $is_woo ) ? 'woocommerce-Input woocommerce-Input--text input-text' : 'input';
 							//$input = '<input type="' . $field['type'] . '" name="' . $meta_key . '" id="' . $meta_key . '" class="' . $class . '" value="';
-							$input = wpmem_form_field( array( 
-									'name'        => $meta_key, 
-									'type'        => $field['type'], 
-									'value'       => $this->sanitize_field( wpmem_get( $meta_key, '' ), $field['type'] ),
-									'compare'     => ( isset( $field['compare'] ) ) ? $field['compare'] : '',
-									'placeholder' => ( isset( $field['placeholder'] ) ) ? $field['placeholder'] : '',
-								) );
+							$formfield_args = array( 
+								'name'     => $meta_key,
+								'type'     => $field['type'],
+								'value'    => $this->sanitize_field( wpmem_get( $meta_key, '' ), $field['type'] ),
+								'compare'  => ( isset( $field['compare'] ) ) ? $field['compare'] : '',
+								'required' => $field['required'],
+								'class'    => $class,
+								'placeholder' => ( isset( $field['placeholder'] ) ) ? $field['placeholder'] : '',
+								'pattern'     => ( isset( $field['pattern']     ) ) ? $field['pattern']     : false,
+								'title'       => ( isset( $field['title']       ) ) ? $field['title']       : false,
+								'min'         => ( isset( $field['min']         ) ) ? $field['min']         : false,
+								'max'         => ( isset( $field['max']         ) ) ? $field['max']         : false,
+								'rows'        => ( isset( $field['rows']        ) ) ? $field['rows']        : false,
+								'cols'        => ( isset( $field['cols']        ) ) ? $field['cols']        : false,
+							);
+							$input = wpmem_form_field( $formfield_args );
 							//$input.= ( isset( $_POST[ $meta_key ] ) ) ? esc_attr( $_POST[ $meta_key ] ) : ''; 
 							//$input.= '" size="25" />';
 							break;

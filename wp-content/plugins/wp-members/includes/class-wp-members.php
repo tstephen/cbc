@@ -476,6 +476,8 @@ class WP_Members {
 		add_action( 'woocommerce_form_field_multicheckbox',    'wpmem_form_field_wc_custom_field_types', 10, 4 );
 		add_action( 'woocommerce_form_field_multiselect',      'wpmem_form_field_wc_custom_field_types', 10, 4 );
 		add_action( 'woocommerce_form_field_radio',            'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_select',           'wpmem_form_field_wc_custom_field_types', 10, 4 );
+		add_action( 'woocommerce_form_field_checkbox',         'wpmem_form_field_wc_custom_field_types', 10, 4 );
 		if ( ! is_user_logged_in() ) {
 			add_filter( 'woocommerce_checkout_fields', 'wpmem_woo_checkout_form' );
 		}
@@ -571,7 +573,7 @@ class WP_Members {
 	 * @since 3.3.0 Deprecated all but exp and trl constants.
 	 */
 	function load_constants() {
-		( ! defined( 'WPMEM_MOD_REG' ) ) ? define( 'WPMEM_MOD_REG',      $this->mod_reg   ) : '';
+		( ! defined( 'WPMEM_MOD_REG' ) ) ? define( 'WPMEM_MOD_REG', $this->mod_reg   ) : '';
 		( ! defined( 'WPMEM_USE_EXP' ) ) ? define( 'WPMEM_USE_EXP', $this->use_exp   ) : '';
 		( ! defined( 'WPMEM_USE_TRL' ) ) ? define( 'WPMEM_USE_TRL', $this->use_trial ) : '';
 	}
@@ -1960,6 +1962,7 @@ class WP_Members {
 	 *
 	 * @since 3.1.7
 	 * @since 3.2.3 Moved to WP_Members class.
+	 * @since 3.3.0 Removed unnecessary tags.
 	 *
 	 * @param  string $tag
 	 * @return string $tag
@@ -1972,19 +1975,6 @@ class WP_Members {
 			case 'edit':
 			case 'update':
 				return 'profile';
-				break;
-			case 'wp':
-			case 'wp_validate':
-			case 'wp_finalize':
-				return 'register_wp';
-				break;
-			case 'dashboard_profile':
-			case 'dashboard_profile_update':
-				return 'profile_dashboard';
-				break;
-			case 'admin_profile':
-			case 'admin_profile_update':
-				return 'profile_admin';
 				break;
 			default:
 				return $tag;

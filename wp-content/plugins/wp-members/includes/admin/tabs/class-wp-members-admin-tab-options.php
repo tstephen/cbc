@@ -51,7 +51,7 @@ class WP_Members_Admin_Tab_Options {
 
 		global $wpmem;
 
-		/** This filter is documented in wp-members/inc/email.php */
+		/** This filter is documented in wp-members/includes/class-wp-members-email.php */
 		$admin_email = apply_filters( 'wpmem_notify_addr', get_option( 'admin_email' ) );
 		$chg_email   = sprintf( __( '%sChange%s or %sFilter%s this address', 'wp-members' ), '<a href="' . site_url( 'wp-admin/options-general.php', 'admin' ) . '">', '</a>', '<a href="https://rocketgeek.com/plugins/wp-members/users-guide/filter-hooks/wpmem_notify_addr/">', '</a>' );
 		$help_link   = sprintf( __( 'See the %sUsers Guide on plugin options%s.', 'wp-members' ), '<a href="https://rocketgeek.com/plugins/wp-members/users-guide/plugin-settings/options/" target="_blank">', '</a>' );	
@@ -91,7 +91,7 @@ class WP_Members_Admin_Tab_Options {
 						<div class="inside">
 							<form name="updatesettings" id="updatesettings" method="post" action="<?php echo wpmem_admin_form_post_url(); ?>">
 							<?php wp_nonce_field( 'wpmem-update-settings' ); ?>
-								<h3><?php _e( 'Content', 'wp-members' ); ?></h3>
+								<h3><?php _e( 'Content', 'wp-members' ); ?> <a href="https://rocketgeek.com/plugins/wp-members/docs/plugin-settings/options/#content" target="_blank" title="info"><span class="dashicons dashicons-info"></span></a></h3>
 								<ul>
 								<?php
 
@@ -173,10 +173,10 @@ class WP_Members_Admin_Tab_Options {
 								  </li>
 								<?php } 
 								}?></ul>
-								<h3><?php _e( 'Feature Settings', 'wp-members' ); ?></h3>
+								<h3><?php _e( 'Feature Settings', 'wp-members' ); ?> <a href="https://rocketgeek.com/plugins/wp-members/docs/plugin-settings/new-feature-settings/" target="_blank" title="info"><span class="dashicons dashicons-info"></span></a></h3>
 								<?php
 								$rows = array(
-									array(__('Activation Link', 'wp-members'),'wpmem_settings_act_link',__('Send activation link on new registration. (Requires additional configuration)','wp-members'),'act_link'),
+									array(__('Confirmation Link', 'wp-members'),'wpmem_settings_act_link',__('Send email confirmation link on new registration. (Requires additional configuration)','wp-members'),'act_link'),
 									array(__('Password Reset Link', 'wp-members'),'wpmem_settings_pwd_link',__('Send password reset link instead of new password. (Requires additional configuration)','wp-members'),'pwd_link'),
 									array(__('Enable WP Login Error', 'wp-members' ),'wpmem_settings_login_error',__('Use WP login error object instead of WP-Members default login error','wp-members'),'login_error'),
 								);
@@ -189,7 +189,7 @@ class WP_Members_Admin_Tab_Options {
 								  </li>
 								<?php } ?>
 								</ul>
-								<h3><?php _e( 'Other Settings', 'wp-members' ); ?></h3>
+								<h3><?php _e( 'Other Settings', 'wp-members' ); ?> <a href="https://rocketgeek.com/plugins/wp-members/docs/plugin-settings/options/#other" target="_blank" title="info"><span class="dashicons dashicons-info"></span></a></h3>
 								<ul>
 								<?php 
 								/** This filter is defined in class-wp-members.php */
@@ -226,7 +226,7 @@ class WP_Members_Admin_Tab_Options {
 									$captcha[] = __( 'hCaptcha', 'wp-members' ) . '|5';
 									echo wpmem_create_formfield( 'wpmem_settings_captcha', 'select', $captcha, $wpmem->captcha ); ?>
 								  </li>
-								<h3><?php _e( 'Pages' ); ?></h3>
+								<h3><?php _e( 'Pages' ); ?> <a href="https://rocketgeek.com/plugins/wp-members/docs/plugin-settings/options/#pages" target="_blank" title="info"><span class="dashicons dashicons-info"></span></a></h3>
 								  <?php $wpmem_logurl = $wpmem->user_pages['login'];
 								  if ( ! $wpmem_logurl ) { $wpmem_logurl = wpmem_use_ssl(); } ?>
 								  <li>
@@ -263,7 +263,7 @@ class WP_Members_Admin_Tab_Options {
 										<input class="regular-text code" type="text" name="wpmem_settings_msurl" value="<?php echo $wpmem_msurl; ?>" size="50" />
 									</div>
 								  </li>
-								<h3><?php _e( 'Stylesheet' ); ?></h3>
+								<h3><?php _e( 'Stylesheet' ); ?> <a href="https://rocketgeek.com/plugins/wp-members/docs/plugin-settings/options/#styles" target="_blank" title="info"><span class="dashicons dashicons-info"></span></a></h3>
 								  <li>
 									<label><?php _e( 'Stylesheet' ); ?>:</label>
 									<select name="wpmem_settings_style" id="wpmem_stylesheet_select">
@@ -363,11 +363,11 @@ class WP_Members_Admin_Tab_Options {
 	$active_plugins = get_option( 'active_plugins' );
 	$active_display = ''; $inactive_display = '';
 	foreach ( $all_plugins as $key => $value ) {
-	if ( in_array( $key, $active_plugins ) ) {
-		$active_display.= $key . " | " . $value['Name'] . " | Version: " . $value['Version'] . "\r\n";
-	} else {
-		$inactive_display.= $key . " | " . $value['Name'] . " | Version: " . $value['Version'] . "\r\n";
-	}
+		if ( in_array( $key, $active_plugins ) ) {
+			$active_display.= $key . " | " . $value['Name'] . " | Version: " . $value['Version'] . "\r\n";
+		} else {
+			$inactive_display.= $key . " | " . $value['Name'] . " | Version: " . $value['Version'] . "\r\n";
+		}
 	}
 	echo "*************** Active Plugins **************** \r\n";
 	echo $active_display;

@@ -3,7 +3,7 @@ Contributors: cbutlerjr
 Tags: access, authentication, content, login, member, membership, password, protect, register, registration, restriction, subscriber
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 3.3.5.2
+Stable tag: 3.3.7.1
 License: GPLv2
 
 == Description ==
@@ -14,15 +14,13 @@ The WP-Members membership plugin turns your WordPress site into a membership sit
 
 You need a membership site, but you want to focus on your business, not mastering a plugin. WP-Members is simple to use, easy to set up, yet flexible in every way imaginable.
 
-The plugin restricts selected WordPress content to registered site members. WP-Members puts the registration process on the site front end so it is part of your content instead of the native WP login page. WP-Members requires no modifications to your theme while remaining scalable for users who want to customize the look and feel, or want to restrict only some content. It is a great tool for sites offering premium content to subscribers and is adaptable to a variety of applications.
-
 __Simple to install and configure - yet customizable and scalable!__
 
 = Features: =
 
 * Restrict or hide posts, pages, and custom post types
+* Limit menu items to logged in users
 * User login, registration, and profile integrated into your theme
-* Login widget
 * Create custom registration and profile fields
 * Notify admin of new user registrations
 * Hold new registrations for admin approval
@@ -37,7 +35,7 @@ A full Users Guide is [available here](https://rocketgeek.com/plugins/wp-members
 
 = Support =
 
-There is (freely available documentation on the plugin's support site)[https://rocketgeek.com/plugins/wp-members/docs/]. Your question may be answered there. If you need assistance configuring the plugin or have questions on how to implement or customize features, [premium support is available](https://rocketgeek.com/product/wp-members-plugin-support/).
+There is [freely available documentation on the plugin's support site](https://rocketgeek.com/plugins/wp-members/docs/). Your question may be answered there. If you need assistance configuring the plugin or have questions on how to implement or customize features, [premium support is available](https://rocketgeek.com/product/wp-members-plugin-support/).
 
 You can get priority support along with all of the plugin's premium extensions in one [cost saving Pro Bundle!](https://rocketgeek.com/product/wp-members-pro-bundle/)
 
@@ -109,7 +107,7 @@ The FAQs are maintained at https://rocketgeek.com/plugins/wp-members/docs/faqs/
 
 == Upgrade Notice ==
 
-WP-Members 3.3.0 is a major update. WP-Members 3.3.5.2 is a bug fix release. See changelog for important details. Minimum WP version is 4.0.
+WP-Members 3.3.0 is a major update. WP-Members 3.3.7 is an improvement release. See changelog for important details. Minimum WP version is 4.0.
 
 
 == Screenshots ==
@@ -133,17 +131,33 @@ WP-Members 3.3.0 is a major update. WP-Members 3.3.5.2 is a bug fix release. See
 
 == Changelog ==
 
-= 3.3.5.2 =
+= 3.3.7.1 =
 
-* Fixes sending email notification when activating user from the user profile screen.
-* Fixes updating custom membership product restricted message when trying to set to empty (default).
-* Fixes setting membership expiration missing $prev_value and $renew.
-* Fixes a bug where the membership product restricted message was triggered with an empty products array.
+* Fixes a syntax error in the plugin's main options that causes a critical error in certain environments.
+* Removes a setting that was intended for a future release (not fully ready yet). The inclusion of the option doesn't actually do anything at this point and would cause confusion.
 
-= 3.3.5.1 =
+= 3.3.7 =
 
-* Fixes an issue with reCAPTCHA that caused the captcha not to load.
-* Fixes an issue with Really Simple Captcha that caused the captcha image not to load.
+* Added "Export All" button to top bulk menu (as previously only in lower)
+* Updated export default date format for filename to YYYY-MM-DD
+* Fixed bug in export if no users are selected
+* Updated wpmem_sanitize_array() to accept "type" argument to define data type to be sanitized (currently only accepts integer|int, default sanitizes as text).
+* Add WP-Members "checked by default" property to WooCommerce checkout registration checkbox fields.
+* Added new conditional API function - wpmem_is_woo_active() for checking if WooCommerce is active.
+* Added integer test/check to wpmem_sanitize_field(), now can sanitize multiselect, multicheckbox, textarea, email, file, image, and number fields.
+* Revised "activation link" feature to "Confirmation link".
+
+
+= 3.3.6 =
+
+* Improved admin tab for captcha settings. You can now change the captcha type from the captcha tab (previously, you could only do this from the main options tab).
+* Removed "pattern" attribute from number field type. HTML5 does not support this attribute for this input type.
+* Fix issues with custom fields in admin/user dashboard profile. This involved a change to how fields were loaded for both display and validation (so that now it is a singular process).
+* Fix undefined has_access() (replaced with API function) when renewing a membership.
+* Fix issues with WooCommerce registration integration.
+* Fix issue of undefined array keys if Really Simple Captcha is selected, but the plugin is not enabled.
+* Fix issue that caused users to not be properly set when moderated registration is used along with BuddyPress and users are created manually.
+* Fix issue in WP CLI wpmem settings command that caused error to be displayed when viewing content settings.
 
 = 3.3.5 =
 

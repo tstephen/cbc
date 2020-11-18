@@ -29,6 +29,7 @@ class WP_Members_Admin_Users {
 			$j('<option>').val('deactivate').text('<?php _e( 'Deactivate', 'wp-members' )?>').appendTo("select[name='action']");
 		<?php } ?>
 			$j('<option>').val('export').text('<?php _e( 'Export', 'wp-members' )?>').appendTo("select[name='action']");
+			$j('<input id="export_all" name="export_all" class="button action" type="submit" value="<?php _e( 'Export All Users', 'wp-members' ); ?>" />').appendTo(".top .bulkactions");
 		<?php if( $wpmem->mod_reg == 1 ) { ?>
 			$j('<option>').val('activate').text('<?php _e( 'Activate', 'wp-members' )?>').appendTo("select[name='action2']");
 			$j('<option>').val('deactivate').text('<?php _e( 'Deactivate', 'wp-members' )?>').appendTo("select[name='action2']");
@@ -86,9 +87,9 @@ class WP_Members_Admin_Users {
 		}
 
 		// If exporting all users, do it, then exit.
-		if ( isset( $_REQUEST['export_all'] ) && $_REQUEST['export_all'] == __( 'Export All Users', 'wp-members' ) ) {
-			$today = date( "m-d-y" ); 
-			wpmem_export_users( array( 'export'=>'all', 'filename'=>'user-export-' . $today . '.csv' ), '' );
+		if ( wpmem_get( 'export_all', false, 'request' ) ) {
+			$today = date( "Y-m-d" ); 
+			wpmem_export_users( array( 'export'=>'all', 'filename'=>'user-export-' . $today . '.csv' ) );
 			exit();
 		}
 
@@ -172,12 +173,8 @@ class WP_Members_Admin_Users {
 
 		case 'export':
 
-			$users  = wpmem_get( 'users', false, 'request' );
-			$sanitized_users = array();
-			foreach ( $users as $user ) {
-				$sanitized_users[] = filter_var( $user, FILTER_VALIDATE_INT );
-			}
-			wpmem_export_users( array( 'export'=>'selected' ), $sanitized_users );
+			$users = wpmem_get( 'users', array(), 'request' );
+			wpmem_export_users( array( 'export'=>'selected' ), wpmem_sanitize_array( $users, 'integer' ) );
 			return;
 			break;
 
@@ -480,6 +477,8 @@ class WP_Members_Admin_Users {
 	/**
 	 * Use wpmem_post_register_data to set the user_status field to 2 using wp_update_user.
 	 * http://codex.wordpress.org/Function_Reference/wp_update_user
+	 *
+	 * @deprecated 3.3.6 No longer used.
 	 *
 	 * @uses  wpmem_set_user_status
 	 * @param $fields

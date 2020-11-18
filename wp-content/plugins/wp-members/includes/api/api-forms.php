@@ -67,6 +67,7 @@ function wpmem_login_form( $args, $arr = false ) {
 		$args = $arr;
 		$args['page'] = $page;
 	}
+	// @todo Work on making this $wpmem->forms->do_login_form( $args );
 	return $wpmem->forms->login_form( $args );
 }
 endif;
@@ -161,7 +162,7 @@ function wpmem_forgot_username_form() {
  * @global  stdClass  $wpmem
  * @param   string    $process
  */
-function wpmem_wp_register_form( $process = 'wp' ) {
+function wpmem_wp_register_form( $process = 'register_wp' ) {
 	global $wpmem;
 	$wpmem->forms->wp_register_form( $process );
 }
@@ -321,15 +322,17 @@ function wpmem_sanitize_class( $class ) {
  * This is an API wrapper for WP_Members_Forms::sanitize_array().
  *
  * @since 3.2.9
+ * @since 3.3.7 Added optional $type
  *
  * @global  object $wpmem
  *
- * @param  array $data
- * @return array $data
+ * @param  array  $data
+ * @param  string $type The data type integer|int (default: false)
+ * @return array  $data
  */
-function wpmem_sanitize_array( $data ) {
+function wpmem_sanitize_array( $data, $type = false ) {
 	global $wpmem;
-	return $wpmem->forms->sanitize_array( $data );
+	return $wpmem->forms->sanitize_array( $data, $type );
 }
 
 /**
@@ -340,7 +343,7 @@ function wpmem_sanitize_array( $data ) {
  * @global  object  $wpmem
  *
  * @param   string  $data
- * @param   string  $type
+ * @param   string  $type (multiselect|multicheckbox|textarea|email|file|image|int|integer|number)
  * @return  string  $sanitized_data
  */
 function wpmem_sanitize_field( $data, $type = 'text' ) {
@@ -386,7 +389,7 @@ function wpmem_woo_checkout_fields( $checkout_fields = false ) {
 		'account_username',
 		'account_password',
 	);
-	$fields = wpmem_fields();// echo '<pre>'; print_r( $fields ); echo '</pre>';
+	$fields = wpmem_fields();
 	
 	if ( ! $checkout_fields ) {
 		$checkout_fields = WC()->checkout()->checkout_fields;
@@ -409,6 +412,11 @@ function wpmem_woo_checkout_fields( $checkout_fields = false ) {
 			if ( isset( $checkout_fields['order'][ $meta_key ] ) ) {
 				unset( $fields[ $meta_key ] );
 			}
+		}
+		
+		// @todo For now, remove any unsupported field types.
+		if ( 'hidden' == $field['type'] || 'image' == $field['type'] || 'file' == $field['type'] || 'membership' == $field['type'] ) {
+			unset( $fields[ $meta_key ] );
 		}
 	}
 	unset( $fields['username'] );
@@ -433,15 +441,26 @@ function wpmem_woo_checkout_form( $checkout_fields ) {
 	global $wpmem;
 	$fields = wpmem_woo_checkout_fields( $checkout_fields );
 
+	/**
+	 * Filters the initial WC priority of the WP-members added fields.
+	 *
+	 * @since 3.3.7
+	 *
+	 * @param int
+	 */
+	$priority = apply_filters( 'wpmem_wc_checkout_field_priority_seed', 10 );
+	
 	foreach ( $fields as $meta_key => $field ) {
 		$checkout_fields['order'][ $meta_key ] = array(
 			'type'     => $fields[ $meta_key ]['type'],
 			'label'    => ( 'tos' == $meta_key ) ? $wpmem->forms->get_tos_link( $field, 'woo' ) : $fields[ $meta_key ]['label'],
-			'required' => $fields[ $meta_key ]['required'],
+			'required' =>  $fields[ $meta_key ]['required'],
+			'priority' => $priority,
 		);
 		if ( isset( $fields[ $meta_key ]['placeholder'] ) ) {
 			$checkout_fields['order'][ $meta_key ]['placeholder'] = $fields[ $meta_key ]['placeholder'];
 		}
+		$priority = $priority + 10;
 	}
 	return $checkout_fields;
 }
@@ -512,20 +531,30 @@ function wpmem_form_field_wc_custom_field_types( $field, $key, $args, $value ) {
 	// Let's only mess with WP-Members fields (in case another checkout fields plugin is used).
 	if ( array_key_exists( $key, $wpmem_fields ) ) {
 		
-		$field_args = array(
-			'name' => $key,
-			'type' => $wpmem_fields[ $key ]['type'],
-			'required' => $wpmem_fields[ $key ]['required'],
-			'delimiter' => $wpmem_fields[ $key ]['delimiter'],
-			'value' => $wpmem_fields[ $key ]['values'],
-		);
+		// If it is a checkbox.
+		if ( 'checkbox' == $wpmem_fields[ $key ]['type'] ) {
+			
+			if ( ! $_POST && $wpmem_fields[ $key ]['checked_default'] ) {
+				$field = str_replace( '<input type="checkbox"', '<input type="checkbox" checked ', $field );
+			}
 
-		$field_html = wpmem_form_field( $field_args );
-		$field_html = str_replace( 'class="' . $wpmem_fields[ $key ]['type'] . '"', 'class="' . $wpmem_fields[ $key ]['type'] . '" style="display:initial;"', $field_html );
-		$field = '<p class="form-row ' . implode( ' ', $args['class'] ) .'" id="' . $key . '_field">
-			<label for="' . $key . '" class="' . implode( ' ', $args['label_class'] ) .'">' . $args['label'] . ( ( 1 == $wpmem_fields[ $key ]['required'] ) ? '&nbsp;<abbr class="required" title="required">*</abbr>' : '' ) . '</label>';
-		$field .= $field_html;
-		$field .= '</p>';
+		} else {
+		
+			$field_args = array(
+				'name' => $key,
+				'type' => $wpmem_fields[ $key ]['type'],
+				'required' => $wpmem_fields[ $key ]['required'],
+				'delimiter' => $wpmem_fields[ $key ]['delimiter'],
+				'value' => $wpmem_fields[ $key ]['values'],
+			);
+
+			$field_html = wpmem_form_field( $field_args );
+			$field_html = str_replace( 'class="' . $wpmem_fields[ $key ]['type'] . '"', 'class="' . $wpmem_fields[ $key ]['type'] . '" style="display:initial;"', $field_html );
+			$field = '<p class="form-row ' . implode( ' ', $args['class'] ) .'" id="' . $key . '_field">
+				<label for="' . $key . '" class="' . implode( ' ', $args['label_class'] ) .'">' . $args['label'] . ( ( 1 == $wpmem_fields[ $key ]['required'] ) ? '&nbsp;<abbr class="required" title="required">*</abbr>' : '' ) . '</label>';
+			$field .= $field_html;
+			$field .= '</p>';
+		}
 		
 	}
 	
@@ -534,12 +563,14 @@ function wpmem_form_field_wc_custom_field_types( $field, $key, $args, $value ) {
 
 function wpmem_woo_reg_validate( $username, $email, $errors ) {
 
-	$fields = wpmem_fields();
+	$fields = wpmem_woo_checkout_fields();
 	
 	unset( $fields['username'] );
 	unset( $fields['password'] );
 	unset( $fields['confirm_password'] );
 	unset( $fields['user_email'] );
+	unset( $fields['first_name'] );
+	unset( $fields['last_name']  );
 	
 	foreach ( $fields as $key => $field_args ) {
 		if ( 1 == $field_args['required'] && empty( $_POST[ $key ] ) ) {

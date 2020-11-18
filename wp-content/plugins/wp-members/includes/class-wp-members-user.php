@@ -299,6 +299,9 @@ class WP_Members_User {
 
 			// Validate file field type.
 			if ( 'file' == $field['type'] || 'image' == $field['type'] ) {
+				if ( '' == $field['file_types'] ) {
+					$field['file_types'] = ( 'image' == $field['type'] ) ? 'gif|png|jpg|jpeg|bmp' : 'doc|docx|pdf|zip';
+				}
 				$allowed_file_types = explode( '|', $field['file_types'] );
 				$msg_types  = implode( ', ', $allowed_file_types );
 				if ( ! empty( $_FILES[ $meta_key ]['name'] ) ) {
@@ -392,16 +395,18 @@ class WP_Members_User {
 		// Get any meta fields that should be excluded.
 		$exclude = wpmem_get_excluded_meta( 'wp-register' );
 
-		foreach ( wpmem_fields( 'wp_validate' ) as $meta_key => $field ) {
+		foreach ( wpmem_fields( 'register_wp' ) as $meta_key => $field ) {
 			$is_error = false;
-			if ( $field['required'] && $meta_key != 'user_email' && ! in_array( $meta_key, $exclude ) ) {
+			if ( true == $field['required'] && true == $field['register'] && $meta_key != 'user_email' && ! in_array( $meta_key, $exclude ) ) {
 				if ( ( $field['type'] == 'checkbox' || $field['type'] == 'multicheckbox' || $field['type'] == 'multiselect' || $field['type'] == 'radio' ) && ( ! isset( $_POST[ $meta_key ] ) ) ) {
 					$is_error = true;
 				} 
 				if ( ( $field['type'] != 'checkbox' && $field['type'] != 'multicheckbox' && $field['type'] != 'multiselect' && $field['type'] != 'radio' ) && ( ! $_POST[ $meta_key ] ) ) {
 					$is_error = true;
 				}
-				if ( $is_error ) { $errors->add( 'wpmem_error', sprintf( $wpmem->get_text( 'reg_empty_field' ), __( $field['label'], 'wp-members' ) ) ); }
+				if ( $is_error ) {
+					$errors->add( 'wpmem_error', sprintf( $wpmem->get_text( 'reg_empty_field' ), __( $field['label'], 'wp-members' ) ) ); 
+				}
 			}
 		}
 
@@ -456,7 +461,7 @@ class WP_Members_User {
 		if ( $this->reg_type['is_native'] || $this->reg_type['is_add_new'] || $this->reg_type['is_woo'] ) {
 			// Get any excluded meta fields.
 			$exclude = wpmem_get_excluded_meta( 'wp-register' );
-			foreach ( wpmem_fields( 'wp_finalize' ) as $meta_key => $field ) {
+			foreach ( wpmem_fields( 'register_wp' ) as $meta_key => $field ) {
 				$value = wpmem_get( $meta_key, false );
 				if ( false !== $value && ! in_array( $meta_key, $exclude ) && 'file' != $field['type'] && 'image' != $field['type'] ) {
 					if ( 'multiselect' == $field['type'] || 'multicheckbox' == $field['type'] ) {
