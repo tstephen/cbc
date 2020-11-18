@@ -133,7 +133,6 @@ abstract class scbAdminPage {
 		}
 
 		add_action( 'admin_menu', array( $this, 'page_init' ), $this->args['admin_action_priority'] );
-		add_filter( 'contextual_help', array( $this, '_contextual_help' ), 10, 2 );
 
 		if ( $file ) {
 			$this->file = $file;

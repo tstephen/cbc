@@ -7,6 +7,7 @@ class Elm_ReverseLogParser implements OuterIterator {
 	private static $builtinSeverityLevels = array(
 		'fatal error' => true,
 		'catchable fatal error' => true,
+		'recoverable fatal error' => true,
 		'parse error' => true,
 		'warning' => true,
 		'notice' => true,

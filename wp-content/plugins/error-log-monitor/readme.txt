@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: dashboard widget, administration, error reporting, admin, maintenance, php
 Requires at least: 4.5
-Tested up to: 5.5
-Stable tag: 1.6.11
+Tested up to: 5.5.3
+Stable tag: 1.6.13
 
 Adds a Dashboard widget that displays the latest messages from your PHP error log. It can also send logged errors to email.
 
@@ -45,6 +45,16 @@ Follow these steps to install the plugin on your site:
 2. Dashboard widget configuration screen.
 
 == Changelog ==
+
+= 1.6.13 = 
+* Fixed "Deprecated: contextual_help is deprecated since version 3.3.0". While this plugin doesn't use the "contextual_help" filter, it includes a copy of scbFramework that can also be used by other active plugins. Some of those plugins could run code in scbFramework that used "contextual_help". This deprecated code has now been removed.
+* Tested with WP 5.5.3.
+
+= 1.6.12 =
+* Fixed recoverable fatal errors being incorrectly presented as an unknown error type.
+* Added text domain to a UI message that was missing it.
+* Updated the Freemius SDK to version 2.4.1.
+* Tested with WP 5.5.1 and 5.6-beta.
 
 = 1.6.11 =
 * Changed the minimum required PHP version to 5.6.

@@ -572,7 +572,8 @@ class Elm_DashboardWidget {
 			echo '<p>';
 			_e(
 				'By default, only fatal errors and warnings will be logged. To also log notices
-                and other messages, enable the <code>WP_DEBUG</code> option by adding this code:'
+                and other messages, enable the <code>WP_DEBUG</code> option by adding this code:',
+                'error-log-monitor'
 			);
 			echo '</p>';
 			$debugCode =
