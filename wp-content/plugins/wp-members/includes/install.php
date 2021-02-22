@@ -73,6 +73,12 @@ function wpmem_do_install() {
 			wpmem_upgrade_fields();
 			wpmem_upgrade_product_expiration();
 		}
+		
+		// Only run this if DB version < 2.2.1
+		if ( version_compare( $existing_settings['db_version'], '2.2.1', '<' ) ) {
+			wpmem_upgrade_validation_email();
+			wpmem_upgrade_woo_reg();
+		}
 	}
 	
 	return $wpmem_settings;
@@ -715,5 +721,43 @@ function wpmem_upgrade_product_expiration() {
 			}
 		}
 	}
-} 
+}
+
+/**
+ * Adds the user email validation success email.<br>8
+ * 
+ * @since 3.3.8
+ */
+function wpmem_upgrade_validation_email() {
+	$subj = 'Thank you for confirming your email for your [blogname] account';
+	$body = 'Thank you for confirming your email address for access to [blogname]!';
+
+	$arr = array(
+		"subj" => $subj,
+		"body" => $body,
+	);
+
+	if ( ! get_option( 'wpmembers_email_validated' ) ) {
+		update_option( 'wpmembers_email_validated', $arr, false );
+	}
+
+	$arr = $subj = $body = '';
+}
+
+/**
+ * Adds woo_reg settings.
+ *
+ * @since 3.3.8
+ */
+function wpmem_upgrade_woo_reg() {
+	$wpmem_settings = get_option( 'wpmembers_settings' );
+	
+	if ( ! isset( $wpmem_settings['woo'] ) ) {
+		$wpmem_settings['woo'] = array(
+			'add_my_account_fields' => 1,
+			'add_checkout_fields'   => 1,
+		);
+		update_option( 'wpmembers_settings', $wpmem_settings );
+	}
+}
 // End of file.

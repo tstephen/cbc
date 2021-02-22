@@ -147,7 +147,7 @@ class WP_Members_Admin_API {
 			add_filter( 'manage_users_custom_column', array( 'WP_Members_Admin_Users', 'add_user_column_content' ), 10, 3 );
 			add_action( 'wpmem_user_activated',       array( 'WP_Members_Admin_Users', 'set_activated_user' ) );
 			add_action( 'wpmem_user_deactivated',     array( 'WP_Members_Admin_Users', 'set_deactivated_user' ) );
-			add_filter( 'user_row_actions',           array( 'WP_Members_Admin_Users', 'insert_activate_link' ), 10, 2 );
+			add_filter( 'user_row_actions',           array( 'WP_Members_Admin_Users', 'insert_hover_links' ), 10, 2 );
 			add_action( 'wpmem_admin_after_profile',  array( 'WP_Members_User_Profile', '_show_activate'   ), 7 );
 			add_action( 'wpmem_admin_after_profile',  array( 'WP_Members_User_Profile', '_show_expiration' ), 8 );
 			add_action( 'wpmem_admin_after_profile',  array( 'WP_Members_User_Profile', '_show_ip'         ), 9 );
@@ -387,7 +387,7 @@ class WP_Members_Admin_API {
 	function default_emails() {
 		global $wpmem;
 		
-		if ( $wpmem->mod_reg == 0 ) {
+		if ( 0 == $wpmem->mod_reg ) {
 	
 			$this->add_email( array(
 				'name'          => 'wpmembers_email_newreg',
@@ -395,6 +395,15 @@ class WP_Members_Admin_API {
 				'subject_input' => 'wpmembers_email_newreg_subj',
 				'body_input'    => 'wpmembers_email_newreg_body',	
 			) );
+
+			if ( 1 == $wpmem->act_link ) {
+				$this->add_email( array(
+					'name'          => 'wpmembers_email_validated',
+					'heading'       => __( "User email validated", 'wp-members' ),
+					'subject_input' => 'wpmembers_email_validated_subj',
+					'body_input'    => 'wpmembers_email_validated_body',	
+				) );
+			}
 			
 		} else {
 	
@@ -404,6 +413,16 @@ class WP_Members_Admin_API {
 				'subject_input' => 'wpmembers_email_newmod_subj',
 				'body_input'    => 'wpmembers_email_newmod_body',	
 			) );
+			
+			if ( 1 == $wpmem->act_link ) {
+				$this->add_email( array(
+					'name'          => 'wpmembers_email_validated',
+					'heading'       => __( "User email validated", 'wp-members' ),
+					'subject_input' => 'wpmembers_email_validated_subj',
+					'body_input'    => 'wpmembers_email_validated_body',	
+				) );
+			}
+			
 			$this->add_email( array(
 				'name'          => 'wpmembers_email_appmod',
 				'heading'       => __( "Registration is Moderated, User is Approved", 'wp-members' ),
@@ -662,6 +681,7 @@ class WP_Members_Admin_API {
 	function post_types() {
 		return get_post_types( array( 'public' => true, '_builtin' => false ), 'names', 'and' );
 	}
+
 } // End of WP_Members_Admin_API class.
 
 // End of file.

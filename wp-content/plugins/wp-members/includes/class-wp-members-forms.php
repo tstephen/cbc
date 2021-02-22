@@ -388,7 +388,7 @@ class WP_Members_Forms {
 	function do_file_upload( $file = array(), $user_id = false ) {
 		
 		// Filter the upload directory.
-		add_filter( 'upload_dir', array( &$this,'file_upload_dir' ) );
+		add_filter( 'upload_dir', array( &$this, 'file_upload_dir' ) );
 		
 		// Set up user ID for use in upload process.
 		$this->file_user_id = ( $user_id ) ? $user_id : 0;
@@ -449,13 +449,17 @@ class WP_Members_Forms {
 	 * @return array $param
 	 */
 	function file_upload_dir( $param ) {
+		
+		global $wpmem;
+		
 		$user_id  = ( isset( $this->file_user_id ) ) ? $this->file_user_id : null;
 		
 		$args = array(
 			'user_id'   => $user_id,
-			'wpmem_dir' => 'wpmembers/',
+			'wpmem_dir' => $wpmem->upload_base,
 			'user_dir'  => 'user_files/' . $user_id,
 		);
+		
 		/**
 		 * Filter the user directory elements.
 		 *
@@ -465,9 +469,9 @@ class WP_Members_Forms {
 		 */
 		$args = apply_filters( 'wpmem_user_upload_dir', $args );
 
-		$param['subdir'] = '/' . $args['wpmem_dir'] . $args['user_dir'];
-		$param['path']   = $param['basedir'] . '/' . $args['wpmem_dir'] . $args['user_dir'];
-		$param['url']    = $param['baseurl'] . '/' . $args['wpmem_dir'] . $args['user_dir'];
+		$param['subdir'] = '/' . $args['wpmem_dir'] . '/' . $args['user_dir'];
+		$param['path']   = $param['basedir'] . '/' . $args['wpmem_dir'] . '/' . $args['user_dir'];
+		$param['url']    = $param['baseurl'] . '/' . $args['wpmem_dir'] . '/' . $args['user_dir'];
 	
 		return $param;
 	}
@@ -1053,7 +1057,15 @@ class WP_Members_Forms {
 						
 						$form_has_file = true;
 						
-						$attachment_url = wp_get_attachment_url( $val );
+						// Handle files differently for multisite vs. single install.
+						// @see: https://core.trac.wordpress.org/ticket/32145
+						if ( is_multisite() ) {
+							$attachment = get_post( $val );
+							$attachment_url = $attachment->guid;
+						} else {
+							$attachment_url = wp_get_attachment_url( $val );
+						}
+						
 						$empty_file = '<span class="description">' . __( 'None' ) . '</span>';
 						if ( 'edit' == $tag ) {
 							if ( 'file' == $field['type'] ) {
@@ -1688,6 +1700,36 @@ class WP_Members_Forms {
 					);
 				}
 			}
+			
+			// Do recaptcha if enabled.
+			if ( ! $is_woo && isset( $wpmem->captcha ) && $wpmem->captcha > 0 ) {
+				
+				$row_before = '<p>';
+				$row_after  = '</p>';
+				$label      = '';
+				
+				if ( in_array( $wpmem->captcha, array( 1, 3, 4 ) ) ) {
+					$captcha = WP_Members_Captcha::recaptcha();
+				} elseif ( 5 == $wpmem->captcha ) {
+					$captcha = WP_Members_Captcha::hcaptcha();
+				} elseif ( 2 == $wpmem->captcha ) {
+					$row = WP_Members_Captcha::rs_captcha( 'array' );
+					$label   = $row['label']; //$row['label_text'];
+					$captcha = $row['img'] . $row['hidden'] . $row['field'];
+				}
+				if ( 4 == $wpmem->captcha ) {
+					$row_before = '';
+					$row_after  = '';
+				}
+			}
+	
+			$rows['captcha'] = array(
+				'type' => '',
+				'row_before' => $row_before,
+				'row_after'  => $row_after,
+				'label'      => $label,
+				'field'      => $captcha,
+			);
 
 			if ( isset( $rows ) && is_array( $rows ) ) {
 

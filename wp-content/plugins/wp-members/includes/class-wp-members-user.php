@@ -49,7 +49,8 @@ class WP_Members_User {
 		add_action( 'user_register', array( $this, 'set_user_exp'            ), 25 );
 		add_action( 'user_register', array( $this, 'register_email_to_user'  ), 25 ); // @todo This needs rigorous testing for integration with WC or WP native.
 		add_action( 'user_register', array( $this, 'register_email_to_admin' ), 25 ); // @todo This needs rigorous testing for integration with WC or WP native.register_email_to_admin
-		add_action( 'wpmem_register_redirect', array( $this, 'register_redirect' ) );
+		
+		add_action( 'wpmem_register_redirect', array( $this, 'register_redirect' ), 20 ); // Adds a nonce to the redirect if there is a "redirect_to" attribute in the reg form.
 		
 		add_filter( 'registration_errors',       array( $this, 'wp_register_validate' ), 10, 3 );  // native registration validation
 	
@@ -407,6 +408,14 @@ class WP_Members_User {
 				if ( $is_error ) {
 					$errors->add( 'wpmem_error', sprintf( $wpmem->get_text( 'reg_empty_field' ), __( $field['label'], 'wp-members' ) ) ); 
 				}
+			}
+		}
+		
+		// Process CAPTCHA.
+		if ( $wpmem->captcha > 0 ) {
+			$check_captcha = WP_Members_Captcha::validate();
+			if ( false === $check_captcha ) {
+				$errors->add( 'wpmem_captcha_error', sprintf( $wpmem->get_text( 'reg_captcha_err' ), __( $field['label'], 'wp-members' ) ) ); 
 			}
 		}
 

@@ -597,7 +597,7 @@ function wpmem_user_register( $tag ) {
 		}
 
 		// Inserts to wp_users table.
-		wp_insert_user( $new_user_fields );
+		$user = wp_insert_user( $new_user_fields );
 
 		/**
 		 * Fires after registration is complete.
@@ -606,10 +606,11 @@ function wpmem_user_register( $tag ) {
 		 * @since 3.1.0 Added $fields
 		 * @since 3.1.7 Changed $fields to $this->post_data
 		 * @since 3.3.0 Moved to registration function.
+		 * @since 3.3.8 Added $user parameter.
 		 *
 		 * @param array $wpmem->user->post_data The user's submitted registration data.
 		 */
-		do_action( 'wpmem_register_redirect', $wpmem->user->post_data );
+		do_action( 'wpmem_register_redirect', $wpmem->user->post_data, $user );
 
 		// successful registration message
 		return "success";
@@ -910,5 +911,33 @@ function wpmem_get_deactivated_users() {
 function wpmem_set_user_as_confirmed( $user_id ) {
 	global $wpmem;
 	$wpmem->act_newreg->set_as_confirmed( $user_id );
+}
+
+/**
+ * Sets user as unconfirmed (not validated).
+ *
+ * @since 3.3.8
+ *
+ * @param  int  $user_id
+ * @return void
+ */
+function wpmem_set_user_as_unconfirmed( $user_id ) {
+	global $wpmem;
+	$wpmem->act_newreg->set_as_unconfirmed( $user_id );
+}
+
+/** 
+ * Checks if a user is confirmed.
+ *
+ * @since 3.3.8
+ *
+ * @global object $wpmem
+ * @param  int    $user_id
+ * @return bool
+ */
+function wpmem_is_user_confirmed( $user_id = false ) {
+	global $wpmem;
+	$user_id = ( false === $user_id ) ? get_current_user_id() : $user_id;
+	return ( get_user_meta( $user_id, $wpmem->act_newreg->validation_confirm, true ) ) ? true : false;
 }
 // End of file.
