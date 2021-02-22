@@ -43,7 +43,7 @@
         <edge COLOR="#edda69"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="100" y="-280"/>
       </node>
-      <node CREATED="1590233648192" ID="childrens-ministry" MODIFIED="1590233648192" TEXT="Children" LINK="/children-2/">
+      <node CREATED="1590233648192" ID="childrens-ministry" MODIFIED="1590233648192" TEXT="Children" LINK="/children-covid/">
         <edge COLOR="#edda69"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="200" y="-220"/>
       </node>
@@ -110,6 +110,10 @@
       <node CREATED="1590235234820" ID="communications" MODIFIED="1590235234820" POSITION="right" TEXT="Communications" LINK="/communications/">
           <edge COLOR="#e69138"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="370" y="375"/>
+        <node CREATED="1606208093924" ID="posts" MODIFIED="1606208093924" POSITION="right" TEXT="Post list" LINK="/wp-admin/edit.php">
+          <edge COLOR="#e69138"/>
+          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="425" y="435"/>
+        </node>
       </node>
     </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
