@@ -172,5 +172,19 @@ $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}smush_dir_images" );
 // Delete directory scan data.
 delete_option( 'wp-smush-scan-step' );
 
+// Delete all WebP images.
+global $wp_filesystem;
+if ( is_null( $wp_filesystem ) ) {
+	WP_Filesystem();
+}
+
+$upload_dir = wp_get_upload_dir();
+$webp_dir   = dirname( $upload_dir['basedir'] ) . '/smush-webp';
+$wp_filesystem->delete( $webp_dir, true );
+
+// Delete WebP test image.
+$webp_img = $upload_dir['basedir'] . '/smush-webp-test.png';
+$wp_filesystem->delete( $webp_img );
+
 // TODO: Add procedure to delete backup files
 // TODO: Update NextGen Metadata to remove Smush stats on plugin deletion.
