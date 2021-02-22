@@ -70,7 +70,7 @@ global $post;
 					<?php endif; ?>
 				</div>
 			</div>
-
+			
 			<div class="wpfc-sermon-single-media">
 				<?php if ( get_wpfc_sermon_meta( 'sermon_video_link' ) ) : ?>
 					<div class="wpfc-sermon-single-video wpfc-sermon-single-video-link">
@@ -104,10 +104,19 @@ global $post;
 					</div>
 				<?php endif; ?>
 			</div>			
-				<?php the_content(); ?>			
-				<div class="wpfc-sermon-single-description">
-				<?php   (get_the_content()=='')?wpfc_sermon_description():''; ?>					
+				<?php 
+
+				if( is_plugin_active( 'elementor/elementor.php' ) ) {
+					the_content();
+				}else{
+					?>
+					<div class="wpfc-sermon-single-description">
+				<?php   wpfc_sermon_description() ?>					
 				</div>
+					<?php
+				}
+				 ?>			
+				
 			<?php if ( get_wpfc_sermon_meta( 'sermon_notes' ) || get_wpfc_sermon_meta( 'sermon_bulletin' ) ) : ?>
 				<div class="wpfc-sermon-single-attachments"><?php echo wpfc_sermon_attachments(); ?></div>
 			<?php endif; ?>

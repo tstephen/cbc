@@ -120,9 +120,9 @@ function wpfc_sermon_metaboxes() {
 	) ) );
 	$sermon_files_meta->add_field( array(
 		'name' => esc_html__( 'Sermon Notes', 'sermon-manager-for-wordpress' ),
-		'desc' => esc_html__( 'Upload a pdf file or enter an URL.', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload  pdf file(s).', 'sermon-manager-for-wordpress' ),
 		'id'   => 'sermon_notes',
-		'type' => 'file',
+		'type' => 'file_list',
 		'text' => array(
 			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),
 			// Change upload button text. Default: "Add or Upload File".
@@ -130,9 +130,9 @@ function wpfc_sermon_metaboxes() {
 	) );
 	$sermon_files_meta->add_field( array(
 		'name' => esc_html__( 'Bulletin', 'sermon-manager-for-wordpress' ),
-		'desc' => esc_html__( 'Upload a pdf file or enter an URL.', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload a pdf file(s).', 'sermon-manager-for-wordpress' ),
 		'id'   => 'sermon_bulletin',
-		'type' => 'file',
+		'type' => 'file_list',
 		'text' => array(
 			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),
 			// Change upload button text. Default: "Add or Upload File".

@@ -1,6 +1,14 @@
 Note: Newer changelog is in readme.txt
+### 2.16.6 ###
+Fix: Old Missing PDF file data issue fix
 
-### 2.16.3 ###
+### 2.16.5 ###
+Fix: Hyperlinks are Stripped in the Description Field 
+
+### 2.16.4 ###
+Fix: Support Multiple PDF File upload For Notes and Bulletins
+
+### 2.163 ###
 Fix: image size display issue in hortcode  [sermon_images  display="preachers" order="ASC" orderby="id" size="thumbnail"]
 Fix: No follow attr for mp3 on single & archive
 

@@ -447,7 +447,7 @@ function wpfc_sermon_attachments() {
 	}
 
 	$output = wpfc_get_partial( 'content-sermon-attachments' );
-
+	// print_r($output);
 	/**
 	 * Allows to filter the output of sermon attachments HTML.
 	 *

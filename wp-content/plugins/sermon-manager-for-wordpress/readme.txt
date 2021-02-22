@@ -3,9 +3,9 @@ Contributors: wpforchurch, Alex Gutierrez
 Donate link: http://wpforchurch.com/  
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
 Requires at least: 4.7.0  
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.0  
-Stable tag: 2.16.3
+Stable tag: 2.16.6  
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,7 +126,16 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 
 ## Changelog ##
 
-### 2.163 ###
+### 2.16.6 ###
+*Fix: Old Missing PDF file data issue fix
+
+### 2.16.5 ###
+*Fix: Hyperlinks are Stripped in the Description Field
+
+### 2.16.4 ###
+*Fix: Support Multiple PDF File upload For Notes and Bulletins
+
+### 2.16.3 ###
 *Fix: image size display issue in hortcode  [sermon_images  display="preachers" order="ASC" orderby="id" size="thumbnail"]
 *Fix: No follow attr for mp3 on single & archive
 
