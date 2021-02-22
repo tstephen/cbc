@@ -25,18 +25,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Add sub-menu page for UTM Tracking
- * 
- * @since 1.7
- */
-function superpwa_utm_tracking_sub_menu() {
-	
-	// UTM Tracking sub-menu
-	add_submenu_page( 'superpwa', __( 'Super Progressive Web Apps', 'super-progressive-web-apps' ), __( 'UTM Tracking', 'super-progressive-web-apps' ), 'manage_options', 'superpwa-utm-tracking', 'superpwa_utm_tracking_interface_render' );
-}
-add_action( 'admin_menu', 'superpwa_utm_tracking_sub_menu' );
-
-/**
  * Get UTM Tracking settings
  *
  * @since 1.7
@@ -374,11 +362,13 @@ function superpwa_utm_tracking_interface_render() {
 		// Show Settings Saved Message
 		settings_errors( 'superpwa_settings_group' );
 	}
+	// Get add-on info
+	$addon_utm_tracking = superpwa_get_addons( 'utm_tracking' );
 	
 	?>
 	
 	<div class="wrap">	
-		<h1><?php _e( 'UTM Tracking for', 'super-progressive-web-apps' ); ?> SuperPWA <sup><?php echo SUPERPWA_VERSION; ?></sup></h1>
+		<h1><?php _e( 'UTM Tracking', 'super-progressive-web-apps' ); ?> <small><sub>(<a href="<?php echo esc_url($addon_utm_tracking['link']) . '?utm_source=superpwa-plugin&utm_medium=utm-tracking-settings'?>"><?php echo esc_html__( 'Docs', 'super-progressive-web-apps' ); ?></a>)</sub></small></h1>
 		
 		<form action="options.php" method="post" enctype="multipart/form-data">		
 			<?php
