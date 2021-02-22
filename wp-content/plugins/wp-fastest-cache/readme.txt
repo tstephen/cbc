@@ -3,8 +3,8 @@ Contributors: emrevona
 Donate link: http://profiles.wordpress.org/emrevona/
 Tags: cache, caching, performance, wp-cache, total cache, super cache, cdn
 Requires at least: 3.3
-Tested up to: 5.5
-Stable tag: 0.9.1.2
+Tested up to: 5.6
+Stable tag: 0.9.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,7 @@ Setup of this plugin is so easy. You don't need to modify the .htacces file. It 
 12. Cloudflare support
 13. Preload Cache - Create the cache of all the site automatically
 14. Exclude pages and user-agents
+15. WP-CLI cache clearing
 
 <h4>Performance Optimization</h4>
 
@@ -123,6 +124,19 @@ The free version is enough to speed up your site but in the premium version ther
 18. Database Cleanup
 
 == Changelog ==
+
+= 0.9.1.5 =
+* <strong>[FEATURE]</strong> to add Re-Order feture for Preload [<a target="_blank" href="https://www.wpfastestcache.com/features/re-order-preload/">Details</a>]
+* to add WPFC_DISABLE_CLEARING_CACHE_AFTER_WOOCOMMERCE_CHECKOUT_ORDER_PROCESSED
+
+= 0.9.1.4 =
+* to fix saving "Update Post" settings issue
+* to fix saving "New Post" settings issue
+* <strong>[FEATURE]</strong> Compatible with the AMP Takeover feature of <a target="_blank" href="https://wordpress.org/plugins/accelerated-mobile-pages/">AMP for WP – Accelerated Mobile Pages</a>
+
+= 0.9.1.3 =
+* to fix PHP Notice: Undefined offset: -1 js-utilities.php on line 84
+* to show the details of the error on the Cloudflare cdn integraiton
 
 = 0.9.1.2 =
 * to add webp extension for CDN
