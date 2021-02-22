@@ -40,6 +40,21 @@ class FifuDb {
         );
     }
 
+    /* wordpress upgrade */
+
+    function fix_guid() {
+        $this->wpdb->get_results("
+            UPDATE " . $this->posts . " p 
+            INNER JOIN " . $this->postmeta . " pm ON (
+                pm.post_id = p.id 
+                AND	pm.meta_key = '_wp_attached_file'
+            )
+            SET p.guid = pm.meta_value
+            WHERE p.post_author = " . $this->author . "  
+            AND LENGTH(p.guid) = 255"
+        );
+    }
+
     /* attachment metadata */
 
     // insert 1 _wp_attached_file for each attachment
@@ -1038,5 +1053,12 @@ function fifu_db_delete_thumbnail_id_without_attachment() {
 function fifu_db_get_att_id($post_parent, $url, $is_ctgr) {
     $db = new FifuDb();
     return $db->get_att_id($post_parent, $url, $is_ctgr);
+}
+
+/* wordpress upgrade */
+
+function fifu_db_fix_guid() {
+    $db = new FifuDb();
+    return $db->fix_guid();
 }
 

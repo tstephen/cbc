@@ -1,6 +1,7 @@
 function removeImage() {
     jQuery("#fifu_input_alt").hide();
     jQuery("#fifu_image").hide();
+    jQuery("#fifu_upload").hide();
     jQuery("#fifu_link").hide();
     jQuery("#fifu_next").hide();
 
@@ -51,7 +52,10 @@ function previewImage() {
                 }, 2000);
             }
         }
-        xhr.open("GET", 'https://source.unsplash.com/featured/?' + $url, true);
+        if (!$url || $url == ' ')
+            xhr.open("GET", 'https://source.unsplash.com/random', true);
+        else
+            xhr.open("GET", 'https://source.unsplash.com/featured/?' + $url, true);
         xhr.send();
         if (!$url)
             jQuery("#fifu_keywords").val(' ');
@@ -77,6 +81,7 @@ function runPreview($url) {
 
         jQuery("#fifu_input_alt").show();
         jQuery("#fifu_image").show();
+        jQuery("#fifu_upload").show();
         jQuery("#fifu_link").show();
 
         if (fifuMetaBoxVars.is_sirv_active)

@@ -1,14 +1,14 @@
 <?php
 
 /*
- * Plugin Name: Featured Image from URL | FIFU
+ * Plugin Name: Featured Image from URL (FIFU)
  * Plugin URI: https://fifu.app/
  * Description: Use an external image as featured image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
- * Version: 3.4.2
+ * Version: 3.5.3
  * Author: fifu.app
  * Author URI: https://fifu.app/
  * WC requires at least: 4.0
- * WC tested up to: 4.7
+ * WC tested up to: 5.0
  * Text Domain: featured-image-from-url
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -37,9 +37,11 @@ require_once (FIFU_ADMIN_DIR . '/column.php');
 require_once (FIFU_ADMIN_DIR . '/menu.php');
 require_once (FIFU_ADMIN_DIR . '/meta-box.php');
 require_once (FIFU_ADMIN_DIR . '/strings.php');
-require_once (FIFU_ADMIN_DIR . '/wai-addon.php');
 
 require_once (FIFU_ELEMENTOR_DIR . '/elementor-fifu-extension.php');
+
+if (defined('WP_CLI') && WP_CLI)
+    require_once (FIFU_ADMIN_DIR . '/cli-commands.php');
 
 register_activation_hook(__FILE__, 'fifu_activate');
 
@@ -75,6 +77,10 @@ function fifu_upgrade($upgrader_object, $options) {
                 fifu_activate_actions();
             }
         }
+    }
+    if ($options['type'] == 'core') {
+        fifu_db_change_url_length();
+        fifu_db_fix_guid();
     }
 }
 

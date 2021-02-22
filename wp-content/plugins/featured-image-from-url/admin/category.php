@@ -56,19 +56,27 @@ add_action('edited_product_cat', 'fifu_ctgr_save_properties', 10, 1);
 add_action('created_product_cat', 'fifu_ctgr_save_properties', 10, 1);
 
 function fifu_ctgr_save_properties($term_id) {
-    if (isset($_POST['fifu_input_alt']))
-        update_term_meta($term_id, 'fifu_image_alt', wp_strip_all_tags($_POST['fifu_input_alt']));
+    if (isset($_POST['fifu_input_alt'])) {
+        if (empty($_POST['fifu_input_alt']))
+            delete_term_meta($term_id, 'fifu_image_alt');
+        else
+            update_term_meta($term_id, 'fifu_image_alt', wp_strip_all_tags($_POST['fifu_input_alt']));
+    }
 
     if (isset($_POST['fifu_input_url'])) {
         $url = esc_url_raw(rtrim($_POST['fifu_input_url']));
         update_term_meta($term_id, 'fifu_image_url', fifu_convert($url));
-        fifu_db_ctgr_update_fake_attach_id($term_id);
+        if (empty($url)) {
+            delete_term_meta($term_id, 'fifu_image_url');
+            fifu_db_ctgr_update_fake_attach_id($term_id);
+        } else {
+            fifu_db_ctgr_update_fake_attach_id($term_id);
+            /* dimensions */
+            $width = fifu_get_width_meta($_POST);
+            $height = fifu_get_height_meta($_POST);
+            $att_id = get_term_meta($term_id, 'thumbnail_id', true);
+            fifu_save_dimensions($att_id, $width, $height);
+        }
     }
-
-    /* dimensions */
-    $width = fifu_get_width_meta($_POST);
-    $height = fifu_get_height_meta($_POST);
-    $att_id = get_term_meta($term_id, 'thumbnail_id', true);
-    fifu_save_dimensions($att_id, $width, $height);
 }
 

@@ -53,7 +53,7 @@ add_filter('posts_where', 'fifu_query_attachments');
 
 function fifu_query_attachments($where) {
     global $wpdb;
-    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments') && fifu_is_off('fifu_media_library')) {
+    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments') && true) {
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
     } else
         $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
@@ -62,7 +62,7 @@ function fifu_query_attachments($where) {
 
 add_filter('posts_where', function ($where, \WP_Query $q) {
     global $wpdb;
-    if (is_admin() && $q->is_main_query() && fifu_is_off('fifu_media_library'))
+    if (is_admin() && $q->is_main_query() && true)
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
     else
         $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
@@ -147,14 +147,35 @@ function fifu_add_size($image, $size) {
 
     if (!is_array($size)) {
         if (function_exists('wp_get_registered_image_subsizes')) {
+            $width = null;
+            $height = null;
+            $crop = null;
+
             if (isset(wp_get_registered_image_subsizes()[$size]['width']))
-                $image[1] = wp_get_registered_image_subsizes()[$size]['width'];
+                $width = wp_get_registered_image_subsizes()[$size]['width'];
 
             if (isset(wp_get_registered_image_subsizes()[$size]['height']))
-                $image[2] = wp_get_registered_image_subsizes()[$size]['height'];
+                $height = wp_get_registered_image_subsizes()[$size]['height'];
 
             if (isset(wp_get_registered_image_subsizes()[$size]['crop']))
-                $image[3] = wp_get_registered_image_subsizes()[$size]['crop'];
+                $crop = wp_get_registered_image_subsizes()[$size]['crop'];
+
+            if (!$width && !$height)
+                return $image;
+
+            // skip
+            if ($image[1] > 1) {
+                // default height
+                if ($height == 9999)
+                    return $image;
+                // aspect ratio
+                if ($image[2] != 0 && $height != 0 && abs($image[1] / $image[2] - $width / $height) > 0.1)
+                    return $image;
+            }
+
+            $image[1] = $width;
+            $image[2] = $height;
+            $image[3] = $crop;
         }
     } else {
         $image[1] = $size[0];
@@ -294,9 +315,6 @@ function fifu_add_url_parameters($url, $att_id) {
 
     if (!$post_id)
         return $url;
-
-    // instagram URL fixer
-    $url = fifu_check_instagram_thumb($url, $att_id, $post_id);
 
     $post_thumbnail_id = get_post_thumbnail_id($post_id);
     $post_thumbnail_id = $post_thumbnail_id ? $post_thumbnail_id : get_term_meta($post_id, 'thumbnail_id', true);

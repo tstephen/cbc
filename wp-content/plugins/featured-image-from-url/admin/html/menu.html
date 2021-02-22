@@ -41,16 +41,13 @@
                 </div>
 
                 <div class="box">
-                    <h2><?php $fifu['title']['library']() ?></h2>
+                    <h2><?php $fifu['title']['reset']() ?></h2>
                     <div class="greybox">
-                        <?php $fifu['library']['desc']() ?>
-                        <br>
-                        <br>
-                        <b><?php $fifu['detail']['important']() ?></b>: <?php $fifu['library']['important']() ?>
+                        <?php $fifu['reset']['desc']() ?>
                     </div>
                     <br>
                     <form
-                        id="fifu_form_media_library"
+                        id="fifu_form_reset"
                         action="javascript:void(0)"
                         method="post">
                         <table>
@@ -59,22 +56,1621 @@
                                     <input
                                         type="submit"
                                         href="javascript:void(0)"
-                                        id="fifu_toggle_media_library"
-                                        onclick="invert('media_library')"
-                                        name="fifu_toggle_media_library"
-                                        class="<?php echo $enable_media_library; ?>"
+                                        id="fifu_toggle_reset"
+                                        onclick="invert('reset');
+                                                jQuery('#tabs-top').block({message: '<?php $fifu['message']['wait']() ?>', css: {backgroundColor: 'none', border: 'none', color: 'white'}});
+                                                setTimeout(function () {
+                                                    location.reload()
+                                                }, 5000);";
+                                        name="fifu_toggle_reset"
+                                        class="<?php echo $enable_reset; ?>"
                                         value=""
                                         style="display:block;border:none">
 
                                     <input
                                         type="hidden"
-                                        id="fifu_input_media_library"
-                                        name="fifu_input_media_library"
+                                        id="fifu_input_reset"
+                                        name="fifu_input_reset"
                                         value="" ></td>
-                                <td></td>
+                                <td><?php $fifu['reset']['reset']() ?></td>
                             </tr>
                         </table>
                     </form>
+                </div>
+
+                <div class="box">
+
+                    <h2><?php $fifu['title']['cli']() ?></h2>
+
+                    <div class="greybox">
+
+                        <?php $fifu['cli']['desc']() ?>
+
+                        <br><br>
+
+                        <div id="tabsCli">
+                            <ul>
+                                <li><a href="#tabs-1"><?php $fifu['cli']['tab']['commands']() ?></a></li>
+                                <li><a href="#tabs-2"><?php $fifu['cli']['tab']['documentation']() ?></a></li>
+                            </ul>
+                            <div id="tabs-1">
+                                <table style="text-align:left; font-size: 11px">
+                                    <tr class="color">
+                                        <th>
+                                            <b><?php $fifu['cli']['column']['tab']() ?></b>
+                                        </th>
+                                        <th>
+                                            <b><?php $fifu['cli']['column']['feature']() ?></b>
+                                        </th>
+                                        <th>
+                                            <b><?php $fifu['cli']['column']['option']() ?></b>
+                                        </th>
+                                        <th style="width:200px">
+                                            <b><?php $fifu['cli']['column']['command']() ?></b>
+                                        </th>
+                                        <th style="width:100px">
+                                            <b><?php $fifu['cli']['column']['eg']() ?></b>
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['admin']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['column']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu column &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            32, 64, 128...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['admin']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['reset']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu reset
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['position']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --position &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            1, 2, 3...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['first']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['hide']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --hide &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['query']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --remove-query &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['overwrite']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --overwrite &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['prioritize']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --prioritize-video &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['html']['decode']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --decode &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['all']['ignore']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --all-ignore &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['html']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['all']['update']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu content --all-run
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['auto']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu search &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['auto']['filter']['width']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu search --min-width &lt;integer&gt;
+                                        </th>
+                                        <th>600, 800, 1200...</th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['auto']['filter']['height']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu search --min-height &lt;integer&gt;
+                                        </th>
+                                        <th>400, 600, 800...</th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['auto']['tab']['blocklist']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu search --blocklist &lt;string&gt;
+                                        </th>
+                                        <th>fb.com|yt.com|...</th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['isbn']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu isbn &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['title']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['copy']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --title-copy &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['title']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['always']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --title-always &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['hide']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['page']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --hide-page &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['hide']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['post']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --hide-post &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['hide']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['cpt']() ?> <?php $fifu['hide']['exception']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --hide-cpt &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['default']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --default &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['default']() ?>
+                                        </th>
+                                        <th>
+                                            URL
+                                        </th>
+                                        <th>
+                                            wp fifu image --default-url &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            https://...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['content']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['page']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --content-page &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['content']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['post']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --content-post &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['content']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['cpt']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --content-cpt &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['media']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['media']['upload']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu upload --show-button &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['media']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['media']['job']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu upload --job &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --height &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['selector']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-sel &lt;integer&gt; --selector &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            0, 1, 2, 3, 4<br>
+                                            #id, .class, ...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['ratio']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-ratio &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            4:3, 1:1, 3:2...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['fit']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-fit &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            cover, contain, fill
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['delay']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-delay &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            0, 100, 1000...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['default']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-default &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            #id, .class, ...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['height']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['height']['tab']['ignore']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --height-ignore &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            #id, .class, ...
+                                        </th>
+                                    </tr>                                    
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['replace']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --replace &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            https://...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['hover']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['effect']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --hover-effect &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            hover17, hover02, ..
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['hover']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['hover']['placeholder']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu image --hover-selectors &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            #id, .class, ...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['giphy']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --giphy &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['validation']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --validation &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['image']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['unsplash']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu image --unsplash-size &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            300x400, 1920x1080...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['shortcode']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['shortcode']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu shortcode &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['featured']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['pause']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --pause &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['buttons']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --buttons &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['start']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --auto &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['click']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --gallery &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['thumb']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --thumb-gallery &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['counter']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --counter &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['fields']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --fields &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            3, 4, 5...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['time']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --time-image &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            1000, 2000, 3000...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['duration']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --time-transition &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            500, 1000, 1500...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['video']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['thumbnail']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['home']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --thumb-home &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['thumbnail']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['page']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --thumb-page &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['thumbnail']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['post']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --thumb-post &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['thumbnail']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['where']['cpt']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --thumb-cpt &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['play']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --play &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['play']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['color']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --play-color &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            red, blue, black...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['play']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['mode']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --play-mode &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            inline, lightbox
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['play']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['zindex']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --play-zindex &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            500, 1000, 1500...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['play']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['play']['hide']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --play-hide &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['width']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --min-width &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            75, 100, 150...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['black']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --black &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['mouseover']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['player']['youtube']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --mouse-youtube &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['mouseover']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['player']['vimeo']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --mouse-vimeo &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['autoplay']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --autoplay &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['loop']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --loop &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['mute']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --mute &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['background']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --background &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['related']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --related &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['icon']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu video --icon &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>  
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['video']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['icon']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['icon']['css']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu video --icon-selector &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            #id, .class, ...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['key']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['key']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['key']['email']() ?>                                            
+                                        </th>
+                                        <th>
+                                            wp fifu key --email &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            name@email.com
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['key']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['key']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['key']['key']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu key --number &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            0123-4567-8901
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['metadata']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu metadata &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['clean']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu clean
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['schedule']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu schedule &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['schedule']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['schedule']['interval']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu schedule --interval &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            1, 30, 60...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['database']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu db &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            100, 1000, 5000...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['performance']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['jetpack']() ?>
+                                        </th>
+                                        <th>Shortpixel</th>
+                                        <th>
+                                            wp fifu shortpixel &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['performance']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['lazy']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu lazy &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['performance']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['flickr']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu flickr &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['social']['add']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu social &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['social']['only']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu social --image-only &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['rss']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu rss &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['rss']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['width']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu rss --width &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            300, 600, 900...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['zoom']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['lightbox']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu woo --lightbox &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['zoom']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['word']['zoom']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu woo --zoom &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['grid']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu woo --category-grid &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['fields']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['fields']['image']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu woo --images &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            3, 4, 5...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['fields']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['fields']['video']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu woo --videos &lt;integer&gt;
+                                        </th>
+                                        <th>
+                                            3, 4, 5...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['category']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu woo --category-auto &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['variable']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu woo --variable &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['woo']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['gallery']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu woo --gallery &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>                                                                                                                                                                                                                       
+                                </table>
+                            </div>
+                            <div id="tabs-2">
+                                <table style="text-align:left">
+                                    <tr>
+                                        <th>
+                                            1)
+                                        </th>
+                                        <th>
+                                            <a href="https://wp-cli.org/" target="_blank"><?php $fifu['cli']['documentation']['site']() ?></a>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
                 </div>
             </div>
             <div id="tabs-b">
@@ -569,7 +2165,7 @@
                                 </form>
                             </th>
                             <th>
-                                <?php $fifu['where']['cpt']() ?>
+                                <?php $fifu['where']['cpt']() ?> <?php $fifu['hide']['exception']() ?>
                             </th>
                         </tr>
                     </table>
@@ -686,7 +2282,81 @@
                                 <?php $fifu['where']['post']() ?>
                             </th>
                         </tr>
+                        <tr>
+                            <th>
+                                <form
+                                    id="fifu_form_content_cpt"
+                                    action="javascript:void(0)"
+                                    method="post">
+
+                                    <input
+                                        type="submit"
+                                        href="javascript:void(0)"
+                                        id="fifu_toggle_content_cpt"
+                                        onclick="invert('content_cpt')"
+                                        name="fifu_toggle_content_cpt"
+                                        class="<?php echo $enable_content_cpt; ?>"
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input
+                                        type="hidden"
+                                        id="fifu_input_content_cpt"
+                                        name="fifu_input_content_cpt"
+                                        value="" >
+                                </form>
+                            </th>
+                            <th>
+                                <?php $fifu['where']['cpt']() ?>
+                            </th>
+                        </tr>
                     </table>
+                </div>
+
+                <div class="box">
+                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+
+                    <h2><?php $fifu['title']['media']() ?></h2>
+
+                    <div class="greybox" id="grad2">
+
+                        <?php $fifu['media']['desc']() ?>
+
+                        <br>
+                        <br>
+
+                        <b><?php $fifu['detail']['developers']() ?></b>: <?php $fifu['media']['dev']() ?>
+                    </div>
+
+                    <br>
+
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                <?php $fifu['media']['upload']() ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                <?php $fifu['media']['job']() ?>
+                            </th>
+                        </tr>
+                    </table>
+
                 </div>
 
                 <div class="box">
@@ -1783,6 +3453,26 @@
                                         </tr>
                                         <tr>
                                             <th>
+                                                <input
+                                                    type="submit"
+                                                    href="javascript:void(0)"
+                                                    id="fifu_toggle_slider_counter"
+                                                    name="fifu_toggle_slider_counter"
+                                                    class="toggleoff"
+                                                    value=""
+                                                    style="display:block;border:none">
+                                            </th>
+                                            <th>
+                                                <?php $fifu['slider']['counter']() ?>
+                                            </th>
+                                        </tr>
+                                    </table>
+
+                                    <br>
+
+                                    <table style="text-align:left">
+                                        <tr>
+                                            <th>
                                                 <input id="fifu_input_spinner_slider"
                                                        name="fifu_input_spinner_slider"
                                                        step="1"
@@ -1813,6 +3503,11 @@
                                             </th>
                                             <th>
                                                 <?php $fifu['slider']['duration']() ?>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <input type="submit" disabled value="<?php $fifu['button']['ok']() ?>" style="width:73px">
                                             </th>
                                         </tr>
                                     </table>
@@ -1928,11 +3623,42 @@
             </div>
             <div id="tabs-i">
                 <div class="box">
+
                     <h2><?php $fifu['title']['jetpack']() ?></h2>
-                    <div class="greybox">
-                        <?php $fifu['jetpack']['desc']() ?><br><br>
-                        <div class="polaroid">
-                            <img src="https://storage.googleapis.com/featuredimagefromurl/jetpack-219.jpg">
+
+                    <div id="tabsCDN">
+                        <ul>
+                            <li><a href="#tabs-1">Jetpack</a></li>
+                            <li><a href="#tabs-2">ShortPixel (beta)</a></li>
+                        </ul>
+                        <div id="tabs-1">
+                            <div class="greybox">
+
+                                <?php $fifu['jetpack']['desc']() ?><br><br>
+
+                                <div class="polaroid">
+                                    <img src="https://storage.googleapis.com/featuredimagefromurl/jetpack-219.jpg">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div id="tabs-2">
+                            <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey; position: relative; top: -40px">premium</a></div>
+                            <div class="greybox" id="grad2">
+
+                                <?php $fifu['shortpixel']['desc']() ?><br><br>
+                                <b><?php $fifu['detail']['requirement']() ?></b>: <?php $fifu['flickr']['important']() ?>
+
+                            </div>
+
+                            <br>
+
+                            <input
+                                type="submit"
+                                href="javascript:void(0)"
+                                class="toggleoff"
+                                value=""
+                                style="display:block;border:none">
                         </div>
                     </div>
                 </div>
@@ -2302,8 +4028,44 @@
                 </div>
 
                 <div class="box">
-                    <h2><?php $fifu['title']['import']() ?></h2>
+                    <h2><?php $fifu['title']['grid']() ?></h2>
                     <div class="greybox">
+                        <?php $fifu['grid']['desc']() ?>
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <form
+                                    id="fifu_form_grid_category"
+                                    action="javascript:void(0)"
+                                    method="post">
+                                    <input
+                                        type="submit"
+                                        href="javascript:void(0)"
+                                        id="fifu_toggle_grid_category"
+                                        onclick="invert('grid_category')"
+                                        name="fifu_toggle_grid_category"
+                                        class="<?php echo $enable_grid_category; ?>"
+                                        value=""
+                                        style="display:block;border:none">
+
+                                    <input
+                                        type="hidden"
+                                        id="fifu_input_grid_category"
+                                        name="fifu_input_grid_category"
+                                        value="" >
+                                </form>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="box">
+                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <h2><?php $fifu['title']['import']() ?></h2>
+
+                    <div class="greybox" id="grad2">
                         <?php $fifu['import']['desc']() ?>
                         <br/>
                         <br/>
@@ -2312,41 +4074,9 @@
                             <ul>
                                 <li><a href="#tabs-3"><?php $fifu['import']['tab']['import']() ?></a></li>
                                 <li><a href="#tabs-1"><?php $fifu['import']['tab']['custom']() ?></a></li>
-                                <li><a href="#tabs-2"><?php $fifu['import']['tab']['custom']() ?> (premium)</a></li>
                                 <li><a href="#tabs-4"><?php $fifu['import']['tab']['priority']() ?></a></li>
                             </ul>
                             <div id="tabs-1">
-
-                                <table style="text-align:left">
-                                    <tr>
-                                        <th>
-                                        </th>
-                                        <th>
-                                            <?php $fifu['import']['custom']['key']() ?>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <?php $fifu['import']['custom']['image']() ?>
-                                        </th>
-                                        <th>
-                                            fifu_image_url
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <?php $fifu['import']['custom']['alt']() ?>
-                                        </th>
-                                        <th>
-                                            fifu_image_alt
-                                        </th>
-                                    </tr>
-                                </table>
-
-                                <br/>
-                            </div>
-
-                            <div id="tabs-2">
                                 <table style="text-align:left">
                                     <tr>
                                         <th>
@@ -2455,40 +4185,6 @@
                 </div>
 
                 <div class="box">
-                    <h2><?php $fifu['title']['grid']() ?></h2>
-                    <div class="greybox">
-                        <?php $fifu['grid']['desc']() ?>
-                    </div>
-                    <br>
-                    <table style="text-align:left">
-                        <tr>
-                            <th>
-                                <form
-                                    id="fifu_form_grid_category"
-                                    action="javascript:void(0)"
-                                    method="post">
-                                    <input
-                                        type="submit"
-                                        href="javascript:void(0)"
-                                        id="fifu_toggle_grid_category"
-                                        onclick="invert('grid_category')"
-                                        name="fifu_toggle_grid_category"
-                                        class="<?php echo $enable_grid_category; ?>"
-                                        value=""
-                                        style="display:block;border:none">
-
-                                    <input
-                                        type="hidden"
-                                        id="fifu_input_grid_category"
-                                        name="fifu_input_grid_category"
-                                        value="" >
-                                </form>
-                            </th>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="box">
                     <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
                     <h2><?php $fifu['title']['fields']() ?></h2>
                     <div class="greybox" id="grad2">
@@ -2558,16 +4254,36 @@
                     <table style="text-align:left">
                         <tr>
                             <th>
-                                <form
-                                    action="javascript:void(0)"
-                                    method="post">
-                                    <input
-                                        type="submit"
-                                        href="javascript:void(0)"
-                                        class="toggleoff"
-                                        value=""
-                                        style="display:block;border:none" >
-                                </form>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none" >
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="box">
+                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <h2><?php $fifu['title']['gallery']() ?></h2>
+                    <div class="greybox" id="grad2">
+                        <?php $fifu['gallery']['desc']() ?>
+                        <br>
+                        <br>
+                        <b><?php $fifu['detail']['important']() ?></b>: <?php $fifu['gallery']['important']() ?>
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none" >
                             </th>
                         </tr>
                     </table>
@@ -2576,8 +4292,10 @@
 
             <div id="tabs-p">
                 <div class="box">
+                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
                     <h2><?php $fifu['title']['addon']() ?></h2>
-                    <div class="greybox">
+
+                    <div class="greybox" id="grad2">
                         <?php $fifu['addon']['desc']() ?>
                         <br/>
                         <br/>
@@ -2671,7 +4389,7 @@
                                     <i class="fab fa-facebook" style="font-size:30px"></i>
                                 </td>
                                 <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
-                                    <i class="fas fa-skull-crossbones" style="font-size:30px"></i>
+                                    <i class="fab fa-instagram" style="font-size:30px"></i>
                                 </td>
                                 <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
                                     <i class="fas fa-tachometer-alt" style="font-size:30px"></i>
@@ -2682,7 +4400,7 @@
                                     <i><?php $fifu['support']['facebook']() ?></i>
                                 </td>
                                 <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
-                                    <i><?php $fifu['support']['null']() ?></i>
+                                    <i><?php $fifu['support']['money']() ?></i>
                                 </td>
                                 <td style="width:33%;text-align:center;border-bottom: 1px solid #ddd !important">
                                     <i><?php $fifu['support']['speed']() ?></i>
@@ -2693,7 +4411,7 @@
                                     <?php $fifu['support']['facebook-desc']() ?>
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <?php $fifu['support']['null-desc']() ?>
+                                    <?php $fifu['support']['money-desc']() ?>
                                 </td>
                                 <td style="vertical-align: top;">
                                     <?php $fifu['support']['speed-desc']() ?>
@@ -2749,15 +4467,60 @@
                 <div class="box">
                     <h2><?php $fifu['title']['dev']() ?></h2>
                     <div class="greybox">
+                        <?php $fifu['dev']['function']() ?><br>
+                        <?php $fifu['dev']['args']() ?><br><br>
                         <table style="width:100%">
                             <tr>
                                 <td style="width:14%;vertical-align:unset;">
-                                    <i class="fab fa-dev" style="font-size:110px"></i>
+                                    <i class="fab fa-dev" style="font-size:110px; color: #76496d"></i>
                                 </td>
                                 <td style="width:85%">
-                                    <?php $fifu['dev']['function']() ?><br>
-                                    <?php $fifu['dev']['args']() ?><br><br>
-                                    <div style="background-color:#966385;color:white;padding:15px;border-radius:5px;font-weight:bold;">fifu_dev_set_image($post_id, $image_url)</div><br>
+                                    <hgroup style="float:right;opacity:0.85" class="speech-bubble3">
+                                        <table style="text-align:left; width:100%; background-color: #000; color: white; padding:15px; border-radius:13px; font-weight:bold;">
+                                            <tr>
+                                                <th>
+                                                    <b><?php $fifu['word']['field']() ?></b>
+                                                </th>
+                                                <th>
+                                                    <b><?php $fifu['word']['function']() ?></b>
+                                                </th>
+                                                <th>
+                                                    <b><?php $fifu['word']['delimiter']() ?></b>
+                                                </th>
+                                                <th>
+                                                    <b>Premium</b>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    Featured image
+                                                </th>
+                                                <th>
+                                                    fifu_dev_set_image($post_id, $image_url)
+                                                </th>
+                                                <th>
+                                                    <b></b>
+                                                </th>
+                                                <th>
+                                                    no
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    Product image + Image gallery
+                                                </th>
+                                                <th>
+                                                    fifu_dev_set_image_list($post_id, $image_url_list)
+                                                </th>
+                                                <th>
+                                                    <b>|</b>
+                                                </th>
+                                                <th>
+                                                    yes
+                                                </th>
+                                            </tr>
+                                        </table>
+                                    </hgroup>
                                 </td>
                             </tr>
                         </table>
@@ -2765,6 +4528,37 @@
                 </div>
             </div>
             <div id="tabs-t">
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2021-01-12</td>
+                            <td style="border-bottom:none"><h3> Avada</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Procut gallery has style issues:<br>
+                        1) access "Avada Settings > WooCommerce > WooCommerce Product Images Layout";<br>
+                        2) select "WooCommerce" instead of "Avada";<br>
+                        3) click on "Save Changes".<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2020-12-03</td>
+                            <td style="border-bottom:none"><h3> Rehub</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Featured slider is too big for Rehub sticky bar:<br>
+                        1) access "Appearance > Rehub > Customize > Additional CSS";<br>
+                        2) add:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;div.float-panel-woo-image > div.fifu-slider {max-width: 100px;}<br>
+                        3) publish.<br>
+                    </div>
+                </div>
                 <div class="box">
                     <table>
                         <tr>

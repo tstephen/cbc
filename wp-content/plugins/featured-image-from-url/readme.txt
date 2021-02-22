@@ -3,8 +3,8 @@ Contributors: marceljm
 Donate link: https://donorbox.org/fifu
 Tags: featured, image, url, woocommerce, thumbnail
 Requires at least: 5.3
-Tested up to: 5.5
-Stable tag: 3.4.2
+Tested up to: 5.6
+Stable tag: 3.5.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,6 +30,7 @@ Use an external image as featured image of your post, page or custom post type.
 * Auto set image title
 * Save image dimensions
 * Featured image column
+* **[Premium]** Save in the media library
 * **[Premium]** Giphy image search
 * **[Premium]** Unsplash image size
 * **[Premium]** Same height
@@ -56,8 +57,9 @@ Use an external image as featured image of your post, page or custom post type.
 
 #### AUTOMATION
 
-* WP All Import add-on
-* WooCommerce import
+* WP-CLI integration
+* **[Premium]** WP All Import add-on
+* **[Premium]** WooCommerce import
 * **[Premium]** WP REST API
 * **[Premium]** WooCommerce REST API
 * **[Premium]** Schedule metadata generation
@@ -73,6 +75,8 @@ Use an external image as featured image of your post, page or custom post type.
 * **[Premium]** Variable product
 * **[Premium]** Variation image
 * **[Premium]** Variation image gallery
+* **[Premium]** Save images in the media library
+* **[Premium]** FIFU product gallery
 
 #### FEATURED VIDEO
 Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publitio.
@@ -97,7 +101,8 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 #### INTEGRATION FUNCTION FOR DEVELOPERS
 
-* fifu_dev_set_image($post_id, $image_url)
+* fifu_dev_set_image(post_id, image_url)
+* **[Premium]** fifu_dev_set_image_list(post_id, image_url_list)
 
 #### LINKS
 
@@ -131,7 +136,7 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 = Does FIFU save the images in the media library? =
 
-* Never.
+* No. Only the Premium version is capable of doing this, but it is optional. The plugin was designed to work with external images.
 
 = Is any action necessary before removing FIFU?
 
@@ -195,14 +200,14 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Changelog ==
 
-= 3.4.2 =
-* Fix: conflict with Yoast SEO plugin (FIFU will not add social tags when Yoast have a Facebook/Twitter image on post editor); fix: conflict with Jetpack plugin (FIFU was getting CDN images even when Jetpack performance settings were disabled).
+= 3.5.3 =
+* New option: Featured Image in Content > Custom post type; new option: CDN + Optimized Thumbnails > Shortpixel.
 
-= 3.4.1 =
-* Fix: Instagram URLs.
+= 3.5.2 =
+* New feature: FIFU Product Gallery (able to replace WooCommerce Additional Variation Images plugin).
 
-= 3.4.0 =
-* Notice: for users with image URLs from Instagram (FIFU Settings > Troubleshooting).
+= 3.5.1 =
+* New premium feature: Save External Images in the Media Library; fix: WooCommerce category was keeping a few unnecessary metadata after deleting.
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -210,5 +215,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.4.2 =
-* Fix: conflict with Yoast SEO plugin (FIFU will not add social tags when Yoast have a Facebook/Twitter image on post editor); fix: conflict with Jetpack plugin (FIFU was getting CDN images even when Jetpack performance settings were disabled).
+= 3.5.3 =
+* New option: Featured Image in Content > Custom post type; new option: CDN + Optimized Thumbnails > Shortpixel.

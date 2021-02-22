@@ -99,6 +99,14 @@ function fifu_remove_first_image($data, $postarr) {
     return str_replace($img, fifu_hide_media($img), $data);
 }
 
+function fifu_has_properties() {
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'fifu') !== false)
+            return true;
+    }
+    return false;
+}
+
 add_action('save_post', 'fifu_save_properties');
 
 function fifu_save_properties($post_id) {
@@ -106,6 +114,9 @@ function fifu_save_properties($post_id) {
         return;
 
     if (isset($_POST['action']) && $_POST['action'] == 'woocommerce_do_ajax_product_import')
+        return;
+
+    if (!fifu_has_properties())
         return;
 
     $ignore = false;
@@ -195,31 +206,7 @@ function fifu_update_or_delete_ctgr($post_id, $field, $url) {
         delete_term_meta($post_id, $field, $url);
 }
 
-function fifu_wai_save($post_id, $is_ctgr) {
-    if ($is_ctgr) {
-        $url = get_term_meta($post_id, 'fifu_image_url', true);
-        $alt = get_term_meta($post_id, 'fifu_image_alt', true);
-        fifu_update_or_delete_ctgr($post_id, 'fifu_image_url', $url);
-        fifu_update_or_delete_ctgr($post_id, 'fifu_image_alt', $alt);
-    } else {
-        $url = get_post_meta($post_id, 'fifu_image_url', true);
-        $alt = get_term_meta($post_id, 'fifu_image_alt', true);
-        fifu_update_or_delete($post_id, 'fifu_image_url', $url);
-        fifu_update_or_delete($post_id, 'fifu_image_alt', $alt);
-    }
-}
-
 add_action('before_delete_post', 'fifu_db_before_delete_post');
-
-/* regular woocommerce import */
-
-add_action('woocommerce_product_import_inserted_product_object', 'fifu_woocommerce_import');
-
-function fifu_woocommerce_import($object) {
-    $post_id = $object->get_id();
-    fifu_wai_save($post_id, null);
-    fifu_update_fake_attach_id($post_id);
-}
 
 /* plugin: wcfm */
 
@@ -279,7 +266,6 @@ function fifu_variation_settings_fields($loop, $variation_data, $variation) {
                     'value' => get_post_meta($variation->ID, 'fifu_image_url_' . $i, true),
                     'label' => '<span class="dashicons dashicons-format-gallery" style="font-size:20px"></span>' . $fifu['variation']['images']() . ' #' . ($i + 1),
                     'desc_tip' => true,
-                    'description' => $fifu['variation']['wavi'](),
                     'placeholder' => $fifu['variation']['image'](),
                     'wrapper_class' => 'form-row form-row-full',
                 )

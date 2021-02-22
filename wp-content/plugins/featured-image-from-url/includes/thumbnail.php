@@ -155,10 +155,13 @@ function fifu_get_html($url, $alt, $width, $height) {
 add_filter('the_content', 'fifu_add_to_content');
 
 function fifu_add_to_content($content) {
-    return is_singular() && has_post_thumbnail() && ((is_singular('post') && fifu_is_on('fifu_content')) or ( is_singular('page') && fifu_is_on('fifu_content_page'))) ? get_the_post_thumbnail() . $content : $content;
+    return is_singular() && has_post_thumbnail() && ((is_singular('post') && fifu_is_on('fifu_content')) || (is_singular('page') && fifu_is_on('fifu_content_page')) || (fifu_is_cpt() && fifu_is_on('fifu_content_cpt'))) ? get_the_post_thumbnail() . $content : $content;
 }
 
 function fifu_should_hide() {
+    if (class_exists('WooCommerce') && is_product())
+        return false;
+
     return !is_front_page() && ((is_singular('post') && fifu_is_on('fifu_hide_post')) || (is_singular('page') && fifu_is_on('fifu_hide_page')) || (is_singular(get_post_type(get_the_ID())) && fifu_is_cpt() && fifu_is_on('fifu_hide_cpt')));
 }
 

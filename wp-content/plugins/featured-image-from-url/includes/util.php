@@ -71,27 +71,6 @@ function fifu_get_tags($post_id) {
     return $names ? rtrim($names) : null;
 }
 
-function fifu_check_instagram_thumb($url, $att_id, $post_id) {
-    if (!fifu_is_old_instagram_url($url))
-        return $url;
-
-    if (!fifu_is_in_editor()) {
-        $db_url = get_post_meta($post_id, 'fifu_image_url', true);
-        if ($db_url == $url) {
-            $new_url = fifu_api_get_instagram_thumb($url);
-            if ($new_url) {
-                update_post_meta($post_id, 'fifu_image_url', $new_url);
-                update_post_meta($att_id, '_wp_attached_file', $new_url);
-                global $wpdb;
-                $wpdb->update($wpdb->posts, ['guid' => $new_url], ['ID' => $att_id]);
-                return $new_url;
-            }
-        } else
-            return $db_url;
-    }
-    return $url;
-}
-
 function fifu_get_home_url() {
     return explode('//', get_home_url())[1];
 }

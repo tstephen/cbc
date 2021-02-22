@@ -69,6 +69,10 @@ th {
     height: 25px;
 }
 
+tr.color:nth-child(even) {
+    background-color: #efefef !important;
+}
+
 .ui-widget-header {
     background: #f9f9f9 !important;
     border: none !important;
@@ -145,6 +149,28 @@ th {
     border-top: 0;
     margin-left: -12px;
     margin-top: -12px;
+}
+
+.speech-bubble3 {
+    position: relative;
+    background: #000;
+    border-radius: 1em;
+    width: 100%;
+    line-height: 13px;
+}
+
+.speech-bubble3:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-right-color: #000;
+    border-left: 0;
+    margin-top: -12px;
+    margin-left: -12px;  
 }
 
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {

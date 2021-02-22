@@ -46,11 +46,13 @@ jQuery(function () {
     jQuery("#tabsPremium").tabs();
     jQuery("#tabsWooImport").tabs();
     jQuery("#tabsWpAllImport").tabs();
+    jQuery("#tabsCDN").tabs();
     jQuery("#tabsShortcode").tabs();
     jQuery("#tabsAutoSet").tabs();
     jQuery("#tabsSlider").tabs();
     jQuery("#tabsContent").tabs();
     jQuery("#tabsContentAll").tabs();
+    jQuery("#tabsCli").tabs();
 
     // show settings
     window.scrollTo(0, 0);
