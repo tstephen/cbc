@@ -3640,6 +3640,9 @@
                                     <img src="https://storage.googleapis.com/featuredimagefromurl/jetpack-219.jpg">
                                 </div>
 
+                                <br>
+                                <b><?php $fifu['detail']['requirement']() ?></b>: <?php $fifu['jetpack']['requirement']() ?>
+
                             </div>
                         </div>
                         <div id="tabs-2">
@@ -4270,9 +4273,6 @@
                     <h2><?php $fifu['title']['gallery']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['gallery']['desc']() ?>
-                        <br>
-                        <br>
-                        <b><?php $fifu['detail']['important']() ?></b>: <?php $fifu['gallery']['important']() ?>
                     </div>
                     <br>
                     <table style="text-align:left">
@@ -4528,6 +4528,39 @@
                 </div>
             </div>
             <div id="tabs-t">
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2021-02-24</td>
+                            <td style="border-bottom:none"><h3> YITH WooCommerce Badge Management</h3></td>
+                            <td style="border-bottom:none">plugin</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Badge is not being displayed when FIFU Product Gallery is enabled:<br>
+                        1) access "Appearance > your theme > Customize > Additional CSS";<br>
+                        2) add:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;.yith-wcbm-badge {z-index: 11}<br>
+                        3) publish.<br>
+                    </div>
+                </div>
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2021-02-19</td>
+                            <td style="border-bottom:none"><h3> Gillion</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Theme hover effects are blocking featured video commands:<br>
+                        1) access "Appearance > Gillion > Customize > Additional CSS";<br>
+                        2) add:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;.fifu_wrapper ~ a.post-lightbox {display: none !important;}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;div.post-thumbnail > a.post-overlay {display: none;}<br>
+                        3) publish.<br>
+                    </div>
+                </div>
                 <div class="box">
                     <table>
                         <tr>

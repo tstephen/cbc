@@ -831,6 +831,9 @@ function fifu_get_strings_settings() {
     $fifu['jetpack']['desc'] = function() {
         _e("Just install Jetpack plugin and configure its performance settings as shown below. All your external images will be automatically stored and optimized in a free CDN. And to make things even faster FIFU will load the thumbnails in the exact size your site needs.", FIFU_SLUG);
     };
+    $fifu['jetpack']['requirement'] = function() {
+        _e("FIFU Lazy Load feature should be enabled.", FIFU_SLUG);
+    };
     $fifu['shortpixel']['desc'] = function() {
         _e("ShortPixel CDN is being tested as an alternative to Jetpack. You don't need to install any plugins to use this CDN.", FIFU_SLUG);
     };
@@ -1128,10 +1131,6 @@ function fifu_get_strings_settings() {
     $fifu['gallery']['desc'] = function() {
         _e("It is known that some galleries provided by some themes work only when the dimensions of the images are saved in the database, which is often impracticable due to the slowness of this process. So FIFU offers a product gallery that does not depend on the dimensions of the external images to work correctly. You can configure the behavior of this gallery in the \"Featured slider\" tab. You should enable at least \"show gallery on click\" and \"show thumbnails gallery\". To change the aspect ratio, access \"Featured image > Same Height > Size ratio\".", FIFU_SLUG);
     };
-    $fifu['gallery']['important'] = function() {
-        _e("it's not integrated with videos and featured slider yet.", FIFU_SLUG);
-    };
-
 
     // variable
     $fifu['variable']['desc'] = function() {

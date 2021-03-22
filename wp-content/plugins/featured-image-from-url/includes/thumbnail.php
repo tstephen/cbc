@@ -137,6 +137,10 @@ function fifu_replace($html, $post_id, $post_thumbnail_id, $size, $attr) {
     if ($url)
         return $html;
 
+    // hide internal featured images
+    if (!$url && fifu_should_hide())
+        return '';
+
     $width = fifu_get_attribute('width', $html);
     $height = fifu_get_attribute('height', $html);
 

@@ -3,8 +3,8 @@ Contributors: marceljm
 Donate link: https://donorbox.org/fifu
 Tags: featured, image, url, woocommerce, thumbnail
 Requires at least: 5.3
-Tested up to: 5.6
-Stable tag: 3.5.3
+Tested up to: 5.7
+Stable tag: 3.5.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -200,14 +200,14 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Changelog ==
 
+= 3.5.5 =
+* Improvement: Hide Featured Media may work with internal featured images now.
+
+= 3.5.4 =
+* Improvement: FIFU Product Gallery supports videos now.
+
 = 3.5.3 =
 * New option: Featured Image in Content > Custom post type; new option: CDN + Optimized Thumbnails > Shortpixel.
-
-= 3.5.2 =
-* New feature: FIFU Product Gallery (able to replace WooCommerce Additional Variation Images plugin).
-
-= 3.5.1 =
-* New premium feature: Save External Images in the Media Library; fix: WooCommerce category was keeping a few unnecessary metadata after deleting.
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -215,5 +215,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.5.3 =
-* New option: Featured Image in Content > Custom post type; new option: CDN + Optimized Thumbnails > Shortpixel.
+= 3.5.5 =
+* Improvement: Hide Featured Media may work with internal featured images now.
