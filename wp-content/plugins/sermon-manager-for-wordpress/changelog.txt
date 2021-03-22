@@ -1,4 +1,7 @@
 Note: Newer changelog is in readme.txt
+### 2.16.7 ###
+Fix: Single and mulitple file attachment available
+
 ### 2.16.6 ###
 Fix: Old Missing PDF file data issue fix
 

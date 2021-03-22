@@ -18,6 +18,7 @@
 
 global $post;
 
+
 if ( empty( $GLOBALS['wpfc_partial_args'] ) ) {
 	$GLOBALS['wpfc_partial_args'] = array();
 }

@@ -23,48 +23,62 @@ global $post;
 		<?php 
 		if(get_wpfc_sermon_meta( 'sermon_notes' )){
 		$notes = get_wpfc_sermon_meta( 'sermon_notes' );	
-		if(is_array($notes)){
-			if(count($notes) > 0):
-			foreach ($notes as $key => $value) {?>
-			<a href="<?php echo $value; ?>"
-				class="sermon-attachments"
-				download="<?php echo basename( $value ); ?>">
-				<span class="dashicons dashicons-media-document"></span>
-				<?php echo __( 'Notes', 'sermon-manager-for-wordpress' ); ?>
-			</a>				
-			<?php } endif;
-		}else{ ?>
+		 ?>
 			<a href="<?php echo $notes; ?>"
 				class="sermon-attachments"
 				download="<?php echo basename( $notes ); ?>">
 				<span class="dashicons dashicons-media-document"></span>
 				<?php echo __( 'Notes', 'sermon-manager-for-wordpress' ); ?>
 			</a>	
-		<?php }	
-		
+		<?php		
 		}
-				if(get_wpfc_sermon_meta( 'sermon_bulletin' )){
+
+		if(get_wpfc_sermon_meta( 'sermon_notes_multiple' )){
+			$notes_multiple = get_wpfc_sermon_meta( 'sermon_notes_multiple' );
+			if(is_array($notes_multiple)){
+				if(count($notes_multiple) > 0){
+					foreach ($notes_multiple as $key => $value) {?>
+					<a href="<?php echo $value; ?>"
+						class="sermon-attachments"
+						download="<?php echo basename( $value ); ?>">
+						<span class="dashicons dashicons-media-document"></span>
+						<?php echo __( 'Notes', 'sermon-manager-for-wordpress' ); ?>
+					</a><?php
+					}				
+				}
+			}
+		}
+
+
+
+		if(get_wpfc_sermon_meta( 'sermon_bulletin' )){
 			$sermon_bulletin =get_wpfc_sermon_meta( 'sermon_bulletin' );
-			if(is_array($sermon_bulletin)){
-				if( count($sermon_bulletin)>0):
-				foreach ($sermon_bulletin as $k => $v) {?>
-				<a href="<?php echo $v; ?>"
-					class="sermon-attachments"
-					download="<?php echo basename( $v ); ?>">
-					<span class="dashicons dashicons-media-document"></span>
-					<?php echo __( 'Bulletin', 'sermon-manager-for-wordpress' ); ?>
-				</a>				
-				<?php } endif;	
-			}else{?>
+			?>
 				<a href="<?php echo $sermon_bulletin; ?>"
 					class="sermon-attachments"
 					download="<?php echo basename( $sermon_bulletin ); ?>">
 					<span class="dashicons dashicons-media-document"></span>
 					<?php echo __( 'Bulletin', 'sermon-manager-for-wordpress' ); ?>
 				</a>	
-			<?php }
-					
+			<?php 
 		}
-		 ?>
+
+		if(get_wpfc_sermon_meta( 'sermon_bulletin_multiple' )){
+			$bulletin_multiple = get_wpfc_sermon_meta( 'sermon_bulletin_multiple' );
+			if(is_array($bulletin_multiple)){
+				if(count($bulletin_multiple) > 0){
+					foreach ($bulletin_multiple as $key => $value) {?>
+					<a href="<?php echo $value; ?>"
+						class="sermon-attachments"
+						download="<?php echo basename( $value ); ?>">
+						<span class="dashicons dashicons-media-document"></span>
+						<?php echo __( 'Bulletin', 'sermon-manager-for-wordpress' ); ?>
+					</a><?php
+					}				
+				}
+			}
+		}
+					
+		?>
 	</p>
 </div>

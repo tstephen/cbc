@@ -117,7 +117,7 @@ global $post;
 				}
 				 ?>			
 				
-			<?php if ( get_wpfc_sermon_meta( 'sermon_notes' ) || get_wpfc_sermon_meta( 'sermon_bulletin' ) ) : ?>
+			<?php if ( get_wpfc_sermon_meta( 'sermon_notes' ) || get_wpfc_sermon_meta( 'sermon_bulletin' ) || get_wpfc_sermon_meta( 'sermon_notes_multiple' ) || get_wpfc_sermon_meta( 'sermon_bulletin_multiple' )) : ?>
 				<div class="wpfc-sermon-single-attachments"><?php echo wpfc_sermon_attachments(); ?></div>
 			<?php endif; ?>
 			<?php if ( has_term( '', 'wpfc_sermon_topics', $post->ID ) ) : ?>

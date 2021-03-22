@@ -119,9 +119,19 @@ function wpfc_sermon_metaboxes() {
 		'type' => 'text_url',
 	) ) );
 	$sermon_files_meta->add_field( array(
-		'name' => esc_html__( 'Sermon Notes', 'sermon-manager-for-wordpress' ),
-		'desc' => esc_html__( 'Upload  pdf file(s).', 'sermon-manager-for-wordpress' ),
+		'name' => esc_html__( 'Single Sermon Note', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload  pdf file.', 'sermon-manager-for-wordpress' ),
 		'id'   => 'sermon_notes',
+		'type' => 'file',
+		'text' => array(
+			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),
+			// Change upload button text. Default: "Add or Upload File".
+		),
+	) );
+	$sermon_files_meta->add_field( array(
+		'name' => esc_html__( 'Multiple Sermon Notes', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload  pdf files.', 'sermon-manager-for-wordpress' ),
+		'id'   => 'sermon_notes_multiple',
 		'type' => 'file_list',
 		'text' => array(
 			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),
@@ -129,9 +139,19 @@ function wpfc_sermon_metaboxes() {
 		),
 	) );
 	$sermon_files_meta->add_field( array(
-		'name' => esc_html__( 'Bulletin', 'sermon-manager-for-wordpress' ),
-		'desc' => esc_html__( 'Upload a pdf file(s).', 'sermon-manager-for-wordpress' ),
+		'name' => esc_html__( 'Single Bulletin', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload a pdf file.', 'sermon-manager-for-wordpress' ),
 		'id'   => 'sermon_bulletin',
+		'type' => 'file',
+		'text' => array(
+			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),
+			// Change upload button text. Default: "Add or Upload File".
+		),
+	) );
+	$sermon_files_meta->add_field( array(
+		'name' => esc_html__( 'Multiple Bulletin', 'sermon-manager-for-wordpress' ),
+		'desc' => esc_html__( 'Upload pdf files.', 'sermon-manager-for-wordpress' ),
+		'id'   => 'sermon_bulletin_multiple',
 		'type' => 'file_list',
 		'text' => array(
 			'add_upload_file_text' => esc_html__( 'Add File', 'sermon-manager-for-wordpress' ),

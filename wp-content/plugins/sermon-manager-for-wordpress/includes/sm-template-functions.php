@@ -442,7 +442,7 @@ function wpfc_render_audio( $source = '', $seek = null ) {
  * @return string
  */
 function wpfc_sermon_attachments() {
-	if ( ! get_wpfc_sermon_meta( 'sermon_notes' ) && ! get_wpfc_sermon_meta( 'sermon_bulletin' ) ) {
+	if ( ! get_wpfc_sermon_meta( 'sermon_notes' ) && ! get_wpfc_sermon_meta( 'sermon_bulletin' )  && ! get_wpfc_sermon_meta( 'sermon_notes_multiple' )  && ! get_wpfc_sermon_meta( 'sermon_bulletin_multiple' ) ) {
 		return '';
 	}
 
