@@ -24,7 +24,7 @@ class Limit_Login_Attempts {
 		'long_duration'      => 86400, // 24 hours,
 
 		/* Reset failed attempts after this many seconds */
-		'valid_duration'     => 43200, // 12 hours
+		'valid_duration'     => 86400, // 12 hours
 
 		/* Also limit malformed/forged cookies? */
 		'cookies'            => true,
@@ -117,7 +117,7 @@ class Limit_Login_Attempts {
 		add_action( 'wp_ajax_app_acl_add_rule', array( $this, 'app_acl_add_rule_callback' ));
 		add_action( 'wp_ajax_app_acl_remove_rule', array( $this, 'app_acl_remove_rule_callback' ));
 
-		add_action( 'admin_print_scripts-settings_page_limit-login-attempts', array( $this, 'load_admin_scripts' ) );
+		add_action( 'admin_print_scripts-toplevel_page_limit-login-attempts', array( $this, 'load_admin_scripts' ) );
 
 		add_action( 'admin_init', array( $this, 'welcome_page_redirect' ), 9999 );
 		add_action( 'admin_head', array( $this, 'welcome_page_hide_menu' ) );
@@ -258,6 +258,7 @@ class Limit_Login_Attempts {
 
 		wp_enqueue_style( 'llar-charts', LLA_PLUGIN_URL.'assets/css/Chart.min.css' );
 		wp_enqueue_script( 'llar-charts', LLA_PLUGIN_URL . 'assets/js/Chart.bundle.min.js' );
+		wp_enqueue_script( 'llar-charts-gauge', LLA_PLUGIN_URL . 'assets/js/chartjs-gauge.js' );
 	}
 
 	public function check_whitelist_ips( $allow, $ip ) {
@@ -546,9 +547,26 @@ class Limit_Login_Attempts {
 		add_submenu_page( 'settings.php', 'Limit Login Attempts', 'Limit Login Attempts', 'manage_options', $this->_options_page_slug, array( $this, 'options_page' ) );
 	}
 
-	public function admin_menu()
-	{
+	public function admin_menu() {
+	    global $submenu;
+
 		add_options_page( 'Limit Login Attempts', 'Limit Login Attempts', 'manage_options', $this->_options_page_slug, array( $this, 'options_page' ) );
+		add_menu_page( 'Limit Login Attempts', 'Limit Login Attempts', 'manage_options', $this->_options_page_slug, array( $this, 'options_page' ) );
+
+
+		$submenu_position = false;
+		if( !empty( $submenu['options-general.php'] ) ) {
+		     foreach ( $submenu['options-general.php'] as $pos => $item ) {
+		         if( $item[2] === $this->_options_page_slug ) {
+					 $submenu_position = $pos;
+					 break;
+                 }
+             }
+        }
+
+		if( $submenu_position ) {
+			$submenu['options-general.php'][$submenu_position] = array( 'Limit Login Attempts', 'manage_options', admin_url( 'admin.php?page='.$this->_options_page_slug ), 'Limit Login Attempts' );
+		}
 
 		add_dashboard_page(
             'Welcome to Limit Login Attempts Reloaded',
@@ -752,6 +770,7 @@ class Limit_Login_Attempts {
 			/* Get the arrays with retries and retries-valid information */
 			$retries = $this->get_option( 'retries' );
 			$valid   = $this->get_option( 'retries_valid' );
+			$retries_stats = $this->get_option( 'retries_stats' );
 
 			if ( ! is_array( $retries ) ) {
 				$retries = array();
@@ -762,6 +781,21 @@ class Limit_Login_Attempts {
 				$valid = array();
 				$this->add_option( 'retries_valid', $valid );
 			}
+
+			if ( ! is_array( $retries_stats ) ) {
+				$retries_stats = array();
+				$this->add_option( 'retries_stats', $retries_stats );
+			}
+
+			$date_key = date_i18n( 'Y-m-d' );
+            if(!empty($retries_stats[$date_key])) {
+
+				$retries_stats[$date_key]++;
+			} else {
+
+				$retries_stats[$date_key] = 1;
+            }
+			$this->update_option( 'retries_stats', $retries_stats );
 
 			$gdpr = $this->get_option('gdpr');
 			$ip = ($gdpr ? $ipHash : $ip);
@@ -921,20 +955,21 @@ class Limit_Login_Attempts {
 		    $admin_name = ' ' . $res[0];
         }
 
+        $site_domain = str_replace( array( 'http://', 'https://' ), '', home_url() );
 		$blogname = $this->use_local_options ? get_option( 'blogname' ) : get_site_option( 'site_name' );
 		$blogname = htmlspecialchars_decode( $blogname, ENT_QUOTES );
 
-        $subject = sprintf( __( "[%s] Failed login attempts", 'limit-login-attempts-reloaded' ) , $blogname );
+        $subject = sprintf( __( "[%s] Failed login attempt alert", 'limit-login-attempts-reloaded' ), $blogname );
 
         $message = __( '<p>Hello%1$s,</p>' .
                        '<p>%2$d failed login attempts (%3$d lockout(s)) from IP <b>%4$s</b><br>' .
                        'Last user attempted: <b>%5$s</b><br>'.
                        'IP was blocked for %6$s</p>'.
                        '<p>This notification was sent automatically via Limit Login Attempts Reloaded Plugin. ' .
-                       '<b>This is installed on your WordPress site.</b></p>'.
-                       '<p>Under Attack? Try our <a href="%7$s" target="_blank">advanced protection</a>. ' .
-                       'Have Questions? Visit our <a href="%8$s" target="_blank">help section</a>.</p>' .
-                       '<hr><a href="%9$s">Unsubscribe</a> from these notifications.', 'limit-login-attempts-reloaded' );
+                       '<b>This is installed on your %7$s WordPress site.</b></p>'.
+                       '<p>Under Attack? Try our <a href="%8$s" target="_blank">advanced protection</a>. ' .
+                       'Have Questions? Visit our <a href="%9$s" target="_blank">help section</a>.</p>' .
+                       '<hr><a href="%10$s">Unsubscribe</a> from these notifications.', 'limit-login-attempts-reloaded' );
 
 		$plugin_data = get_plugin_data( LLA_PLUGIN_DIR . '/limit-login-attempts-reloaded.php' );
 
@@ -946,9 +981,10 @@ class Limit_Login_Attempts {
             $ip,
 			$user,
             $when,
+			$site_domain,
 			'https://www.limitloginattempts.com/info.php?from=plugin-lockout-email&v='.$plugin_data['Version'],
 			'https://www.limitloginattempts.com/resources/?from=plugin-lockout-email',
-            admin_url( 'options-general.php?page=limit-login-attempts&tab=settings' )
+            admin_url( 'admin.php?page=limit-login-attempts&tab=settings' )
         );
 
 		@wp_mail( $admin_email, $subject, $message, array( 'content-type: text/html' ) );
@@ -1435,6 +1471,20 @@ class Limit_Login_Attempts {
 			}
 		}
 
+		$retries_stats = $this->get_option( 'retries_stats' );
+
+		if($retries_stats) {
+
+			foreach( $retries_stats as $date => $count ) {
+
+				if( strtotime( $date ) < strtotime( '-7 day' ) ) {
+					unset($retries_stats[$date]);
+				}
+			}
+
+			$this->update_option( 'retries_stats', $retries_stats );
+        }
+
 		$this->update_option( 'retries', $retries );
 		$this->update_option( 'retries_valid', $valid );
 	}
@@ -1576,7 +1626,7 @@ class Limit_Login_Attempts {
 
                 if( !empty( $_POST['llar_app_settings'] ) && $this->app ) {
 
-                    if( ( $app_setup_code = $this->get_option( 'app_setup_code' ) ) && $setup_result = LLAR_App::setup( strrev( $app_setup_code ) ) ) {
+                    if( ( $app_setup_code = $this->get_option( 'app_setup_code' ) ) && $setup_result = LLAR_App::setup( strrev( $app_setup_code ), true ) ) {
 
                         if( $setup_result['success'] && $active_app_config = $setup_result['app_config'] ) {
 
@@ -1686,7 +1736,7 @@ class Limit_Login_Attempts {
 
         if ( !current_user_can('manage_options') ||
             $this->get_option('review_notice_shown') ||
-            !in_array( $screen->base, array( 'dashboard', 'plugins', 'settings_page_limit-login-attempts' ) ) ) return;
+            !in_array( $screen->base, array( 'dashboard', 'plugins', 'toplevel_page_limit-login-attempts' ) ) ) return;
 
         $activation_timestamp = $this->get_option('activation_timestamp');
 
@@ -2252,7 +2302,7 @@ class Limit_Login_Attempts {
 
 		    wp_send_json_error(array(
 				'error_notice' => '<div class="llar-app-notice">
-                                        <p>'. $app_config['messages']['sync_error'] .'<br><br>'. sprintf( __( 'Meanwhile, the app falls over to the <a href="%s">default functionality</a>.', 'limit-login-attempts-reloaded' ), admin_url('options-general.php?page=limit-login-attempts&tab=logs-local') ) . '</p>
+                                        <p>'. $app_config['messages']['sync_error'] .'<br><br>'. sprintf( __( 'Meanwhile, the app falls over to the <a href="%s">default functionality</a>.', 'limit-login-attempts-reloaded' ), admin_url('admin.php?page=limit-login-attempts&tab=logs-local') ) . '</p>
                                     </div>'
             ));
         } else {
