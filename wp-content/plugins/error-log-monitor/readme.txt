@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: dashboard widget, administration, error reporting, admin, maintenance, php
 Requires at least: 4.5
-Tested up to: 5.5.3
-Stable tag: 1.6.13
+Tested up to: 5.6
+Stable tag: 1.7
 
 Adds a Dashboard widget that displays the latest messages from your PHP error log. It can also send logged errors to email.
 
@@ -45,6 +45,12 @@ Follow these steps to install the plugin on your site:
 2. Dashboard widget configuration screen.
 
 == Changelog ==
+
+= 1.7 =
+* Added a "mark as fixed" option. Like the "ignore" option, "mark as fixed" hides all existing copies of a specific error. However, if the same error happens again in the future, the plugin will make it visible again.
+* Added a "Clear Ignored Messages" button. It un-ignores all previously ignored messages.
+* Fixed a couple of PHP 8 deprecation warnings about a required parameter following an optional parameter.
+* Tested with WP 5.6.1 and 5.7-beta.
 
 = 1.6.13 = 
 * Fixed "Deprecated: contextual_help is deprecated since version 3.3.0". While this plugin doesn't use the "contextual_help" filter, it includes a copy of scbFramework that can also be used by other active plugins. Some of those plugins could run code in scbFramework that used "contextual_help". This deprecated code has now been removed.
@@ -190,17 +196,3 @@ Follow these steps to install the plugin on your site:
 = 1.2.2 = 
 * Updated Scb Framework to the latest revision.
 * Tested up to WordPress 4.0 beta.
-
-= 1.2.1 = 
-* Tested up to WordPress 3.9.
-
-= 1.2 = 
-* Tested up to WordPress 3.7.1.
-
-= 1.1 = 
-* Fixed plugin homepage URL.
-* Fix: If no email address is specified, simply skip emailing the log instead of throwing an error.
-* Tested with WordPress 3.4.2.
-
-= 1.0 =
-* Initial release.

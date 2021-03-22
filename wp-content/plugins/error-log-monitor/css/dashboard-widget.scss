@@ -43,8 +43,12 @@ $widgetTopMargin: 11px;
 		visibility: visible;
 	}
 
-	.elm-ignored-messages {
+	.elm-ignored-messages, .elm-fixed-messages {
 		margin-bottom: 1em;
+	}
+
+	#elm-clear-ignored-messages {
+		margin-bottom: 8px;
 	}
 
 	.dashicons {
