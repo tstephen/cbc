@@ -7,6 +7,7 @@
 ~*
 **/.DS_Store
 
+.ftpquota
 .htaccess
 .maintenance
 
@@ -19,6 +20,7 @@ npm-debug.log
 node_modules
 
 # Wordpress
+index.php
 wp-config.php
 sitemap.xml
 sitemap.xml.gz
@@ -26,6 +28,7 @@ wp-content/blogs.dir/
 wp-content/backup-db/
 wp-content/cache/
 wp-content/backups/
+wp-content/index.php
 wp-content/languages/
 wp-content/themes/index.php
 wp-content/themes/twenty*
@@ -41,9 +44,8 @@ wp-content/db.php
 
 wp-admin/
 wp-includes/
-/index.php
-/license.txt
-/readme.html
+license.txt
+readme*.html
 
 # de_DE
 /liesmich.html
