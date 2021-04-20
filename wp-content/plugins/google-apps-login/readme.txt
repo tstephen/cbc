@@ -2,8 +2,8 @@
 Contributors: levertechadmin
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 4.0
-Tested up to: 5.5.1
-Stable tag: 3.4.3
+Tested up to: 5.7
+Stable tag: 3.4.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -197,9 +197,15 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 
 == Changelog ==
 
-= 3.4.2 =
+= 3.4.4 =
 
-Updated compatibility with the WordPress 5.5.1 release.
+Updated compatibility with the WordPress 5.7 release.
+Login with the google button removed static images genrated same button using HTML code and use google svg icon
+Bug fixed for header already sent 
+
+= 3.4.3 =
+
+Updated compatibility with the WordPress 5.6 release.
 
 = 3.4.2 =
 
