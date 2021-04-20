@@ -6,7 +6,7 @@ Tags: email marketing, subscription, autoresponder, post notification, welcome e
 Requires at least: 3.9
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 4.6.13
+Stable tag: 4.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -69,7 +69,8 @@ Email Subscribers is a fully-featured subscription plugin specially created keep
 > 👉  **Automatic Background Sending**
 > 👉  **Active Contacts Growth**
 > 👉  **Advance Campaign Reports**
-> 👉  **Connect with SMTP / Email Sending Services**
+> 👉  **Connect with SMTP**
+> 👉  **Send email using Mailgun, Sparkpost, Sendgrid, Peipost & Amazon SES**
 > 👉  **Email Open Tracking**
 > 👉  **Link Tracking**
 > 👉  **UTM Tracking**
@@ -303,6 +304,16 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 
 
 == Changelog ==
+
+**4.7.0 (05.04.2021)**
+
+* New: Support for list and status fields while importing contacts through CSV
+* New: Using batch API to send emails through Mailgun [PRO]
+
+**4.6.14 (25.03.2021)**
+
+* New: Send emails using Mailgun, SparkPost and SendGrid [PRO]
+* New: Import contacts from MailChimp
 
 **4.6.13 (17.03.2021)**
 

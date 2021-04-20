@@ -1495,7 +1495,7 @@ if ( ! class_exists( 'ES_Install' ) ) {
 
 			$es_roles_default_permission['campaigns'] = $campaigns_permission;
 			$es_roles_default_permission['reports']   = $reports_permission;
-			$es_roles_default_permission['sequence']  = $sequence_permission;
+			$es_roles_default_permission['sequences'] = $sequence_permission;
 			$es_roles_default_permission['audience']  = $audience_permission;
 			$es_roles_default_permission['forms']     = $forms_permission;
 			$es_roles_default_permission['workflows'] = $workflows_permission;

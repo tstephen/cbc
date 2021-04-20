@@ -1115,6 +1115,7 @@ div.es .last {
 	display: inline-block;
 	padding: 0 1em;
 	text-align: center;
+	width: 150px;
 }
 
 .es-mailer-logo img {
@@ -1823,7 +1824,7 @@ div.broadcast_side_content{
     overflow:auto !important;
 }
 
-.step2-status, .step2-list,.progress.finished,.importing-progress.finished{
+.step2-status, .step2-list,.progress.finished,.importing-progress.finished, .wrapper-start-contacts-import{
 	display: none;
 }
 
@@ -2093,3 +2094,26 @@ body[class*="es_reports"] .recipient-text {
 
 /* Campaign Rules CSS - END */
 
+/** Tailwind tooltip Custom CSS - START */
+.es-tooltip:hover .tooltip-text {
+	visibility: visible;
+}
+
+.es-tooltip .tooltip-text  {
+	bottom: 25px;
+    transform: translate(-50%,0%);
+    left: 50%;
+	opacity: 0.9;
+}
+
+.es-tooltip .tooltip-text svg  {
+	left: 50%;
+    transform: translate(-50%, 0px);
+}
+/** Tailwind tooltip Custom CSS - END */
+
+/** Import subscribers CSS - START */
+.es-importer-logo {
+	width: 160px;
+}
+/** Import subscribers CSS - END */

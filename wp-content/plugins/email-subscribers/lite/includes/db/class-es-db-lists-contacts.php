@@ -473,6 +473,10 @@ class ES_DB_Lists_Contacts extends ES_DB {
 		if ( count( $contacts ) > 0 ) {
 			$values = array();
 
+			if ( ! is_array( $list_ids ) ) {
+				$list_ids = array( absint( $list_ids ) );
+			}
+			
 			$key = 0;
 			foreach ( $contacts as $contact_id ) {
 

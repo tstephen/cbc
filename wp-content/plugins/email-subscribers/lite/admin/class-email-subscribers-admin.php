@@ -171,36 +171,39 @@ class Email_Subscribers_Admin {
 				'remove_conditions_message'       => __( 'Do you really like to remove all conditions?', 'email-subscribers' ),
 				
 				// Workflows messages.
-				'no_trigger_message'          => __( 'Please select a trigger before saving the workflow.', 'email-subscribers' ),
-				'no_actions_message'          => __( 'Please add some actions before saving the workflow.', 'email-subscribers' ),
-				'no_action_selected_message'  => __( 'Please select an action that this workflow should perform before saving the workflow.', 'email-subscribers' ),
-				'trigger_change_message'      => __( 'Changing the trigger will remove existing actions. Do you want to proceed anyway?.', 'email-subscribers' ),
-				'placeholder_copied_message'  => __( 'Copied!', 'email-subscribers' ),
-				'delete_confirmation_message' => __( 'Are you sure?', 'email-subscribers' ),
+				'no_trigger_message'          	=> __( 'Please select a trigger before saving the workflow.', 'email-subscribers' ),
+				'no_actions_message'          	=> __( 'Please add some actions before saving the workflow.', 'email-subscribers' ),
+				'no_action_selected_message'  	=> __( 'Please select an action that this workflow should perform before saving the workflow.', 'email-subscribers' ),
+				'trigger_change_message'      	=> __( 'Changing the trigger will remove existing actions. Do you want to proceed anyway?.', 'email-subscribers' ),
+				'placeholder_copied_message'  	=> __( 'Copied!', 'email-subscribers' ),
+				'delete_confirmation_message' 	=> __( 'Are you sure?', 'email-subscribers' ),
 
 				// Import subscribers messages.
-				'select_status'        => esc_html__( 'Please select the status for the importing contacts!', 'email-subscribers' ),
-				'select_email_column'  => esc_html__( 'Please select the email address column!', 'email-subscribers' ),
-				'prepare_data'         => esc_html__( 'Preparing Data', 'email-subscribers' ),
+				'select_status'        		  	=> esc_html__( 'Please select the status for the importing contacts!', 'email-subscribers' ),
+				'select_list'          		  	=> esc_html__( 'Please select a list for importing contacts!', 'email-subscribers' ),
+				'select_email_column'  		  	=> esc_html__( 'Please select the email address column!', 'email-subscribers' ),
+				'prepare_data'         		  	=> esc_html__( 'Preparing Data', 'email-subscribers' ),
 				/* translators: %s: Upload progress */
-				'uploading'            => esc_html__( 'Uploading...%s', 'email-subscribers' ),
+				'uploading'            		  	=> esc_html__( 'Uploading...%s', 'email-subscribers' ),
 				/* translators: %s: Import progress */
-				'import_contacts'      => esc_html__( 'Importing contacts...%s', 'email-subscribers' ),
+				'import_contacts'      		  	=> esc_html__( 'Importing contacts...%s', 'email-subscribers' ),
 				/* translators: %s: Import failed svg icon  */
-				'import_failed'        => esc_html__( 'Import failed! %s', 'email-subscribers' ),
-				'no_windowclose'   	   => esc_html__( 'Please do not close this window until it completes...', 'email-subscribers' ),
-				'prepare_import'       => esc_html__( 'Preparing Import...', 'email-subscribers' ),
+				'import_failed'        		  	=> esc_html__( 'Import failed! %s', 'email-subscribers' ),
+				'no_windowclose'   	   		  	=> esc_html__( 'Please do not close this window until it completes...', 'email-subscribers' ),
+				'prepare_import'       		  	=> esc_html__( 'Preparing Import...', 'email-subscribers' ),
 				/* translators: 1. Imported contacts count 2. Total contacts count 3. Failed to import count 4. Memory usage */
-				'current_stats'        => esc_html__( 'Currently %1$s of %2$s imported with %3$s errors. %4$s memory usage', 'email-subscribers' ),
+				'current_stats'        		  	=> esc_html__( 'Currently %1$s of %2$s imported with %3$s errors. %4$s memory usage', 'email-subscribers' ),
 				/* translators: %s: Time left in minutes */
-				'estimate_time'        => esc_html__( 'Estimate time left: %s minutes', 'email-subscribers' ),
+				'estimate_time'        			=> esc_html__( 'Estimate time left: %s minutes', 'email-subscribers' ),
 				/* translators: %s: Next attempt delaly time */
-				'continues_in'         => esc_html__( 'Continues in %s seconds', 'email-subscribers' ),
-				'error_importing'      => esc_html__( 'There was a problem during importing contacts. Please check the error logs for more information!', 'email-subscribers' ),
-				'confirm_import'       => esc_html__( 'Do you really like to import these contacts?', 'email-subscribers' ),
+				'continues_in'         			=> esc_html__( 'Continues in %s seconds', 'email-subscribers' ),
+				'error_importing'      			=> esc_html__( 'There was a problem during importing contacts. Please check the error logs for more information!', 'email-subscribers' ),
+				'confirm_import'       			=> esc_html__( 'Do you really like to import these contacts?', 'email-subscribers' ),
 				/* translators: %s: Process complete svg icon  */
-				'import_complete'      => esc_html__( 'Import complete! %s', 'email-subscribers' ),
-				'onbeforeunloadimport' => esc_html__( 'You are currently importing subscribers! If you leave the page all pending subscribers don\'t get imported!', 'email-subscribers' ),
+				'import_complete'      			=> esc_html__( 'Import complete! %s', 'email-subscribers' ),
+				'onbeforeunloadimport' 			=> esc_html__( 'You are currently importing subscribers! If you leave the page all pending subscribers don\'t get imported!', 'email-subscribers' ),
+				'api_verification_success' 		=> esc_html__( 'API is valid. Fetching lists...', 'email-subscribers' ),
+				'mailchimp_notice_nowindow_close' => esc_html__( 'Fetching contacts from MailChimp...Please do not close this window', 'email-subscribers' ),
 			),
 			'is_pro' => ES()->is_pro(),
 		);

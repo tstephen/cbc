@@ -59,14 +59,51 @@ function ig_es_mailers_promo( $mailers ) {
 
 	}
 
-	if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) { 
+	if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) {
 
-		$mailers['Amazon_SES'] = array(
-			'name'       => 'Amazon SES',
-			'logo'       => ES_PLUGIN_URL . 'lite/admin/images/aws.svg',
-			'is_premium' => true,
-			'url'        => ES_Common::get_utm_tracking_url( array( 'utm_medium' => 'amazon_ses_mailer' ) )
+		$pro_mailers = array(
+			'Amazon_SES' => array(
+				'name'       => 'Amazon SES',
+				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/aws.svg',
+				'is_premium' => true,
+				'url'        => ES_Common::get_utm_tracking_url( array(
+									'url' => 'https://www.icegram.com/documentation/how-to-configure-amazon-ses-to-send-emails-in-the-email-subscribers-plugin/',
+									'utm_medium' => 'amazon_ses_mailer' 
+									)
+								),
+			),
+			'Mailgun' => array(
+				'name'       => 'Mailgun',
+				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/mailgun.svg',
+				'is_premium' => true,
+				'url'        => ES_Common::get_utm_tracking_url( array(
+									'url' => 'https://www.icegram.com/documentation/how-to-configure-mailgun-to-send-emails-in-the-email-subscribers-plugin/', 
+									'utm_medium' => 'mailgun_mailer' 
+									) 
+								),
+			),
+			'SendGrid' => array(
+				'name'       => 'SendGrid',
+				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/sendgrid.svg',
+				'is_premium' => true,
+				'url'        => ES_Common::get_utm_tracking_url( array(
+									'url' => 'https://www.icegram.com/documentation/how-to-configure-sendgrid-to-send-emails-in-the-email-subscribers-plugin/', 
+									'utm_medium' => 'sendgrid_mailer' 
+									) 
+								),
+			),
+			'SparkPost' => array(
+				'name'       => 'SendGrid',
+				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/sparkpost.png',
+				'is_premium' => true,
+				'url'        => ES_Common::get_utm_tracking_url( array(
+									'url' => 'https://www.icegram.com/documentation/how-to-configure-sparkpost-to-send-emails-in-the-email-subscribers-plugin/', 
+									'utm_medium' => 'sparkpost_mailer' 
+									) 
+								),
+			),
 		);
+		$mailers = array_merge( $mailers, $pro_mailers );
 
 	}
 
@@ -1514,7 +1551,7 @@ function ig_es_upsell_existing_wp_user_import_feature() {
 		?>
 		<a href="<?php echo esc_url( $pricing_url ); ?>" target="_blank">
 			<label class="inline-flex items-center cursor-pointer w-56">
-				<div class="mt-4 px-1 mx-4 border border-gray-200 rounded-lg shadow-md es-mailer-logo bg-white">
+				<div class="mt-4 px-1 mx-4 border border-gray-200 rounded-lg shadow-md es-mailer-logo es-importer-logo bg-white">
 					<div class="border-0 es-logo-wrapper">
 						<svg class="w-6 h-6 text-gray-500 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
 					</div>
@@ -1590,28 +1627,28 @@ function ig_es_upsell_pro_campaign_rules( $campaign_rules = array() ) {
 		$campaign_rules = array_merge_recursive( $campaign_rules, $pro_campaign_rules );
 	}
 
-	function ig_es_upsell_campaign_rules_message() {
+	return $campaign_rules;
+}
 
-		if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) {
-			$utm_args = array(
-				'utm_medium' => 'broadcast_campaign_rules'
-			);
+function ig_es_upsell_campaign_rules_message() {
 
-			$pricing_url = ES_Common::get_utm_tracking_url( $utm_args );
-			$upsell_info = array( 
-			'upgrade_title'  => __('Send Broadcast to specific audience with PRO', 'email-subscribers'),
-			'pricing_url'	 => $pricing_url,
-			'upsell_message' => __('Now, you can select multiple lists and also filter your subscribers based on their country, emails and whether they have received, opened or clicked a specific campaign or not and then send Broadcast emails to them.', 'email-subscribers'),
-			'cta_html'		 => false,
-		 );
+	if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) {
+		$utm_args = array(
+			'utm_medium' => 'broadcast_campaign_rules'
+		);
 
-			?>
+		$pricing_url = ES_Common::get_utm_tracking_url( $utm_args );
+		$upsell_info = array( 
+		'upgrade_title'  => __('Send Broadcast to specific audience with PRO', 'email-subscribers'),
+		'pricing_url'	 => $pricing_url,
+		'upsell_message' => __('Now, you can select multiple lists and also filter your subscribers based on their country, emails and whether they have received, opened or clicked a specific campaign or not and then send Broadcast emails to them.', 'email-subscribers'),
+		'cta_html'		 => false,
+	 );
+
+		?>
 			<div class="block w-2/3 py-2 px-6 mt-2 ">
-				<?php ES_Common::upsell_description_message_box( $upsell_info ); ?>
+			<?php ES_Common::upsell_description_message_box( $upsell_info ); ?>
 			</div>
 		<?php
-		}
 	}
-
-	return $campaign_rules;
 }

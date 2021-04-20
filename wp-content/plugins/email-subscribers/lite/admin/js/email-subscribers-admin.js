@@ -1570,6 +1570,7 @@
 				importerrors = 0,
 				importstarttime,
 				importidentifier,
+				import_option,
 
 			uploader_init = function () {
 				let uploader = new plupload.Uploader(wpUploaderInit);
@@ -1647,7 +1648,7 @@
 			let get_import_data = function () {
 
 				progress.removeClass('finished error');
-
+				import_option = jQuery('[name="es-import-subscribers"]:checked').val();
 				$.post( ajaxurl, {
 					action: 'ig_es_get_import_data',
 					identifier: importidentifier,
@@ -1656,10 +1657,12 @@
 				}, function( response ) {
 					progress.addClass('hidden');
 					$(".es-import-step1").slideUp();
-					$('.es-import-option').hide();
+					$('.es-import-option, .mailchimp_import_step_1').hide();
 					$('.step2-body').html(response.html).parent().show();
-					$('.step2-status,.step2-list').show();
-
+					if( 'es-import-mailchimp-users' !== import_option ){
+						$('.step2-status, .step2-list').show();
+					}
+					$('.wrapper-start-contacts-import').show();
 					importstatus.html('');
 				});
 			}
@@ -1668,13 +1671,17 @@
 				
 				e.preventDefault();
 
-				let is_email_field_set = false;
+				let is_email_field_set, is_list_name_field_set, is_subscriber_status_field_set = false;
 				let mapping_order = [];
 				$('select[name="mapping_order[]"').each(function(){
 					let mapped_field = $(this).val();
 					mapping_order.push(mapped_field);
 					if ( 'email' === mapped_field ) {
 						is_email_field_set = true;
+					} else if( 'list_name' === mapped_field ){
+						is_list_name_field_set = true;
+					} else if( 'status' === mapped_field ){
+						is_subscriber_status_field_set = true;
 					}
 				});
 				
@@ -1685,12 +1692,16 @@
 				}
 
 				let status = $('#es_email_status').val();
-				if ( '' === status || '0' === status ) {
+				if ( 'es-import-mailchimp-users' !== import_option && ('' === status || '0' === status) && ! is_subscriber_status_field_set  ) {
 					alert(ig_es_js_data.i18n_data.select_status);
 					return false;
 				}
 
 				let list_id = $('#list_id').val();
+				if ( 'es-import-mailchimp-users' !== import_option && ( '0' === list_id || ( Array.isArray(list_id) && 0 === list_id.length ) ) && ! is_list_name_field_set ) {
+					alert(ig_es_js_data.i18n_data.select_list);
+					return false;
+				}
 
 				if ( ! confirm(ig_es_js_data.i18n_data.confirm_import) ) {
 					return false;
@@ -1708,7 +1719,7 @@
 				$('.es-import-step1').slideUp();
 				$('.es-import-option').hide();
 				$('.step2-body').html('<br><br>').parent().show();
-				$('.step2-status,.step2-list, .es-import-processing ').hide();
+				$('.step2-status,.step2-list, .es-import-processing, .wrapper-start-contacts-import').hide();
 
 				importstarttime = new Date();
 
@@ -1746,7 +1757,7 @@
 						percentage = (Math.min(1, (response.imported + response.errors) / response.total) * 100);
 
 						$('.step2-body').html('<p class="pt-3 pb-2 text-sm text-gray-600">' + get_stats(response.f_imported, response.f_errors, response.f_total, percentage, response.memoryusage) + '</p>');
-						$('.step2-status,.step2-list, .es-import-processing').hide();
+
 						importerrors = 0;
 						let finished = percentage >= 100;
 
@@ -1771,7 +1782,6 @@
 										$('.import-instruction').hide();
 										importprogress.addClass('finished');
 										$('.step2-body').html(response.html).slideDown();
-										$('.step2-status,.step2-list,.es-import-processing').hide();
 										importstatus.addClass('text-xl');
 										importstatus.html(sprintf(ig_es_js_data.i18n_data.import_complete,'<svg class=" w-6 h-6 inline-block text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'));
 									}
@@ -1892,22 +1902,241 @@
 					});
 
 					return false;
-				});
+				});	
 
 				$("input:radio[name='es-import-subscribers']").click(function() {
-						let import_option = $(this).attr("value");	
+						let import_option = $(this).attr("value");
 						if( "es-sync-wordpress-users" === import_option ){
 							$(".es-sync-wordpress-users").show();
-							$(".es-import-with-csv").hide();
-						}
-						else{
+							$(".es-import-with-csv, .es-import-mailchimp-users").hide();
+						} else if ("es-import-with-csv" === import_option){
 							$(".es-import-with-csv").show();
-							$(".es-sync-wordpress-users").hide();
+							$(".es-sync-wordpress-users, .es-import-mailchimp-users").hide();
+						} else{
+							$(".es-import-mailchimp-users").show();
+							$(".es-sync-wordpress-users, .es-import-with-csv").hide();
 						}
 			});
+
+				$('#es_mailchimp_verify_api_key').click(function(e){
+					e.preventDefault();
+					let btn_elem = $(this);
+					let mailchimp_api_key = $('#api-key').val();
+					let api_import_status = $('.es-api-import-status');
+					let steps_loader      = $('.es-import-loader');
+					let api_key = { 
+						action       		: 'ig_es_mailchimp_verify_api_key',
+						security     		: ig_es_js_data.security,
+						mailchimp_api_key   : mailchimp_api_key,
+					};
+					
+					jQuery.ajax({
+						method: 'POST',
+						url: ajaxurl,
+						data: api_key,
+						dataType: 'json',
+						beforeSend: function() {
+							steps_loader.show().addClass('animate-spin').attr('disabled', true);
+							jQuery(btn_elem).attr('disabled', true);
+						},
+						success: function (response) {
+							if (response.success) {
+								api_import_status.show().html(ig_es_js_data.i18n_data.api_verification_success).addClass('text-green-500').removeClass('text-red-600');
+								get_mailchimp_lists( mailchimp_api_key );
+							} else {
+								api_import_status.show().html(response.data.error).addClass('text-red-600');
+							}
+						},
+						error: function (err) {
+							api_import_status.show().html(err.responseJSON.data.error).addClass('text-red-600');
+							jQuery(btn_elem).attr('disabled', false);
+						}
+					}).always(function(){
+						steps_loader.hide().removeClass('animate-spin').attr('disabled', false);
+					});
+				});
+
+				$('#es_import_mailchimp_list_members').on('click', function (e) {
+					e.preventDefault();
+					Import_Mailchimp_Lists();
+				});
+
+				function get_mailchimp_lists( api_key = '' ){
+					let data = { 
+						action       		: 'ig_es_mailchimp_lists',
+						security     		: ig_es_js_data.security,
+						mailchimp_api_key   : api_key,
+					};
+
+					jQuery.ajax({
+						method: 'POST',
+						url: ajaxurl,
+						data: data,
+						dataType: 'json',
+						success: function (response) {
+							if (response.success) {
+
+								var wrap = jQuery('.mailchimp-lists'),
+								tmpl = wrap.find('li');
+
+								jQuery.each(response.data.lists, function (i, list) {
+									var clone = tmpl.clone().removeClass('hidden').addClass('lead').data('id', list.id);
+									clone.attr('data-listname', list.name);
+									clone.find('.mailchimp_list_name').html(list.name);
+									clone.find('label').attr('for', 'list-' + list.id);
+									clone.find('input').attr('id', 'list-' + list.id).prop('checked', list.stats.member_count);
+									setTimeout(function () {
+										clone.hide().appendTo(wrap).slideDown();
+									}, 10 * i);
+								});
+
+									jQuery('.mailchimp_import_step_1').show();
+									jQuery(".es-import-step1").slideUp();
+									jQuery('.es-import-option').hide();
+							} else {
+								alert( ig_es_js_data.i18n_data.ajax_error_message );
+							}
+						},
+						error: function (err) {
+							alert( ig_es_js_data.i18n_data.ajax_error_message );
+						}
+					});
+				}
+
+				function Import_Mailchimp_Lists(){
+					var complete;
+					var items_completed = 0;
+					var current_offset = 0;
+					var current_limit = 1000;
+					var current_item = "";
+					var $current_node;
+					var current_item_hash = "";
+					var current_status;
+					var mailchimp_api_key = jQuery('#api-key').val();
+					var total_list_subscribers_added = 0;
+					
+					jQuery(".es_mailchimp_lists_and_status_input").addClass("installing");
+					jQuery(".es_mailchimp_lists_and_status_input").find("input").prop("disabled", true);
+					jQuery(".mailchimp_notice_nowindow_close").show().html(ig_es_js_data.i18n_data.mailchimp_notice_nowindow_close);
+
+					current_status = jQuery('input[name="options"]:checked').map(function () {
+						return jQuery(this).val()
+					}).get();
+
+					jQuery('.es-list-import-loader').show().addClass('animate-spin').attr('disabled', true);
+					find_next_list();
+
+					function ajax_callback(response) {
+						var currentSpan = $current_node.find("label");
+
+						if( response.success ) {
+							importidentifier = response.data.identifier;
+							if ( ! response.data.added ) { // If no subscribers left
+								currentSpan.addClass("success");
+								current_offset = 0;
+								total_list_subscribers_added = 0;
+								find_next_list();
+							} else {
+								current_offset += current_limit;
+								total_list_subscribers_added += response.data.added;
+								$current_node.find('.mailchimp_list_contact_fetch_count').html( '(' + total_list_subscribers_added + '/ ' + response.data.total + ')' );
+								process_current();
+							}
+						} else{
+							current_limit = 500;
+							var error_counter = jQuery($current_node).data('error-counter');
+							error_counter++;
+							jQuery($current_node).data('error-counter', error_counter);
+							if( error_counter < 3 ){
+								process_current();
+							} else {
+								jQuery(".mailchimp_notice_nowindow_close").hide();
+								jQuery('#es_import_mailchimp_list_members').text('Try again');
+								jQuery($current_node).addClass('text-red-600').removeClass('installing');
+								jQuery('.es-list-import-loader').hide().removeClass('animate-spin error').attr('disabled', false);
+								alert( ig_es_js_data.i18n_data.ajax_error_message );
+							}
+						}
+						return;
+					}
+
+					function process_current() {
+						if (current_item) {
+							var $check = $current_node.find("input:checkbox");
+							var currentSpan = $current_node.find("label");
+							currentSpan.removeClass('installing success error');
+							if ($check.is(":checked")) {
+								var listname = $current_node.data('listname');
+								currentSpan.addClass('installing');
+								jQuery.post(ajaxurl, {
+									action 			  : "ig_es_mailchimp_import_list",
+									security 	      : ig_es_js_data.security,
+									id 				  : current_item,
+									offset 		   	  : current_offset,
+									limit 			  : current_limit,
+									status 		 	  : current_status,
+									mailchimp_api_key : mailchimp_api_key,
+									list_name 	 	  : listname,
+									identifier 	 	  : importidentifier
+								}, ajax_callback).fail(function(){
+									var error_counter = jQuery($current_node).data('error-counter');
+									error_counter++;
+									jQuery($current_node).data('error-counter', error_counter);
+									if( error_counter < 3 ){
+										process_current();
+									} else{
+										jQuery($current_node).addClass('text-red-600');
+									}
+								});
+							} else {
+								$current_node.addClass("skipping").removeClass("installing");
+								setTimeout(find_next_list, 300);
+							}
+						}
+					}
+
+					function mailchimp_list_import_complete(){
+						get_import_data();
+						jQuery(".mailchimp_notice_nowindow_close").hide();
+						jQuery('.es-list-import-loader').hide().removeClass('animate-spin').attr('disabled', false);
+					}
+
+					function find_next_list() {
+						if ($current_node) {
+							if (!$current_node.data("done_item")) {
+								items_completed++;
+								$current_node.data("done_item", 1);
+							}
+							$current_node.find(".spinner").css("visibility", "hidden");
+						}
+						var $li = jQuery(".es_mailchimp_lists_and_status_input.mailchimp-lists li:visible");
+						$li.each(function () {
+							var $item = jQuery(this);
+							if ($item.data("done_item")) {
+								return true;
+							}
+
+							current_item = $item.data("id");
+							if (!current_item) {
+								return true;
+							}
+							$current_node = $item;
+							process_current();
+							return false;
+						});
+						if (items_completed >= $li.length) {
+							//Finished importing all lists to temporary table
+							mailchimp_list_import_complete();
+						}
+					}
+				}
+
 		});
 
 })(jQuery);
+
+
+
 
 function checkDelete() {
 	return confirm( ig_es_js_data.i18n_data.delete_confirmation_message );
