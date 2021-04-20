@@ -989,7 +989,7 @@ function fifu_get_strings_settings() {
         _e("Performance tips", FIFU_SLUG);
     };
     $fifu['slider']['featured'] = function() {
-        _e("show featured slider fields on post editor", FIFU_SLUG);
+        _e("featured slider", FIFU_SLUG);
     };
     $fifu['slider']['pause'] = function() {
         _e("pause autoplay on hover", FIFU_SLUG);
@@ -1014,6 +1014,15 @@ function fifu_get_strings_settings() {
     };
     $fifu['slider']['duration'] = function() {
         _e("transition duration (in ms)", FIFU_SLUG);
+    };
+    $fifu['slider']['left'] = function() {
+        _e("Prev button", FIFU_SLUG);
+    };
+    $fifu['slider']['right'] = function() {
+        _e("Next button", FIFU_SLUG);
+    };
+    $fifu['slider']['optional'] = function() {
+        _e("image URL (optional)", FIFU_SLUG);
     };
 
     // social
@@ -1045,7 +1054,7 @@ function fifu_get_strings_settings() {
 
     // video
     $fifu['video']['desc'] = function() {
-        _e("FIFU supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publitio (videos hosted elsewhere are not supported).", FIFU_SLUG);
+        _e("FIFU supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, JW Player, WordPress.com (Jetpack Video Hosting) and Sprout. Videos hosted elsewhere are not supported.", FIFU_SLUG);
     };
 
     // thumbnail
@@ -1206,13 +1215,13 @@ function fifu_get_strings_settings() {
 
     // key
     $fifu['key']['desc'] = function() {
-        _e("Please insert your email and license key below to use this plugin without limitations.", FIFU_SLUG);
-    };
-    $fifu['key']['domain'] = function() {
-        _e("if your domain has changed, please contact the support", FIFU_SLUG);
+        _e("Please insert your email and license key below to receive updates and use this plugin without limitations.", FIFU_SLUG);
     };
     $fifu['key']['buy'] = function() {
         _e("if you intend to use FIFU in multiple distinct sites you can buy more license keys <a href='https://fifu.app/#price' target='_blank'>here</a>", FIFU_SLUG);
+    };
+    $fifu['key']['renew'] = function() {
+        _e("you can renew your license key(s) or get more information about that <a href='https://ws.featuredimagefromurl.com/keys/' target='_blank'>here</a>", FIFU_SLUG);
     };
     $fifu['key']['email'] = function() {
         _e("Email", FIFU_SLUG);
@@ -1222,6 +1231,18 @@ function fifu_get_strings_settings() {
     };
     $fifu['key']['key'] = function() {
         _e("License key", FIFU_SLUG);
+    };
+    $fifu['key']['tab']['activation'] = function() {
+        _e("Activation", FIFU_SLUG);
+    };
+    $fifu['key']['tab']['documentation'] = function() {
+        _e("Documentation", FIFU_SLUG);
+    };
+    $fifu['key']['documentation'] = function() {
+        _e("FIFU activation is based on the domain. So submitting your license key on the site example.com, [subdomain].example.com or example.com/[anything] will activate the domain example.com. After that you could use the same license key on the sites example.com, [subdomain].example.com and example.com/[anything]. You also could use the same license key to activate a second domain for your test/development/stage site. If your domain has changed, please contact the support.", FIFU_SLUG);
+    };
+    $fifu['key']['important'] = function() {
+        _e("even though with 1 license you could use FIFU on unlimited sites from the same domain, the technical support is still limited to 1 site.", FIFU_SLUG);
     };
 
     return $fifu;

@@ -968,6 +968,40 @@
                                     </tr>
                                     <tr class="color">
                                         <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['left']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --left &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            https://...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['slider']['right']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --right &lt;string&gt;
+                                        </th>
+                                        <th>
+                                            https://...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
                                             <?php $fifu['tab']['video']() ?>
                                         </th>
                                         <th>
@@ -3507,6 +3541,32 @@
                                         </tr>
                                         <tr>
                                             <th>
+                                                <?php $fifu['slider']['left']() ?>
+                                            </th>
+                                            <th>
+                                                <input id="fifu_input_slider_left"
+                                                       type="text"
+                                                       name="fifu_input_slider_left"
+                                                       style="width:250px"
+                                                       placeholder="<?php $fifu['slider']['optional']() ?>"
+                                                       value="">
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <?php $fifu['slider']['right']() ?>
+                                            </th>
+                                            <th>
+                                                <input id="fifu_input_slider_right"
+                                                       type="text"
+                                                       name="fifu_input_slider_right"
+                                                       style="width:250px"
+                                                       placeholder="<?php $fifu['slider']['optional']() ?>"
+                                                       value="">
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
                                                 <input type="submit" disabled value="<?php $fifu['button']['ok']() ?>" style="width:73px">
                                             </th>
                                         </tr>
@@ -4528,6 +4588,20 @@
                 </div>
             </div>
             <div id="tabs-t">
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2021-04-03</td>
+                            <td style="border-bottom:none"><h3> Woodmart</h3></td>
+                            <td style="border-bottom:none">theme</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Product gallery doesn't work correctly. Two possible solutions:<br>
+                        a) run "FIFU Settings > Metadata > Save Image Dimensions";<br>
+                        b) enable "FIFU Settings > WooCommerce > FIFU Product Gallery".
+                    </div>
+                </div>
                 <div class="box">
                     <table>
                         <tr>

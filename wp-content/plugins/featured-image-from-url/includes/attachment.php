@@ -92,7 +92,7 @@ function fifu_replace_attachment_image_src($image, $att_id, $size) {
         return null;
 
     // photon
-    if (fifu_is_jetpack_active()) {
+    if (fifu_is_jetpack_active() && !fifu_jetpack_blocked($image[0])) {
         $old_url = $image[0];
         $image = fifu_get_photon_url($image, $size, $att_id);
         // ws

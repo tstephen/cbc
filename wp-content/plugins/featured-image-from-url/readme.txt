@@ -4,7 +4,7 @@ Donate link: https://donorbox.org/fifu
 Tags: featured, image, url, woocommerce, thumbnail
 Requires at least: 5.3
 Tested up to: 5.7
-Stable tag: 3.5.5
+Stable tag: 3.5.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -79,7 +79,7 @@ Use an external image as featured image of your post, page or custom post type.
 * **[Premium]** FIFU product gallery
 
 #### FEATURED VIDEO
-Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publitio.
+Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, JW Player, WordPress.com (Jetpack Video Hosting) and Sprout.
 
 * **[Premium]** Featured video
 * **[Premium]** Video thumbnail
@@ -200,14 +200,14 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Changelog ==
 
+= 3.5.7 =
+* Improvement: added support to videos from JW Player, Sprout and WooCommerce.com (Jetpack Video Hosting); improvement: license key activation is more flexible (unlimited sites from the same domain); improvement: custom Prev/Next buttons for Featured Slider and FIFU Product Gallery.
+
+= 3.5.6 =
+* Fix: CDN + Optimized Thumbnails not working for images from some domains.
+
 = 3.5.5 =
 * Improvement: Hide Featured Media may work with internal featured images now.
-
-= 3.5.4 =
-* Improvement: FIFU Product Gallery supports videos now.
-
-= 3.5.3 =
-* New option: Featured Image in Content > Custom post type; new option: CDN + Optimized Thumbnails > Shortpixel.
 
 = others =
 * [more](https://fifu.app/changelog/)
@@ -215,5 +215,5 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr and Publiti
 
 == Upgrade Notice ==
 
-= 3.5.5 =
-* Improvement: Hide Featured Media may work with internal featured images now.
+= 3.5.7 =
+* Improvement: added support to videos from JW Player, Sprout and WooCommerce.com (Jetpack Video Hosting); improvement: license key activation is more flexible (unlimited sites from the same domain); improvement: custom Prev/Next buttons for Featured Slider and FIFU Product Gallery.

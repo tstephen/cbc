@@ -109,10 +109,17 @@ function fifu_is_jetpack_active() {
     if (!is_plugin_active('jetpack/jetpack.php'))
         return false;
 
-    if (defined('FIFU_DEV_DEBUG') && FIFU_DEV_DEBUG)
+    if (defined('FIFU_DEV_DEBUG') && FIFU_DEV_DEBUG) {
+        add_filter('jetpack_photon_any_extension_for_domain', '__return_true');
         return true;
+    }
 
-    return function_exists('jetpack_photon_url') && class_exists('Jetpack') && method_exists('Jetpack', 'get_active_modules') && in_array('photon', Jetpack::get_active_modules());
+    if (function_exists('jetpack_photon_url') && class_exists('Jetpack') && method_exists('Jetpack', 'get_active_modules') && in_array('photon', Jetpack::get_active_modules())) {
+        add_filter('jetpack_photon_any_extension_for_domain', '__return_true');
+        return true;
+    }
+
+    return false;
 }
 
 // active themes
