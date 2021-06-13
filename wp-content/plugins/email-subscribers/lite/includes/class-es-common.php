@@ -47,6 +47,7 @@ class ES_Common {
 
 		$content             = wpautop( $content );
 		$content             = do_shortcode( shortcode_unautop( $content ) );
+		$data 				 = array();
 		$data['content']     = $content;
 		$data['tmpl_id']     = $tmpl_id;
 		$data['campaign_id'] = $campaign_id;
@@ -1873,7 +1874,7 @@ class ES_Common {
 						echo wp_kses_post( 'Upgrade now & get <b> 10% discount!</b> <br/><br/>Use coupon code:' );
 							?>
 
-						<span class="ml-2 px-1.5 py-1 font-medium bg-yellow-100 rounded-md border-2 border-dotted border-indigo-300 select-all"><?php esc_html_e( 'PREMIUM10', 'email-subscribers' ); ?> </span>
+						<span class="ml-2 px-1.5 py-1 font-medium bg-yellow-100 rounded-md border-2 border-dotted border-indigo-300 select-all"><?php echo esc_html( 'PREMIUM10' ); ?> </span>
 					</p>
 					<?php
 						}
@@ -1970,6 +1971,57 @@ class ES_Common {
 			</div>';
 		}
 		return $tooltip_html;
+	}
+
+	/**
+	 * Decode HTML entities
+	 * 
+	 * @param string $string
+	 * 
+	 * @return string $string
+	 * 
+	 * @since 4.7.1
+	 */
+	public static function decode_entities( $string ) {
+
+		preg_match_all('/&#?\w+;/', $string, $entities, PREG_SET_ORDER);
+		$entities = array_unique( array_column( $entities, 0 ) );
+
+		if ( ! empty( $entities ) ) {
+			foreach ( $entities as $entity ) {
+				$decoded = mb_convert_encoding( $entity, 'UTF-8', 'HTML-ENTITIES' );
+				$string  = str_replace( $entity, $decoded, $string );
+			}
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Override wp editor tinymce formatting options
+	 * 
+	 * @param array $init
+	 * @param string $editor_id
+	 * 
+	 * @return array $init
+	 * 
+	 * @since 4.7.3
+	 */
+	public static function override_tinymce_formatting_options( $init, $editor_id = '' ) {
+
+		if ( 'edit-es-broadcast-body' === $editor_id ) {
+			
+			$init['wpautop']      = false; // Disable stripping of p tags in Text mode.
+			$init['tadv_noautop'] = true; // Disable stripping of p tags in Text mode.
+			$init['indent']       = true;
+			
+			// To disable stripping of some HTML elements like span when switching modes in wp editor from text-visual-text.
+			$opts                            = '*[*]';
+			$init['valid_elements']          = $opts;
+			$init['extended_valid_elements'] = $opts;
+		}
+
+		return $init;
 	}
 
 }

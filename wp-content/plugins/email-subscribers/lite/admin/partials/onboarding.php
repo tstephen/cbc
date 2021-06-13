@@ -422,7 +422,7 @@
 							>
 							  <?php echo esc_html__('Done! Now speed up your success!', 'email-subscribers'); ?>
 							</h3>
-							<input type="hidden"  id="sign-up-list" name="list" value="hN8OkYzujUlKgDgfCTEcIA"/>
+							<input type="hidden"  id="sign-up-list" name="list" value="bc4f8995201a"/>
 							  <input type="hidden" id="sign-up-form-source" name="form-source" value=""/>
 							<div class="space-y-3 text-gray-800">
 							  
@@ -509,6 +509,7 @@
 									<a
 									  class="text-indigo-800 hover:underline"
 									  href="https://www.icegram.com/knowledgebase_category/email-subscribers/"
+									  target="_blank"
 									  ><?php echo esc_html__('documentation', 'email-subscribers'); ?></a
 									>
 									<?php echo esc_html__('if you need any help', 'email-subscribers'); ?>	
@@ -523,9 +524,13 @@
 				  <div class="px-4 py-3 text-right bg-gray-50 md:px-8">
 					<button
 					  type="button" id="ig-es-finish-onboarding-process"
-					  class="relative inline-flex items-center px-4 py-2 text-base font-medium leading-5 text-white bg-indigo-800 border border-transparent rounded-md hover:bg-indigo-600 focus:outline-none focus:shadow-outline"
-					>
-					  <?php echo esc_html__('Complete setup &amp; take me to "Settings" →', 'email-subscribers'); ?>
+					  class="relative inline-flex items-center px-4 py-2 text-base font-medium leading-5 text-white bg-indigo-800 border border-transparent rounded-md hover:bg-indigo-600 focus:outline-none focus:shadow-outline">
+						<span class="mr-1"><?php echo esc_html__('Complete setup &amp; take me to "Dashboard" ', 'email-subscribers'); ?></span>
+						<span class="es-btn-arrow"> → </span>
+						<svg style="display:none" class="es-btn-loader h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+								<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+								<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+						</svg>
 					</button>
 				  </div>
 				</div>

@@ -103,12 +103,12 @@ class ES_Workflows_Table extends ES_List_Table {
 					$workflow_edit_url = esc_url( $workflow_edit_url );
 				}
 				if ( 'added' === $action_status ) {
-					/* translators: %s: Workflow edit URL */
-					$message = sprintf( __( 'Workflow added. <a href="%s" class="text-indigo-600">Edit workflow</a>', 'email-subscribers' ), $workflow_edit_url );
+					/* translators: 1. Workflow edit URL anchor tag 2: Anchor close tag */
+					$message = sprintf( __( 'Workflow added. %1$sEdit workflow%2$s', 'email-subscribers' ), '<a href="' . esc_url( $workflow_edit_url ) . '" class="text-indigo-600">', '</a>' );
 					$status  = 'success';
 				} elseif ( 'updated' === $action_status ) {
-					/* translators: %s: Workflow edit URL */
-					$message = sprintf( __( 'Workflow updated. <a href="%s" class="text-indigo-600">Edit workflow</a>', 'email-subscribers' ), $workflow_edit_url );
+					/* translators: 1. Workflow edit URL anchor tag 2: Anchor close tag */
+					$message = sprintf( __( 'Workflow updated. %1$sEdit workflow%2$s', 'email-subscribers' ), '<a href="' . esc_url( $workflow_edit_url ) . '" class="text-indigo-600">', '</a>' );
 					$status  = 'success';
 				} elseif ( 'not_saved' === $action_status ) {
 					$message = __( 'Unable to save workflow. Please try again later.', 'email-subscribers' );

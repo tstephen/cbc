@@ -300,7 +300,7 @@ class ES_Lists_Table extends ES_List_Table {
 						<div id="post-body" class="metabox-holder column-1 mt-0.5">
 							<div id="post-body-content">
 								<div class="bg-white shadow-md rounded-lg mt-5">
-									<form class="ml-5 mr-4 text-left pt-8 flex-row mt-2 item-center " method="post" action="admin.php?page=es_lists&action=<?php echo esc_attr( $action ); ?>&list=<?php echo esc_attr( $id ); ?>&_wpnonce=<?php echo esc_attr( $nonce ); ?>">
+									<form class="ml-5 mr-4 text-left pt-8 mt-2 item-center " method="post" action="admin.php?page=es_lists&action=<?php echo esc_attr( $action ); ?>&list=<?php echo esc_attr( $id ); ?>&_wpnonce=<?php echo esc_attr( $nonce ); ?>">
 
 										<div class="flex flex-row ">
 											<div class="flex w-1/5">
@@ -317,7 +317,9 @@ class ES_Lists_Table extends ES_List_Table {
 												</div>
 											</div>
 										</div>
+
 										<?php
+										
 										$submit_button_text = $is_new ? __( 'Save List', 'email-subscribers' ) : __( 'Save Changes', 'email-subscribers' );
 										?>
 										<input type="hidden" name="submitted" value="submitted"/>
@@ -501,6 +503,12 @@ class ES_Lists_Table extends ES_List_Table {
 				return "<a href='admin.php?page=download_report&report=users&status=select_list&list_id={$item['id']}&export-nonce={$export_nonce}'><svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' class='w-8 h-8 text-indigo-600 hover:text-indigo-500 active:text-indigo-600'><path d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path></svg></a>";
 				break;
 
+			case 'hash':
+				$list_hash = $item['hash'];
+
+				return '<code class="es-code">' . $list_hash . '</code>';
+				break;
+
 			default:
 				return '';
 		}
@@ -536,10 +544,9 @@ class ES_Lists_Table extends ES_List_Table {
 		if ( 1 != $item['id'] ) {
 			$page    = ig_es_get_request_data( 'page' );
 			$actions = array(
-				/* translators: 1: Page  2: Edit action  3: List id  4: List nonce  */
-				'edit'   => sprintf( __( '<a href="?page=%1$s&action=%2$s&list=%3$s&_wpnonce=%4$s" class="text-indigo-600">Edit</a>', 'email-subscribers' ), esc_attr( $page ), 'edit', absint( $item['id'] ), $list_nonce ),
-				/* translators: 1: Page  2: Delete action  3: List id  4: List nonce  */
-				'delete' => sprintf( __( '<a href="?page=%1$s&action=%2$s&list=%3$s&_wpnonce=%4$s" onclick="return checkDelete()">Delete</a>', 'email-subscribers' ), esc_attr( $page ), 'delete', absint( $item['id'] ), $list_nonce )
+				'edit'   => '<a href="?page=' . esc_attr( $page ) . '&action=edit&list=' . absint( $item['id'] ) . '&_wpnonce=' . $list_nonce . '" class="text-indigo-600">' . esc_html__( 'Edit', 'email-subscribers' ) . '</a>',
+
+				'delete' => '<a href="?page=' . esc_attr( $page ) . '&action=delete&list=' . absint( $item['id'] ) . '&_wpnonce=' . $list_nonce . '" onclick="return checkDelete()">' . esc_html__( 'Delete', 'email-subscribers' ) . '</a>',
 			);
 		}
 
@@ -554,9 +561,13 @@ class ES_Lists_Table extends ES_List_Table {
 	 */
 	public function get_columns() {
 
+		$allowedtags  = ig_es_allowed_html_tags_in_esc();
+		$tooltip_html = ES_Common::get_tooltip_html( __( 'Unique hash key that can be used to subscribe users to this list from external sites.', 'email-subscribers' ) );
+		
 		$columns = array(
 			'cb'           => '<input type="checkbox" />',
 			'name'         => __( 'Name', 'email-subscribers' ),
+			'hash'         => __( 'Hash', 'email-subscribers' ) . ' ' . $tooltip_html,
 			'subscribed'   => __( 'Subscribed', 'email-subscribers' ),
 			'unsubscribed' => __( 'Unsubscribed', 'email-subscribers' ),
 			'unconfirmed'  => __( 'Unconfirmed', 'email-subscribers' ),

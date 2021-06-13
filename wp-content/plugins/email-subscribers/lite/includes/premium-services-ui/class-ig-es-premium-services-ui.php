@@ -298,9 +298,10 @@ if ( ! class_exists( 'IG_ES_Premium_Services_UI' ) ) {
 			$es_utm_campaign = get_post_meta( $post->ID, 'es_utm_campaign', true );
 			$es_utm_campaign = ! empty( $es_utm_campaign ) ? $es_utm_campaign : '';
 			$allowedtags 	 = ig_es_allowed_html_tags_in_esc();
-			
+
 			add_filter( 'safe_style_css', 'ig_es_allowed_css_style' );
-			$tooltip_html = ES_Common::get_tooltip_html( __( 'This will be appended to every URL in this template with parameters: utm_source=es&utm_medium=email&utm_campaign=campaign_name', 'email-subscribers' ) );
+			/* translators: 1: UTM parameters */
+			$tooltip_html = ES_Common::get_tooltip_html( sprintf( __( 'This will be appended to every URL in this template with parameters: %s', 'email-subscribers' ), 'utm_source=es&utm_medium=email&utm_campaign=campaign_name' ) );
 			?>
 			<label class="es_utm_label"><span class="font-medium text-sm text-gray-700"><?php echo esc_html__( 'Campaign Name', 'email-subscribers' ); ?></span>
 				<?php echo wp_kses( $tooltip_html, $allowedtags ); ?> </label><br>

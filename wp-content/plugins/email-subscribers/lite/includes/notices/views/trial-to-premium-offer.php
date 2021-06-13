@@ -81,7 +81,8 @@ if ( $remaining_trial_days > 1 ) {
 }
 
 // Add default value to message.
-$discount_message      = __( 'Get flat <strong>10%</strong> discount if you upgrade now!<br/>Use coupon code <span class="ml-2 px-1.5 py-1 font-medium bg-yellow-100 rounded-md border-2 border-dotted border-indigo-300 select-all">PREMIUM10</span> during checkout.', 'email-subscribers' );
+/* translators: 1. Discount % 2. Premium coupon code */
+$discount_message      = sprintf( __( 'Get flat %1$s discount if you upgrade now!<br/>Use coupon code %2$s during checkout.', 'email-subscribers' ), '<strong>10%</strong>', '<span class="ml-2 px-1.5 py-1 font-medium bg-yellow-100 rounded-md border-2 border-dotted border-indigo-300 select-all">PREMIUM10</span>' );
 $offer_cta_optin_text  = __( 'Upgrade now', 'email-subscribers' );
 $offer_cta_optout_text = __( 'No, it\'s ok', 'email-subscribers' );
 

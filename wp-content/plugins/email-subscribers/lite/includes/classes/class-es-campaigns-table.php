@@ -428,17 +428,18 @@ class ES_Campaigns_Table extends ES_List_Table {
 			$title = ! empty( $item['name'] ) ? $item['name'] : '';
 
 			$slug = ( in_array( $item['type'], array( 'post_notification', 'post_digest' ) ) ) ? esc_attr( 'es_notifications' ) : 'es_' . $item['type'];
-			/* translators: 1: Slug  2: Edit Action  3: List id  4. WP Nonce */
-			$actions ['edit'] = sprintf( __( '<a href="?page=%1$s&action=%2$s&list=%3$s&_wpnonce=%4$s" class="text-indigo-600">Edit</a>', 'email-subscribers' ), $slug, 'edit', absint( $item['id'] ), $nonce );
+
+			$actions ['edit'] = '<a href="?page=' . esc_attr( $slug ) . '&action=edit&list=' . absint( $item['id'] ) . '&_wpnonce=' . $nonce . '" class="text-indigo-600">' . esc_html__( 'Edit', 'email-subscribers' ) . '</a>';
 
 			if ( in_array( $type, array( 'post_notification', 'post_digest' ) ) ) {
 				// Add reports link if there are any reports related to the post notification.
 				if ( ! empty( $report ) ) {
 
-					$actions['report'] = sprintf( '<a href="?page=%s&campaign_id=%d" class="text-indigo-600">%s</a>', esc_attr( 'es_reports' ), esc_attr( $item['id'] ), __( 'Report', 'email-subscribers' ) );
+					$actions['report'] = '<a href="?page=' . esc_attr( 'es_reports' ) . '&campaign_id=' . esc_attr( $item['id'] ) . '" class="text-indigo-600">' . esc_html__( 'Report', 'email-subscribers' ) . '</a>';
 				}
 			} elseif ( 'sequence' === $type ) {
-				$actions['report'] = sprintf( '<a href="?page=%s&campaign_id=%d" class="text-indigo-600">%s</a>', esc_attr( 'es_reports' ), esc_attr( $item['id'] ), __( 'Report', 'email-subscribers' ) );
+
+				$actions['report'] = '<a href="?page=' . esc_attr( 'es_reports' ) . '&campaign_id=' . esc_attr( $item['id'] ) . '" class="text-indigo-600">' . esc_html__( 'Report', 'email-subscribers' ) . '</a>';
 			}
 		} else {
 
@@ -452,8 +453,8 @@ class ES_Campaigns_Table extends ES_List_Table {
 			);
 
 			if ( in_array( $status, $broadcast_allowed_edit_statuses ) ) {
-				/* translators: 1: Slug  2: Edit Action  3: List id  4. WP Nonce */
-				$actions ['edit'] = sprintf( __( '<a href="?page=%1$s&action=%2$s&list=%3$s&_wpnonce=%4$s" class="text-indigo-600">Edit</a>', 'email-subscribers' ), $slug, 'edit', absint( $item['id'] ), $nonce );
+
+				$actions ['edit'] = '<a href="?page=' . esc_attr( $slug ) . '&action=edit&list=' . absint( $item['id'] ) . '&_wpnonce=' . $nonce . '" class="text-indigo-600">' . esc_html__( 'Edit', 'email-subscribers' ) . '</a>';
 			}
 
 			$broadcast_allowed_report_statuses = array(
@@ -465,8 +466,8 @@ class ES_Campaigns_Table extends ES_List_Table {
 
 			if ( in_array( $status, $broadcast_allowed_report_statuses ) && ! empty( $report ) ) {
 				$es_nonce = wp_create_nonce( 'es_notification' );
-				/* translators: 1: Slug  2: View Action  3: Hash  4. WP Nonce */
-				$actions['report'] = sprintf( '<a href="?page=%s&action=%s&list=%s&_wpnonce=%s" class="text-indigo-600">%s</a>', esc_attr( 'es_reports' ), 'view', $report['hash'], $es_nonce, __( 'Report', 'email-subscribers' ) );
+
+				$actions['report'] = '<a href="?page=' . esc_attr( 'es_reports' ) . '&action=view&list=' . $report['hash'] . '&_wpnonce=" ' . $es_nonce . '" class="text-indigo-600">' . esc_html__( 'Report', 'email-subscribers' ) . '</a>';
 			}
 
 			
@@ -477,8 +478,7 @@ class ES_Campaigns_Table extends ES_List_Table {
 			$actions = apply_filters( 'ig_es_campaign_actions', $actions, $item );
 		}
 
-		/* translators: 1: Slug  2: Delete Action  3: ID  4. WP Nonce */
-		$actions['delete'] = sprintf( __( '<a href="?page=%1$s&action=%2$s&list=%3$s&_wpnonce=%4$s" onclick="return checkDelete()">Delete</a>', 'email-subscribers' ), esc_attr( 'es_campaigns' ), 'delete', absint( $item['id'] ), $nonce );
+		$actions['delete'] = '<a href="?page=' . esc_attr( 'es_campaigns' ) . '&action=delete&list=' . absint( $item['id'] ) . '&_wpnonce=' . $nonce . '" onclick="return checkDelete()">' . esc_html__( 'Delete', 'email-subscribers' ) . '</a>';
 
 		$title .= $this->row_actions( $actions );
 

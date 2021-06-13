@@ -143,7 +143,7 @@ class ES_Admin_Settings {
 						'name' => __( 'Security', 'email-subscribers' ),
 					),
 				);
-				$es_settings_tabs = apply_filters( 'ig_es_settings_tabs', $es_settings_tabs );
+				$es_settings_tabs = apply_filters('ig_es_settings_tabs', $es_settings_tabs );
 				?>
 				<div id="es-settings-menu" class="w-1/5 pt-4 leading-normal text-gray-800 border-r border-gray-100">
 					<div class="z-20 my-2 mt-0 bg-white shadow es-menu-list lg:block lg:my-0 lg:border-transparent lg:shadow-none lg:bg-transparent" style="top:6em;" id="menu-content">
@@ -228,7 +228,8 @@ class ES_Admin_Settings {
 				'name'    => __( 'Image size', 'email-subscribers' ),
 				'type'    => 'select',
 				'options' => ES_Common::get_image_sizes(),
-				'desc'    => __( 'Select image size for {{POSTIMAGE}} to be shown in the Post Notification emails.', 'email-subscribers' ),
+				/* translators: %s: Keyword */
+				'desc'    => sprintf( __( 'Select image size for %s to be shown in the Post Notification emails.', 'email-subscribers' ), '{{POSTIMAGE}}' ),
 				'default' => 'full',
 			),
 			// End-IG-Code.
@@ -258,7 +259,8 @@ class ES_Admin_Settings {
 				'default'      => '',
 				'id'           => 'ig_es_unsubscribe_link_content',
 				'name'         => __( 'Show unsubscribe message in email footer', 'email-subscribers' ),
-				'desc'         => __( 'Add text which you want your contact to see in footer to unsubscribe. Use {{UNSUBSCRIBE-LINK}} keyword to add unsubscribe link.', 'email-subscribers' ),
+				/* translators: %s: List of Keywords */
+				'desc'         => sprintf( __( 'Add text which you want your contact to see in footer to unsubscribe. Use %s keyword to add unsubscribe link.', 'email-subscribers' ), '{{UNSUBSCRIBE-LINK}}' ),
 			),
 
 			'subscription_messages'                 => array(
@@ -366,7 +368,8 @@ class ES_Admin_Settings {
 						'default'      => '',
 						'id'           => 'ig_es_welcome_email_content',
 						'name'         => __( 'Content', 'email-subscribers' ),
-						'desc'         => __( 'Available keywords. {{FIRSTNAME}}, {{LASTNAME}}, {{NAME}}, {{EMAIL}}, {{LIST}}, {{UNSUBSCRIBE-LINK}}', 'email-subscribers' ),
+						/* translators: %s: List of Keywords */
+						'desc'         => sprintf( __( 'Available keywords: %s', 'email-subscribers' ), '{{FIRSTNAME}}, {{LASTNAME}}, {{NAME}}, {{EMAIL}}, {{LIST}}, {{UNSUBSCRIBE-LINK}}' ),
 					),
 				),
 			),
@@ -395,7 +398,8 @@ class ES_Admin_Settings {
 						'default'      => '',
 						'id'           => 'ig_es_confirmation_mail_content',
 						'name'         => __( 'Content', 'email-subscribers' ),
-						'desc'         => __( 'If double opt-in is set, contact will receive confirmation email with above content. You can use {{FIRSTNAME}}, {{LASTNAME}}, {{NAME}}, {{EMAIL}}, {{SUBSCRIBE-LINK}} keywords', 'email-subscribers' ),
+						/* translators: %s: List of Keywords */
+						'desc'         => sprintf( __( 'If double opt-in is set, contact will receive confirmation email with above content. You can use %s keywords', 'email-subscribers' ), '{{FIRSTNAME}}, {{LASTNAME}}, {{NAME}}, {{EMAIL}}, {{SUBSCRIBE-LINK}}' ),
 					),
 				),
 			),
@@ -426,7 +430,8 @@ class ES_Admin_Settings {
 						'id'      => 'ig_es_admin_new_contact_email_content',
 						'name'    => __( 'Content', 'email-subscribers' ),
 						'type'    => 'textarea',
-						'desc'    => __( 'Content for the admin email whenever a new subscriber signs up and is confirmed. Available keywords: {{NAME}}, {{EMAIL}}, {{LIST}}', 'email-subscribers' ),
+						/* translators: %s: List of Keywords */
+						'desc'    => sprintf( __( 'Content for the admin email whenever a new subscriber signs up and is confirmed. Available keywords: %s', 'email-subscribers' ), '{{NAME}}, {{EMAIL}}, {{LIST}}' ),
 						'default' => '',
 					),
 				),
@@ -465,7 +470,8 @@ class ES_Admin_Settings {
 						'default'      => '',
 						'id'           => 'ig_es_cron_admin_email',
 						'name'         => __( 'Content', 'email-subscribers' ),
-						'desc'         => __( 'Send report to admin(s) whenever campaign is successfully sent to all contacts. Available keywords: {{DATE}}, {{SUBJECT}}, {{COUNT}}', 'email-subscribers' ),
+						/* translators: %s: List of Keywords */
+						'desc'         => sprintf( __( 'Send report to admin(s) whenever campaign is successfully sent to all contacts. Available keywords: %s', 'email-subscribers' ), '{{DATE}}, {{SUBJECT}}, {{COUNT}}' ),
 					),
 
 				),
@@ -476,12 +482,14 @@ class ES_Admin_Settings {
 
 		$cron_url_setting_desc = '';
 		
-		if ( ES()->is_trial_valid() ) {
-			$cron_url_setting_desc = sprintf( __( '<span class="es-send-success es-icon"></span> We will take care of it. You don\'t need to visit this URL manually.', 'email-subscribers' ) );
+		if ( ES()->is_trial_valid() || ES()->is_premium() ) {
+			$cron_url_setting_desc = '<span class="es-send-success es-icon"></span>' . esc_html__( ' We will take care of it. You don\'t need to visit this URL manually.', 'email-subscribers' );
 		} else {
 			/* translators: %s: Link to Icegram documentation */
 			$cron_url_setting_desc = sprintf( __( "You need to visit this URL to send email notifications. Know <a href='%s' target='_blank'>how to run this in background</a>", 'email-subscribers' ), 'https://www.icegram.com/documentation/es-how-to-schedule-cron-emails-in-cpanel/?utm_source=es&utm_medium=in_app&utm_campaign=view_docs_help_page' );
 		}
+
+		$cron_url_setting_desc .=  '<div class="mt-2.5 ml-1"><a class="hover:underline text-sm font-medium" href=" ' . esc_url( 'https://www.icegram.com/documentation/how-to-configure-email-sending-in-email-subscribers?utm_source=in_app&utm_medium=setup_email_sending&utm_campaign=es_doc') . '" target="_blank">' . esc_html__( 'How to configure Email Sending', 'email-subscribers' ) . '→</a></div>';
 
 		$pepipost_api_key_defined = ES()->is_const_defined( 'pepipost', 'api_key' );
 
@@ -538,7 +546,7 @@ class ES_Admin_Settings {
 			'ig_es_test_send_email'         => array(
 				'type'         => 'html',
 				/* translators: %s: Spinner image path */
-				'html'         => sprintf( __( '<input id="es-test-email" class="mt-3 mb-1 border-gray-400 form-input h-9"/><input type="submit" name="submit" id="es-send-test" class="ig-es-primary-button" value="Send Email"><span class="es_spinner_image_admin" id="spinner-image" style="display:none"><img src="%s" alt="Loading..."/></span>'), ES_PLUGIN_URL . 'lite/public/images/spinner.gif' ),
+				'html'         => sprintf( '<input id="es-test-email" class="mt-3 mb-1 border-gray-400 form-input h-9"/><input type="submit" name="submit" id="es-send-test" class="ig-es-primary-button" value="Send Email"><span class="es_spinner_image_admin" id="spinner-image" style="display:none"><img src="%s" alt="Loading..."/></span>', ES_PLUGIN_URL . 'lite/public/images/spinner.gif' ),
 				'placeholder'  => '',
 				'supplemental' => '',
 				'default'      => '',

@@ -793,6 +793,7 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 				// Data Types
 				'lite/includes/workflows/data-types/abstracts/class-es-data-type-form-data.php',
 				'lite/includes/workflows/data-types/class-es-data-type-user.php',
+				'lite/includes/workflows/data-types/class-es-data-type-subscriber.php',
 				'lite/includes/workflows/class-es-workflow-data-types.php',
 				
 				'lite/includes/workflows/variables/class-es-workflow-data-types.php',
@@ -1634,7 +1635,15 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 
 					break;
 
-				
+				case 'postmark':
+					switch ( $key ) {
+						case 'api_token':
+							$return = defined( 'IG_ES_POSTMARK_API_TOKEN' ) && IG_ES_POSTMARK_API_TOKEN;
+							break;
+					}
+
+					break;
+					
 			}
 
 			return $return;
@@ -1746,6 +1755,15 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 
 					break;
 
+				case 'postmark':
+					switch ( $key ) {
+						case 'api_token':
+							$return = $this->is_const_defined( $group, $key ) ? IG_ES_POSTMARK_API_TOKEN : $value;
+							break;
+					}
+
+					break;
+
 				default:
 					// Always return the default value if nothing from above matches the request.
 					$return = $value;
@@ -1850,6 +1868,15 @@ if ( ! class_exists( 'Email_Subscribers' ) ) {
 						switch ( $key ) {
 							case 'api_key':
 								$return = 'IG_ES_PEPIPOST_API_KEY';
+								break;
+						}
+	
+						break;
+
+					case 'postmark':
+						switch ( $key ) {
+							case 'api_token':
+								$return = 'IG_ES_POSTMARK_API_TOKEN';
 								break;
 						}
 	

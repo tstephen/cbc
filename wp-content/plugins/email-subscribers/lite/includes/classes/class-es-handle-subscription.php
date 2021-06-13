@@ -14,6 +14,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 	 * @since 4.0.0
 	 */
 	class ES_Handle_Subscription {
+
 		/**
 		 * Subscriber Email
 		 *
@@ -22,6 +23,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $email;
+
 		/**
 		 * Subscriber Name
 		 *
@@ -30,6 +32,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $name;
+
 		/**
 		 * Subscriber First Name
 		 *
@@ -38,6 +41,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $first_name;
+
 		/**
 		 * Subscriber Last Name
 		 *
@@ -46,6 +50,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $last_name;
+
 		/**
 		 * Optin type
 		 *
@@ -81,6 +86,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $es_nonce;
+		
 		/**
 		 * Subscriber Status
 		 *
@@ -89,6 +95,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $status;
+		
 		/**
 		 * To check if double-optin or not
 		 *
@@ -97,6 +104,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $is_double_optin = false;
+		
 		/**
 		 * Guid
 		 *
@@ -105,6 +113,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $guid;
+		
 		/**
 		 * Database Id
 		 *
@@ -113,6 +122,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $db_id;
+		
 		/**
 		 * Form id
 		 *
@@ -121,6 +131,16 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 		 *
 		 */
 		public $form_id;
+
+		/**
+		 * IP Address
+		 *
+		 * @since 4.7.3
+		 * @var
+		 *
+		 */
+		public $ip_address;
+		
 		/**
 		 * If the user is subscribed from Rainmaker
 		 *
@@ -143,36 +163,9 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 				add_action( 'wp_ajax_nopriv_es_add_subscriber', array( $this, 'process_request' ), 10 );
 			}
 
-			add_action( 'wp_ajax_ig_es_get_updated_subscription_data', array( $this, 'get_updated_subscription_data' ) );
-			add_action( 'wp_ajax_nopriv_ig_es_get_updated_subscription_data', array( $this, 'get_updated_subscription_data' ) );
-
 			$this->from_rainmaker = $from_rainmaker;
 
 			$this->handle_external_subscription();
-		}
-
-		/**
-		 * Get updated nonce for 'es-subscribe' action
-		 * 
-		 * @since 4.6.7
-		 */
-		public function get_updated_subscription_data() {
-
-			$updated_nonce = wp_create_nonce( 'es-subscribe' );
-			
-			$response = array(
-				'updated_nonce' => $updated_nonce,
-			);
-
-			$list_ids    = ig_es_get_request_data( 'list_ids', array() );
-			$list_hashes = array();
-			if ( ! empty( $list_ids ) ) {
-				$list_hashes = ES()->lists_db->get_list_id_hash_map( $list_ids );
-			}
-
-			$response['list_hashes'] = $list_hashes;
-
-			wp_send_json_success( $response );
 		}
 
 		/**
@@ -218,8 +211,9 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 					exit;
 				}
 
-				$email = ! empty( $form_data['esfpx_email'] ) ? sanitize_email( $form_data['esfpx_email'] ) : '';
-				$name  = ! empty( $form_data['esfpx_name'] ) ? sanitize_text_field( $form_data['esfpx_name'] ) : '';
+				$email       = ! empty( $form_data['esfpx_email'] ) ? sanitize_email( $form_data['esfpx_email'] ) : '';
+				$name        = ! empty( $form_data['esfpx_name'] ) ? sanitize_text_field( $form_data['esfpx_name'] ) : '';
+				$ip_address  = ! empty( $form_data['esfpx_ip_address'] ) ? sanitize_text_field( $form_data['esfpx_ip_address'] ) : '';
 
 				$first_name = '';
 				$last_name 	= '';
@@ -236,6 +230,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 				$this->first_name    = $first_name;
 				$this->last_name     = $last_name;
 				$this->email         = $email;
+				$this->ip_address         = $ip_address;
 				$this->list_hashes   = isset( $form_data['esfpx_lists'] ) ? $form_data['esfpx_lists'] : array();
 				$this->es_nonce      = isset( $form_data['esfpx_es-subscribe'] ) ? trim( $form_data['esfpx_es-subscribe'] ) : '';
 				$this->form_id       = isset( $form_data['esfpx_form_id'] ) ? trim( $form_data['esfpx_form_id'] ) : 0;
@@ -272,6 +267,7 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 							$data['form_id']    = $this->form_id;
 							$data['email']      = $this->email;
 							$data['hash']       = $this->guid;
+							$data['ip_address'] = $this->ip_address;
 							$data['status']     = 'verified';
 							$data['hash']       = $this->guid;
 							$data['created_at'] = ig_get_current_date_time();
@@ -552,17 +548,19 @@ if ( ! class_exists( 'ES_Handle_Subscription' ) ) {
 				$list_hash = ig_es_get_request_data( 'list' );
 				$list      = ES()->lists_db->get_by( 'hash', $list_hash );
 				if ( ! empty( $list ) ) {
-					$list_id  = $list['id'];
-					$name     = ig_es_get_request_data( 'name' );
-					$email    = ig_es_get_request_data( 'email' );
-					$hp_email = ig_es_get_request_data( 'es_hp_email' );
+					$list_id    = $list['id'];
+					$name       = ig_es_get_request_data( 'name' );
+					$email      = ig_es_get_request_data( 'email' );
+					$hp_email   = ig_es_get_request_data( 'es_hp_email' );
+					$ip_address = ig_es_get_request_data( 'ip_address' );
 
 					$form_data = array(
 						'esfpx_name'        => $name,
 						'esfpx_email'       => $email,
 						'esfpx_es_hp_email' => $hp_email,
+						'esfpx_ip_address'  => $ip_address,
 						'esfpx_lists'       => array(
-							$list_id,
+							$list_hash,
 						),
 						'form_type'         => 'external',
 					);

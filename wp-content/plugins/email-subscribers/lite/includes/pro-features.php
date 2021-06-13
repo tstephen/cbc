@@ -93,12 +93,22 @@ function ig_es_mailers_promo( $mailers ) {
 								),
 			),
 			'SparkPost' => array(
-				'name'       => 'SendGrid',
+				'name'       => 'SparkPost',
 				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/sparkpost.png',
 				'is_premium' => true,
 				'url'        => ES_Common::get_utm_tracking_url( array(
 									'url' => 'https://www.icegram.com/documentation/how-to-configure-sparkpost-to-send-emails-in-the-email-subscribers-plugin/', 
 									'utm_medium' => 'sparkpost_mailer' 
+									) 
+								),
+			),
+			'Postmark' => array(
+				'name'       => 'Postmark',
+				'logo'       => ES_PLUGIN_URL . 'lite/admin/images/postmark.png',
+				'is_premium' => true,
+				'url'        => ES_Common::get_utm_tracking_url( array(
+									'url' => 'https://www.icegram.com/documentation/how-to-configure-postmark-to-send-emails-in-the-email-subscribers-plugin/', 
+									'utm_medium' => 'postmark_mailer' 
 									) 
 								),
 			),
@@ -716,14 +726,14 @@ function ig_es_workflows_integration_upsell () {
 	
 		$upsell_message = '<div class="pt-1.5">';
 		foreach ( $plugin_integrations as $plugin_name ) {
-			$upsell_message .= __('<div class="flex items-start space-x-3 -ml-8">
+			$upsell_message .= '<div class="flex items-start space-x-3 -ml-8">
 			            <div class="flex-shrink-0 h-5 w-5 relative flex justify-center">
 			              <span class="block h-1.5 w-1.5 mt-1.5 bg-gray-300 rounded-full group-hover:bg-gray-400 group-focus:bg-gray-400 transition ease-in-out duration-150"></span>
 			            </div>
-			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">' . $plugin_name . '</p>
-			    </div>', 'email-subscribers');
+			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">' . esc_html( $plugin_name ) . '</p>
+			    </div>';
 		}
-		$upsell_message .= __('</div><br>Avoid manual actions and make your workflow quick, simple and effortless by integrating popular WordPress plugins with Email Subscribers PRO.', 'email-subscribers'); 
+		$upsell_message .= '</div><br>' . esc_html__( 'Avoid manual actions and make your workflow quick, simple and effortless by integrating popular WordPress plugins with Email Subscribers PRO.', 'email-subscribers'); 
 		$upsell_info = array( 
 			'upgrade_title' 	 => __('Unlock plugin integrations with PRO', 'email-subscribers' ),
 			'pricing_url'	 => $pricing_url,
@@ -769,7 +779,8 @@ function ig_es_add_captcha_option( $form_data ) {
 		$upsell_info = array( 
 			'upgrade_title' 	 => __('Protect your subscription list now with PRO', 'email-subscribers'),
 			'pricing_url'	 => $pricing_url,
-			'upsell_message' => __('Get a gatekeeper like <b class="font-medium text-teal-800">Captcha</b> and prevent bot signups from your subscription form.', 'email-subscribers'),
+			/* translators: 1. Bold tag 2. Bold close tag */
+			'upsell_message' => sprintf( __('Get a gatekeeper like %1$sCaptcha%2$s and prevent bot signups from your subscription form.', 'email-subscribers'), '<b class="font-medium text-teal-800">', '</b>' ),
 			'cta_html'		 => false,
 		);
 		?>
@@ -818,20 +829,20 @@ function ig_es_additional_multilist_and_post_digest() {
 		$upsell_info = array( 
 			'upgrade_title' 	 => __('Enable multiple lists & post digest with PRO', 'email-subscribers'),
 			'pricing_url'	 => $pricing_url,
-			'upsell_message' => __('<div class="flex items-start space-x-3 -ml-8">
+			'upsell_message' => '<div class="flex items-start space-x-3 -ml-8">
 			            <div class="flex-shrink-0 h-5 w-5 relative flex justify-center">
 			              <span class="block h-1.5 w-1.5 mt-2.5 bg-gray-300 rounded-full group-hover:bg-gray-400 group-focus:bg-gray-400 transition ease-in-out duration-150"></span>
 			            </div>
-			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">Want to send notification emails to more than one list? You can select multiple list with <b class="font-medium text-teal-800">Email Subscribers PRO.</b></p>
+			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">' . esc_html__( 'Want to send notification emails to more than one list? You can select multiple list with', 'email-subscribers') . '<b class="font-medium text-teal-800">' . esc_html__('Email Subscribers PRO.', 'email-subscribers') . '</b></p>
 			    </div>
-			   
+			  
 			    <div class="flex items-start space-x-3 -ml-8">
 			            <div class="flex-shrink-0 h-5 w-5 relative flex justify-center">
 			              <span class="block h-1.5 w-1.5 mt-2.5 bg-gray-300 rounded-full group-hover:bg-gray-400 group-focus:bg-gray-400 transition ease-in-out duration-150"></span>
 			            </div>
-			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">With post digest, improve post notification by sending one notification for multiple post, schedule it to what you feel is the best time and leave it on the plugin.
-						</p>
-			    </div>' , 'email-subscribers'),
+			            <p class="text-sm leading-5 py-0.5 text-gray-500 group-hover:text-gray-900 group-focus:text-gray-900 transition ease-in-out duration-150">' . esc_html__( 'With post digest, improve post notification by sending one notification for multiple post, schedule it to what you feel is the best time and leave it on the plugin.', 'email-subscribers') .
+						'</p>
+			    </div>',
 			'cta_html'		 => false,
 		);
 		?>
@@ -867,7 +878,7 @@ function ig_es_additional_multilist_and_post_digest() {
 									<option><?php echo esc_html__( 'Once a day at', 'email-subscribers' ); ?></option>
 								</select>
 								<select class="form-select ml-2" disabled="disabled">
-									<option><?php echo esc_html__( '12:00 pm', 'email-subscribers' ); ?></option>
+									<option><?php echo esc_html( '12:00 pm' ); ?></option>
 								</select>
 							</label>
 						</div>
@@ -1031,7 +1042,8 @@ function ig_es_view_additional_reports_data() {
 		 $upsell_info = array( 
 			'upgrade_title'  => __('Get campaign analytics with PRO', 'email-subscribers'),
 			'pricing_url'	 => $pricing_url,
-			'upsell_message' => __('Want to track some very useful statistics of your campaigns and improve your future campaign ? Upgrade to <b class="font-medium text-teal-800">Email Subscribers Pro</b> and measure the effectiveness of your campaigns. .', 'email-subscribers'),
+			/* translators: 1. Bold tag 2. Bold close tag */
+			'upsell_message' => sprintf( __('Want to track some very useful statistics of your campaigns and improve your future campaign ? Upgrade to %1$s Email Subscribers Pro %2$s and measure the effectiveness of your campaigns.', 'email-subscribers'), '<b class="font-medium text-teal-800">', '</b>'),
 			'cta_html'		 => true,
 		 );
 			?>
@@ -1062,7 +1074,7 @@ function ig_es_view_additional_reports_data() {
 							  <span class="pl-1 font-normal not-italic text-gray-900"><?php esc_html_e( 'Broadcast', 'email-subscribers'); ?></span>
 						   </p>
 						<p class="pl-6 pt-2 truncate"><?php esc_html_e( 'From: ', 'email-subscribers' ); ?>
-							   <span class="pl-1 font-normal not-italic text-gray-900"><?php esc_html_e('hello@icegram.com', 'email-subscribers'); ?>,</span>
+							   <span class="pl-1 font-normal not-italic text-gray-900"><?php echo esc_html('hello@icegram.com', 'email-subscribers'); ?>,</span>
 						</p>
 						<p class="pl-6 pt-2 truncate"><?php esc_html_e( 'List(s): ', 'email-subscribers' ); ?>
 							<span class="pl-1 font-normal not-italic text-gray-900 "><?php esc_html_e('Test, Main ', 'email-subscribers'); ?></span>
@@ -1283,7 +1295,7 @@ function ig_es_view_additional_reports_data() {
 						<tr>
 							<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-900">
 											<?php 
-												esc_html_e('https://www.icegram.com/automate-workflow-and-reduce-chaos/', 'email-subscribers');
+												echo esc_html('https://www.icegram.com/automate-workflow-and-reduce-chaos/', 'email-subscribers');
 											?>
 										</td>
 										<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-600">
@@ -1296,7 +1308,7 @@ function ig_es_view_additional_reports_data() {
 									<tr>
 								<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-900">
 											<?php 
-												esc_html_e('https://www.icegram.com/how-to-keep-email-out-of-spam-folder/', 'email-subscribers');
+												echo esc_html('https://www.icegram.com/how-to-keep-email-out-of-spam-folder/', 'email-subscribers');
 											?>
 										</td>
 										<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-600">
@@ -1309,7 +1321,7 @@ function ig_es_view_additional_reports_data() {
 									<tr>
 								<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-900">
 											<?php 
-												esc_html_e('https://www.icegram.com/8-effective-tips-to-grow-your-open-rates/');
+												echo esc_html('https://www.icegram.com/8-effective-tips-to-grow-your-open-rates/');
 											?>
 										</td>
 										<td class="px-6 py-3 border-b border-gray-200 text-sm leading-5 text-gray-600">
@@ -1518,7 +1530,7 @@ function ig_es_view_additional_reports_data() {
  */
 function ig_es_upsell_add_attachment_feature( $editor_id ) {
 
-	if ( 'edit-es-boradcast-body' === $editor_id ) {
+	if ( 'edit-es-broadcast-body' === $editor_id ) {
 		if ( ES()->can_upsell_features( array( 'lite', 'starter', 'trial' ) ) ) {
 			?>
 			<div class="ig-es-attachments-wrapper bg-white inline-block">

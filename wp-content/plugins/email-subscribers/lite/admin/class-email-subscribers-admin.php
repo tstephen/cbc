@@ -213,8 +213,10 @@ class Email_Subscribers_Admin {
 		if ( 'es_workflows' === $get_page ) {
 
 			if ( ! wp_script_is( 'clipboard', 'registered' ) ) {
-				wp_enqueue_script( 'clipboard', plugin_dir_url( __FILE__ ) . 'js/clipboard.js', array( 'jquery' ), '2.0.6', false );
+				wp_register_script( 'clipboard', plugin_dir_url( __FILE__ ) . 'js/clipboard.js', array( 'jquery' ), '2.0.6', false );
 			}
+
+			wp_enqueue_script( 'clipboard' );
 
 			if ( ! function_exists( 'ig_es_wp_js_editor_admin_scripts' ) ) {
 				/**
@@ -656,9 +658,13 @@ class Email_Subscribers_Admin {
 			do_action( 'ig_es_campaign_show_conditions', $conditions );
 			$response_data['conditions_html'] = ob_get_clean();
 		} else {
-			$response_data['total'] = ES()->lists_contacts_db->get_total_count_by_list( $list_id, $status );
+			$response_data['total'] = ES()->lists_contacts_db->get_total_count_by_list( $list_id, $status );	
 		}
 
+		if ( ! empty( $response_data['total'] ) ) {
+			$response_data['total'] = number_format( $response_data['total'] );
+		}
+		
 		die( json_encode( $response_data ) );
 	}
 
@@ -879,7 +885,7 @@ class Email_Subscribers_Admin {
 			$icegram_url   = 'https://www.icegram.com';
 
 			/* translators: 1. WordPress URL 2. Email Subscribers version 3. Icegram site URL */
-			$footer_text = sprintf( __( '<span id="footer-thankyou">Thank you for creating with <a href="%1$s" target="_blank">WordPress</a> | Email Subscribers <b>%2$s</b>. Developed by team <a href="%3$s" target="_blank">Icegram</a></span>', 'email-subscribers' ), $wordpress_url, ES_PLUGIN_VERSION, $icegram_url );
+			$footer_text = sprintf( __( '<span id="footer-thankyou">Thank you for creating with <a href="%1$s" target="_blank">WordPress</a> | Email Subscribers <b>%2$s</b>. Developed by team <a href="%3$s" target="_blank">Icegram</a></span>', 'email-subscribers' ), esc_url( $wordpress_url ), ES_PLUGIN_VERSION, esc_url( $icegram_url ) );
 		}
 
 		return $footer_text;

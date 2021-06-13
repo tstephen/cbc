@@ -23,13 +23,16 @@ if ( ! class_exists( 'ES_IG_Redirect' ) ) {
 
 			$redirect_url    = admin_url( 'post-new.php?post_type=ig_campaign' );
 			$ig_activate_url = admin_url( 'plugins.php?plugin_status=inactive' );
+			$plugin_url  	 = 'https://wordpress.org/plugins/icegram';
 
 			if ( 'create_campaign' === $action ) {
 				$redirect_url = admin_url( 'edit.php?post_type=ig_campaign' );
-				$info         = __( 'Create Onsite Campaigns Using <a href="https://wordpress.org/plugins/icegram">Icegram</a>', 'email-subscribers' );
+				/* translators: %s:  Link to WordPress.org Icegram plugin page */
+				$info         = sprintf( __( 'Create Onsite Campaigns using <a href="%s" target="_blank">Icegram</a>', 'email-subscribers' ), esc_url( $plugin_url ) );
 			} elseif ( 'create_template' === $action ) {
 				$redirect_url = admin_url( 'edit.php?ig_campaign&page=icegram-gallery' );
-				$info         = __( 'Create Popups using <a href="https://wordpress.org/plugins/icegram">Icegram</a>', 'email-subscribers' );
+				/* translators: %s: Link to WordPress.org Icegram plugin page */
+				$info         = sprintf( __( 'Create Popups using <a href="%s" target="_blank">Icegram</a>', 'email-subscribers' ), esc_url( $plugin_url ) );
 			}
 
 			$icegram_plugin = 'icegram/icegram.php';

@@ -224,7 +224,8 @@ jQuery(document).ready(function() {
 			if (jQuery('#ig-es-onboarding-final-steps-form #es_free_pro_trial').length > 0) {
 				is_trial = jQuery('#ig-es-onboarding-final-steps-form #es_free_pro_trial').is(':checked') ? 'yes': 'no';
 			}
-			var params = {
+			let btn_elem = jQuery(this);
+			jQuery.ajax({
 				type: 'POST',
 				url: ajaxurl,
 				data: {
@@ -238,6 +239,11 @@ jQuery(document).ready(function() {
 					security: ig_es_js_data.security
 				},
 				dataType: 'json',
+				beforeSend: function() {
+					jQuery(btn_elem).addClass('cursor-wait').attr('disabled', true);
+					jQuery(btn_elem).find('.es-btn-arrow').hide();
+					jQuery(btn_elem).find('.es-btn-loader').show().addClass('animate-spin').attr('disabled', true);
+				},
 				success: function(data, status, xhr) {
 					let redirect_url = '';
 					if( 'undefined' !== typeof data.redirect_url && '' !== data.redirect_url ) {
@@ -252,9 +258,7 @@ jQuery(document).ready(function() {
 				error: function(data, status, xhr) {
 					ig_es_handle_onboard_task_error( '', data, status, xhr );
 				}
-			};
-
-			jQuery.ajax(params);
+			});
 		},
 		update_onboarding_step: function( step = 1 ) {
 			var params = {

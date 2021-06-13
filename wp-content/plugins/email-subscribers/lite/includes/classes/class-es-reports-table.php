@@ -35,7 +35,7 @@ class ES_Reports_Table extends ES_List_Table {
 
 		$campaign_types = array( 'sequence', 'sequence_message' );
 		//Only if it is sequence then control will transfer to Sequence Reports class.
-		if ( ! empty ( $campaign_type ) && in_array( $campaign_type, $campaign_types ) ) {
+		if ( ! empty ( $campaign_type ) && in_array( $campaign_type, $campaign_types, true ) ) {
 			if ( ES()->is_pro() ) {
 				$reports = ES_Pro_Sequence_Reports::get_instance();
 				$reports->es_sequence_reports_callback();
@@ -61,10 +61,10 @@ class ES_Reports_Table extends ES_List_Table {
 							if ( $emails_to_be_sent > 0 ) {
 								$cron_url = ES()->cron->url( true );
 								/* translators: %s: Cron url */
-								$content = sprintf( __( "<a href='%s' class='px-3 py-2 ig-es-imp-button'>Send Queued Emails Now</a>", 'email-subscribers' ), $cron_url );
+								$content = '<a href="' . esc_url( $cron_url ) . '" class="px-3 py-2 ig-es-imp-button">' . esc_html__( 'Send Queued Emails Now', 'email-subscribers' ) . '</a>';
 							} else {
-								$content = sprintf( __( "<span class='ig-es-send-queue-emails px-3 button-disabled'>Send Queued Emails Now</span>", 'email-subscribers' ) );
-								$content .= sprintf( __( "<br /><span class='es-helper pl-6'>No emails found in queue</span>", 'email-subscribers' ) );
+								$content = '<span class="ig-es-send-queue-emails px-3 button-disabled">' . esc_html__( 'Send Queued Emails Now', 'email-subscribers' ) . '</span>';
+								$content .= '<br /><span class="es-helper pl-6">' . esc_html__( 'No emails found in queue', 'email-subscribers' ) . '</span>';
 							}
 							?>
 							<div class="flex flex-row">
@@ -248,7 +248,7 @@ class ES_Reports_Table extends ES_List_Table {
 
 		// $content = $total_emails_sent . "/" . $total_emails_to_be_sent;
 
-		return $total_emails_to_be_sent;
+		return number_format( $total_emails_to_be_sent );
 
 	}
 
