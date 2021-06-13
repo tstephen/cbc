@@ -5,7 +5,7 @@ Tags: list, categories, posts, cms
 Requires at least: 3.3
 Tested up to: 5.7.1
 Requires PHP: 5.4
-Stable tag: 0.84.1
+Stable tag: 0.84.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ Great to use WordPress as a CMS, and create pages with several categories posts.
 
 Klemens Starybrat has created a GUI for List Category Posts. It helps you create a shortcode from a nice visual interface in WordPress' text editor. Check it out:
 [GUI for List Category Posts](https://wordpress.org/plugins/gui-for-lcp/)
+
+**AJAX pagination**
+
+The ajax pagination feature is maintained in an add-on plugin by Klemens Starybrat. Check it out:
+[LCP Ajax Pagination](https://wordpress.org/plugins/lcp-ajax-pagination)
 
 **Widget**
 
@@ -231,6 +236,11 @@ Widget built for WordPress 2.8's Widget API, so you need at least WP 2.8 to use 
 Template system has changed. Custom templates should be stored in WordPress theme folder.
 
 == Changelog ==
+
+= 0.84.2 =
+
+* Fixed includeposts undefined index in older widgets.
+* Fixed invalid href attribute in morelink.
 
 = 0.84.1 =
 
