@@ -3,9 +3,9 @@ Contributors: wpforchurch, Alex Gutierrez
 Donate link: http://wpforchurch.com/  
 Tags: church, sermon, sermons, preaching, podcasting, manage, managing, podcasts, itunes  
 Requires at least: 4.7.0  
-Tested up to: 5.5
-Requires PHP: 7.0  
-Stable tag: 2.16.7  
+Tested up to: 5.7.1
+Requires PHP: 7.4  
+Stable tag: 2.16.8
 License: GPLv2  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,11 @@ Visit the [plugin homepage](https://wpforchurch.com/wordpress-plugins/sermon-man
 2. Sermon Files
 
 ## Changelog ##
+
+### 2.16.8 ###
+*Fix: backend error (Service Type field)
+*Fix: Fatal Error when adding new sermon on Version 2.16.7 Call to undefined function
+
 
 ### 2.16.7 ###
 Fix: Single and mulitple file attachment available

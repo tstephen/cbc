@@ -1,3 +1,8 @@
+### 2.16.8 ###
+Fix: backend error (Service Type field)
+Fix: Fatal Error when adding new sermon on Version 2.16.7 Call to undefined function
+
+
 Note: Newer changelog is in readme.txt
 ### 2.16.7 ###
 Fix: Single and mulitple file attachment available

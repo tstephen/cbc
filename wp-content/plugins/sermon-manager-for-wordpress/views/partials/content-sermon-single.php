@@ -17,6 +17,12 @@
  */
 
 global $post;
+
+/* check if function is_plugin_active exist */
+if(!function_exists('is_plugin_active')){
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+}
+
 ?>
 <?php if ( ! \SermonManager::getOption( 'theme_compatibility' ) ) : ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

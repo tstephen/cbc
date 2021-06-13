@@ -215,9 +215,9 @@ class SM_Dates_WP extends SM_Dates {
 		$taxonomies = $taxonomy ? array( $taxonomy ) : sm_get_taxonomies();
 
 		foreach ( $taxonomies as $taxonomy ) {
-			$the_terms = ! empty( $terms ) ? (array) $terms : null;
+			$the_terms = ! empty( $terms ) ? (array) $terms : [];
 
-			if ( null === $the_terms ) {
+			if ( 0 === count($the_terms) ) {
 				$get_terms = get_terms(
 					array(
 						'taxonomy'   => $taxonomy,
