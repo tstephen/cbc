@@ -229,6 +229,23 @@ function wpmem_user_has_access( $product, $user_id = false ) {
 }
 
 /**
+ * Checks if user expiration is current.
+ *
+ * Similar to wpmem_user_has_access(), but specifically checks the
+ * expiration date for a specified product (must be expiration product).
+ *
+ * @since 3.3.9
+ *
+ * @param  mixed   $product
+ * @param  integer $user_id
+ * @return boolean
+ */
+function wpmem_user_is_current( $product, $user_id = false ) {
+	global $wpmem;
+	return;
+}
+
+/**
  * Sets product access for a user.
  *
  * @since 3.2.3
@@ -267,6 +284,7 @@ function wpmem_remove_user_product( $product, $user_id = false ) {
  *
  * @global stdClass $wpmem
  * @param  int      $user_id
+ * @return array
  */
 function wpmem_get_user_products( $user_id = false ) {
 	global $wpmem;
@@ -586,8 +604,8 @@ function wpmem_user_register( $tag ) {
 		// Get any excluded meta fields.
 		$wpmem->excluded_meta = wpmem_get_excluded_meta( 'register' );
 
-		// Fields for wp_insert_user: user_url, first_name, last_name, description, jabber, aim, yim.
-		$new_user_fields_meta = array( 'user_url', 'first_name', 'last_name', 'description', 'jabber', 'aim', 'yim' );
+		// Fields for wp_insert_user: user_url, first_name, last_name, description.
+		$new_user_fields_meta = array( 'user_url', 'first_name', 'last_name', 'description' );
 		foreach ( $wpmem->fields as $meta_key => $field ) {
 			if ( in_array( $meta_key, $new_user_fields_meta ) ) {
 				if ( $field['register'] && ! in_array( $meta_key, $wpmem->excluded_meta ) ) {
@@ -685,9 +703,6 @@ function wpmem_user_register( $tag ) {
 			'last_name',
 			'description',
 			'role',
-			'jabber',
-			'aim',
-			'yim' 
 		);
 		$native_update = array( 'ID' => $wpmem->user->post_data['ID'] );
 
@@ -699,8 +714,10 @@ function wpmem_user_register( $tag ) {
 	
 					// If the field can be updated by wp_update_user.
 					case( in_array( $meta_key, $native_fields ) ):
-						$wpmem->user->post_data[ $meta_key ] = ( isset( $wpmem->user->post_data[ $meta_key ] ) ) ? $wpmem->user->post_data[ $meta_key ] : '';
-						$native_update[ $meta_key ] = $wpmem->user->post_data[ $meta_key ];
+						if ( 1 == $field['profile'] ) {
+							$wpmem->user->post_data[ $meta_key ] = ( isset( $wpmem->user->post_data[ $meta_key ] ) ) ? $wpmem->user->post_data[ $meta_key ] : '';
+							$native_update[ $meta_key ] = $wpmem->user->post_data[ $meta_key ];
+						}
 						break;
 	
 					// If the field is password.

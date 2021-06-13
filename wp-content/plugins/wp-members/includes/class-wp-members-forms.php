@@ -22,6 +22,191 @@ class WP_Members_Forms {
 	function __construct() {
 		
 	}
+
+	/**
+	 * Sets the registration fields.
+	 *
+	 * @since 3.0.0
+	 * @since 3.1.5 Added $form argument.
+	 * @since 3.3.0 Added $tag argument.
+	 *
+	 * @global stdClass $wpmem
+	 * @param  string   $tag
+	 * @param  string   $form The form being generated.
+	 */
+	function load_fields( $tag = 'new', $form = 'default' ) {
+		
+		global $wpmem;
+	
+		// Get stored fields settings.
+		$fields = get_option( 'wpmembers_fields' );
+		
+		// Validate fields settings.
+		if ( ! isset( $fields ) || empty( $fields ) ) {
+			// Update settings.
+			$fields = array( array( 10, 'Email', 'user_email', 'email', 'y', 'y', 'y', 'profile'=>true ) );
+		}
+		
+		// Add new field array keys
+		foreach ( $fields as $key => $val ) {
+			
+			// Key fields with meta key.
+			$meta_key = $val[2];
+			
+			// Old format, new key.
+			foreach ( $val as $subkey => $subval ) {
+				$wpmem->fields[ $meta_key ][ $subkey ] = $subval;
+			}
+			
+			// Setup field properties.
+			$wpmem->fields[ $meta_key ]['label']    = $val[1];
+			$wpmem->fields[ $meta_key ]['type']     = $val[3];
+			$wpmem->fields[ $meta_key ]['register'] = ( 'y' == $val[4] ) ? true : false;
+			$wpmem->fields[ $meta_key ]['required'] = ( 'y' == $val[5] ) ? true : false;
+			$wpmem->fields[ $meta_key ]['profile']  = ( 'y' == $val[4] ) ? true : false;// ( isset( $val['profile'] ) ) ? $val['profile'] : true ; // // @todo Wait for profile fix
+			$wpmem->fields[ $meta_key ]['native']   = ( 'y' == $val[6] ) ? true : false;
+			
+			// Certain field types have additional properties.
+			switch ( $val[3] ) {
+				
+				case 'checkbox':
+					$wpmem->fields[ $meta_key ]['checked_value']   = $val[7];
+					$wpmem->fields[ $meta_key ]['checked_default'] = ( 'y' == $val[8] ) ? true : false;
+					$wpmem->fields[ $meta_key ]['checkbox_label']  = ( isset( $val['checkbox_label'] ) ) ? $val['checkbox_label'] : 0;
+					break;
+
+				case 'select':
+				case 'multiselect':
+				case 'multicheckbox':
+				case 'radio':
+				case 'membership':
+					if ( 'membership' == $val[3] ) {
+						$val[7] = array( __( 'Choose membership', 'wp-members' ) . '|' );
+						foreach( $wpmem->membership->products as $membership_key => $membership_value ) {
+							$val[7][] = $membership_value['title'] . '|' . $membership_key;
+						}
+					}
+					// Correct a malformed value (if last value is empty due to a trailing comma).
+					if ( '' == end( $val[7] ) ) {
+						array_pop( $val[7] );
+						$wpmem->fields[ $meta_key ][7] = $val[7];
+					}
+					$wpmem->fields[ $meta_key ]['values']    = $val[7];
+					$wpmem->fields[ $meta_key ]['delimiter'] = ( isset( $val[8] ) ) ? $val[8] : '|';
+					$wpmem->fields[ $meta_key ]['options']   = array();
+					foreach ( $val[7] as $value ) {
+						$pieces = explode( '|', trim( $value ) );
+						if ( isset( $pieces[1] ) && $pieces[1] != '' ) {
+							$wpmem->fields[ $meta_key ]['options'][ $pieces[1] ] = $pieces[0];
+						}
+					}
+					break;
+
+				case 'file':
+				case 'image':
+					$wpmem->fields[ $meta_key ]['file_types'] = $val[7];
+					break;
+
+				case 'hidden':
+					$wpmem->fields[ $meta_key ]['value'] = $val[7];
+					break;
+					
+			}
+		}
+	}
+
+	/**
+	 * Filter custom fields for localization.
+	 *
+	 * @since 3.3.9
+	 *
+	 * @param array $fields
+	 */
+	function localize_fields( $fields ) {
+		if ( function_exists( 'wpmem_custom_translation_strings' ) ) {
+			$string_map = wpmem_custom_translation_strings( get_locale() );
+			foreach ( $string_map as $meta_key => $value ) {
+				if ( is_array( $value ) ) {
+					if ( isset( $fields[ $meta_key ]['placeholder'] ) && isset( $value['placeholder'] ) ) {
+						$fields[ $meta_key ]['placeholder'] = $string_map[ $meta_key ]['placeholder'];
+					}
+					if ( isset( $fields[ $meta_key ]['title'] ) && isset( $value['title'] ) ) {
+						$fields[ $meta_key ]['title'] = $string_map[ $meta_key ]['title'];
+					}
+					if ( isset( $fields[ $meta_key ]['label'] ) && isset( $value['label'] ) ) {
+						$fields[ $meta_key ]['label'] = $string_map[ $meta_key ]['label'];
+					}
+				} else {
+					$fields[ $meta_key ]['label'] = $string_map[ $meta_key ];
+				}
+			}
+		}
+		return $fields;
+	}
+	
+	/**
+	 * Get excluded meta fields.
+	 *
+	 * @since 3.0.0
+	 * @since 3.3.3 Update $tag to match wpmem_fields() tags.
+	 *
+	 * @param  string $tag A tag so we know where the function is being used.
+	 * @return array       The excluded fields.
+	 */
+	function excluded_fields( $tag ) {
+
+		// Default excluded fields.
+		$excluded_fields = array( 'password', 'confirm_password', 'confirm_email', 'password_confirm', 'email_confirm' );
+		
+		if ( 'update' == $tag || 'admin-profile' == $tag || 'user-profile' == $tag || 'wp-register' == $tag ) {
+			$excluded_fields[] = 'username';
+		}
+
+		if ( 'admin-profile' == $tag || 'user-profile' == $tag ) {
+			array_push( $excluded_fields, 'first_name', 'last_name', 'nickname', 'display_name', 'user_email', 'description', 'user_url' );
+			
+			// If WooCommerce is used, remove these meta - WC already adds them in their own section.
+			if ( class_exists( 'woocommerce' ) ) {
+				array_push( $excluded_fields,
+					'billing_first_name',
+					'billing_last_name',
+					'billing_company',
+					'billing_address_1',
+					'billing_address_2',
+					'billing_city',
+					'billing_postcode',
+					'billing_country',
+					'billing_state',
+					'billing_email',
+					'billing_phone',
+					'shipping_first_name',
+					'shipping_last_name',
+					'shipping_company',
+					'shipping_address_1',
+					'shipping_address_2',
+					'shipping_city',
+					'shipping_postcode',
+					'shipping_country',
+					'shipping_state'
+				);
+			}
+		}
+
+		/**
+		 * Filter excluded meta fields.
+		 *
+		 * @since 2.9.3
+		 * @since 3.0.0 Moved to new method in WP_Members Class.
+		 * @since 3.3.3 Update $tag to match wpmem_fields() tags.
+		 *
+		 * @param array       An array of the field meta names to exclude.
+		 * @param string $tag A tag so we know where the function is being used.
+		 */
+		$excluded_fields = apply_filters( 'wpmem_exclude_fields', $excluded_fields, $tag );
+
+		// Return excluded fields.
+		return $excluded_fields;
+	}
 	
 	/**
 	 * Creates form fields
@@ -181,6 +366,7 @@ class WP_Members_Forms {
 				} else {
 					$chk = 'not selected';
 				}
+				$pieces[1] = ( isset( $pieces[1] ) ) ? $pieces[1] : ''; // If someone skipped a pipe, treat it as empty.
 				$str = $str . "<option value=\"$pieces[1]\"" . selected( $pieces[1], $chk, false ) . ">" . esc_attr( __( $pieces[0], 'wp-members' ) ) . "</option>\n";
 			}
 			$str = $str . "</select>";
@@ -826,12 +1012,20 @@ class WP_Members_Forms {
 	 */
 	function register_form( $mixed = 'new', $redirect_to = null ) {
 		
+		/*
+		 * Removes the action to load form elements for the WP registration 
+		 * form. Otherwise, when the register_form action is fired in this 
+		 * form, we'd get a duplication of all custom fields.
+		 */
+		remove_action( 'register_form', 'wpmem_wp_register_form' );
+		
 		// Handle legacy use.
 		if ( is_array( $mixed ) ) {
 			$id          = ( isset( $mixed['id']          ) ) ? $mixed['id']          : '';
 			$tag         = ( isset( $mixed['tag']         ) ) ? $mixed['tag']         : 'new';
 			$heading     = ( isset( $mixed['heading']     ) ) ? $mixed['heading']     : '';
 			$redirect_to = ( isset( $mixed['redirect_to'] ) ) ? $mixed['redirect_to'] : '';
+			$fields      = ( isset( $mixed['fields']      ) ) ? $mixed['fields']      : false;
 		} else {
 			$id  = 'default';
 			$tag = $mixed;
@@ -880,6 +1074,8 @@ class WP_Members_Forms {
 			'wrap_inputs'      => true,
 			'n'                => "\n",
 			't'                => "\t",
+			
+			'register_form_action' => true,
 
 		);
 
@@ -904,7 +1100,7 @@ class WP_Members_Forms {
 		
 		// Get fields.
 		$wpmem_fields = wpmem_fields( $tag );
-		
+
 		// Fields to skip for user profile update.
 
 		if ( 'edit' == $tag ) {
@@ -1023,9 +1219,10 @@ class WP_Members_Forms {
 						'compare'  => $val,
 						'required' => $field['required'],
 					) );
-					$input = ( $field['required'] ) ? $input . $args['req_mark'] : $input;
 
 					$input .= ' ' . $this->get_tos_link( $field, $tag );
+					
+					$input = ( $field['required'] ) ? $input . $args['req_mark'] : $input;
 
 					// In previous versions, the div class would end up being the same as the row before.
 					$field_before = ( $args['wrap_inputs'] ) ? '<div class="div_text">' : '';
@@ -1111,6 +1308,11 @@ class WP_Members_Forms {
 						}
 						$input = wpmem_form_field( $formfield_args );
 
+						// If checkbox label option is enabled.
+						if ( 'checkbox' == $field['type'] && 1 == $field['checkbox_label'] ) {
+							$input = $input . ' <label for="' . $meta_key . '">' . $label . '</label>';
+							$fields[ $meta_key ]['label'] = $field['label'] = $label = '';
+						}
 					}
 
 					// Determine input wrappers.
@@ -1218,6 +1420,16 @@ class WP_Members_Forms {
 			$row .= ( $row_item['field_before'] != '' ) ? $row_item['field_before'] . $args['n'] . $args['t'] . $row_item['field'] . $args['n'] . $row_item['field_after'] . $args['n'] : $row_item['field'] . $args['n'];
 			$row .= ( $row_item['row_after']    != '' ) ? $row_item['row_after'] . $args['n'] : '';
 			$form.= $row;
+		}
+		
+		// Handle outside elements added to the register form with register_form.
+		if ( 'new' == $tag && $args['register_form_action'] ) {
+			ob_start();
+			/** This action is documented in wp-login.php */
+			do_action( 'register_form' );
+			$add_to_form = ob_get_contents();
+			ob_end_clean();
+			$form.= $add_to_form;
 		}
 
 		// Do recaptcha if enabled.
@@ -1583,7 +1795,7 @@ class WP_Members_Forms {
 				unset( $wpmem_fields['password'] );
 				unset( $wpmem_fields['confirm_password'] );
 			}
-				
+
 			foreach ( $wpmem_fields as $meta_key => $field ) {
 
 				$req = ( $field['required'] ) ? ( ( $is_woo ) ? ' <span class="required">*</span>' : ' <span class="req">' . __( '(required)' ) . '</span>' ) : '';
@@ -1603,9 +1815,9 @@ class WP_Members_Forms {
 						$val = ( ! $_POST && $field['checked_default'] ) ? $field['checked_value'] : $val;
 
 						$row_before = '<p class="wpmem-checkbox">';
-						$label = '<label for="' . $meta_key . '">' . $label . $req;
+						$label = '<label for="' . $meta_key . '">' . $label . $req . '</label>';
 						$input = wpmem_form_field( $meta_key, $field['type'], $field['checked_value'], $val );
-						$row_after = '</label></p>';
+						$row_after = '</p>';
 
 					} elseif ( 'hidden' == $field['type'] ) {
 
@@ -1624,7 +1836,8 @@ class WP_Members_Forms {
 					} else {
 
 						$row_before = ( $is_woo ) ? '<p class="woocommerce-FormRow woocommerce-FormRow--wide form-row form-row-wide">' : '<p>';
-						$label = '<label for="' . $meta_key . '">' . __( $field['label'], 'wp-members' ) . $req . '<br />';
+						$label  = '<label for="' . $meta_key . '">' . __( $field['label'], 'wp-members' ) . $req . '</label>';
+						$label .= ( 'multicheckbox' == $field['type'] ) ? '<br />' : '';
 
 						// determine the field type and generate accordingly...
 
@@ -1686,7 +1899,7 @@ class WP_Members_Forms {
 							break;
 						}
 
-						$row_after = '</label></p>';
+						$row_after = '</p>';
 
 					}
 
@@ -1702,11 +1915,12 @@ class WP_Members_Forms {
 			}
 			
 			// Do recaptcha if enabled.
-			if ( ! $is_woo && isset( $wpmem->captcha ) && $wpmem->captcha > 0 ) {
+			if ( ! $is_woo && isset( $wpmem->captcha ) && $wpmem->captcha != 0 ) {
 				
 				$row_before = '<p>';
 				$row_after  = '</p>';
 				$label      = '';
+				$captcha    = '';
 				
 				if ( in_array( $wpmem->captcha, array( 1, 3, 4 ) ) ) {
 					$captcha = WP_Members_Captcha::recaptcha();
@@ -1721,15 +1935,15 @@ class WP_Members_Forms {
 					$row_before = '';
 					$row_after  = '';
 				}
+				
+				$rows['captcha'] = array(
+					'type' => '',
+					'row_before' => $row_before,
+					'row_after'  => $row_after,
+					'label'      => $label,
+					'field'      => $captcha,
+				);
 			}
-	
-			$rows['captcha'] = array(
-				'type' => '',
-				'row_before' => $row_before,
-				'row_after'  => $row_after,
-				'label'      => $label,
-				'field'      => $captcha,
-			);
 
 			if ( isset( $rows ) && is_array( $rows ) ) {
 

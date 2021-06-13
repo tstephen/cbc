@@ -97,23 +97,41 @@ class WP_Members_Validation_Link {
 			 * Filter the return url
 			 *
 			 * @since 3.3.5
+			 * @since 3.3.9 Added $user object
+			 *
+			 * @param string The link URL (trailing slash recommended).
+			 * @param object $user
 			 */
-			$url = apply_filters( 'wpmem_validation_link_return_url', trailingslashit( wpmem_profile_url() ) );
+			$url = apply_filters( 'wpmem_validation_link_return_url', trailingslashit( wpmem_profile_url() ), $user );
 			$query_args = array(
 				'a'     => 'confirm',
 				'key'   => $key,
 				'login' => $user->user_login,
 			);
+			
+			// urlencode, primarily for user_login with a space.
+			$query_args = array_map( 'rawurlencode', $query_args );
+			
 			$link = add_query_arg( $query_args, trailingslashit( $url ) );
+			
+			/**
+			 * Filter the confirmation link.
+			 *
+			 * @since 3.3.9
+			 *
+			 * @param  string  $link
+			 * @param  string  $url
+			 * @param  array   $query_args
+			 */
+			$link = apply_filters( 'wpmem_validation_link', $link, $url, $query_args );
 		
 			// Does email body have the [confirm_link] shortcode?
 			if ( strpos( $arr['body'], '[confirm_link]' ) ) {
 				$arr['body'] = str_replace( '[confirm_link]', $link, $arr['body'] );
 			} else {
-			// Add text and link to the email body.
-			$arr['body'] = $arr['body'] . "\r\n"
-				. $this->email_text
-				. $link;
+				// Add text and link to the email body.
+				$arr['body'] = $arr['body'] . "\r\n"
+					. $this->email_text . ' ' . $link;
 			}
 		}
 
@@ -334,6 +352,15 @@ class WP_Members_Validation_Link {
 	 */
 	public function set_as_confirmed( $user_id ) {
 		update_user_meta( $user_id, $this->validation_confirm, time() );
+		/**
+		 * Fires when user is set as confirmed (either manually or by user).
+		 *
+		 * @since 3.3.9
+		 *
+		 * @param int $user_id
+		 * @param string time()
+		 */
+		do_action( 'wpmem_user_set_as_confirmed', $user_id, time() );
 	}
 	
 	/**
@@ -345,6 +372,16 @@ class WP_Members_Validation_Link {
 	 */
 	public function set_as_unconfirmed( $user_id ) {
 		delete_user_meta( $user_id, $this->validation_confirm );
-		$this->set_validation_key( $user_id );
+		$validation_key = $this->set_validation_key( $user_id );
+		/**
+		 * Fires when user is set as confirmed (either manually or by user).
+		 *
+		 * @since 3.3.9
+		 *
+		 * @param int $user_id
+		 * @param string time()
+		 * @param string $key
+		 */
+		do_action( 'wpmem_user_set_as_unconfirmed', $user_id, time(), $key );
 	}
 }

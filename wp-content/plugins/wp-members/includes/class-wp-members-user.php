@@ -75,21 +75,13 @@ class WP_Members_User {
 	 * @since 3.2.3 Removed wpmem_login_fields filter.
 	 * @since 3.2.3 Replaced form collection with WP script to facilitate login with username OR email.
 	 * @since 3.2.3 Changed to wp_safe_redirect().
+	 * @since 3.3.9 Added wpmem_set_as_logged_in() to make sure user is set.
 	 *
 	 * @return string Returns "loginfailed" if failed login.
 	 */
 	function login() {
 		
 		global $wpmem;
-		
-		if ( ! empty( $_POST['log'] ) && ! force_ssl_admin() ) {
-			$user_name = sanitize_user( $_POST['log'] );
-			$user = get_user_by( 'login', $user_name );
-
-			if ( ! $user && strpos( $user_name, '@' ) ) {
-				$user = get_user_by( 'email', $user_name );
-			}
-		}
 
 		$user = wp_signon( array(), is_ssl() );
 
@@ -97,6 +89,10 @@ class WP_Members_User {
 			$wpmem->error = $user->get_error_message();
 			return "loginfailed";
 		} else {
+			
+			// Make sure current user is set.
+			wpmem_set_as_logged_in( $user->ID );
+			
 			$redirect_to = wpmem_get( 'redirect_to', false );
 			$redirect_to = ( $redirect_to ) ? esc_url_raw( trim( $redirect_to ) ) : esc_url_raw( wpmem_current_url() );
 			/** This filter defined in wp-login.php */
@@ -370,9 +366,9 @@ class WP_Members_User {
 			 * are added, use the $_POST value - otherwise, default to username.
 			 * Value can be filtered with wpmem_register_data.
 			 */
-			foreach( array( 'user_nicename', 'display_name', 'nickname' ) as $user_names ) {
-				$this->post_data[ $user_names ] = sanitize_text_field( wpmem_get( $user_names, $this->post_data['username'] ) );
-			}	
+			$this->post_data['user_nicename']   = sanitize_title( wpmem_get( 'user_nicename', $this->post_data['username'] ) );
+			$this->post_data['display_name']    = sanitize_text_field( wpmem_get( 'display_name', $this->post_data['username'] ) );
+			$this->post_data['nickname']        = sanitize_text_field( wpmem_get( 'nickname', $this->post_data['username'] ) );
 		}
 	}
 
@@ -442,7 +438,7 @@ class WP_Members_User {
 			$this->post_data['ID'] = $user_id;
 
 			// Set remaining fields to wp_usermeta table.
-			$new_user_fields_meta = array( 'user_url', 'first_name', 'last_name', 'description', 'jabber', 'aim', 'yim' );
+			$new_user_fields_meta = array( 'user_url', 'first_name', 'last_name', 'description' );
 			foreach ( $wpmem->fields as $meta_key => $field ) {
 				// If the field is not excluded, update accordingly.
 				if ( ! in_array( $meta_key, wpmem_get_excluded_meta( 'register' ) ) && ! in_array( $meta_key, $new_user_fields_meta ) ) {
