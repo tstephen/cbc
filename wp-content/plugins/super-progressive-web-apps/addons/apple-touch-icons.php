@@ -41,6 +41,15 @@ function superpwa_ati_add_apple_touch_icons( $tags ) {
             }//if closed
         }//foreach closed
     }
+    // Get settings
+    $settings = superpwa_get_settings();
+    
+    $tags .= '<meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_name']).'">' . PHP_EOL;
+    $tags .= '<meta name="application-name" content="'.esc_attr($settings['app_name']).'">' . PHP_EOL;
+    $tags .= '<meta name="apple-mobile-web-app-capable" content="yes">' . PHP_EOL;
+    $tags .= '<meta name="apple-mobile-web-app-status-bar-style" content="black">' . PHP_EOL;
+    $tags .= '<meta name="mobile-web-app-capable" content="yes">' . PHP_EOL;
+    $tags .= '<meta name="apple-touch-fullscreen" content="yes">' . PHP_EOL;
 	
 	return $tags;
 }
@@ -150,7 +159,7 @@ function superpwa_apple_icons_splash_screen_cb() {
     $splashIconsScreens = apple_splashscreen_files_data();
     $iosScreenSetting = get_option( 'superpwa_apple_icons_uploaded' ) ; //New generated icons
     ?>
-    <input type="file" id="upload_apple_function" accept="images/png">
+    <input type="file" id="upload_apple_function" accept="image/png">
     <p class="description"><?php echo esc_html__('Must select PNG images only', 'super-progressive-web-apps'); ?> </p><br/>
     <?php
         $a = 'style="display:none"';$src = '';
@@ -290,7 +299,13 @@ function superpwa_apple_icons_interface_render() {
 }
 
 function superpwa_splashscreen_uploader(){
-    if(isset($_POST['security_nonce']) && !wp_verify_nonce( $_POST['security_nonce'], 'superpwaIosScreenSecurity' ) ) {
+
+    // Authentication
+    if ( ! current_user_can( 'manage_options' ) ) {
+       return;
+    }
+
+    if( (!isset($_POST['security_nonce'])) || (isset($_POST['security_nonce']) && !wp_verify_nonce( $_POST['security_nonce'], 'superpwaIosScreenSecurity' )) ) {
         echo json_encode(array('status'=>400, 'message'=>'security nonce not matched'));die;
     }
     if(isset($_FILES['file']['type']) && $_FILES['file']['type']!='application/zip'){
@@ -301,14 +316,23 @@ function superpwa_splashscreen_uploader(){
     }
 
     $upload = wp_upload_dir();
-    $path = $upload['basedir']."/superpwa-splashIcons/";
+    $path =  $upload['basedir']."/superpwa-splashIcons/";
+    $subpath = $upload['basedir']."/superpwa-splashIcons/super_splash_screens/";
     wp_mkdir_p($path);
-
+    file_put_contents($path.'/index.html','');
+    file_put_contents($subpath.'/index.html','');
     WP_Filesystem();
     $zipFileName = $path."/splashScreen.zip";
     $moveFile = move_uploaded_file($_FILES['file']['tmp_name'], $zipFileName);
     if($moveFile){
         $result = unzip_file($zipFileName, $path);
+        $file_ext = list_files($subpath);
+        foreach ($file_ext as $key => $value) {
+            $ext = wp_check_filetype($value);
+            if(!in_array(strtolower($ext['ext']), array('png','html'))){
+                unlink($value); 
+            }    
+        }
         unlink($zipFileName);    
     }else{
         echo json_encode(array('status'=>500, 'message'=>'Files are not uploading'));die;
