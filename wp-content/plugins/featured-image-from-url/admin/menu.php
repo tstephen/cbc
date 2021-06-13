@@ -13,6 +13,8 @@ function fifu_insert_menu() {
         wp_enqueue_style('jquery-ui-style2', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css');
         wp_enqueue_style('jquery-ui-style3', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css');
 
+        wp_enqueue_style('fifu-pro-css', plugins_url('/html/css/pro.css', __FILE__), array(), fifu_version_number());
+
         wp_enqueue_script('jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
         wp_enqueue_script('jquery-block-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js');
 
@@ -22,6 +24,7 @@ function fifu_insert_menu() {
     add_menu_page('Featured Image from URL', 'Featured Image from URL', 'manage_options', 'featured-image-from-url', 'fifu_get_menu_html', 'dashicons-camera', 57);
     add_submenu_page('featured-image-from-url', 'FIFU Settings', __('Settings'), 'manage_options', 'featured-image-from-url');
     add_submenu_page('featured-image-from-url', 'FIFU Status', __('Status'), 'manage_options', 'fifu-support-data', 'fifu_support_data');
+    add_submenu_page('featured-image-from-url', 'FIFU Pro', __('<a href="https://fifu.app/" target="_blank"><div style="padding:5px;color:white;background-color:#1da867">Upgrade to <b>PRO</b></div></a>'), 'manage_options', null, null);
 
     add_action('admin_init', 'fifu_get_menu_settings');
 }

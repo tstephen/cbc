@@ -1,7 +1,7 @@
 <div class="wrap" style="opacity:0">
 
     <div class="header-box">
-        <h1 style="color:white;padding-left:20px"><span class="dashicons dashicons-camera" style="font-size:30px"></span><span style="padding-left:20px">featured image from url 3</span></h1>
+        <h1 style="color:white;padding-left:20px"><span class="dashicons dashicons-camera" style="font-size:30px"></span><span style="padding-left:20px">featured image from url</span></h1>
         <a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola" target="_blank"><img class="fifu-chrome" src="https://storage.googleapis.com/featuredimagefromurl/chrome-web-store2.png" title="<?php $fifu['chrome']['link']() ?>"/></a>
     </div>
 
@@ -362,6 +362,51 @@
                                         <th></th>
                                         <th>
                                             wp fifu isbn &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['screenshot']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu screenshot &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['screenshot']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['screenshot']['crop']['height']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu screenshot --height &lt;integer&gt;
+                                        </th>
+                                        <th>400, 600, 800...</th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['auto']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['finder']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu finder &lt;toggle&gt;
                                         </th>
                                         <th>
                                             on, off
@@ -923,6 +968,23 @@
                                             <?php $fifu['title']['slider']() ?>
                                         </th>
                                         <th>
+                                            <?php $fifu['slider']['crop']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu slider --crop &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['slider']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['slider']() ?>
+                                        </th>
+                                        <th>
                                             <?php $fifu['fields']['slider']() ?>
                                         </th>
                                         <th>
@@ -1405,6 +1467,20 @@
                                             <?php $fifu['tab']['metadata']() ?>
                                         </th>
                                         <th>
+                                            <?php $fifu['title']['dimensions']() ?>
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            wp fifu dimensions
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['metadata']() ?>
+                                        </th>
+                                        <th>
                                             <?php $fifu['title']['schedule']() ?>
                                         </th>
                                         <th></th>
@@ -1445,21 +1521,6 @@
                                         </th>
                                         <th>
                                             100, 1000, 5000...
-                                        </th>
-                                    </tr>
-                                    <tr class="color">
-                                        <th>
-                                            <?php $fifu['tab']['performance']() ?>
-                                        </th>
-                                        <th>
-                                            <?php $fifu['title']['jetpack']() ?>
-                                        </th>
-                                        <th>Shortpixel</th>
-                                        <th>
-                                            wp fifu shortpixel &lt;toggle&gt;
-                                        </th>
-                                        <th>
-                                            on, off
                                         </th>
                                     </tr>
                                     <tr class="color">
@@ -1556,6 +1617,57 @@
                                         </th>
                                         <th>
                                             300, 600, 900...
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['bbpress']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['bbpress']['fields']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu bbpress --fields &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['bbpress']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['bbpress']['title']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu bbpress --title &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
+                                        </th>
+                                    </tr>
+                                    <tr class="color">
+                                        <th>
+                                            <?php $fifu['tab']['social']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['title']['bbpress']() ?>
+                                        </th>
+                                        <th>
+                                            <?php $fifu['bbpress']['avatar']() ?>
+                                        </th>
+                                        <th>
+                                            wp fifu bbpress --avatar &lt;toggle&gt;
+                                        </th>
+                                        <th>
+                                            on, off
                                         </th>
                                     </tr>
                                     <tr class="color">
@@ -1880,7 +1992,7 @@
                             </div>
 
                             <div id="tabsContent-b">
-                                <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey; position: relative; top: -40px">premium</a></div>
+                                <div class="fifu-pro" style="position: relative; top: -40px;"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                                 <div class="greybox" id="grad2">
                                     <div id="tabsContentAll">
                                         <ul>
@@ -1941,7 +2053,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['auto']() ?> </span></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['auto']['desc']() ?>
@@ -2022,10 +2134,83 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['isbn']() ?> </span></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['isbn']['desc']() ?>
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="box">
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
+                    <h2><?php $fifu['title']['screenshot']() ?> </span></h2>
+                    <div class="greybox" id="grad2">
+                        <?php $fifu['screenshot']['desc']() ?>
+                    </div>
+                    <br>
+                    <div id="tabsScreenshot">
+                        <ul>
+                            <li><a href="#tabsScreenshot-a"><?php $fifu['screenshot']['tab']['auto']() ?></a></li>
+                            <li><a href="#tabsScreenshot-b"><?php $fifu['screenshot']['tab']['crop']() ?></a></li>
+                            <br>
+                            <br>
+                            <div id="tabsScreenshot-a">
+                                <table style="text-align:left">
+                                    <tr>
+                                        <th>
+                                            <input
+                                                type="submit"
+                                                href="javascript:void(0)"
+                                                class="toggleoff"
+                                                value=""
+                                                style="display:block;border:none">
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="tabsScreenshot-b">
+                                <table>
+                                    <tr style="text-align:center">
+                                        <th>
+                                            <input id="fifu_input_screenshot_height"
+                                                   name="fifu_input_screenshot_height"
+                                                   step="10"
+                                                   size="5">
+                                        </th>
+                                        <th>
+                                            <?php $fifu['screenshot']['crop']['height']() ?>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <input type="submit" value="<?php $fifu['button']['submit']() ?>" >
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
+                    <h2><?php $fifu['title']['finder']() ?> </span></h2>
+                    <div class="greybox" id="grad2">
+                        <?php $fifu['finder']['desc']() ?>
                     </div>
                     <br>
                     <table style="text-align:left">
@@ -2348,7 +2533,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
 
                     <h2><?php $fifu['title']['media']() ?></h2>
 
@@ -2394,7 +2579,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['height']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['height']['desc']() ?>
@@ -2574,7 +2759,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['replace']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['replace']['desc']() ?>
@@ -2590,7 +2775,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['hover']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['hover']['desc']() ?>
@@ -2629,7 +2814,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['giphy']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['giphy']['desc']() ?>
@@ -2650,7 +2835,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['validation']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['validation']['desc']() ?>
@@ -2664,7 +2849,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['unsplash']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['unsplash']['desc']() ?>
@@ -2715,7 +2900,7 @@
                                 <?php $fifu['metadata']['generate']() ?>
                             </th>
                             <th>
-                                <div id="image_metadata_counter"><?php echo get_option('fifu_image_metadata_counter') ?></div>
+                                <div id="image_metadata_counter"><?php echo get_transient('fifu_image_metadata_counter') ?></div>
                             </th>
                         </tr>
                     </table>
@@ -2805,7 +2990,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['schedule']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['schedule']['desc']() ?><br><br>
@@ -2938,7 +3123,7 @@
             <div id="tabs-l">
                 <div class="box">
 
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['shortcode']() ?></h2>
 
                     <div class="greybox" id="grad2">
@@ -2999,7 +3184,7 @@
             <div id="tabs-c">
                 <div class="box">
 
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['video']() ?></h2>
 
                     <div class="greybox" id="grad2">
@@ -3035,7 +3220,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['thumbnail']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['thumbnail']['desc']() ?>
@@ -3098,7 +3283,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['play']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['play']['desc']() ?>
@@ -3164,7 +3349,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['width']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['width']['desc']() ?>
@@ -3175,7 +3360,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['black']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['black']['desc']() ?>
@@ -3199,7 +3384,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['mouseover']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['mouseover']['desc']() ?>
@@ -3236,7 +3421,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['autoplay']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['autoplay']['desc']() ?>
@@ -3257,7 +3442,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['loop']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['loop']['desc']() ?>
@@ -3278,7 +3463,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['mute']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['mute']['desc']() ?>
@@ -3300,7 +3485,7 @@
 
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['background']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['background']['desc']() ?>
@@ -3324,7 +3509,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['related']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['related']['desc']() ?>
@@ -3348,7 +3533,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['icon']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['icon']['desc']() ?>
@@ -3383,7 +3568,7 @@
             </div>
             <div id="tabs-m">
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['slider']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['slider']['desc']() ?><br><br>
@@ -3498,6 +3683,21 @@
                                             </th>
                                             <th>
                                                 <?php $fifu['slider']['counter']() ?>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <input
+                                                    type="submit"
+                                                    href="javascript:void(0)"
+                                                    id="fifu_toggle_slider_crop"
+                                                    name="fifu_toggle_slider_crop"
+                                                    class="toggleoff"
+                                                    value=""
+                                                    style="display:block;border:none">
+                                            </th>
+                                            <th>
+                                                <?php $fifu['slider']['crop']() ?>
                                             </th>
                                         </tr>
                                     </table>
@@ -3648,7 +3848,7 @@
                     </table>
                 </div>
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['rss']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['rss']['desc']() ?>
@@ -3680,6 +3880,74 @@
                         </tr>
                     </table>
                 </div>
+                <div class="box">
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
+                    <h2><?php $fifu['title']['bbpress']() ?></h2>
+                    <div class="greybox" id="grad2">
+                        <?php $fifu['bbpress']['desc']() ?>
+                        <br>
+                        <br>
+                        <center>
+                            <div class="polaroid">
+                                <img src="https://storage.googleapis.com/featuredimagefromurl/bbpress01.jpg" style="width:100%">
+                            </div>
+                        </center>
+                        <br>
+                        <center>
+                            <div class="polaroid">
+                                <img src="https://storage.googleapis.com/featuredimagefromurl/bbpress03.jpg" style="width:100%">
+                            </div>
+                        </center>
+                        <br>
+                        <center>
+                            <div class="polaroid">
+                                <img src="https://storage.googleapis.com/featuredimagefromurl/bbpress02.jpg" style="width:100%">
+                            </div>
+                        </center>
+                    </div>
+                    <br>
+                    <table style="text-align:left">
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                <?php $fifu['bbpress']['fields']() ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                <?php $fifu['bbpress']['title']() ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input
+                                    type="submit"
+                                    href="javascript:void(0)"
+                                    class="toggleoff"
+                                    value=""
+                                    style="display:block;border:none">
+                            </th>
+                            <th>
+                                <?php $fifu['bbpress']['avatar']() ?>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div id="tabs-i">
                 <div class="box">
@@ -3689,7 +3957,6 @@
                     <div id="tabsCDN">
                         <ul>
                             <li><a href="#tabs-1">Jetpack</a></li>
-                            <li><a href="#tabs-2">ShortPixel (beta)</a></li>
                         </ul>
                         <div id="tabs-1">
                             <div class="greybox">
@@ -3704,24 +3971,6 @@
                                 <b><?php $fifu['detail']['requirement']() ?></b>: <?php $fifu['jetpack']['requirement']() ?>
 
                             </div>
-                        </div>
-                        <div id="tabs-2">
-                            <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey; position: relative; top: -40px">premium</a></div>
-                            <div class="greybox" id="grad2">
-
-                                <?php $fifu['shortpixel']['desc']() ?><br><br>
-                                <b><?php $fifu['detail']['requirement']() ?></b>: <?php $fifu['flickr']['important']() ?>
-
-                            </div>
-
-                            <br>
-
-                            <input
-                                type="submit"
-                                href="javascript:void(0)"
-                                class="toggleoff"
-                                value=""
-                                style="display:block;border:none">
                         </div>
                     </div>
                 </div>
@@ -3755,7 +4004,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['flickr']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['flickr']['desc']() ?><br><br>
@@ -3773,7 +4022,7 @@
             <div id="tabs-q">
                 <div class="box">
 
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['api']() ?></h2>
 
                     <div class="greybox" id="grad2">
@@ -4125,7 +4374,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['import']() ?></h2>
 
                     <div class="greybox" id="grad2">
@@ -4248,7 +4497,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['fields']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['fields']['desc']() ?><br><br>
@@ -4282,7 +4531,7 @@
 
                 <a name="category"></a>
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['category']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['category']['desc']() ?>
@@ -4305,7 +4554,7 @@
                 <a name="variable"></a>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['variable']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['variable']['desc']() ?>
@@ -4329,7 +4578,7 @@
                 </div>
 
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['gallery']() ?></h2>
                     <div class="greybox" id="grad2">
                         <?php $fifu['gallery']['desc']() ?>
@@ -4352,7 +4601,7 @@
 
             <div id="tabs-p">
                 <div class="box">
-                    <div class="fifu-pro"><a href="https://fifu.app" target="_blank" style="color:grey">premium</a></div>
+                    <div class="fifu-pro"><div class="fifu-pro-out"><a class="fifu-pro-link" href="https://fifu.app/" target="_blank" title="Unlock all features"><h4 class="fifu-pro-text"><span class="dashicons dashicons-lock fifu-pro-icon"></span>PRO</h4></a></div></div>
                     <h2><?php $fifu['title']['addon']() ?></h2>
 
                     <div class="greybox" id="grad2">
@@ -4374,6 +4623,15 @@
                                         </th>
                                         <th>
                                             <a href="http://www.wpallimport.com/documentation/woocommerce/variable-products/"><?php $fifu['addon']['faq']['woocommerce']() ?></a>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            2)
+                                        </th>
+                                        <th>
+                                            <?php $fifu['addon']['faq']['variation-child-xml']() ?>:
+                                            <a href="<?php echo plugins_url() ?>/featured-image-from-url/admin/html/wai/variations.xml"><?php $fifu['addon']['faq']['xml']() ?></a>
                                         </th>
                                     </tr>
                                 </table>
@@ -4481,13 +4739,7 @@
                     </div>
 
                 </div>
-                <!--div class="box">
-                    <h2><a class="dbox-donation-button" style="background: #2d81c5;color: #fff;text-decoration: none;display: inline-block;font-size: 16px;padding: 2px 17px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;box-shadow: 0px 0px 0px 0px #1f5a89;text-shadow: 0 1px rgba(0, 0, 0, 0.3);" href="https://fifu.app/#price" target="_blank">Buy Premium</a> and help me to take this project to the next level <span class="dashicons dashicons-info" style="font-size: 25px;" title="Pay with a Card, Apple Pay, Google Pay, Stripe, PayPal and more. No account required."></span></h2>
-                    <div class="greybox">
-                        <a href="https://www.linkedin.com/in/marceljm/" target="_blank"><img src="https://avatars0.githubusercontent.com/u/10578419?s=460&v=4" style="border-radius:100%;width:8.5%;float:left"></a>
-                        <div style="position:relative;left:10px">Hi, I'm Marcel, Software Engineer and Featured Image from URL author. <br>During the last 4 years I did my best to develop all requested features, integrations, improvements and bug fixes. And thanks to FIFU you keep saving money on storage, processing and copyright. However, with so many users (100,000+ active installs), it's becoming increasingly difficult to help everyone. <b>Extraordinary performance and automation features aren't done yet</b> while updates are required to keep this plugin working with the most current WordPress components. So please become a Premium user and help me to take FIFU to the next level!</div>
-                    </div>
-                </div-->
+
                 <div class="box">
                     <h2><?php $fifu['title']['start']() ?></h2>
                     <div class="greybox" style="min-height:375px;padding:0 !important">
@@ -4548,7 +4800,7 @@
                                                     <b><?php $fifu['word']['delimiter']() ?></b>
                                                 </th>
                                                 <th>
-                                                    <b>Premium</b>
+                                                    <b>PRO</b>
                                                 </th>
                                             </tr>
                                             <tr>
@@ -4588,6 +4840,24 @@
                 </div>
             </div>
             <div id="tabs-t">
+                <div class="box">
+                    <table>
+                        <tr>
+                            <td style="border-bottom:none">2021-04-17</td>
+                            <td style="border-bottom:none"><h3> Rey + Rey Core</h3></td>
+                            <td style="border-bottom:none">theme + plugin</td>
+                        </tr>
+                    </table>
+                    <div class="greybox" style="position: relative; top: -10px">
+                        Product gallery doesn't work correctly.<br>
+                        1) enable "FIFU Settings > WooCommerce > FIFU Product Gallery";<br>
+                        2) access "Appearance > your theme > Customize > Additional CSS";<br>
+                        3) add:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;div.rey-productSummary {justify-content:unset !important}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;div.fifu-woo-gallery {padding: 20px !important}<br>
+                        4) publish.<br>
+                    </div>
+                </div>
                 <div class="box">
                     <table>
                         <tr>

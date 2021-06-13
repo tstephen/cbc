@@ -4,11 +4,11 @@
  * Plugin Name: Featured Image from URL (FIFU)
  * Plugin URI: https://fifu.app/
  * Description: Use an external image as featured image of a post or WooCommerce product. Includes Image Search, Video, Social Tags, SEO, Lazy Load, Gallery, Automation etc.
- * Version: 3.5.7
+ * Version: 3.6.2
  * Author: fifu.app
  * Author URI: https://fifu.app/
  * WC requires at least: 4.0
- * WC tested up to: 5.2
+ * WC tested up to: 5.4
  * Text Domain: featured-image-from-url
  * License: GPLv3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -37,6 +37,7 @@ require_once (FIFU_ADMIN_DIR . '/column.php');
 require_once (FIFU_ADMIN_DIR . '/menu.php');
 require_once (FIFU_ADMIN_DIR . '/meta-box.php');
 require_once (FIFU_ADMIN_DIR . '/strings.php');
+require_once (FIFU_ADMIN_DIR . '/widgets.php');
 
 require_once (FIFU_ELEMENTOR_DIR . '/elementor-fifu-extension.php');
 
@@ -92,5 +93,20 @@ function fifu_action_links($links) {
     $links[] = '<a style="color:black">' . __('Support') . ':</a>';
     $links[] = '<br><center style="width:275px;color:white;background-color:#02a0d2;border-radius:0px 30px">marcel@featuredimagefromurl.com</center>';
     return $links;
+}
+
+add_filter('plugin_row_meta', 'fifu_row_meta', 10, 4);
+
+function fifu_row_meta($plugin_meta, $plugin_file, $plugin_data, $status) {
+    if (strpos($plugin_file, 'featured-image-from-url.php') !== false) {
+        $tag_review = '<a title="If you are enjoying FIFU, please give it a 5-star rating =]" href="https://wordpress.org/support/plugin/featured-image-from-url/reviews/?filter=5" target="_blank"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></a>';
+        $tag_pro = '<a href="https://fifu.app/" target="_blank"><span style="padding:5px;color:white;background-color:#1da867">Upgrade to <b>PRO</b></span></a>';
+        $new_links = array(
+            'review' => $tag_review,
+            'pro' => $tag_pro,
+        );
+        $plugin_meta = array_merge($plugin_meta, $new_links);
+    }
+    return $plugin_meta;
 }
 

@@ -5,7 +5,7 @@ function fifu_debug_jetpack() {
 }
 
 function fifu_jetpack_blocked($url) {
-    $blocklist = array('amazon-adsystem.com');
+    $blocklist = array('amazon-adsystem.com', 'sapo.io');
     foreach ($blocklist as $domain) {
         if (strpos($url, $domain) !== false)
             return true;

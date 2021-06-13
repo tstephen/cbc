@@ -25,11 +25,11 @@ function fifu_process_url($att_url, $att_id) {
 
     fifu_fix_legacy($url, $att_id);
 
-    return fifu_process_external_url($url, $att_id);
+    return fifu_process_external_url($url, $att_id, null);
 }
 
-function fifu_process_external_url($url, $att_id) {
-    return fifu_add_url_parameters($url, $att_id);
+function fifu_process_external_url($url, $att_id, $size) {
+    return fifu_add_url_parameters($url, $att_id, $size);
 }
 
 function fifu_fix_legacy($url, $att_id) {
@@ -53,10 +53,8 @@ add_filter('posts_where', 'fifu_query_attachments');
 
 function fifu_query_attachments($where) {
     global $wpdb;
-    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments') && true) {
+    if (isset($_POST['action']) && ($_POST['action'] == 'query-attachments'))
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
-    } else
-        $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
     return $where;
 }
 
@@ -64,8 +62,6 @@ add_filter('posts_where', function ($where, \WP_Query $q) {
     global $wpdb;
     if (is_admin() && $q->is_main_query() && true)
         $where .= ' AND ' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' ';
-    else
-        $where .= ' AND (' . $wpdb->prefix . 'posts.post_author <> ' . FIFU_AUTHOR . ' OR  (' . $wpdb->prefix . 'posts.post_author = ' . FIFU_AUTHOR . ' AND EXISTS (SELECT 1 FROM ' . $wpdb->prefix . 'postmeta WHERE ' . $wpdb->prefix . 'postmeta.post_id = ' . $wpdb->prefix . 'posts.id AND ' . $wpdb->prefix . 'postmeta.meta_key = "_wp_attachment_metadata")))';
     return $where;
 }, 10, 2);
 
@@ -129,7 +125,7 @@ function fifu_fix_dimensions($image, $size) {
     // default
     $image = fifu_add_size($image, $size);
 
-    // fix zoom
+    // fix gallery (but no zoom or lightbox)
     if (class_exists('WooCommerce') && is_product() && $image[1] == 1 && $image[2] == 1)
         $image[1] = 1920;
 
@@ -163,18 +159,8 @@ function fifu_add_size($image, $size) {
             if (!$width && !$height)
                 return $image;
 
-            // skip
-            if ($image[1] > 1) {
-                // default height
-                if ($height == 9999)
-                    return $image;
-                // aspect ratio
-                if ($image[2] != 0 && $height != 0 && abs($image[1] / $image[2] - $width / $height) > 0.1)
-                    return $image;
-            }
-
             $image[1] = $width;
-            $image[2] = $height;
+            $image[2] = $height == 9999 ? null : $height;
             $image[3] = $crop;
         }
     } else {
@@ -189,18 +175,30 @@ function fifu_get_photon_url($image, $size, $att_id) {
     $w = $image[1];
     $h = $image[2];
 
-    $args = array();
-
-    if ($w > 0) {
-        $args['w'] = $w;
-        $args['resize'] = array($w, null);
-    }
-
     if (fifu_debug_jetpack())
         define('IS_WPCOM', true);
 
+    $args = array();
+
+    if ($w > 0 && $h > 0) {
+        $args['resize'] = array($w, $h);
+    } elseif ($w > 0) {
+        $args['resize'] = array($w);
+        $args['w'] = array($w);
+    } elseif ($h > 0) {
+        $args['resize'] = array($h);
+        $args['h'] = array($h);
+    } else {
+        
+    }
+
+    // Remove CDN prefix
+    $matches = preg_split('/https:\/\//', $image[0]);
+    if ($matches && count($matches) > 2)
+        $image[0] = str_replace('https://' . $matches[1], '', $image[0]);
+
     $image[0] = jetpack_photon_url($image[0], $args, null);
-    $image[0] = fifu_process_external_url($image[0], $att_id);
+    $image[0] = fifu_process_external_url($image[0], $att_id, $size);
 
     return $image;
 }
@@ -310,7 +308,7 @@ function fifu_filter_wp_get_attachment_metadata($data, $att_id) {
     return $data;
 }
 
-function fifu_add_url_parameters($url, $att_id) {
+function fifu_add_url_parameters($url, $att_id, $size) {
     $post_id = get_post($att_id)->post_parent;
 
     if (!$post_id)

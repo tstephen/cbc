@@ -38,6 +38,8 @@ function fifu_get_post_types() {
         if (post_type_supports($post_type, 'thumbnail'))
             array_push($arr, $post_type);
     }
+    if (fifu_is_bbpress_active())
+        array_push($arr, 'forum', 'topic', 'reply');
     return $arr;
 }
 
@@ -120,6 +122,14 @@ function fifu_is_jetpack_active() {
     }
 
     return false;
+}
+
+function fifu_is_bbpress_active() {
+    return is_plugin_active('bbpress/bbpress.php');
+}
+
+function fifu_is_amp_active() {
+    return is_plugin_active('amp/amp.php');
 }
 
 // active themes

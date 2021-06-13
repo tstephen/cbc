@@ -64,8 +64,8 @@ document.addEventListener('lazybeforeunveil', function (e) {
     }
 
     // width & height
-    jQuery(e.target).attr('fifu-width', e.srcElement.clientWidth);
-    jQuery(e.target).attr('fifu-height', e.srcElement.clientHeight);
+    // jQuery(e.target).attr('fifu-width', e.srcElement.clientWidth);
+    // jQuery(e.target).attr('fifu-height', e.srcElement.clientHeight);
 });
 
 document.addEventListener('lazyunveilread', function (e) {

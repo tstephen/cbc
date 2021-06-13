@@ -25,9 +25,9 @@ function fifu_add_js() {
     if (fifu_is_on('fifu_lazy')) {
         wp_enqueue_style('lazyload-spinner', plugins_url('/html/css/lazyload.css', __FILE__), array(), fifu_version_number());
         wp_enqueue_script('lazysizes-config', plugins_url('/html/js/lazySizesConfig.js', __FILE__), array('jquery'), fifu_version_number());
-        wp_enqueue_script('unveilhooks', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/plugins/unveilhooks/ls.unveilhooks.min.js');
-        wp_enqueue_script('bgset', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/plugins/bgset/ls.bgset.min.js');
-        wp_enqueue_script('lazysizes', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js');
+        wp_enqueue_script('unveilhooks', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js');
+        wp_enqueue_script('bgset', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/bgset/ls.bgset.min.js');
+        wp_enqueue_script('lazysizes', 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js');
     }
 
     if (class_exists('WooCommerce')) {
@@ -120,7 +120,7 @@ function fifu_replace($html, $post_id, $post_thumbnail_id, $size, $attr) {
             $alt = null;
     }
 
-    if (fifu_is_on('fifu_lazy') && !is_admin()) {
+    if (fifu_is_on('fifu_lazy') && !is_admin() && !fifu_is_amp_active()) {
         if (fifu_is_avada_active()) {
             if (strpos($html, ' src=') !== false && strpos($html, ' data-srcset=') === false)
                 $html = str_replace(" src=", " data-srcset=", $html);

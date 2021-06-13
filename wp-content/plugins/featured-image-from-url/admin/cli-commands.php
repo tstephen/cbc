@@ -205,13 +205,13 @@ class fifu_cli extends WP_CLI_Command {
             case 'on':
                 update_option('fifu_fake_stop', false, 'no');
                 fifu_enable_fake();
-                update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+                set_transient('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 0);
                 update_option('fifu_fake', 'toggleon', 'no'); // toggle
                 break;
             case 'off':
                 update_option('fifu_fake_created', false, 'no');
                 update_option('fifu_fake_stop', true, 'no');
-                update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+                set_transient('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 0);
                 update_option('fifu_fake', 'toggleoff', 'no'); // toggle
                 break;
         }
@@ -220,7 +220,11 @@ class fifu_cli extends WP_CLI_Command {
     function clean() {
         fifu_db_enable_clean();
         update_option('fifu_data_clean', 'toggleoff', 'no');
-        update_option('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 'no');
+        set_transient('fifu_image_metadata_counter', fifu_db_count_urls_without_metadata(), 0);
+    }
+
+    function dimensions() {
+        fifu_run_get_and_save_sizes_api(new WP_REST_Request());
     }
 
     function db($args) {

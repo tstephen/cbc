@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: marceljm
 Donate link: https://donorbox.org/fifu
-Tags: featured, image, url, woocommerce, thumbnail
+Tags: featured, image, url, video, woocommerce
 Requires at least: 5.3
 Tested up to: 5.7
-Stable tag: 3.5.7
+Stable tag: 3.6.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,83 +30,91 @@ Use an external image as featured image of your post, page or custom post type.
 * Auto set image title
 * Save image dimensions
 * Featured image column
-* **[Premium]** Save in the media library
-* **[Premium]** Giphy image search
-* **[Premium]** Unsplash image size
-* **[Premium]** Same height
-* **[Premium]** Hover effects
-* **[Premium]** Replace not found image
-* **[Premium]** Image validation
+* **[PRO]** Save in the media library
+* **[PRO]** Giphy image search
+* **[PRO]** Unsplash image size
+* **[PRO]** Same height
+* **[PRO]** Hover effects
+* **[PRO]** Replace not found image
+* **[PRO]** Image validation
 
 #### AUTOMATIC FEATURED MEDIA
 
 * Auto set featured image/video using img/iframe tag from post content
-* **[Premium]** Auto set featured image using post title and search engine
-* **[Premium]** Auto set featured image using ISBN and books API
+* **[PRO]** Auto set featured image using post title and search engine
+* **[PRO]** Auto set featured image using ISBN and books API
+* **[PRO]** Auto set screenshot as featured image
+* **[PRO]** Auto set featured image using web page address
 
 #### PERFORMANCE
 
 * CDN + optimized thumbnails
 * Lazy load
-* **[Premium]** Flickr thumbnails
+* **[PRO]** Flickr thumbnails
 
 #### SOCIAL
 
 * Social tags
-* **[Premium]** Media RSS tags
+* **[PRO]** Media RSS tags
+* **[PRO]** bbPress features
 
 #### AUTOMATION
 
 * WP-CLI integration
-* **[Premium]** WP All Import add-on
-* **[Premium]** WooCommerce import
-* **[Premium]** WP REST API
-* **[Premium]** WooCommerce REST API
-* **[Premium]** Schedule metadata generation
+* **[PRO]** WP All Import add-on
+* **[PRO]** WooCommerce import
+* **[PRO]** WP REST API
+* **[PRO]** WooCommerce REST API
+* **[PRO]** Schedule metadata generation
 
 #### WOOCOMMERCE
 
 * External product image
 * Lightbox and zoom
 * Category image on grid
-* **[Premium]** External image gallery
-* **[Premium]** External video gallery
-* **[Premium]** Auto set category images
-* **[Premium]** Variable product
-* **[Premium]** Variation image
-* **[Premium]** Variation image gallery
-* **[Premium]** Save images in the media library
-* **[Premium]** FIFU product gallery
+* **[PRO]** External image gallery
+* **[PRO]** External video gallery
+* **[PRO]** Auto set category images
+* **[PRO]** Variable product
+* **[PRO]** Variation image
+* **[PRO]** Variation image gallery
+* **[PRO]** Save images in the media library
+* **[PRO]** FIFU product gallery
 
 #### FEATURED VIDEO
 Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, JW Player, WordPress.com (Jetpack Video Hosting) and Sprout.
 
-* **[Premium]** Featured video
-* **[Premium]** Video thumbnail
-* **[Premium]** Play button
-* **[Premium]** Minimum width
-* **[Premium]** Black background
-* **[Premium]** Mouseover autoplay
-* **[Premium]** Autoplay
-* **[Premium]** Loop
-* **[Premium]** Mute
-* **[Premium]** Background video
-* **[Premium]** Related videos
-* **[Premium]** Gallery icon
+* **[PRO]** Featured video
+* **[PRO]** Video thumbnail
+* **[PRO]** Play button
+* **[PRO]** Minimum width
+* **[PRO]** Black background
+* **[PRO]** Mouseover autoplay
+* **[PRO]** Autoplay
+* **[PRO]** Loop
+* **[PRO]** Mute
+* **[PRO]** Background video
+* **[PRO]** Related videos
+* **[PRO]** Gallery icon
+
+#### WIDGETS
+
+* **[PRO]** Featured media 
+* **[PRO]** Featured grid 
 
 #### OTHERS
 
-* **[Premium]** Featured slider 
-* **[Premium]** Featured shortcode 
+* **[PRO]** Featured slider 
+* **[PRO]** Featured shortcode 
 
 #### INTEGRATION FUNCTION FOR DEVELOPERS
 
 * fifu_dev_set_image(post_id, image_url)
-* **[Premium]** fifu_dev_set_image_list(post_id, image_url_list)
+* **[PRO]** fifu_dev_set_image_list(post_id, image_url_list)
 
 #### LINKS
 
-* **<a href="https://fifu.app/">Featured Image from URL Premium</a>**	
+* **<a href="https://fifu.app/">Featured Image from URL PRO</a>**	
 * **<a href="https://chrome.google.com/webstore/detail/fifu-scraper/pccimcccbkdeeadhejdmnffmllpicola">Google Chrome extension</a>**
 
 
@@ -136,7 +144,7 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, 
 
 = Does FIFU save the images in the media library? =
 
-* No. Only the Premium version is capable of doing this, but it is optional. The plugin was designed to work with external images.
+* No. Only the PRO version is capable of doing this, but it is optional. The plugin was designed to work with external images.
 
 = Is any action necessary before removing FIFU?
 
@@ -144,7 +152,7 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, 
 
 = What's the metadata created by FIFU?
 
-* Database registers that help WordPress components to work with the external images. FIFU can generate the metadata of ~30,000 image URLs per minute.
+* Database registers that help WordPress components to work with the external images. FIFU can generate the metadata of ~50,000 image URLs per minute.
 
 = What are the disadvantages of the external images?
 
@@ -200,20 +208,23 @@ Supports videos from YouTube, Vimeo, Imgur, 9GAG, Cloudinary, Tumblr, Publitio, 
 
 == Changelog ==
 
-= 3.5.7 =
-* Improvement: added support to videos from JW Player, Sprout and WooCommerce.com (Jetpack Video Hosting); improvement: license key activation is more flexible (unlimited sites from the same domain); improvement: custom Prev/Next buttons for Featured Slider and FIFU Product Gallery.
+= 3.6.2 =
+* Improvement: query optimizations (for sites with hundreds of thousands of URLs); improvement: CDN + Optimized Thumbnails (perfect image croppig for less style issues); improvement: Save Image Dimensions (150% faster, CLI integration); deprecated: CDN + Optimized Thumbnails > Shortpixel; fix: Lazy Load (conflict with AMP plugin).
 
-= 3.5.6 =
-* Fix: CDN + Optimized Thumbnails not working for images from some domains.
+= 3.6.1 =
+* New: FIFU widgets for WordPress and Elementor.
 
-= 3.5.5 =
-* Improvement: Hide Featured Media may work with internal featured images now.
+= 3.6.0 =
+* New features: for bbPress (Settings > Social > bbPress); improvement: Auto set featured image using post title and search engine (faster and unlimited now); improvement: Auto set featured image using ISBN and books API (faster and unlimited now); improvement: added FIFU fields to bbPress custom post types (Forum, Topic and Reply).
+
+= 3.5.9 =
+* New option: Featured slider > display images in the same height; new file: attached XML example for WP All Import plugin (Variations As Child XML Elements); new site: https://featuredimagefromurl.com/.
 
 = others =
-* [more](https://fifu.app/changelog/)
+* [more](https://fifu.app/changelog)
 
 
 == Upgrade Notice ==
 
-= 3.5.7 =
-* Improvement: added support to videos from JW Player, Sprout and WooCommerce.com (Jetpack Video Hosting); improvement: license key activation is more flexible (unlimited sites from the same domain); improvement: custom Prev/Next buttons for Featured Slider and FIFU Product Gallery.
+= 3.6.2 =
+* Improvement: query optimizations (for sites with hundreds of thousands of URLs); improvement: CDN + Optimized Thumbnails (perfect image croppig for less style issues); improvement: Save Image Dimensions (150% faster, CLI integration); deprecated: CDN + Optimized Thumbnails > Shortpixel; fix: Lazy Load (conflict with AMP plugin).

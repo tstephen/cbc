@@ -80,9 +80,9 @@ tr.color:nth-child(even) {
 }
 
 #grad2 {
-    border: 1px dotted red;
+    /* border: 1px dotted #aa1919;
     border-radius: 1px;
-    border-radius: 15px 15px 15px 15px;
+    border-radius: 15px 15px 15px 15px; */
 }
 
 /* table */
