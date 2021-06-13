@@ -3,7 +3,7 @@
 Plugin Name: WP Fastest Cache
 Plugin URI: http://wordpress.org/plugins/wp-fastest-cache/
 Description: The simplest and fastest WP Cache system
-Version: 0.9.1.7
+Version: 0.9.1.8
 Author: Emre Vona
 Author URI: http://tr.linkedin.com/in/emrevona
 Text Domain: wp-fastest-cache
@@ -1121,11 +1121,24 @@ GNU General Public License for more details.
 
 				$permalink = urldecode(get_permalink($post_id));
 
+
+
 				//for trash contents
-				$permalink = rtrim($permalink, "/");
-				$permalink = preg_replace("/__trashed$/", "", $permalink);
-				//for /%postname%/%post_id% : sample-url__trashed/57595
-				$permalink = preg_replace("/__trashed\/(\d+)$/", "/$1", $permalink);
+				if(preg_match("/\/\?p\=\d+/i", $permalink)){
+					$post = get_post($post_id);
+
+					$clone_post = clone $post;
+					$clone_post->post_status = 'publish';
+
+					$permalink = get_permalink($clone_post);
+					$permalink = rtrim($permalink, "/");
+
+					$permalink = preg_replace("/__trashed$/", "", $permalink);
+					//for /%postname%/%post_id% : sample-url__trashed/57595
+					$permalink = preg_replace("/__trashed\/(\d+)$/", "/$1", $permalink);
+				}
+
+
 
 				if(preg_match("/https?:\/\/[^\/]+\/(.+)/", $permalink, $out)){
 					$path = $this->getWpContentDir("/cache/all/").$out[1];

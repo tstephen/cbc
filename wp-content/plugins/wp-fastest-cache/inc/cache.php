@@ -1117,6 +1117,10 @@
 				$action = true;
 			}
 
+			if(preg_match("/\?amp\=1$/", $request_uri)){
+				$action = true;
+			}
+
 			if(isset($redux_builder_amp) && isset($redux_builder_amp['ampforwp-amp-takeover']) && ($redux_builder_amp['ampforwp-amp-takeover'] == true)){
 				$action = true;
 			}

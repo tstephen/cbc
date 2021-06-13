@@ -21,6 +21,9 @@
 	    }
 
 	    public static function auto_cache_custom_box_html(){
+	    	$yes_selected = "";
+	    	$no_selected = "";
+	    	
 	        if($data = get_option("WpFastestCache_autocache")){
 	            if($data == "yes"){
 	                $yes_selected = "selected";
