@@ -5,7 +5,7 @@ Description: Limit the rate of login attempts for each IP address.
 Author: Limit Login Attempts Reloaded
 Author URI: https://www.limitloginattempts.com/
 Text Domain: limit-login-attempts-reloaded
-Version: 2.21.0
+Version: 2.22.1
 
 Copyright 2008 - 2012 Johan Eenfeldt, 2016 - 2021 Limit Login Attempts Reloaded
 */
@@ -34,6 +34,7 @@ $limit_login_nonempty_credentials = false; /* user and pwd nonempty */
 /***************************************************************************************
  * Include files
  **************************************************************************************/
+require_once( LLA_PLUGIN_DIR . '/lib/CidrCheck.php' );
 require_once( LLA_PLUGIN_DIR . '/core/Helpers.php' );
 require_once( LLA_PLUGIN_DIR . '/core/App.php' );
 require_once( LLA_PLUGIN_DIR . '/core/LimitLoginAttempts.php' );

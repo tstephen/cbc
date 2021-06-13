@@ -3,6 +3,7 @@
 if( !defined( 'ABSPATH' ) ) exit();
 
 $active_app = $this->get_option( 'active_app' );
+$active_app = ($active_app === 'custom' && $this->app) ? 'custom' : 'local';
 
 $retries_chart_title = '';
 $retries_chart_desc = '';
@@ -326,6 +327,15 @@ if( $active_app === 'local' ) {
                 <div class="desc"><?php _e( 'Many options such as notifications, alerts, premium status, and more.', 'limit-login-attempts-reloaded' ); ?></div>
             </div>
         </div>
+        <div class="info-box-1">
+            <div class="info-box-icon">
+                <span class="dashicons dashicons-groups"></span>
+            </div>
+            <div class="info-box-content">
+                <div class="title"><a href="https://limitloginattempts.tapfiliate.com/" target="_blank"><?php _e( 'Refer A Friend', 'limit-login-attempts-reloaded' ); ?></a></div>
+                <div class="desc"><?php _e( 'Earn $20 for every friend or client that signs up for our premium service.', 'limit-login-attempts-reloaded' ); ?></div>
+            </div>
+        </div>
     </div>
     <?php if( $stats_global = LLAR_App::stats_global() ) : ?>
 	<div class="dashboard-section-4">
@@ -338,8 +348,8 @@ if( $active_app === 'local' ) {
 
 			$stats_global_dates[] = date( $date_format, $timest );
 		}
-
-		$countries_list = require LLA_PLUGIN_DIR . '/resources/countries.php';
+		
+		$countries_list = LLA_Helpers::get_countries_list();
         ?>
         <div class="info-box-1">
             <div class="section-title">
