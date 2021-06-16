@@ -86,8 +86,12 @@
       <node CREATED="1594852090751" ID="covid-risk-assessment" MODIFIED="1594852090751" POSITION="right" TEXT="Covid risk assessment" LINK="https://drive.google.com/file/d/1yFLFC2P48rpaZYVBQSaAnSYngRHrxfMO/view?usp=sharing">
         <edge COLOR="#93c47d"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="-40"/>
+        <node CREATED="1593360112043" ID="procedure-for-using-buildings" MODIFIED="1593360112043" POSITION="right" TEXT="Covid-safe procedure" LINK="https://docs.google.com/document/d/1sUec7EkGoQJFmYNbvitrtKv2dFEIz4YTPTvQ-OOUlHE">
+          <edge COLOR="#93c47d"/>
+          <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="730" y="-100"/>
+        </node>
       </node>
-      <node CREATED="1593360112043" ID="procedure-for-using-sanctury" MODIFIED="1593360112043" POSITION="right" TEXT="Use of Priory St building" LINK="https://docs.google.com/document/d/1sUec7EkGoQJFmYNbvitrtKv2dFEIz4YTPTvQ-OOUlHE">
+      <node CREATED="1623837363716" ID="health-and-safety-procedures" MODIFIED="" POSITION="right" TEXT="H&amp;S procedures (index)" LINK="https://docs.google.com/document/d/1shWI0KUe0jr8cC87_5t19MDC7heLZGYTDl1s_tjJqJE/">
         <edge COLOR="#93c47d"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="500" y="20"/>
       </node>
