@@ -43,9 +43,13 @@
           <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-200" y="-290"/>
         </node>
       </node>
+      <node CREATED="1625835854637" ID="ministry-leaders" MODIFIED="1625835854637" TEXT="Leaders" LINK="https://docs.google.com/spreadsheets/d/15m20PpivFIJTBGWRAcphtRBlPdYK1A1mSTac5AvNm4Q/">
+        <edge COLOR="#edda69"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="80" y="-340"/>
+      </node>
       <node CREATED="1590233648192" ID="youth-ministry" MODIFIED="1590233648192" TEXT="Youth" LINK="/ministries/youth/">
         <edge COLOR="#edda69"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="100" y="-280"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="120" y="-280"/>
       </node>
       <node CREATED="1590233648192" ID="childrens-ministry" MODIFIED="1590233648192" TEXT="Children" LINK="/children-covid/">
         <edge COLOR="#edda69"/>
@@ -69,12 +73,16 @@
       </node>
       <node CREATED="1590233648192" ID="lifegroups-ministry" MODIFIED="1590233648192" TEXT="LIFE groups" LINK="/adults/life-groups/">
         <edge COLOR="#edda69"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="150" y="0"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="200" y="-40"/>
       </node>
     </node>
     <node CREATED="1576843051087" ID="ID_1420441482" MODIFIED="1576843051087" POSITION="left" TEXT="Operations" LINK="/operations/">
       <edge COLOR="#666"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-250" y="10"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-250" y="-20"/>
+      <node CREATED="i1625837589268" ID="operations-year" MODIFIED="1625837589268" POSITION="left" TEXT="Operations Year" LINK="ihttps://docs.google.com/spreadsheets/d/1rsM_HvkNCsNjv2R1twsruhrUFFkTi1Pagpdm37zCL84/">
+        <edge COLOR="#666"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-220" y="40"/>
+      </node>
     </node>
     <node CREATED="1538744814567" ID="ID_1420441482" MODIFIED="1594852090751" POSITION="right" TEXT="Safeguarding / H&amp;S">
       <edge COLOR="#93c47d"/>
@@ -124,9 +132,17 @@
         </node>
       </node>
     </node>
+    <node CREATED="1625836718828" ID="communications" MODIFIED="1625836718828" POSITION="left" TEXT="Communications" LINK="/communications/">
+      <edge COLOR="#6d9eeb"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="0" y="100"/>
+      <node CREATED="1625836718828" ID="" MODIFIED="1625836718828" POSITION="left" TEXT="Joint service rota" LINK="https://docs.google.com/spreadsheets/d/1e0BmwuWKUBP3GWwcdWEtUyNRjqlFzLVZTVtG5si1pvo/">
+        <edge COLOR="#6d9eeb"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="40" y="160"/>
+      </node>
+    </node>
     <node CREATED="1532368068853" ID="9bf5ca8b39c4d41a29c0431fd3b83445" MODIFIED="1532368095515" POSITION="left" TEXT="Data protection">
       <edge COLOR="#67d7c4"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-200" y="100"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-250" y="100"/>
       <node CREATED="1532368068853" ID="9e50fe243aebaaa031d115ab4d58a27d" MODIFIED="1532368068853" TEXT="Policy" LINK="https://docs.google.com/document/d/1VPFt49cb90p5mlrGx1zeBCUlg8MXyy6LuPXCengxKSU/edit?usp=sharing">
         <edge COLOR="#62d4bf"/>
         <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-500" y="100"/>
@@ -146,18 +162,18 @@
     </node>
     <node CREATED="1532368068854" ID="4be6ab412bd08a5389436233adb01c1c" MODIFIED="1532368095518" POSITION="left" TEXT="Finance">
       <edge COLOR="#e096e9"/>
-      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-100" y="170"/>
+      <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-180" y="170"/>
       <node CREATED="1532368068854" ID="2ead74414f9c1ec81df42ea2405c0114" MODIFIED="1532368068854" TEXT="Latest accounts" LINK="http://apps.charitycommission.gov.uk/Showcharity/RegisterOfCharities/DocumentList.aspx?RegisteredCharityNumber=1148492&amp;SubsidiaryNumber=0&amp;DocType=AccountList">
         <edge COLOR="#e29eeb"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="230"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-140" y="230"/>
       </node>
       <node CREATED="1575905400000" ID="finance-gad" MODIFIED="1575905400000" TEXT="Gift Aid Declaration" LINK="/members-area/gift-aid-declaration">
         <edge COLOR="#e29eeb"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="290"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-140" y="290"/>
       </node>
       <node CREATED="1575905400000" ID="finance-standing-order" MODIFIED="1575905400000" TEXT="Standing Order form" LINK="/wp-content/uploads/2019/11/Standing-Order-Authority.pdf">
         <edge COLOR="#e29eeb"/>
-        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-60" y="350"/>
+        <dc:Bounds xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" height="40" width="200" x="-140" y="350"/>
       </node>
     </node>
   </node>
